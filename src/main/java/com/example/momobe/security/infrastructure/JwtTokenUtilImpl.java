@@ -1,8 +1,9 @@
-package com.example.momobe.security.util;
+package com.example.momobe.security.infrastructure;
 
 
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.security.exception.InvalidJwtTokenException;
+import com.example.momobe.security.domain.JwtTokenUtil;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,11 +18,11 @@ import java.util.List;
 import static com.example.momobe.security.enums.SecurityConstants.*;
 
 @Component
-public final class JwtTokenUtil {
+public final class JwtTokenUtilImpl implements JwtTokenUtil {
     private final byte[] accessByteKey;
     private final byte[] refreshByteKey;
 
-    public JwtTokenUtil(@Value("${jwt.secretKey}") String accessByteKey, @Value("${jwt.refreshKey}") String refreshByteKey) {
+    public JwtTokenUtilImpl(@Value("${jwt.secretKey}") String accessByteKey, @Value("${jwt.refreshKey}") String refreshByteKey) {
         this.accessByteKey = accessByteKey.getBytes(StandardCharsets.UTF_8);
         this.refreshByteKey = refreshByteKey.getBytes(StandardCharsets.UTF_8);
     }

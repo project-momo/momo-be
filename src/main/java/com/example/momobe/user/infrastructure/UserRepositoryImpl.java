@@ -20,7 +20,6 @@ import static com.example.momobe.user.domain.QUser.*;
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements CustomUserRepository {
     private final JPAQueryFactory jpaQueryFactory;
-    private final EntityManager entityManager;
 
     @Override
     public Optional<User> findUserByEmail(String email) {
@@ -31,7 +30,7 @@ public class UserRepositoryImpl implements CustomUserRepository {
                     .fetchOne());
         } catch (NonUniqueResultException e) {
             log.error("",e);
-            throw new CustomException(REQUEST_CONFLICT);
+            throw new UnableToProcessException(REQUEST_CONFLICT);
         }
     }
 }

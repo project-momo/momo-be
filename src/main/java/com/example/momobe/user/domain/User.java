@@ -1,5 +1,6 @@
 package com.example.momobe.user.domain;
 
+import com.example.momobe.common.domain.BaseTime;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -13,10 +14,11 @@ import static javax.persistence.GenerationType.*;
 
 @Entity
 @Getter
+@EqualsAndHashCode(callSuper = false)
 @Builder(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class User {
+public class User extends BaseTime {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = IDENTITY)
