@@ -17,11 +17,11 @@ import java.util.List;
 import static com.example.momobe.security.enums.SecurityConstants.*;
 
 @Component
-public final class JwtTokenUtil {
+public final class JwtTokenUtilImpl implements JwtTokenUtil {
     private final byte[] accessByteKey;
     private final byte[] refreshByteKey;
 
-    public JwtTokenUtil(@Value("${jwt.secretKey}") String accessByteKey, @Value("${jwt.refreshKey}") String refreshByteKey) {
+    public JwtTokenUtilImpl(@Value("${jwt.secretKey}") String accessByteKey, @Value("${jwt.refreshKey}") String refreshByteKey) {
         this.accessByteKey = accessByteKey.getBytes(StandardCharsets.UTF_8);
         this.refreshByteKey = refreshByteKey.getBytes(StandardCharsets.UTF_8);
     }
