@@ -2,8 +2,8 @@ package com.example.momobe.user.domain;
 
 import com.example.momobe.common.exception.CustomException;
 import com.example.momobe.common.exception.enums.ErrorCode;
-import com.example.momobe.user.domain.enums.UserState;
-import com.example.momobe.user.infrastructure.UserRepositoryImpl;
+import com.example.momobe.user.application.UserCommonService;
+import com.example.momobe.user.domain.enums.UserStateType;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -51,11 +51,9 @@ public class User {
     @JoinColumn(name = "avatar_id")
     private Avatar avatar;
 
-    private UserRepository userRepository;
-
-    public User(String email, String nickname, String password, PasswordEncoder passwordEncoder, Avatar avatar) {
+    public User(String email, String nickname, String password, PasswordEncoder passwordEncoder, Avatar avatar,UserState userState) {
         this.role = new Role(List.of(ROLE_USER));
-        this.userState = UserState.ACTIVE;
+        this.userState = userState;
         this.email = new Email(email);
         this.nickname = new Nickname(nickname);
         this.password = new Password(password, passwordEncoder);
@@ -63,14 +61,13 @@ public class User {
         this.avatar = avatar;
     }
 
-    //회원 탈퇴 처리
-    public void userWithdrawal(String email){
-        User user = userRepository.findUserByEmail(email).orElseThrow(()-> new CustomException(ErrorCode.EXPIRED_EXCEPTION));
-        user.userState = UserState.DEACTIVATED;
-//        withdrawalTime = LocalDateTime.now();
+
+    //private 으로 막아야 되는데 그럼 도메인 서비스에서 못쓰자너..
+    public void setUserState(UserStateType userState, LocalDateTime dateTime) {
+        this.userState = new UserState(userState,dateTime);
     }
-    //회원 활성화 상태 확인
-    public boolean isUserActive(){
-        return this.userState == UserState.ACTIVE;
-    }
+
+
+
+
 }

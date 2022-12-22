@@ -1,6 +1,6 @@
 package com.example.momobe.user.domain.enums;
 
-public enum UserState {
+public enum UserStateType {
     ACTIVE,
     DEACTIVATED;
 }
