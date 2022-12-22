@@ -3,8 +3,6 @@ package com.example.momobe.meeting.ui;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.domain.MeetingRepository;
-import com.example.momobe.meeting.domain.PricePolicy;
-import com.example.momobe.meeting.dto.MeetingRequestDto;
 import com.example.momobe.meeting.mapper.DateTimeMapper;
 import com.example.momobe.meeting.mapper.LocationMapper;
 import com.example.momobe.meeting.mapper.MeetingMapper;
@@ -21,13 +19,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Set;
-
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
-import static com.example.momobe.common.enums.TestConstants.*;
+import static com.example.momobe.meeting.util.MeetingConstant.MEETING_REQUEST_DTO;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -56,26 +50,7 @@ class MeetingRegistrationControllerTest {
     @Test
     void registerMeeting() throws Exception {
         // given
-        MeetingRequestDto.PriceDto priceDto = MeetingRequestDto.PriceDto.builder()
-                .pricePolicy(PricePolicy.HOUR)
-                .price(1000L)
-                .build();
-        MeetingRequestDto.LocationDto locationDto = MeetingRequestDto.LocationDto.builder()
-                .address1(ADDRESS1)
-                .address2(ADDRESS2)
-                .dateTimes(List.of(NOW_TIME, NOW_TIME.plus(1L, ChronoUnit.HOURS)))
-                .build();
-        MeetingRequestDto request = MeetingRequestDto.builder()
-                .categoryId(ID1)
-                .title(TITLE1)
-                .content(CONTENT1)
-                .tagIds(Set.of(ID1, ID2))
-                .priceInfo(priceDto)
-                .locations(List.of(locationDto))
-                .notice("전달 사항")
-                .build();
-
-        String content = objectMapper.writeValueAsString(request);
+        String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO);
 
         // when
         ResultActions actions = mockMvc.perform(
