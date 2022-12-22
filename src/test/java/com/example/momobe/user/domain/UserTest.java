@@ -24,6 +24,6 @@ class UserTest {
         //given
         //when
         //then
-        User user = new User(EMAIL1, NICKNAME1, PASSWORD1, passwordEncoder, null);
+        User user = new User(EMAIL1, NICKNAME1, PASSWORD1, null);
     }
 }

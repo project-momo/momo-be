@@ -1,10 +1,9 @@
 package com.example.momobe.security.controller;
 
-import com.example.momobe.security.util.JwtTokenUtil;
+import com.example.momobe.security.infrastructure.JwtTokenUtilImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +13,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,7 +26,7 @@ public class TestControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    JwtTokenUtil jwtTokenUtil;
+    JwtTokenUtilImpl jwtTokenUtilImpl;
 
     String userToken;
     String managerToken;
@@ -38,7 +36,7 @@ public class TestControllerTest {
     String user_manager_admin_token;
 
     public String createToken(List<String> roles) {
-        return jwtTokenUtil.createAccessToken(EMAIL1, ID1, roles,NICKNAME1);
+        return jwtTokenUtilImpl.createAccessToken(EMAIL1, ID1, roles,NICKNAME1);
     }
 
     @BeforeEach
