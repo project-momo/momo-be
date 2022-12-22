@@ -23,6 +23,7 @@ public class Meeting {
 
     @Column(nullable = false)
     private String title;
+    @Lob
     @Column(nullable = false)
     private String content;
     @Column(nullable = false)
