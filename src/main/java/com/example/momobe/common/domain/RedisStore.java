@@ -1,5 +1,7 @@
 package com.example.momobe.common.domain;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.Optional;
 
 public interface RedisStore <T> {
