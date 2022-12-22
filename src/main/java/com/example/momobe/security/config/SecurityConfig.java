@@ -44,7 +44,11 @@ public class SecurityConfig {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
-                .and().build();
+                .and()
+                .oauth2Login()
+                .defaultSuccessUrl("/auth/token")
+                .and()
+                .build();
     }
 
     // TODO : 배포 시 cors 설정 수정 필요
