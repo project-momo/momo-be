@@ -14,8 +14,8 @@ import static javax.persistence.GenerationType.*;
 
 @Entity
 @Getter
+@Builder
 @EqualsAndHashCode(callSuper = false)
-@Builder(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User extends BaseTime {
