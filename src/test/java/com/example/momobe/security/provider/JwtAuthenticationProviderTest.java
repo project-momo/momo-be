@@ -2,7 +2,7 @@ package com.example.momobe.security.provider;
 
 import com.example.momobe.security.exception.InvalidJwtTokenException;
 import com.example.momobe.security.token.JwtAuthenticationToken;
-import com.example.momobe.security.util.JwtTokenUtil;
+import com.example.momobe.security.infrastructure.JwtTokenUtilImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -30,7 +30,7 @@ class JwtAuthenticationProviderTest {
 
     @BeforeEach
     public void setup() {
-        provider = new JwtAuthenticationProvider(new JwtTokenUtil(SECRET_KEY, REFRESH_KEY));
+        provider = new JwtAuthenticationProvider(new JwtTokenUtilImpl(SECRET_KEY, REFRESH_KEY));
     }
 
     private String createToken(String email, Long id, List<String> roles, Date now, Long expire, String secretKey) {

@@ -38,7 +38,7 @@ class UserRepositoryTest {
     public void saveWithAvatarTest() {
         //given
         Avatar avatar = new Avatar(REMOTE_PATH);
-        User user = new User(EMAIL1, NICKNAME1, PASSWORD1, passwordEncoder, avatar);
+        User user = new User(EMAIL1, NICKNAME1, PASSWORD1, avatar);
 
         //when
         User savedUser = userRepository.save(user);

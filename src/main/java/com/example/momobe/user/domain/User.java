@@ -14,8 +14,8 @@ import static javax.persistence.GenerationType.*;
 
 @Entity
 @Getter
+@Builder
 @EqualsAndHashCode(callSuper = false)
-@Builder(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User extends BaseTime {
@@ -45,11 +45,11 @@ public class User extends BaseTime {
     @JoinColumn(name = "avatar_id")
     private Avatar avatar;
 
-    public User(String email, String nickname, String password, PasswordEncoder passwordEncoder, Avatar avatar) {
+    public User(String email, String nickname, String password, Avatar avatar) {
         this.role = new Role(List.of(ROLE_USER));
         this.email = new Email(email);
         this.nickname = new Nickname(nickname);
-        this.password = new Password(password, passwordEncoder);
+        this.password = new Password(password);
         this.point = new Point(0L);
         this.avatar = avatar;
     }
