@@ -1,16 +1,13 @@
-package com.example.momobe.common.infrastructure;
+package com.example.momobe.user.infrastructure;
 
-import com.example.momobe.common.domain.RandomKeyGenerator;
+import com.example.momobe.user.domain.RandomPasswordGenerator;
 import org.springframework.stereotype.Component;
-
-import java.security.SecureRandom;
-import java.util.Date;
 
 import static com.example.momobe.security.enums.SecurityConstants.*;
 
 @Component
-public class RandomKeyGeneratorImpl implements RandomKeyGenerator {
-    public String generateMailAuthKey() { return generateRandomKey(EMAIL_AUTH_KEY_LENGTH); }
+public class RandomPasswordGeneratorImpl implements RandomPasswordGenerator {
+    @Override
     public String generateTemporaryPassword() {
         return generateRandomKey(TEMPORARY_PASSWORD_LENGTH);
     }

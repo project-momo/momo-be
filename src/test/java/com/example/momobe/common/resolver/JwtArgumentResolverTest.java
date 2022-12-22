@@ -2,8 +2,8 @@ package com.example.momobe.common.resolver;
 
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.security.controller.TestController;
+import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.security.exception.InvalidJwtTokenException;
-import com.example.momobe.security.util.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.assertj.core.api.Assertions;
