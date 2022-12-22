@@ -1,6 +1,7 @@
 package com.example.momobe.meeting.domain;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = PROTECTED)
 public class Location {
     @Id
