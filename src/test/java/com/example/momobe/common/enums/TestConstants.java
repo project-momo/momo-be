@@ -28,10 +28,14 @@ public class TestConstants {
     public final static String CONTENT2 = "내용2";
     public final static String CONTENT3 = "내용3";
 
+    public final static String ADDRESS1 = "주소1";
+    public final static String ADDRESS2 = "주소2";
+
     public final static LocalDateTime NOW_TIME = LocalDateTime.now();
 
     public final static String GITHUB_URL = "https://github.com/";
     public final static String TISTORY_URL = "https://7357.tistory.com/";
+    public final static String REMOTE_PATH = "https://7357.tistory.com/";
 
     public final static String JWT_HEADER = "Authorization";
     public final static String INVALID_JWT_PREFIX = "fake ";

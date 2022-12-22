@@ -4,6 +4,7 @@ import com.example.momobe.common.exception.CustomException;
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.user.application.UserCommonService;
 import com.example.momobe.user.domain.enums.UserStateType;
+import com.example.momobe.common.domain.BaseTime;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,10 +19,11 @@ import static javax.persistence.GenerationType.*;
 
 @Entity
 @Getter
-@Builder(access = AccessLevel.PROTECTED)
+@Builder
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class User {
+public class User extends BaseTime {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = IDENTITY)
@@ -51,12 +53,12 @@ public class User {
     @JoinColumn(name = "avatar_id")
     private Avatar avatar;
 
-    public User(String email, String nickname, String password, PasswordEncoder passwordEncoder, Avatar avatar,UserState userState) {
+    public User(String email, String nickname, String password, Avatar avatar,UserState userState) {
         this.role = new Role(List.of(ROLE_USER));
         this.userState = userState;
         this.email = new Email(email);
         this.nickname = new Nickname(nickname);
-        this.password = new Password(password, passwordEncoder);
+        this.password = new Password(password);
         this.point = new Point(0L);
         this.avatar = avatar;
     }

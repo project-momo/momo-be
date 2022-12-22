@@ -1,6 +1,7 @@
 package com.example.momobe.security.oauth;
 
-import com.example.momobe.common.util.RandomKeyGenerator;
+import com.example.momobe.user.domain.RandomPasswordGenerator;
+import com.example.momobe.user.infrastructure.RandomPasswordGeneratorImpl;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserRepository;
@@ -29,7 +30,7 @@ import static com.example.momobe.user.domain.enums.RoleName.*;
 public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RandomKeyGenerator randomKeyGenerator;
+    private final RandomPasswordGenerator randomPasswordGeneratorImpl;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -61,8 +62,8 @@ public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest,
     private void saveOAuth2User(OAuth2UserDto oauth2User) {
         String email = oauth2User.getEmail();
         String name = oauth2User.getName();
-        String password = randomKeyGenerator.generateTemporaryPassword();
-        userRepository.save(new User(email, name, password, passwordEncoder,
+        String password = passwordEncoder.encode(randomPasswordGeneratorImpl.generateTemporaryPassword());
+        userRepository.save(new User(email, name, password,
                 oauth2User.getPicture() != null ? new Avatar(oauth2User.getPicture()) : null,new UserState(UserStateType.ACTIVE, LocalDateTime.now())));
     }
 }

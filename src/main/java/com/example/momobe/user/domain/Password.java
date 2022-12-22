@@ -17,12 +17,12 @@ import static lombok.AccessLevel.*;
 public class Password {
     private String password;
 
-    public Password(String password, PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(password);
+    public Password(String password) {
+        this.password = password;
     }
 
-    public boolean match(String password, PasswordEncoder passwordEncoder) {
-        return passwordEncoder.matches(password, this.password);
+    public boolean match(String password) {
+        return this.password.equals(password);
     }
 
     protected String getPassword() {

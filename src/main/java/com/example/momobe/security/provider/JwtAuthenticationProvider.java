@@ -1,7 +1,7 @@
 package com.example.momobe.security.provider;
 
+import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.security.token.JwtAuthenticationToken;
-import com.example.momobe.security.util.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
