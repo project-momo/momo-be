@@ -1,7 +1,6 @@
 package com.example.momobe.common.resolver;
 
-import com.example.momobe.security.enums.SecurityConstants;
-import com.example.momobe.security.util.JwtTokenUtil;
+import com.example.momobe.security.domain.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

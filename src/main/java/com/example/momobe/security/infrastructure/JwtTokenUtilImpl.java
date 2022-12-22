@@ -1,8 +1,9 @@
-package com.example.momobe.security.util;
+package com.example.momobe.security.infrastructure;
 
 
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.security.exception.InvalidJwtTokenException;
+import com.example.momobe.security.domain.JwtTokenUtil;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
