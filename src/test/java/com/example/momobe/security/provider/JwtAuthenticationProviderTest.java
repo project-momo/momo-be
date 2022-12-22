@@ -78,7 +78,7 @@ class JwtAuthenticationProviderTest {
     }
 
     @Test
-    @DisplayName("잘못된 시크릿 키를 가진 토큰을 받았을 때, JwtInvalidExeption이 발생한다.")
+    @DisplayName("잘못된 시크릿 키를 가진 토큰을 받았을 때, JwtInvalidException이 발생한다.")
     public void test4() {
         //given
         String invalidToken = createToken(EMAIL1, ID1, ROLE_USER_ADMIN_LIST, new Date(), ACCESS_TOKEN_EXPIRE_COUNT, INVALID_SECRET_KEY);
