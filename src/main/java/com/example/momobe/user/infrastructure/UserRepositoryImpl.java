@@ -30,7 +30,7 @@ public class UserRepositoryImpl implements CustomUserRepository {
                     .fetchOne());
         } catch (NonUniqueResultException e) {
             log.error("",e);
-            throw new CustomException(REQUEST_CONFLICT);
+            throw new UnableToProcessException(REQUEST_CONFLICT);
         }
     }
 }

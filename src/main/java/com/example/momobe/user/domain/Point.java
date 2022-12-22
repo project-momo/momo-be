@@ -26,7 +26,7 @@ public class Point {
     }
 
     public Point minus(Long point) {
-        if (this.point - point < 0) throw new CustomException(REQUEST_CONFLICT);
+        if (this.point - point < 0) throw new NotEnoughPointException(REQUEST_CONFLICT);
         return new Point(this.point - point);
     }
 
