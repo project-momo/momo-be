@@ -10,5 +10,5 @@ import java.time.LocalDateTime;
 @Mapper(componentModel = "spring", imports = ReservationStatus.class)
 public interface DateTimeMapper {
     @Mapping(target = "reservationStatus", expression = "java(ReservationStatus.UNRESERVED)")
-    DateTime toDateTime(LocalDateTime localDateTime);
+    DateTime toDateTime(LocalDateTime dateTime);
 }
