@@ -1,4 +1,4 @@
-package com.example.momobe.meeting.presentation;
+package com.example.momobe.meeting.ui;
 
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
