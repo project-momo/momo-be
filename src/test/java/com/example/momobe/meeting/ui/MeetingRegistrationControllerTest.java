@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
-import static com.example.momobe.meeting.util.MeetingConstant.MEETING_REQUEST_DTO;
+import static com.example.momobe.meeting.enums.MeetingConstant.MEETING_REQUEST_DTO;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;

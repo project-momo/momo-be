@@ -1,4 +1,4 @@
-package com.example.momobe.meeting.util;
+package com.example.momobe.meeting.enums;
 
 import com.example.momobe.meeting.domain.PricePolicy;
 import com.example.momobe.meeting.dto.MeetingRequestDto;

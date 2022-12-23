@@ -11,7 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 
 import static com.example.momobe.common.enums.TestConstants.ID1;
-import static com.example.momobe.meeting.util.MeetingConstant.MEETING_REQUEST_DTO;
+import static com.example.momobe.meeting.enums.MeetingConstant.MEETING_REQUEST_DTO;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @WebMvcTest({ExceptionController.class, MeetingMapper.class, LocationMapper.class, DateTimeMapper.class, PriceMapper.class})
