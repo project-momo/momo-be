@@ -1,6 +1,5 @@
 package com.example.momobe.user.application;
 
-import com.example.momobe.common.exception.CustomException;
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserNotFoundException;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class UserCommonService {
+public class UserFindService {
     private UserRepository userRepository;
 
 

@@ -53,21 +53,27 @@ public class User extends BaseTime {
     @JoinColumn(name = "avatar_id")
     private Avatar avatar;
 
-    public User(String email, String nickname, String password, Avatar avatar,UserState userState) {
+    public User(String email, String nickname, String password, Avatar avatar) {
         this.role = new Role(List.of(ROLE_USER));
-        this.userState = userState;
         this.email = new Email(email);
         this.nickname = new Nickname(nickname);
         this.password = new Password(password);
         this.point = new Point(0L);
         this.avatar = avatar;
+        this.userState = new UserState( UserStateType.ACTIVE,LocalDateTime.now());
     }
 
-
-    //private 으로 막아야 되는데 그럼 도메인 서비스에서 못쓰자너..
-    public void setUserState(UserStateType userState, LocalDateTime dateTime) {
-        this.userState = new UserState(userState,dateTime);
+    public void changeUserState(UserState userState) {
+        if(userState.isUserActive()){
+            throw new CanNotChangeUserStateException(ErrorCode.UNABLE_TO_PROCESS);
+        }
+        setUserState(userState);
     }
+
+    private void setUserState(UserState userState){
+        this.userState = userState;
+    }
+
 
 
 
