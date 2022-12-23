@@ -1,7 +1,7 @@
 package com.example.momobe.meeting.mapper;
 
 import com.example.momobe.meeting.domain.DateTime;
-import com.example.momobe.meeting.domain.ReservationStatus;
+import com.example.momobe.meeting.domain.enums.ReservationStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

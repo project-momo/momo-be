@@ -1,5 +1,6 @@
 package com.example.momobe.meeting.domain;
 
+import com.example.momobe.meeting.domain.enums.PricePolicy;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
