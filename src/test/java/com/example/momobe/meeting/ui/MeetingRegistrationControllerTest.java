@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
+import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstant.MEETING_REQUEST_DTO;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -57,6 +58,7 @@ class MeetingRegistrationControllerTest {
                 post("/meetings")
                         .content(content)
                         .contentType(APPLICATION_JSON)
+                        .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
         );
 
         // then
@@ -64,6 +66,7 @@ class MeetingRegistrationControllerTest {
                 .andDo(document("meeting/registration",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        REQUEST_HEADER_JWT,
                         requestFields(
                                 fieldWithPath("categoryId").type(NUMBER).description("카테고리 식별자"),
                                 fieldWithPath("title").type(STRING).description("제목"),
