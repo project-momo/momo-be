@@ -5,6 +5,8 @@ import com.example.momobe.user.infrastructure.RandomPasswordGeneratorImpl;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserRepository;
+import com.example.momobe.user.domain.UserState;
+import com.example.momobe.user.domain.enums.UserStateType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 import static com.example.momobe.user.domain.enums.RoleName.*;
@@ -61,6 +64,6 @@ public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest,
         String name = oauth2User.getName();
         String password = passwordEncoder.encode(randomPasswordGeneratorImpl.generateTemporaryPassword());
         userRepository.save(new User(email, name, password,
-                oauth2User.getPicture() != null ? new Avatar(oauth2User.getPicture()) : null));
+                oauth2User.getPicture() != null ? new Avatar(oauth2User.getPicture()) : null,null));
     }
 }

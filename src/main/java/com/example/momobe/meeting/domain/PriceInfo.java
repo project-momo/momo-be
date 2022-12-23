@@ -1,6 +1,7 @@
 package com.example.momobe.meeting.domain;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.Enumerated;
 
 import static javax.persistence.EnumType.STRING;
 
+@Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PriceInfo {
