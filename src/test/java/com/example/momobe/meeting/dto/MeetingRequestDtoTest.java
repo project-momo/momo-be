@@ -12,24 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MeetingRequestDtoTest {
     private final String TITLE = "title";
     private final String CONTENT = "content";
-    private final String TAG_IDS = "tagIds";
-
-    @Test
-    @DisplayName("MeetingRequestDto의 categoryId가 0이하면 예외가 발생한다.")
-    public void categoryId_failed() throws Exception {
-        // given
-        MeetingRequestDto requestDto1 = MeetingRequestDto.builder().categoryId(0L).build();
-        MeetingRequestDto requestDto2 = MeetingRequestDto.builder().categoryId(-1L).build();
-
-        // when
-        String CATEGORY_ID = "categoryId";
-        Object[] arr1 = getArray(requestDto1, CATEGORY_ID);
-        Object[] arr2 = getArray(requestDto2, CATEGORY_ID);
-
-        // then
-        assertThat(arr1).isNotEmpty();
-        assertThat(arr2).isNotEmpty();
-    }
+    private final String TAGS = "tags";
+    private final String DATE_TIMES = "dateTimes";
 
     @Test
     @DisplayName("MeetingRequestDto의 title이 공백이면 예외가 발생한다.")
@@ -84,26 +68,26 @@ public class MeetingRequestDtoTest {
     }
 
     @Test
-    @DisplayName("MeetingRequestDto의 tagIds.size()가 1 미만이면 예외가 발생한다.")
+    @DisplayName("MeetingRequestDto의 tags.size()가 1 미만이면 예외가 발생한다.")
     public void tagIds_failed_1() throws Exception {
         // given
-        MeetingRequestDto requestDto1 = MeetingRequestDto.builder().tagIds(Set.of()).build();
+        MeetingRequestDto requestDto1 = MeetingRequestDto.builder().tags(List.of()).build();
 
         // when
-        Object[] arr = getArray(requestDto1, TAG_IDS);
+        Object[] arr = getArray(requestDto1, TAGS);
 
         // then
         assertThat(arr).isNotEmpty();
     }
 
     @Test
-    @DisplayName("MeetingRequestDto의 tagIds가 null이면 예외가 발생한다.")
+    @DisplayName("MeetingRequestDto의 tags가 null이면 예외가 발생한다.")
     public void tagIds_failed_2() throws Exception {
         // given
         MeetingRequestDto requestDto = MeetingRequestDto.builder().build();
 
         // when
-        Object[] arr = getArray(requestDto, TAG_IDS);
+        Object[] arr = getArray(requestDto, TAGS);
 
         // then
         assertThat(arr).isNotEmpty();
@@ -135,6 +119,34 @@ public class MeetingRequestDtoTest {
 
         // when
         Object[] arr = getArray(requestDto, "locations");
+
+        // then
+        assertThat(arr).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("MeetingRequestDto의 dateTimes.size()가 1 미만이면 예외가 발생한다.")
+    public void dateTimes_failed_1() throws Exception {
+        // given
+        MeetingRequestDto requestDto =
+                MeetingRequestDto.builder().dateTimes(List.of()).build();
+
+        // when
+        Object[] arr = getArray(requestDto, DATE_TIMES);
+
+        // then
+        assertThat(arr).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("MeetingRequestDto의 dateTimes가 null이면 예외가 발생한다.")
+    public void dateTimes_failed_2() throws Exception {
+        // given
+        MeetingRequestDto requestDto =
+                MeetingRequestDto.builder().build();
+
+        // when
+        Object[] arr = getArray(requestDto, DATE_TIMES);
 
         // then
         assertThat(arr).isNotEmpty();
