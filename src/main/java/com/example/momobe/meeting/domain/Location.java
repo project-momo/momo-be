@@ -1,11 +1,9 @@
 package com.example.momobe.meeting.domain;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -22,12 +20,7 @@ public class Location {
     @Embedded
     private Address address;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "location_id", nullable = false)
-    private List<DateTime> dateTimes;
-
-    public Location(Address address, List<DateTime> dateTimes) {
+    public Location(Address address) {
         this.address = address;
-        this.dateTimes = dateTimes;
     }
 }

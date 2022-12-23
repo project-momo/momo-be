@@ -1,6 +1,6 @@
 package com.example.momobe.meeting.domain;
 
-import lombok.AccessLevel;
+import com.example.momobe.meeting.domain.enums.ReservationStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
