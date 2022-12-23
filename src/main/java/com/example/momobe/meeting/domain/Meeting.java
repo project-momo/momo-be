@@ -1,5 +1,6 @@
 package com.example.momobe.meeting.domain;
 
+import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.MeetingStatus;
 import com.example.momobe.meeting.domain.enums.Tag;
@@ -17,7 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Meeting {
+public class Meeting extends BaseTime {
     @Id
     @Column(name = "meeting_id")
     @GeneratedValue(strategy = IDENTITY)

@@ -1,5 +1,6 @@
 package com.example.momobe.meeting.domain;
 
+import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.meeting.domain.enums.ReservationStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class DateTime {
+public class DateTime extends BaseTime {
     @Id
     @Column(name = "date_time_id")
     @GeneratedValue(strategy = IDENTITY)
