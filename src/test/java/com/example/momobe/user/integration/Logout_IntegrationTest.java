@@ -4,7 +4,6 @@ import com.example.momobe.common.domain.RedisStore;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.user.domain.Nickname;
 import com.example.momobe.user.dto.RedisUserDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "jwt.refreshKey=only_test_refresh_key_value_gn..rlfdlrkqnwhrgkekspdy"
 })
 @AutoConfigureMockMvc
-public class IntegrationTest_User {
+public class Logout_IntegrationTest {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
