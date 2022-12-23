@@ -64,6 +64,6 @@ public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest,
         String name = oauth2User.getName();
         String password = passwordEncoder.encode(randomPasswordGeneratorImpl.generateTemporaryPassword());
         userRepository.save(new User(email, name, password,
-                oauth2User.getPicture() != null ? new Avatar(oauth2User.getPicture()) : null,null));
+                oauth2User.getPicture() != null ? new Avatar(oauth2User.getPicture()) : null));
     }
 }
