@@ -24,13 +24,13 @@ public class UserController {
 
     @DeleteMapping("/profile")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public boolean withdrawal(@Token UserInfo request){
+    public boolean withdrawal(@RequestHeader @Token UserInfo request){
         userCommonService.withdrawalUser(request.getEmail());
         return true;
     }
     @GetMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getUser(@Token UserInfo request){
+    public UserDto getUser(@RequestHeader @Token UserInfo request){
         User findUser = userRepository.findUserByEmail(request.getEmail()).orElseThrow(() -> new UserNotFoundException(ErrorCode.DATA_NOT_FOUND));
         return mapper.userDtoOfUser(findUser);
 
