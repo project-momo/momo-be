@@ -56,7 +56,7 @@ class MeetingQueryControllerTest {
         MeetingResponseDto meetingResponseDto = new MeetingResponseDto(
                 ID1, MENTORING, ID1, NICKNAME, TISTORY_URL, TITLE1, CONTENT1, ADDRESS1, OPEN, HOUR, 1000L
         );
-        PageRequest pageRequest = PageRequest.of(PAGE, SIZE);
+        PageRequest pageRequest = PageRequest.of(PAGE - 1, SIZE);
 
         given(meetingQueryRepository.findAll(eq(TITLE1), eq(MENTORING), any(PageRequest.class)))
                 .willReturn(new PageImpl<>(List.of(meetingResponseDto), pageRequest, 1L));
