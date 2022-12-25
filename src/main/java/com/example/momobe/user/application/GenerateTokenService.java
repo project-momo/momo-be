@@ -10,11 +10,13 @@ import com.example.momobe.user.dto.JwtTokenDto;
 import com.example.momobe.user.dto.RedisUserDto;
 import com.example.momobe.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static com.example.momobe.security.enums.SecurityConstants.*;
 
+@Service
 @RequiredArgsConstructor
 public class GenerateTokenService {
     private final JwtTokenUtil jwtTokenUtil;

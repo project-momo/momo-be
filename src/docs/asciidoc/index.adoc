@@ -4,14 +4,17 @@
 :toclevels: 4
 :toc-title: Table of Contents
 :source-highlighter: prettify
+
 ***
 == 모임
 === 등록
 .http-request
 include::{snippets}/meeting/registration/http-request.adoc[]
+
 .request-headers
 [caption=]
 include::{snippets}/meeting/registration/request-headers.adoc[]
+
 .request-fields
 [caption=]
 include::{snippets}/meeting/registration/request-fields.adoc[]

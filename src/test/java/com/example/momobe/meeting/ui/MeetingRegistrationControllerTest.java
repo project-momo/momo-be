@@ -1,10 +1,9 @@
-package com.example.momobe.meeting.presentation;
+package com.example.momobe.meeting.ui;
 
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
+import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.MeetingRepository;
-import com.example.momobe.meeting.domain.PricePolicy;
-import com.example.momobe.meeting.dto.MeetingRequestDto;
 import com.example.momobe.meeting.mapper.DateTimeMapper;
 import com.example.momobe.meeting.mapper.LocationMapper;
 import com.example.momobe.meeting.mapper.MeetingMapper;
@@ -21,13 +20,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Set;
-
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
 import static com.example.momobe.common.enums.TestConstants.*;
+import static com.example.momobe.common.util.ReflectionUtil.setField;
+import static com.example.momobe.meeting.enums.MeetingConstant.MEETING_REQUEST_DTO;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -56,32 +55,20 @@ class MeetingRegistrationControllerTest {
     @Test
     void registerMeeting() throws Exception {
         // given
-        MeetingRequestDto.PriceDto priceDto = MeetingRequestDto.PriceDto.builder()
-                .pricePolicy(PricePolicy.HOUR)
-                .price(1000L)
-                .build();
-        MeetingRequestDto.LocationDto locationDto = MeetingRequestDto.LocationDto.builder()
-                .address1(ADDRESS1)
-                .address2(ADDRESS2)
-                .dateTimes(List.of(NOW_TIME, NOW_TIME.plus(1L, ChronoUnit.HOURS)))
-                .build();
-        MeetingRequestDto request = MeetingRequestDto.builder()
-                .categoryId(ID1)
-                .title(TITLE1)
-                .content(CONTENT1)
-                .tagIds(Set.of(ID1, ID2))
-                .priceInfo(priceDto)
-                .locations(List.of(locationDto))
-                .notice("전달 사항")
-                .build();
-
-        String content = objectMapper.writeValueAsString(request);
+        String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO);
+        given(meetingRepository.save(any(Meeting.class)))
+                .willAnswer(args -> {
+                    Meeting meeting = args.getArgument(0);
+                    setField(meeting, "id", ID1);
+                    return meeting;
+                });
 
         // when
         ResultActions actions = mockMvc.perform(
                 post("/meetings")
                         .content(content)
                         .contentType(APPLICATION_JSON)
+                        .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
         );
 
         // then
@@ -89,15 +76,16 @@ class MeetingRegistrationControllerTest {
                 .andDo(document("meeting/registration",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        REQUEST_HEADER_JWT,
                         requestFields(
-                                fieldWithPath("categoryId").type(NUMBER).description("카테고리 식별자"),
+                                fieldWithPath("category").type(STRING).description("카테고리"),
                                 fieldWithPath("title").type(STRING).description("제목"),
                                 fieldWithPath("content").type(STRING).description("내용"),
-                                fieldWithPath("tagIds").type(ARRAY).description("태그 식별자"),
+                                fieldWithPath("tags").type(ARRAY).description("태그"),
                                 fieldWithPath("locations").type(ARRAY).description("장소"),
                                 fieldWithPath("locations[].address1").type(STRING).description("주소1"),
                                 fieldWithPath("locations[].address2").type(STRING).description("주소2"),
-                                fieldWithPath("locations[].dateTimes").type(ARRAY).description("시간"),
+                                fieldWithPath("dateTimes").type(ARRAY).description("시간"),
                                 fieldWithPath("priceInfo").type(OBJECT).description("가격 정보"),
                                 fieldWithPath("priceInfo.pricePolicy").type(STRING).description("가격 정책"),
                                 fieldWithPath("priceInfo.price").type(NUMBER).description("가격"),

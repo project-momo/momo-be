@@ -1,7 +1,13 @@
 package com.example.momobe.common.enums;
 
+import org.springframework.restdocs.headers.HeaderDescriptor;
+import org.springframework.restdocs.headers.RequestHeadersSnippet;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 
 public class TestConstants {
     public final static String EMAIL1 = "user@test.com";
@@ -51,6 +57,10 @@ public class TestConstants {
     public final static String INVALID_SECRET_KEY = "dlrjtdmswkfahtehlstlzmfltzldlqslek";
     public final static String SECRET_KEY = "dlrjtdmstlzmfltzlekrmfjsepTmfakfdldjqtek";
     public final static String REFRESH_KEY = "dlrjtdmsflvmfptlzlekrmfjsepTmfakfdldjqtek";
+
+    public static final RequestHeadersSnippet REQUEST_HEADER_JWT = requestHeaders(
+            headerWithName(JWT_HEADER).description(BEARER_ACCESS_TOKEN)
+    );
 
     public final static int ZERO = 0;
     public final static int ONE = 1;

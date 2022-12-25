@@ -60,8 +60,9 @@ public class User extends BaseTime {
         this.password = new Password(password);
         this.point = new Point(0L);
         this.avatar = avatar;
-        this.userState = new UserState( UserStateType.ACTIVE,LocalDateTime.now());
+        this.userState = new UserState(UserStateType.ACTIVE, LocalDateTime.now());
     }
+
 
     public void changeUserState(UserState userState) {
         if(userState.isUserActive()){
