@@ -1,10 +1,12 @@
 package com.example.momobe.common.resolver;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 public final class UserInfo {
     @Getter
     private final Long id;

@@ -100,7 +100,7 @@ public class WithdrawalTest {
                 );
         //then
         actions.andExpect(status().isNoContent())
-                .andDo(document("withdrawalUser",
+                .andDo(document("user/withdrawalUser",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestHeaders(

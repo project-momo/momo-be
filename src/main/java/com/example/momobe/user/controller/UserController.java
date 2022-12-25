@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 @RestController
 @RequestMapping("/mypage")
 @RequiredArgsConstructor
@@ -24,16 +26,24 @@ public class UserController {
 
     @DeleteMapping("/profile")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public boolean withdrawal(@RequestHeader @Token UserInfo request){
+    public boolean withdrawal(@Token UserInfo request){
         userCommonService.withdrawalUser(request.getEmail());
         return true;
     }
     @GetMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getUser(@RequestHeader @Token UserInfo request){
-        User findUser = userRepository.findUserByEmail(request.getEmail()).orElseThrow(() -> new UserNotFoundException(ErrorCode.DATA_NOT_FOUND));
+    public UserDto getUser(@Token UserInfo request){
+        User findUser = userCommonService.getUser(request.getEmail());
+
         return mapper.userDtoOfUser(findUser);
 
     }
+//    @GetMapping("/profile/{userId}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public UserDto getUser(@PathVariable("userId") Long userId){
+//        User findUser = userCommonService.getUser(userId);
+//        return mapper.userDtoOfUser(findUser);
+//
+//    }
 
 }
