@@ -21,3 +21,18 @@ include::{snippets}/meeting/registration/request-fields.adoc[]
 
 .http-response
 include::{snippets}/meeting/registration/http-response.adoc[]
+
+=== 조회
+.http-request
+include::{snippets}/meeting/query/http-request.adoc[]
+
+.request-parameters
+[caption=]
+include::{snippets}/meeting/query/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/meeting/query/http-response.adoc[]
+
+.response-fields
+[caption=]
+include::{snippets}/meeting/query/response-fields.adoc[]

@@ -2,6 +2,7 @@ package com.example.momobe.meeting.ui;
 
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
+import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.MeetingRepository;
 import com.example.momobe.meeting.mapper.DateTimeMapper;
 import com.example.momobe.meeting.mapper.LocationMapper;
@@ -22,7 +23,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
 import static com.example.momobe.common.enums.TestConstants.*;
+import static com.example.momobe.common.util.ReflectionUtil.setField;
 import static com.example.momobe.meeting.enums.MeetingConstant.MEETING_REQUEST_DTO;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -52,6 +56,12 @@ class MeetingRegistrationControllerTest {
     void registerMeeting() throws Exception {
         // given
         String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO);
+        given(meetingRepository.save(any(Meeting.class)))
+                .willAnswer(args -> {
+                    Meeting meeting = args.getArgument(0);
+                    setField(meeting, "id", ID1);
+                    return meeting;
+                });
 
         // when
         ResultActions actions = mockMvc.perform(
