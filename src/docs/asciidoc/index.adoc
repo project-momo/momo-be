@@ -33,27 +33,3 @@ include::{snippets}/meeting/query/http-response.adoc[]
 .response-fields
 [caption=]
 include::{snippets}/meeting/query/response-fields.adoc[]
-== 회원
-=== 회원 탈퇴
-.http-request
-include::{snippets}/user/withdrawalUser/http-request.adoc[]
-
-.request-parameters
-[caption=]
-include::{snippets}/user/withdrawalUser/request-parameters.adoc[]
-
-
-=== 회원 정보 조회
-.http-request
-include::{snippets}/user/getUser/http-request.adoc[]
-
-.request-parameters
-[caption=]
-include::{snippets}/user/getUser/request-parameters.adoc[]
-
-.http-response
-include::{snippets}/user/getUser/http-response.adoc[]
-
-.response-fields
-[caption=]
-include::{snippets}/user/getUser/response-fields.adoc[]
