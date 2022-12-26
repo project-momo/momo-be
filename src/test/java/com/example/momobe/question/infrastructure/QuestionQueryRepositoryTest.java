@@ -4,6 +4,9 @@ import com.example.momobe.answer.domain.Answer;
 import com.example.momobe.answer.domain.AnswerRepository;
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
 import com.example.momobe.meeting.domain.*;
+import com.example.momobe.meeting.domain.enums.Category;
+import com.example.momobe.meeting.domain.enums.MeetingStatus;
+import com.example.momobe.meeting.domain.enums.PricePolicy;
 import com.example.momobe.question.domain.Content;
 import com.example.momobe.question.domain.Question;
 import com.example.momobe.question.domain.QuestionRepository;
@@ -62,7 +65,7 @@ class QuestionQueryRepositoryTest {
                 .title(TITLE1)
                 .content(CONTENT1)
                 .hostId(ID2)
-                .categoryId(ID1)
+                .category(Category.MEETING)
                 .meetingStatus(MeetingStatus.OPEN)
                 .priceInfo(new PriceInfo(PricePolicy.DAY, 20000L))
                 .build();
