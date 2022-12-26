@@ -1,6 +1,8 @@
-package com.example.momobe.meeting.util;
+package com.example.momobe.meeting.enums;
 
-import com.example.momobe.meeting.domain.PricePolicy;
+import com.example.momobe.meeting.domain.enums.Category;
+import com.example.momobe.meeting.domain.enums.PricePolicy;
+import com.example.momobe.meeting.domain.enums.Tag;
 import com.example.momobe.meeting.dto.MeetingRequestDto;
 
 import java.time.temporal.ChronoUnit;
@@ -17,15 +19,15 @@ public class MeetingConstant {
     public static final MeetingRequestDto.LocationDto LOCATION_DTO = MeetingRequestDto.LocationDto.builder()
             .address1(ADDRESS1)
             .address2(ADDRESS2)
-            .dateTimes(List.of(NOW_TIME, NOW_TIME.plus(1L, ChronoUnit.HOURS)))
             .build();
     public static final MeetingRequestDto MEETING_REQUEST_DTO = MeetingRequestDto.builder()
-            .categoryId(ID1)
+            .category(Category.MENTORING)
             .title(TITLE1)
             .content(CONTENT1)
-            .tagIds(Set.of(ID1, ID2))
+            .tags(List.of(Tag.LIFESTYLE, Tag.MEDIA, Tag.EDU))
             .priceInfo(PRICE_DTO)
             .locations(List.of(LOCATION_DTO))
+            .dateTimes(List.of(NOW_TIME, NOW_TIME.plus(1L, ChronoUnit.HOURS)))
             .notice("전달 사항")
             .build();
 }

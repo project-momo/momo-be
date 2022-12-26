@@ -27,9 +27,10 @@ public class MeetingRegistrationController {
 
     @PostMapping("/meetings")
     @ResponseStatus(CREATED)
-    public void registerMeeting(@Token UserInfo userInfo,
+    public Long registerMeeting(@Token UserInfo userInfo,
                                 @Valid @RequestBody MeetingRequestDto requestDto) {
         Meeting meeting = meetingMapper.toMeeting(requestDto, userInfo.getId());
         meetingRepository.save(meeting);
+        return meeting.getId();
     }
 }
