@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,9 +58,17 @@ public class Meeting extends BaseTime {
     @JoinColumn(name = "meeting_id", nullable = false)
     private List<Location> locations = new ArrayList<>();
 
+    @Column(nullable = false)
+    private LocalDate startDate;
+    private LocalDate endDate;
+    @Column(nullable = false)
+    private LocalTime startTime;
+    @Column(nullable = false)
+    private LocalTime endTime;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "meeting_id", nullable = false)
-    private List<DateTime> dateTimes = new ArrayList<>();;
+    private List<DateTime> dateTimes = new ArrayList<>();
 
     public Meeting(String title, String content, Long hostId, Category category, List<Tag> tags,
                    MeetingStatus meetingStatus, PriceInfo priceInfo, String notice,
