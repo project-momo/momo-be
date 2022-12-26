@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 
+import java.time.temporal.ChronoUnit;
+
 import static com.example.momobe.common.enums.TestConstants.ID1;
 import static com.example.momobe.meeting.enums.MeetingConstant.MEETING_REQUEST_DTO;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,8 +43,13 @@ public class MeetingMapperTest {
         assertThat(meeting.getLocations().size()).isEqualTo(MEETING_REQUEST_DTO.getLocations().size());
         assertThat(meeting.getLocations().get(0).getAddress().getAddress1())
                 .isEqualTo(MEETING_REQUEST_DTO.getLocations().get(0).getAddress1());
-        assertThat(meeting.getDateTimes().get(0).getDateTime())
-                .isEqualTo(MEETING_REQUEST_DTO.getDateTimes().get(0));
+
+        // 날짜 정책 FREE
+        assertThat(meeting.getDateTimes().size())
+                .isEqualTo(MEETING_REQUEST_DTO.getDateTime().getDates().size());
+        assertThat(meeting.getDateTimes().get(0).getTimes().size())
+                .isEqualTo(ChronoUnit.HOURS.between(MEETING_REQUEST_DTO.getDateTime().getStartTime(),
+                        MEETING_REQUEST_DTO.getDateTime().getEndTime()) + 1);
 
         assertThat(meeting.getPriceInfo().getPricePolicy()).isEqualTo(MEETING_REQUEST_DTO.getPriceInfo().getPricePolicy());
         assertThat(meeting.getPriceInfo().getPrice()).isEqualTo(MEETING_REQUEST_DTO.getPriceInfo().getPrice());
