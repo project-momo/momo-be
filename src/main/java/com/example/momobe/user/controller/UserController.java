@@ -30,14 +30,14 @@ public class UserController {
         userCommonService.withdrawalUser(request.getEmail());
         return true;
     }
+
     @GetMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
     public UserDto getUser(@Token UserInfo request){
         User findUser = userCommonService.getUser(request.getEmail());
-
         return mapper.userDtoOfUser(findUser);
-
     }
+
 //    @GetMapping("/profile/{userId}")
 //    @ResponseStatus(HttpStatus.OK)
 //    public UserDto getUser(@PathVariable("userId") Long userId){
@@ -45,5 +45,4 @@ public class UserController {
 //        return mapper.userDtoOfUser(findUser);
 //
 //    }
-
 }

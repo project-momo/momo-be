@@ -73,9 +73,4 @@ public class User extends BaseTime {
     private void setUserState(UserState userState){
         this.userState = userState;
     }
-
-
-
-
-
 }
