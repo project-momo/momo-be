@@ -32,5 +32,4 @@ public class MeetingRegistrationController {
         Meeting meeting = meetingMapper.toMeeting(requestDto, userInfo.getId());
         meetingRepository.save(meeting);
     }
-
 }
