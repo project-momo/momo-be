@@ -25,6 +25,7 @@ public class UserController {
         userCommonService.withdrawalUser(request.getEmail());
         return true;
     }
+
     @GetMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
     public UserResponseDto getUser(@Token UserInfo request){

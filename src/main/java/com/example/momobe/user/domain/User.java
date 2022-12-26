@@ -63,7 +63,6 @@ public class User extends BaseTime {
         this.userState = new UserState(UserStateType.ACTIVE, LocalDateTime.now());
     }
 
-
     public void changeUserState(UserState userState) {
         if(userState.isUserActive()){
             throw new CanNotChangeUserStateException(ErrorCode.UNABLE_TO_PROCESS);
@@ -74,9 +73,4 @@ public class User extends BaseTime {
     private void setUserState(UserState userState){
         this.userState = userState;
     }
-
-
-
-
-
 }
