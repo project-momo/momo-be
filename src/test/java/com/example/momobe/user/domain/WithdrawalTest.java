@@ -1,10 +1,12 @@
 package com.example.momobe.user.domain;
 
+import com.example.momobe.MomoBeApplication;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.user.application.UserCommonService;
 import com.example.momobe.user.controller.UserController;
 import com.example.momobe.user.domain.enums.UserStateType;
+import com.example.momobe.user.mapper.UserMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
@@ -17,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +28,7 @@ import java.time.LocalDateTime;
 
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
+import static com.example.momobe.common.enums.TestConstants.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -37,12 +41,12 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UserController.class)
+@WebMvcTest({UserController.class, UserMapper.class})
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(SecurityTestConfig.class)
 @AutoConfigureRestDocs
 @WithMockUser
-//@ExtendWith(MockitoExtension.class)
+@ContextConfiguration(classes = MomoBeApplication.class)
 public class WithdrawalTest {
     @Autowired
     private MockMvc mockMvc;
@@ -52,9 +56,6 @@ public class WithdrawalTest {
 
     @MockBean
     private UserRepository userRepository;
-
-    @MockBean
-    private UserController userController;
 
     @MockBean
     private JwtArgumentResolver resolver;
@@ -97,14 +98,14 @@ public class WithdrawalTest {
         ResultActions actions =
                 mockMvc.perform(
                         delete("/mypage/profile")
+                                .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
                 );
         //then
         actions.andExpect(status().isNoContent())
                 .andDo(document("user/withdrawalUser",
                         getDocumentRequest(),
                         getDocumentResponse(),
-                        requestHeaders(
-                                headerWithName("Authorization").description("JWT"))
+                        REQUEST_HEADER_JWT
                         ));
     }
 }

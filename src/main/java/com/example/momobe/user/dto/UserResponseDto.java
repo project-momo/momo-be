@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class UserDto {
-    private final Nickname nickname;
-    private final Email email;
-    private final Point point;
+public class UserResponseDto {
+    private final String nickname;
+    private final String email;
+    private final Long point;
 
 }
