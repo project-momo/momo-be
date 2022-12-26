@@ -1,5 +1,7 @@
 package com.example.momobe.meeting.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.MeetingStatus;
@@ -15,10 +17,13 @@ import java.util.List;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+@Builder
 @Entity
 @Getter
+@AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
 public class Meeting extends BaseTime {
     @Id

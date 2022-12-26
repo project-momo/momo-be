@@ -33,5 +33,4 @@ public class MeetingRegistrationController {
         meetingRepository.save(meeting);
         return meeting.getId();
     }
-
 }
