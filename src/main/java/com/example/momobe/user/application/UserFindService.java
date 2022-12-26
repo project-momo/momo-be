@@ -1,6 +1,5 @@
 package com.example.momobe.user.application;
 
-import com.example.momobe.common.exception.CustomException;
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserNotFoundException;
@@ -16,20 +15,12 @@ import java.time.LocalDateTime;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserCommonService {
-    private final UserFindService userFindService;
+public class UserFindService {
     private final UserRepository userRepository;
 
-    //예외 처리 추가 필요
-    public boolean withdrawalUser(String email){
-        User user = userFindService.verifyUser(email);
-        user.changeUserState(new UserState(UserStateType.DEACTIVATED, LocalDateTime.now()));
-        return true;
+    /** common logic*/
+    public User verifyUser(String email){
+        return userRepository.findUserByEmail(email).orElseThrow(()-> new UserNotFoundException(ErrorCode.DATA_NOT_FOUND));
     }
-    public User getUser(String email){
-        User findUser = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(ErrorCode.DATA_NOT_FOUND));
-        return findUser;
-    }
-
 
 }

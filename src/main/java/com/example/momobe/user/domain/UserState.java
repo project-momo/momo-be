@@ -7,11 +7,14 @@ import org.joda.time.base.BaseDateTime;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 @Embeddable
 @RequiredArgsConstructor
 public class UserState {
+    @Enumerated(EnumType.STRING)
     private UserStateType userStateType;
     private LocalDateTime dateTime;
 

@@ -47,8 +47,8 @@ class UserRepositoryImplTest {
     @DisplayName("중복된 이메일이 존재할 경우 CustomException 발생")
     void findUserByEmail_exception() {
         //given
-        em.persist(new User(EMAIL1, NICKNAME1, PASSWORD1, new Avatar(REMOTE_PATH),new UserState(null,null)));
-        em.persist(new User(EMAIL1, NICKNAME2, PASSWORD2, new Avatar(REMOTE_PATH),new UserState(null,null)));
+        em.persist(new User(EMAIL1, NICKNAME1, PASSWORD1, new Avatar(REMOTE_PATH)));
+        em.persist(new User(EMAIL1, NICKNAME2, PASSWORD2, new Avatar(REMOTE_PATH)));
 
         //when //then
         assertThatThrownBy(() -> userRepository.findUserByEmail(EMAIL1))
@@ -59,7 +59,7 @@ class UserRepositoryImplTest {
     @DisplayName("중복된 이메일이 존재하지 않을 경우 같은 이메일을 가진 유저를 반환한다.")
     void findUserByEmail_success() {
         //given
-        User user = new User(EMAIL1, NICKNAME1, PASSWORD1, new Avatar(REMOTE_PATH),new UserState(null,null));
+        User user = new User(EMAIL1, NICKNAME1, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(user);
 
         //when

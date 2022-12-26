@@ -5,10 +5,10 @@ import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.user.application.UserCommonService;
 import com.example.momobe.user.controller.UserController;
 import com.example.momobe.user.domain.enums.UserStateType;
-import org.junit.Test;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,28 +23,38 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
+import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(SecurityTestConfig.class)
-@AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @WithMockUser
+//@ExtendWith(MockitoExtension.class)
 public class WithdrawalTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private UserCommonService userCommonService;
+
+    @MockBean
+    private UserRepository userRepository;
+
+    @MockBean
+    private UserController userController;
 
     @MockBean
     private JwtArgumentResolver resolver;
@@ -60,8 +70,7 @@ public class WithdrawalTest {
                 .build();
 
         //when/then
-        assertThat(user.getUserState().isUserActive()).isTrue();
-
+        Assertions.assertThat(user.getUserState().isUserActive()).isTrue();
     }
 
     @Test
@@ -72,31 +81,30 @@ public class WithdrawalTest {
         //then
     }
 
-//    @Test
-//    @DisplayName("회원 탈퇴 테스트")
-//    public void withdrawalUser() throws Exception {
-//        //given
-//        User user = User.builder()
-//                .email(new Email("email@mail.com"))
-//                .nickname(new Nickname("dodanmom"))
-//                .userState(new UserState(UserStateType.ACTIVE, LocalDateTime.now()))
-//                .build();
-//
-//        given(userCommonService.withdrawalUser(anyString())).willReturn(true);
-//
-//        //when
-//        ResultActions actions =
-//                mockMvc.perform(
-//                        delete("/mypage/profile")
-//                );
-//        //then
-//        actions.andExpect(status().isNoContent())
-//                .andDo(document("withdrawalUser",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint())
-//                        ));
-//    }
+    @Test
+    @DisplayName("회원 탈퇴 테스트")
+    public void withdrawalUser() throws Exception {
+        //given
+        User user = User.builder()
+                .email(new Email("email@mail.com"))
+                .nickname(new Nickname("dodanmom"))
+                .userState(new UserState(UserStateType.ACTIVE, LocalDateTime.now()))
+                .build();
 
+        given(userCommonService.withdrawalUser(anyString())).willReturn(true);
 
-
+        //when
+        ResultActions actions =
+                mockMvc.perform(
+                        delete("/mypage/profile")
+                );
+        //then
+        actions.andExpect(status().isNoContent())
+                .andDo(document("user/withdrawalUser",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("JWT"))
+                        ));
+    }
 }
