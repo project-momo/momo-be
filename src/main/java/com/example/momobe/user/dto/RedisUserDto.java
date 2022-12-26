@@ -3,9 +3,7 @@ package com.example.momobe.user.dto;
 import com.example.momobe.user.domain.Email;
 import com.example.momobe.user.domain.Nickname;
 import com.example.momobe.user.domain.Role;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder

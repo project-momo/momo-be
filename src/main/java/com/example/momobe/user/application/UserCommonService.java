@@ -30,6 +30,4 @@ public class UserCommonService {
         User findUser = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(ErrorCode.DATA_NOT_FOUND));
         return findUser;
     }
-
-
 }
