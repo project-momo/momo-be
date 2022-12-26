@@ -30,4 +30,10 @@ public class QuestionController {
         questionRepository.save(questionMapper.of(meetingId, userInfo, questionDto));
         return questionQueryRepository.getQuestions(meetingId);
     }
+
+    @GetMapping("/{meetingId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ResponseQuestionDto> getQuestions(@PathVariable(name = "meetingId") Long meetingId) {
+        return questionQueryRepository.getQuestions(meetingId);
+    }
 }
