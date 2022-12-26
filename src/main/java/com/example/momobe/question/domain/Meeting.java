@@ -1,8 +1,13 @@
 package com.example.momobe.question.domain;
 
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@RequiredArgsConstructor
+import javax.persistence.Embeddable;
+
+@Embeddable
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Meeting {
-    private final Long id;
+    private Long meetingId;
 }

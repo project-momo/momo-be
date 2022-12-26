@@ -1,4 +1,4 @@
-package com.example.momobe.question.dto;
+package com.example.momobe.question.dto.in;
 
 import lombok.*;
 

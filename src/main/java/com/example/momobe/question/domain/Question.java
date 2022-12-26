@@ -2,16 +2,17 @@ package com.example.momobe.question.domain;
 
 import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.question.domain.enums.QuestionStateType;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.*;
 
 @Entity
+@Getter
+@Builder
 @EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Question extends BaseTime {
     @Id
