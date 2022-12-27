@@ -23,7 +23,10 @@ public interface DateTimeMapper {
                     .forEach(date -> dateTimes.add(generateDateTime(date, startTime, endTime)));
         } else if (dateTimeDto.getDatePolicy() == DatePolicy.PERIOD) {
             dateTimeDto.getStartDate().datesUntil(dateTimeDto.getEndDate().plusDays(1))
-                    .forEach(date -> dateTimes.add(generateDateTime(date, startTime, endTime)));
+                    .forEach(date -> {
+                        if (dateTimeDto.getDayWeeks().contains(date.getDayOfWeek().getValue()))
+                            dateTimes.add(generateDateTime(date, startTime, endTime));
+                    });
         } else {
             dateTimes.add(generateDateTime(dateTimeDto.getStartDate(), startTime, endTime));
         }

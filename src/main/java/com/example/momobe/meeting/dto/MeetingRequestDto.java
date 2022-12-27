@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -62,6 +63,8 @@ public class MeetingRequestDto {
         private LocalTime startTime;
         @NotNull
         private LocalTime endTime;
+
+        private Set<Integer> dayWeeks;
 
         private List<LocalDate> dates;
     }
