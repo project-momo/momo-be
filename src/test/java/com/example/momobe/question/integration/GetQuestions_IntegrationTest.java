@@ -25,6 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.domain.enums.Category.*;
 import static org.hamcrest.Matchers.is;
@@ -63,6 +66,10 @@ public class GetQuestions_IntegrationTest {
                 .category(Category.MEETING)
                 .meetingStatus(MeetingStatus.OPEN)
                 .priceInfo(new PriceInfo(PricePolicy.DAY, 20000L))
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .startTime(LocalTime.now())
+                .endTime(LocalTime.now().plusHours(1))
                 .build();
         entityManager.persist(meeting);
 
