@@ -2,6 +2,7 @@ package com.example.momobe.meeting.domain;
 
 import com.example.momobe.meeting.domain.enums.PricePolicy;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,15 +15,11 @@ import static javax.persistence.EnumType.STRING;
 @Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class PriceInfo {
     @Enumerated(STRING)
     @Column(nullable = false)
     private PricePolicy pricePolicy;
     @Column(nullable = false)
     private Long price;
-
-    public PriceInfo(PricePolicy pricePolicy, Long price) {
-        this.pricePolicy = pricePolicy;
-        this.price = price;
-    }
 }

@@ -1,11 +1,11 @@
 package com.example.momobe.meeting.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.MeetingStatus;
 import com.example.momobe.meeting.domain.enums.Tag;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -53,6 +53,9 @@ public class Meeting extends BaseTime {
     private MeetingStatus meetingStatus;
 
     @Embedded
+    private DateTimeInfo dateTimeInfo;
+
+    @Embedded
     private PriceInfo priceInfo;
 
     private String notice;
@@ -61,22 +64,18 @@ public class Meeting extends BaseTime {
     @JoinColumn(name = "meeting_id", nullable = false)
     private List<Location> locations = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "meeting_id", nullable = false)
-    private List<DateTime> dateTimes = new ArrayList<>();;
-
     public Meeting(String title, String content, Long hostId, Category category, List<Tag> tags,
-                   MeetingStatus meetingStatus, PriceInfo priceInfo, String notice,
-                   List<Location> locations, List<DateTime> dateTimes) {
+                   MeetingStatus meetingStatus, DateTimeInfo dateTimeInfo, PriceInfo priceInfo, String notice,
+                   List<Location> locations) {
         this.title = title;
         this.content = content;
         this.hostId = hostId;
         this.category = category;
         this.tags = tags;
         this.meetingStatus = meetingStatus;
+        this.dateTimeInfo = dateTimeInfo;
         this.priceInfo = priceInfo;
         this.notice = notice;
         this.locations = locations;
-        this.dateTimes = dateTimes;
     }
 }
