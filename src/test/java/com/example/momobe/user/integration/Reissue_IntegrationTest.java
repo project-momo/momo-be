@@ -23,8 +23,7 @@ import javax.persistence.EntityManager;
 import static com.example.momobe.common.enums.TestConstants.*;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Transactional
 @SpringBootTest(value = {
@@ -104,7 +103,7 @@ public class Reissue_IntegrationTest {
 
         //then
         perform.andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessToken").isString())
-                .andExpect(jsonPath("$.refreshToken").isString());
+                .andExpect(header().exists("AccessToken"))
+                .andExpect(header().exists("RefreshToken"));
     }
 }

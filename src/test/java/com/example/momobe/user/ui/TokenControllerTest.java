@@ -29,8 +29,7 @@ import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.common.exception.enums.ErrorCode.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.*;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
@@ -123,9 +122,9 @@ class TokenControllerTest {
                         requestHeaders(
                                 headerWithName(REFRESH_TOKEN).description("유효한 리프레시 토큰")
                         ),
-                        responseFields(
-                                fieldWithPath("accessToken").description("액세스 토큰"),
-                                fieldWithPath("refreshToken").description("리프레시 토큰, 쿠키에 저장하는 것을 권장합니다!")
+                        responseHeaders(
+                                headerWithName("accessToken").description("액세스 토큰"),
+                                headerWithName("refreshToken").description("리프레시 토큰, 쿠키에 저장하는 것을 권장합니다!")
                         )));
     }
 }

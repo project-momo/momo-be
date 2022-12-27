@@ -76,7 +76,7 @@ class QuestionControllerTest {
 
         // then
         perform.andExpect(status().isBadRequest())
-                .andDo(document("question/400",
+                .andDo(document("question_post/400",
                         requestHeaders(
                                 headerWithName(JWT_HEADER).description("유효한 액세스 토큰")
                         ),
@@ -127,7 +127,7 @@ class QuestionControllerTest {
 
         // then
         perform.andExpect(status().isCreated())
-                .andDo(document("question/201",
+                .andDo(document("question_post/201",
                         requestHeaders(
                                 headerWithName(JWT_HEADER).description("유효한 액세스 토큰")
                         ),
@@ -162,7 +162,7 @@ class QuestionControllerTest {
 
     @Test
     @DisplayName("질문/답변 글 조회시 스테이터스 코드 200과 결과 반횐")
-    void postQuestion_failed_200() throws Exception {
+    void getQuestions_success_200() throws Exception {
         // given
         QuestionDto request = QuestionDto.builder().content(CONTENT1).build();
         String json = objectMapper.writeValueAsString(request);
@@ -201,7 +201,7 @@ class QuestionControllerTest {
 
         // then
         perform.andExpect(status().isOk())
-                .andDo(document("question/200",
+                .andDo(document("question_get/200",
                         requestHeaders(
                                 headerWithName(JWT_HEADER).description("유효한 액세스 토큰")
                         ),
