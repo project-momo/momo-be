@@ -30,7 +30,7 @@ public class Point {
         return new Point(this.point - point);
     }
 
-    protected Long getPoint() {
+    public Long getPoint() {
         return this.point;
     }
 }

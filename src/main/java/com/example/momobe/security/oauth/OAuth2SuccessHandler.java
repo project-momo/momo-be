@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 import static com.example.momobe.security.enums.SecurityConstants.*;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final UserRepository userRepository;
@@ -33,7 +36,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         User user = findUserBy(authentication);
         JwtTokenDto jwtTokenDto = generateTokenService.getJwtToken(user.getId());
 
-        setTokenAndRedirect(response, jwtTokenDto);
+        String responseUrl = createResponseUrl(jwtTokenDto.getAccessToken(), jwtTokenDto.getRefreshToken());
+        getRedirectStrategy().sendRedirect(request, response, responseUrl);
     }
 
     private User findUserBy(Authentication authentication) {
@@ -47,5 +51,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.setHeader(ACCESS_TOKEN, jwtTokenDto.getAccessToken());
         response.setHeader(REFRESH_HEADER, jwtTokenDto.getAccessToken());
         response.sendRedirect(REDIRECT_URL_OAUTH2);
+    }
+
+    private String createResponseUrl(String accessToken, String refreshToken) {
+        return UriComponentsBuilder.fromUriString(REDIRECT_URL_OAUTH2)
+                .queryParam(REFRESH_HEADER, refreshToken)
+                .queryParam(ACCESS_TOKEN, accessToken)
+                .build()
+                .toUriString();
     }
 }

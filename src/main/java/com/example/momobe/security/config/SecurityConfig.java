@@ -1,6 +1,8 @@
 package com.example.momobe.security.config;
 
 import com.example.momobe.security.filter.CustomAuthenticationEntryPoint;
+import com.example.momobe.security.oauth.CustomOAuth2Service;
+import com.example.momobe.security.oauth.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +21,8 @@ import java.util.List;
 public class SecurityConfig {
     private final AuthenticationManagerConfig authenticationManagerConfig;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final CustomOAuth2Service customOAuth2Service;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -46,7 +50,10 @@ public class SecurityConfig {
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()
                 .oauth2Login()
-                .defaultSuccessUrl("/auth/token")
+                .successHandler(oAuth2SuccessHandler)
+                .userInfoEndpoint()
+                .userService(customOAuth2Service)
+                .and()
                 .and()
                 .build();
     }

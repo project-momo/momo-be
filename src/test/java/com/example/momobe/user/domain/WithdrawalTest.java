@@ -4,7 +4,7 @@ import com.example.momobe.MomoBeApplication;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.user.application.UserCommonService;
-import com.example.momobe.user.controller.UserController;
+import com.example.momobe.user.ui.UserController;
 import com.example.momobe.user.domain.enums.UserStateType;
 import com.example.momobe.user.mapper.UserMapper;
 import org.assertj.core.api.Assertions;
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -22,23 +21,15 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
-
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
 import static com.example.momobe.common.enums.TestConstants.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest({UserController.class, UserMapper.class})
