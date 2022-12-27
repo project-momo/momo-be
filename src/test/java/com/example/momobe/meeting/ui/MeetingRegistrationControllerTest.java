@@ -24,7 +24,7 @@ import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentReque
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.common.util.ReflectionUtil.setField;
-import static com.example.momobe.meeting.enums.MeetingConstant.MEETING_REQUEST_DTO;
+import static com.example.momobe.meeting.enums.MeetingConstant.MEETING_REQUEST_DTO_WITH_ALL;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -55,7 +55,7 @@ class MeetingRegistrationControllerTest {
     @Test
     void registerMeeting() throws Exception {
         // given
-        String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO);
+        String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO_WITH_ALL);
         given(meetingRepository.save(any(Meeting.class)))
                 .willAnswer(args -> {
                     Meeting meeting = args.getArgument(0);
@@ -86,11 +86,12 @@ class MeetingRegistrationControllerTest {
                                 fieldWithPath("locations[].address1").type(STRING).description("주소1"),
                                 fieldWithPath("locations[].address2").type(STRING).description("주소2"),
                                 fieldWithPath("dateTime").type(OBJECT).description("날짜/시간 정보"),
-                                fieldWithPath("dateTime.datePolicy").type(STRING).description("날짜 정책"),
+                                fieldWithPath("dateTime.datePolicy").type(STRING).description("날짜 정책 (ONE_DAY/PERIOD/FREE)"),
                                 fieldWithPath("dateTime.startDate").type(STRING).description("시작 날짜"),
                                 fieldWithPath("dateTime.endDate").type(STRING).description("끝나는 날짜"),
                                 fieldWithPath("dateTime.startTime").type(STRING).description("시작 시간"),
                                 fieldWithPath("dateTime.endTime").type(STRING).description("끝나는 시간"),
+                                fieldWithPath("dateTime.dayWeeks").type(ARRAY).description("요일 (월: 1 ~ 일: 7, datePolicy가 PEROID일 때만)"),
                                 fieldWithPath("dateTime.dates").type(ARRAY).description("날짜 (datePolicy가 FREE일 때만)"),
                                 fieldWithPath("priceInfo").type(OBJECT).description("가격 정보"),
                                 fieldWithPath("priceInfo.pricePolicy").type(STRING).description("가격 정책"),

@@ -15,7 +15,7 @@ public class DateTimeDtoTest {
         MeetingRequestDto.DateTimeDto dateTimeDto = MeetingRequestDto.DateTimeDto.builder().build();
 
         // when
-        Object[] arr = getArray(dateTimeDto, "pricePolicy");
+        Object[] arr = getArray(dateTimeDto, "datePolicy");
 
         // then
         assertThat(arr).isNotEmpty();
