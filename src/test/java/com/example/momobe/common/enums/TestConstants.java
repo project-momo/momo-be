@@ -36,6 +36,8 @@ public class TestConstants {
 
     public final static String ADDRESS1 = "주소1";
     public final static String ADDRESS2 = "주소2";
+    public final static String SUB_ADDRESS1 = "추가 주소1";
+    public final static String SUB_ADDRESS2 = "추가 주소2";
 
     public final static LocalDateTime NOW_TIME = LocalDateTime.now();
 

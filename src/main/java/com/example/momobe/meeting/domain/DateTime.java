@@ -7,7 +7,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -23,14 +27,21 @@ public class DateTime extends BaseTime {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDateTime dateTime;
+    private LocalDate date;
+
+    @ElementCollection
+    @CollectionTable(name = "date_time_time",
+            joinColumns = @JoinColumn(name = "date_time_id"))
+    @Column(name = "times", nullable = false)
+    private List<LocalTime> times = new ArrayList<>();
 
     @Enumerated(STRING)
     @Column(nullable = false)
     private ReservationStatus reservationStatus;
 
-    public DateTime(LocalDateTime dateTime, ReservationStatus reservationStatus) {
-        this.dateTime = dateTime;
-        this.reservationStatus = reservationStatus;
+    public DateTime(LocalDate date, List<LocalTime> times) {
+        this.date = date;
+        this.times = times;
+        this.reservationStatus = ReservationStatus.UNRESERVED;
     }
 }
