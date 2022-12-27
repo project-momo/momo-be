@@ -7,11 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -20,21 +16,20 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class DateTime extends BaseTime {
+public class Time extends BaseTime {
     @Id
-    @Column(name = "date_time_id")
+    @Column(name = "time_id")
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Enumerated(STRING)
     @Column(nullable = false)
-    private LocalDate date;
+    private ReservationStatus reservationStatus;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "date_time_id", nullable = false)
-    private List<Time> times = new ArrayList<>();
+    private LocalTime time;
 
-    public DateTime(LocalDate date, List<Time> times) {
-        this.date = date;
-        this.times = times;
+    public Time(LocalTime time) {
+        this.reservationStatus = ReservationStatus.UNRESERVED;
+        this.time = time;
     }
 }

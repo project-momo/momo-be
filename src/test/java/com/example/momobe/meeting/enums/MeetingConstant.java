@@ -1,9 +1,6 @@
 package com.example.momobe.meeting.enums;
 
-import com.example.momobe.meeting.domain.DateTime;
-import com.example.momobe.meeting.domain.DateTimeInfo;
-import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.domain.PriceInfo;
+import com.example.momobe.meeting.domain.*;
 import com.example.momobe.meeting.domain.enums.*;
 import com.example.momobe.meeting.dto.MeetingRequestDto;
 
@@ -29,9 +26,8 @@ public class MeetingConstant {
                 .meetingStatus(MeetingStatus.OPEN)
                 .priceInfo(new PriceInfo(PricePolicy.DAY, 20000L))
                 .dateTimeInfo(new DateTimeInfo(DatePolicy.ONE_DAY,
-                        LocalDate.now(), LocalDate.now(),
-                        LocalTime.now(), LocalTime.now().plusHours(1),
-                        List.of(new DateTime(LocalDate.now(), List.of(LocalTime.now())))))
+                        START_DATE, END_DATE, START_TIME, END_TIME,
+                        List.of(new DateTime(START_DATE, List.of(new Time(START_TIME))))))
                 .build();
     }
 

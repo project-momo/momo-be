@@ -2,18 +2,24 @@ package com.example.momobe.meeting.mapper;
 
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
+import com.example.momobe.meeting.domain.Time;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.domain.enums.ReservationStatus;
 import com.example.momobe.meeting.dto.MeetingRequestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring", imports = ReservationStatus.class)
+import static org.mapstruct.ReportingPolicy.IGNORE;
+
+@Mapper(componentModel = "spring", imports = ReservationStatus.class,
+        unmappedTargetPolicy = IGNORE)
 public interface DateTimeMapper {
     @Mapping(target = ".", source = ".")
     @Mapping(target = "dateTimes", source = ".")
@@ -45,6 +51,6 @@ public interface DateTimeMapper {
         for (int i = startTime; i <= endTime; i++) {
             times.add(LocalTime.of(i, 0));
         }
-        return new DateTime(date, times);
+        return new DateTime(date, times.stream().map(Time::new).collect(Collectors.toList()));
     }
 }
