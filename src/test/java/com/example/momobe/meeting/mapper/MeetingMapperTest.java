@@ -43,7 +43,8 @@ public class MeetingMapperTest {
         assertThat(meeting.getLocations().get(0).getAddress().getAddress1())
                 .isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getLocations().get(0).getAddress1());
 
-        assertThat(meeting.getDateTimes().get(0).getTimes().size())
+        assertThat(meeting.getDateTimeInfo()
+                .getDateTimes().get(0).getTimes().size())
                 .isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getEndTime().getHour()
                         - MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getStartTime().getHour() + 1);
 
@@ -58,7 +59,7 @@ public class MeetingMapperTest {
         Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_ONE_DAY, ID1);
 
         // then
-        assertThat(meeting.getDateTimes().size())
+        assertThat(meeting.getDateTimeInfo().getDateTimes().size())
                 .isEqualTo(1L);
     }
 
@@ -68,9 +69,9 @@ public class MeetingMapperTest {
         Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_PERIOD, ID1);
 
         // then
-        assertThat(ChronoUnit.DAYS.between(meeting.getStartDate(), meeting.getEndDate()) + 1)
+        assertThat(ChronoUnit.DAYS.between(meeting.getDateTimeInfo().getStartDate(), meeting.getDateTimeInfo().getEndDate()) + 1)
                 .isEqualTo(7L);
-        assertThat(meeting.getDateTimes().size())
+        assertThat(meeting.getDateTimeInfo().getDateTimes().size())
                 .isEqualTo(MEETING_REQUEST_DTO_WITH_PERIOD.getDateTime().getDayWeeks().size());
     }
 
@@ -80,7 +81,7 @@ public class MeetingMapperTest {
         Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_FREE, ID1);
 
         // then
-        assertThat(meeting.getDateTimes().size())
+        assertThat(meeting.getDateTimeInfo().getDateTimes().size())
                 .isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getDates().size());
     }
 
