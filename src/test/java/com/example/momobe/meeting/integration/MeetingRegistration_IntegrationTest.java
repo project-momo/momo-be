@@ -4,6 +4,7 @@ import com.example.momobe.meeting.enums.MeetingConstant;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,6 +38,7 @@ public class MeetingRegistration_IntegrationTest {
     }
 
     @Test
+    @DisplayName("모임 등록 (하루 일정) 201 반환")
     public void meetingRegistrationWithOneDay() throws Exception {
         // given
         String content = objectMapper.writeValueAsString(MeetingConstant.MEETING_REQUEST_DTO_WITH_ONE_DAY);
@@ -52,6 +54,62 @@ public class MeetingRegistration_IntegrationTest {
         // then
         actions.andExpect(status().isCreated())
                 .andDo(print());
+    }
+
+    @Test
+    @DisplayName("모임 등록 (정기 일정) 201 반환")
+    public void meetingRegistrationWithPeriod() throws Exception {
+        // given
+        String content = objectMapper.writeValueAsString(MeetingConstant.MEETING_REQUEST_DTO_WITH_PERIOD);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                post("/meetings")
+                        .content(content)
+                        .header(JWT_HEADER, accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        actions.andExpect(status().isCreated())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("모임 등록 (자유 일정) 201 반환")
+    public void meetingRegistrationWithFree() throws Exception {
+        // given
+        String content = objectMapper.writeValueAsString(MeetingConstant.MEETING_REQUEST_DTO_WITH_FREE);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                post("/meetings")
+                        .content(content)
+                        .header(JWT_HEADER, accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        actions.andExpect(status().isCreated())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("유효성 검사 실패시 400 반환")
+    public void meetingRegistrationFail() throws Exception {
+        // given
+        String content = objectMapper.writeValueAsString(" ");
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                post("/meetings")
+                        .content(content)
+                        .header(JWT_HEADER, accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        actions.andExpect(status().isBadRequest());
     }
 
 }
