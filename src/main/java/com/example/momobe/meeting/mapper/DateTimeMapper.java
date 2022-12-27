@@ -1,10 +1,12 @@
 package com.example.momobe.meeting.mapper;
 
 import com.example.momobe.meeting.domain.DateTime;
+import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.domain.enums.ReservationStatus;
 import com.example.momobe.meeting.dto.MeetingRequestDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,6 +15,10 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", imports = ReservationStatus.class)
 public interface DateTimeMapper {
+    @Mapping(target = ".", source = ".")
+    @Mapping(target = "dateTimes", source = ".")
+    DateTimeInfo toDateTimeInfo(MeetingRequestDto.DateTimeDto dateTimeDto);
+
     default List<DateTime> toDateTime(MeetingRequestDto.DateTimeDto dateTimeDto) {
         ArrayList<DateTime> dateTimes = new ArrayList<>();
         int startTime = dateTimeDto.getStartTime().getHour();

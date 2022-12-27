@@ -2,10 +2,6 @@ package com.example.momobe.question.integration;
 
 import com.example.momobe.answer.domain.Answer;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.domain.PriceInfo;
-import com.example.momobe.meeting.domain.enums.Category;
-import com.example.momobe.meeting.domain.enums.MeetingStatus;
-import com.example.momobe.meeting.domain.enums.PricePolicy;
 import com.example.momobe.question.domain.Content;
 import com.example.momobe.question.domain.Question;
 import com.example.momobe.question.domain.Writer;
@@ -25,11 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import static com.example.momobe.common.enums.TestConstants.*;
-import static com.example.momobe.meeting.domain.enums.Category.*;
+import static com.example.momobe.meeting.enums.MeetingConstant.generateMeeting;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -59,18 +52,7 @@ public class GetQuestions_IntegrationTest {
     @DisplayName("")
     void getQuestion() throws Exception {
         //given
-        Meeting meeting = Meeting.builder()
-                .title(TITLE1)
-                .content(CONTENT1)
-                .hostId(ID2)
-                .category(Category.MEETING)
-                .meetingStatus(MeetingStatus.OPEN)
-                .priceInfo(new PriceInfo(PricePolicy.DAY, 20000L))
-                .startDate(LocalDate.now())
-                .endDate(LocalDate.now().plusDays(1))
-                .startTime(LocalTime.now())
-                .endTime(LocalTime.now().plusHours(1))
-                .build();
+        Meeting meeting = generateMeeting();
         entityManager.persist(meeting);
 
         User user = User.builder()

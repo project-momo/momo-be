@@ -1,9 +1,10 @@
 package com.example.momobe.meeting.enums;
 
-import com.example.momobe.meeting.domain.enums.Category;
-import com.example.momobe.meeting.domain.enums.DatePolicy;
-import com.example.momobe.meeting.domain.enums.PricePolicy;
-import com.example.momobe.meeting.domain.enums.Tag;
+import com.example.momobe.meeting.domain.DateTime;
+import com.example.momobe.meeting.domain.DateTimeInfo;
+import com.example.momobe.meeting.domain.Meeting;
+import com.example.momobe.meeting.domain.PriceInfo;
+import com.example.momobe.meeting.domain.enums.*;
 import com.example.momobe.meeting.dto.MeetingRequestDto;
 
 import java.time.LocalDate;
@@ -14,8 +15,25 @@ import java.util.List;
 import static com.example.momobe.common.enums.TestConstants.*;
 
 public class MeetingConstant {
+    public static final LocalDate START_DATE = LocalDate.of(2022, 12, 25);
+    public static final LocalDate END_DATE = LocalDate.of(2022, 12, 31);
     public static final LocalTime START_TIME = LocalTime.of(1, 0);
     public static final LocalTime END_TIME = LocalTime.of(5, 0);
+
+    public static Meeting generateMeeting() {
+        return Meeting.builder()
+                .title(TITLE1)
+                .content(CONTENT1)
+                .hostId(ID1)
+                .category(Category.MEETING)
+                .meetingStatus(MeetingStatus.OPEN)
+                .priceInfo(new PriceInfo(PricePolicy.DAY, 20000L))
+                .dateTimeInfo(new DateTimeInfo(DatePolicy.ONE_DAY,
+                        LocalDate.now(), LocalDate.now(),
+                        LocalTime.now(), LocalTime.now().plusHours(1),
+                        List.of(new DateTime(LocalDate.now(), List.of(LocalTime.now())))))
+                .build();
+    }
 
     public static final MeetingRequestDto.PriceDto PRICE_DTO = MeetingRequestDto.PriceDto.builder()
             .pricePolicy(PricePolicy.HOUR)
@@ -32,7 +50,8 @@ public class MeetingConstant {
 
     public static final MeetingRequestDto.DateTimeDto DATE_TIME_DTO_WITH_ONE_DAY = MeetingRequestDto.DateTimeDto.builder()
             .datePolicy(DatePolicy.ONE_DAY)
-            .startDate(LocalDate.now())
+            .startDate(START_DATE)
+            .endDate(END_DATE)
             .startTime(START_TIME)
             .endTime(END_TIME)
             .build();
@@ -50,8 +69,8 @@ public class MeetingConstant {
 
     public static final MeetingRequestDto.DateTimeDto DATE_TIME_DTO_WITH_PERIOD = MeetingRequestDto.DateTimeDto.builder()
             .datePolicy(DatePolicy.PERIOD)
-            .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(6))
+            .startDate(START_DATE)
+            .endDate(END_DATE)
             .dayWeeks(new LinkedHashSet<>(List.of(1, 2, 7)))
             .startTime(START_TIME)
             .endTime(END_TIME)
@@ -70,8 +89,8 @@ public class MeetingConstant {
 
     public static final MeetingRequestDto.DateTimeDto DATE_TIME_DTO_WITH_FREE = MeetingRequestDto.DateTimeDto.builder()
             .datePolicy(DatePolicy.FREE)
-            .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(10))
+            .startDate(START_DATE)
+            .endDate(END_DATE)
             .startTime(START_TIME)
             .endTime(END_TIME)
             .dates(List.of(LocalDate.now(), LocalDate.now().plusDays(2),
