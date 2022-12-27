@@ -11,6 +11,8 @@ import org.mapstruct.Mapping;
 public interface MeetingMapper {
     @Mapping(target = ".", source = "request")
     @Mapping(target = ".", source = "hostId")
+    @Mapping(target = ".", source = "request.dateTime")
+    @Mapping(target = "dateTimes", source = "request.dateTime")
     @Mapping(target = "meetingStatus", expression = "java(MeetingStatus.OPEN)")
     Meeting toMeeting(MeetingRequestDto request, Long hostId);
 }

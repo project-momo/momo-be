@@ -448,7 +448,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_모임">1. 모임</a>
 <ul class="sectlevel2">
 <li><a href="#_등록">1.1. 등록</a></li>
-<li><a href="#_조회">1.2. 조회</a></li>
+<li><a href="#_목록_조회">1.2. 목록 조회</a></li>
 </ul>
 </li>
 </ul>
@@ -471,7 +471,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="prettyprint highlight nowrap"><code data-lang="http">POST /meetings HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer AccessToken
-Content-Length: 401
+Content-Length: 568
 Host: docs.api.com
 
 {
@@ -483,7 +483,14 @@ Host: docs.api.com
     "address1" : "주소1",
     "address2" : "주소2"
   } ],
-  "dateTimes" : [ "2022-12-25T00:46:21.8661664", "2022-12-25T01:46:21.8661664" ],
+  "dateTime" : {
+    "datePolicy" : "FREE",
+    "startDate" : "2022-12-26",
+    "endDate" : "2023-01-05",
+    "startTime" : "02:00:00",
+    "endTime" : "05:00:00",
+    "dates" : [ "2022-12-26", "2022-12-28", "2022-12-31", "2023-01-05" ]
+  },
   "priceInfo" : {
     "pricePolicy" : "HOUR",
     "price" : 1000
@@ -562,9 +569,39 @@ Host: docs.api.com
 <td class="tableblock halign-left valign-top"><p class="tableblock">주소2</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTimes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">날짜/시간 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.datePolicy</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">날짜 정책</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.startDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">시작 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.endDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">끝나는 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.startTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">시작 시간</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.endTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">끝나는 시간</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.dates</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">시간</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">날짜 (datePolicy가 FREE일 때만)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>priceInfo</code></p></td>
@@ -609,7 +646,7 @@ Content-Length: 1
 </div>
 </div>
 <div class="sect2">
-<h3 id="_조회">1.2. 조회</h3>
+<h3 id="_목록_조회">1.2. 목록 조회</h3>
 <div class="listingblock">
 <div class="title">http-request</div>
 <div class="content">
@@ -803,7 +840,7 @@ Content-Length: 477
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-12-24 00:00:23 +0900
+Last updated 2022-12-25 00:54:14 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">

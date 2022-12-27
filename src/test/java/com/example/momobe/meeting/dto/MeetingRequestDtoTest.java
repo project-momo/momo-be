@@ -13,7 +13,6 @@ public class MeetingRequestDtoTest {
     private final String TITLE = "title";
     private final String CONTENT = "content";
     private final String TAGS = "tags";
-    private final String DATE_TIMES = "dateTimes";
 
     @Test
     @DisplayName("MeetingRequestDto의 title이 공백이면 예외가 발생한다.")
@@ -125,28 +124,14 @@ public class MeetingRequestDtoTest {
     }
 
     @Test
-    @DisplayName("MeetingRequestDto의 dateTimes.size()가 1 미만이면 예외가 발생한다.")
-    public void dateTimes_failed_1() throws Exception {
-        // given
-        MeetingRequestDto requestDto =
-                MeetingRequestDto.builder().dateTimes(List.of()).build();
-
-        // when
-        Object[] arr = getArray(requestDto, DATE_TIMES);
-
-        // then
-        assertThat(arr).isNotEmpty();
-    }
-
-    @Test
-    @DisplayName("MeetingRequestDto의 dateTimes가 null이면 예외가 발생한다.")
+    @DisplayName("MeetingRequestDto의 dateTime이 null이면 예외가 발생한다.")
     public void dateTimes_failed_2() throws Exception {
         // given
         MeetingRequestDto requestDto =
                 MeetingRequestDto.builder().build();
 
         // when
-        Object[] arr = getArray(requestDto, DATE_TIMES);
+        Object[] arr = getArray(requestDto, "dateTime");
 
         // then
         assertThat(arr).isNotEmpty();

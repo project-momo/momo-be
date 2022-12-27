@@ -3,7 +3,9 @@ package com.example.momobe.question.infrastructure;
 import com.example.momobe.answer.domain.Answer;
 import com.example.momobe.answer.domain.AnswerRepository;
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
-import com.example.momobe.meeting.domain.*;
+import com.example.momobe.meeting.domain.Meeting;
+import com.example.momobe.meeting.domain.MeetingRepository;
+import com.example.momobe.meeting.domain.PriceInfo;
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.MeetingStatus;
 import com.example.momobe.meeting.domain.enums.PricePolicy;
@@ -24,11 +26,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import javax.persistence.EntityManager;
-
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureDataJpa
@@ -68,6 +71,10 @@ class QuestionQueryRepositoryTest {
                 .category(Category.MEETING)
                 .meetingStatus(MeetingStatus.OPEN)
                 .priceInfo(new PriceInfo(PricePolicy.DAY, 20000L))
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .startTime(LocalTime.now())
+                .endTime(LocalTime.now().plusHours(1))
                 .build();
         meetingRepository.save(meeting);
 
