@@ -1,4 +1,4 @@
-package com.example.momobe.user.controller;
+package com.example.momobe.user.ui;
 
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.common.resolver.Token;
