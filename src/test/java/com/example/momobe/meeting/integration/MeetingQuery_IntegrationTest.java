@@ -16,7 +16,8 @@ import static com.example.momobe.common.enums.TestConstants.REMOTE_PATH;
 import static com.example.momobe.meeting.enums.MeetingConstant.generateMeeting;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 @SpringBootTest
@@ -25,8 +26,8 @@ public class MeetingQuery_IntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    EntityManager em;
-    
+    private EntityManager em;
+
     @Test
     public void meetingQuery() throws Exception {
         // given
@@ -41,8 +42,7 @@ public class MeetingQuery_IntegrationTest {
 
         // then
         actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").isNotEmpty())
-                .andDo(print());
+                .andExpect(jsonPath("$.content").isNotEmpty());
     }
-    
+
 }
