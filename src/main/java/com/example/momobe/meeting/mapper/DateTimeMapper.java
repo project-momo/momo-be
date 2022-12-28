@@ -3,7 +3,6 @@ package com.example.momobe.meeting.mapper;
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
-import com.example.momobe.meeting.domain.enums.ReservationState;
 import com.example.momobe.meeting.dto.MeetingRequestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,8 +15,7 @@ import java.util.List;
 
 import static org.mapstruct.ReportingPolicy.IGNORE;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = IGNORE,
-        imports = ReservationState.class)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = IGNORE)
 public interface DateTimeMapper {
     @Mapping(target = ".", source = ".")
     @Mapping(target = "dateTimes", source = ".")
