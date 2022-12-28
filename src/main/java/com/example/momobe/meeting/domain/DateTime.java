@@ -1,7 +1,6 @@
 package com.example.momobe.meeting.domain;
 
 import com.example.momobe.common.domain.BaseTime;
-import com.example.momobe.meeting.domain.enums.ReservationState;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,12 +27,8 @@ public class DateTime extends BaseTime {
     @Column(nullable = false)
     private LocalDateTime dateTime;
 
-    @Column(nullable = false)
-    private ReservationState reservationState;
-
     public DateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
-        this.reservationState = ReservationState.UNRESERVED;
     }
 
     public void init(Meeting meeting) {
