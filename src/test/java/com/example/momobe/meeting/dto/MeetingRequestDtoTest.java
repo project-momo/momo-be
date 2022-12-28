@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Set;
 
 import static com.example.momobe.common.util.ValidatorUtil.getArray;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -93,31 +92,13 @@ public class MeetingRequestDtoTest {
     }
 
     @Test
-    @DisplayName("MeetingRequestDto의 locations.size()가 1 미만이거나 3 초과면 예외가 발생한다.")
-    public void locations_failed_1() throws Exception {
-        MeetingRequestDto.LocationDto locationDto = MeetingRequestDto.LocationDto.builder().build();
-        // given
-        MeetingRequestDto requestDto1 = MeetingRequestDto.builder().build();
-        MeetingRequestDto requestDto2 = MeetingRequestDto.builder()
-                .locations(List.of(locationDto, locationDto, locationDto, locationDto)).build();
-
-        // when
-        Object[] arr1 = getArray(requestDto1, "locations");
-        Object[] arr2 = getArray(requestDto2, "locations");
-
-        // then
-        assertThat(arr1).isNotEmpty();
-        assertThat(arr2).isNotEmpty();
-    }
-
-    @Test
-    @DisplayName("MeetingRequestDto의 locations가 null이면 예외가 발생한다.")
-    public void locations_failed_2() throws Exception {
+    @DisplayName("MeetingRequestDto의 address가 null이면 예외가 발생한다.")
+    public void address_failed() throws Exception {
         // given
         MeetingRequestDto requestDto = MeetingRequestDto.builder().build();
 
         // when
-        Object[] arr = getArray(requestDto, "locations");
+        Object[] arr = getArray(requestDto, "address");
 
         // then
         assertThat(arr).isNotEmpty();
@@ -125,7 +106,7 @@ public class MeetingRequestDtoTest {
 
     @Test
     @DisplayName("MeetingRequestDto의 dateTime이 null이면 예외가 발생한다.")
-    public void dateTimes_failed_2() throws Exception {
+    public void dateTimes_failed() throws Exception {
         // given
         MeetingRequestDto requestDto =
                 MeetingRequestDto.builder().build();
@@ -138,13 +119,39 @@ public class MeetingRequestDtoTest {
     }
 
     @Test
-    @DisplayName("MeetingRequestDto의 priceInfo가 null이면 예외가 발생한다.")
-    public void priceInfo_failed() throws Exception {
+    @DisplayName("MeetingRequestDto의 personnel이 1보다 작으면 예외가 발생한다.")
+    public void personnel_failed() throws Exception {
+        // given
+        MeetingRequestDto requestDto = MeetingRequestDto.builder().personnel(0).build();
+
+        // when
+        Object[] arr = getArray(requestDto, "personnel");
+
+        // then
+        assertThat(arr).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("MeetingRequestDto의 price가 null이면 예외가 발생한다.")
+    public void priceInfo_failed_1() throws Exception {
         // given
         MeetingRequestDto requestDto = MeetingRequestDto.builder().build();
 
         // when
-        Object[] arr = getArray(requestDto, "priceInfo");
+        Object[] arr = getArray(requestDto, "price");
+
+        // then
+        assertThat(arr).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("MeetingRequestDto의 price가 0미만이면 예외가 발생한다.")
+    public void priceInfo_failed_2() throws Exception {
+        // given
+        MeetingRequestDto requestDto = MeetingRequestDto.builder().price(-1L).build();
+
+        // when
+        Object[] arr = getArray(requestDto, "price");
 
         // then
         assertThat(arr).isNotEmpty();

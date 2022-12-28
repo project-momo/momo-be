@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.momobe.common.enums.TestConstants.*;
+import static com.example.momobe.meeting.enums.MeetingConstant.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,7 +42,7 @@ public class MeetingRegistration_IntegrationTest {
     @DisplayName("모임 등록 (하루 일정) 201 반환")
     public void meetingRegistrationWithOneDay() throws Exception {
         // given
-        String content = objectMapper.writeValueAsString(MeetingConstant.MEETING_REQUEST_DTO_WITH_ONE_DAY);
+        String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO_WITH_ONE_DAY);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -60,7 +61,7 @@ public class MeetingRegistration_IntegrationTest {
     @DisplayName("모임 등록 (정기 일정) 201 반환")
     public void meetingRegistrationWithPeriod() throws Exception {
         // given
-        String content = objectMapper.writeValueAsString(MeetingConstant.MEETING_REQUEST_DTO_WITH_PERIOD);
+        String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO_WITH_PERIOD);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -79,7 +80,7 @@ public class MeetingRegistration_IntegrationTest {
     @DisplayName("모임 등록 (자유 일정) 201 반환")
     public void meetingRegistrationWithFree() throws Exception {
         // given
-        String content = objectMapper.writeValueAsString(MeetingConstant.MEETING_REQUEST_DTO_WITH_FREE);
+        String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO_WITH_FREE);
 
         // when
         ResultActions actions = mockMvc.perform(
