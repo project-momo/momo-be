@@ -1,12 +1,11 @@
 package com.example.momobe.meeting.domain;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
+import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -15,7 +14,11 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor
 public class Address {
-    @Column(nullable = false)
-    private String address1;
-    private String address2;
+
+    @ElementCollection
+    @CollectionTable(name = "meeting_address",
+            joinColumns = @JoinColumn(name = "meeting_id"))
+    @Column(name = "address_id", nullable = false)
+    private List<Long> addressIds;
+    private String addressInfo;
 }

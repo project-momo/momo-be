@@ -1,5 +1,5 @@
 package com.example.momobe.meeting.domain.enums;
 
-public enum ReservationStatus {
+public enum ReservationState {
     UNRESERVED, RESERVED
 }
