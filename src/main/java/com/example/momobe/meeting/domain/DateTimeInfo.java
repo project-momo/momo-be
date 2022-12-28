@@ -32,7 +32,9 @@ public class DateTimeInfo {
     @Column(nullable = false)
     private LocalTime endTime;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "meeting_id", nullable = false)
+    @Column(nullable = false)
+    private Integer maxTime;
+
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DateTime> dateTimes = new ArrayList<>();
 }

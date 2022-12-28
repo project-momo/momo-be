@@ -5,9 +5,7 @@ import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.MeetingRepository;
 import com.example.momobe.meeting.mapper.DateTimeMapper;
-import com.example.momobe.meeting.mapper.LocationMapper;
 import com.example.momobe.meeting.mapper.MeetingMapper;
-import com.example.momobe.meeting.mapper.PriceMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest({MeetingRegistrationController.class,
-        MeetingMapper.class, LocationMapper.class, DateTimeMapper.class, PriceMapper.class})
+        MeetingMapper.class, DateTimeMapper.class})
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(SecurityTestConfig.class)
 @AutoConfigureRestDocs
@@ -82,9 +80,9 @@ class MeetingRegistrationControllerTest {
                                 fieldWithPath("title").type(STRING).description("제목"),
                                 fieldWithPath("content").type(STRING).description("내용"),
                                 fieldWithPath("tags").type(ARRAY).description("태그"),
-                                fieldWithPath("locations").type(ARRAY).description("장소"),
-                                fieldWithPath("locations[].address1").type(STRING).description("주소1"),
-                                fieldWithPath("locations[].address2").type(STRING).description("주소2"),
+                                fieldWithPath("address").type(OBJECT).description("주소"),
+                                fieldWithPath("address.addressIds").type(ARRAY).description("주소 식별자"),
+                                fieldWithPath("address.addressInfo").type(STRING).description("주소 정보"),
                                 fieldWithPath("dateTime").type(OBJECT).description("날짜/시간 정보"),
                                 fieldWithPath("dateTime.datePolicy").type(STRING).description("날짜 정책 (ONE_DAY/PERIOD/FREE)"),
                                 fieldWithPath("dateTime.startDate").type(STRING).description("시작 날짜"),
@@ -93,10 +91,10 @@ class MeetingRegistrationControllerTest {
                                 fieldWithPath("dateTime.endTime").type(STRING).description("끝나는 시간"),
                                 fieldWithPath("dateTime.dayWeeks").type(ARRAY).description("요일 (월: 1 ~ 일: 7, datePolicy가 PEROID일 때만)"),
                                 fieldWithPath("dateTime.dates").type(ARRAY).description("날짜 (datePolicy가 FREE일 때만)"),
-                                fieldWithPath("priceInfo").type(OBJECT).description("가격 정보"),
-                                fieldWithPath("priceInfo.pricePolicy").type(STRING).description("가격 정책"),
-                                fieldWithPath("priceInfo.price").type(NUMBER).description("가격"),
-                                fieldWithPath("notice").type(STRING).description("전달 사항")
+                                fieldWithPath("dateTime.maxTime").type(NUMBER).description("최대 예약 가능 시간"),
+                                fieldWithPath("personnel").type(NUMBER).description("최대 예약 가능 인원"),
+                                fieldWithPath("notice").type(STRING).description("전달 사항"),
+                                fieldWithPath("price").type(NUMBER).description("가격")
                         )
                 ));
     }
