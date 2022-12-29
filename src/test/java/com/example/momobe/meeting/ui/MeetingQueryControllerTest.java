@@ -23,7 +23,7 @@ import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRespo
 import static com.example.momobe.common.enums.PageConstants.*;
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.domain.enums.Category.MENTORING;
-import static com.example.momobe.meeting.domain.enums.MeetingStatus.OPEN;
+import static com.example.momobe.meeting.domain.enums.MeetingState.OPEN;
 import static com.example.momobe.meeting.domain.enums.PricePolicy.HOUR;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -54,7 +54,7 @@ class MeetingQueryControllerTest {
     public void meetingQuery() throws Exception {
         // given
         MeetingResponseDto meetingResponseDto = new MeetingResponseDto(
-                ID1, MENTORING, ID1, NICKNAME, TISTORY_URL, TITLE1, CONTENT1, ADDRESS1, OPEN, HOUR, 1000L
+                ID1, MENTORING, ID1, NICKNAME, TISTORY_URL, TITLE1, CONTENT1, ADDRESS1, OPEN, 1000L
         );
         PageRequest pageRequest = PageRequest.of(PAGE - 1, SIZE);
 
@@ -91,8 +91,7 @@ class MeetingQueryControllerTest {
                                 fieldWithPath("content[].title").type(STRING).description("제목"),
                                 fieldWithPath("content[].content").type(STRING).description("내용"),
                                 fieldWithPath("content[].address").type(STRING).description("주소"),
-                                fieldWithPath("content[].meetingStatus").type(STRING).description("모임 상태 (OPEN/CLOSE)"),
-                                fieldWithPath("content[].pricePolicy").type(STRING).description("가격 정책 (HOUR/DAY)"),
+                                fieldWithPath("content[].isOpen").type(BOOLEAN).description("모임 오픈 여부"),
                                 fieldWithPath("content[].price").type(NUMBER).description("가격"),
                                 FWP_PAGE_INFO, FWP_PAGE, FWP_SIZE, FWP_TOTAL_ELEMENTS, FWP_TOTAL_PAGES
                         )

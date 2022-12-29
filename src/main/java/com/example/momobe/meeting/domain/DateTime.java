@@ -1,19 +1,13 @@
 package com.example.momobe.meeting.domain;
 
 import com.example.momobe.common.domain.BaseTime;
-import com.example.momobe.meeting.domain.enums.ReservationStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -26,22 +20,18 @@ public class DateTime extends BaseTime {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "meeting_id", nullable = false)
+    private Meeting meeting;
+
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDateTime dateTime;
 
-    @ElementCollection
-    @CollectionTable(name = "date_time_time",
-            joinColumns = @JoinColumn(name = "date_time_id"))
-    @Column(name = "times", nullable = false)
-    private List<LocalTime> times = new ArrayList<>();
+    public DateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
 
-    @Enumerated(STRING)
-    @Column(nullable = false)
-    private ReservationStatus reservationStatus;
-
-    public DateTime(LocalDate date, List<LocalTime> times) {
-        this.date = date;
-        this.times = times;
-        this.reservationStatus = ReservationStatus.UNRESERVED;
+    public void init(Meeting meeting) {
+        this.meeting = meeting;
     }
 }

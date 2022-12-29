@@ -16,7 +16,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-import static com.example.momobe.meeting.domain.QLocation.location;
 import static com.example.momobe.meeting.domain.QMeeting.meeting;
 import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.example.momobe.user.domain.QUser.user;
@@ -37,14 +36,12 @@ public class MeetingQueryRepository {
                         avatar.remotePath,
                         meeting.title,
                         meeting.content,
-                        location.address.address1,
-                        meeting.meetingStatus,
-                        meeting.priceInfo.pricePolicy,
-                        meeting.priceInfo.price))
+                        meeting.address.addressInfo,
+                        meeting.meetingState,
+                        meeting.price))
                 .from(meeting)
                 .innerJoin(user).on(meeting.hostId.eq(user.id))
                 .innerJoin(user.avatar, avatar)
-                .innerJoin(meeting.locations, location)
                 .where(containsKeyword(keyword), eqCategory(category))
                 .groupBy(meeting.id)
                 .orderBy(meeting.createdAt.desc())

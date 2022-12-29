@@ -2,12 +2,12 @@ package com.example.momobe.meeting.dto;
 
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
-import com.example.momobe.meeting.domain.enums.PricePolicy;
 import com.example.momobe.meeting.domain.enums.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,22 +31,25 @@ public class MeetingRequestDto {
     @Size(min = 1)
     @NotNull
     private List<Tag> tags;
-    @Size(min = 1, max = 3)
     @NotNull
-    private List<LocationDto> locations;
+    private AddressDto address;
     @NotNull
     private DateTimeDto dateTime;
-    @NotNull
-    private PriceDto priceInfo;
+    @Min(1)
+    private Integer personnel;
     private String notice;
+    @NotNull
+    @Min(0)
+    private Long price;
 
     @Getter
     @Builder
     @AllArgsConstructor(access = PRIVATE)
-    public static class LocationDto {
+    public static class AddressDto {
+        @Size(min = 1)
         @NotNull
-        private String address1;
-        private String address2;
+        private List<Long> addressIds;
+        private String addressInfo;
     }
 
     @Getter
@@ -63,19 +66,11 @@ public class MeetingRequestDto {
         private LocalTime startTime;
         @NotNull
         private LocalTime endTime;
+        @NotNull
+        @Min(1)
+        private Integer maxTime;
 
         private Set<Integer> dayWeeks;
-
         private List<LocalDate> dates;
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor(access = PRIVATE)
-    public static class PriceDto {
-        @NotNull
-        private PricePolicy pricePolicy;
-        @NotNull
-        private Long price;
     }
 }

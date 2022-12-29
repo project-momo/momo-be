@@ -3,7 +3,7 @@ package com.example.momobe.meeting.mapper;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.domain.enums.MeetingStatus;
+import com.example.momobe.meeting.domain.enums.MeetingState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,7 +16,7 @@ import static com.example.momobe.common.enums.TestConstants.ID1;
 import static com.example.momobe.meeting.enums.MeetingConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@WebMvcTest({ExceptionController.class, MeetingMapper.class, LocationMapper.class, DateTimeMapper.class, PriceMapper.class})
+@WebMvcTest({ExceptionController.class, MeetingMapper.class, DateTimeMapper.class})
 @MockBean(JpaMetamodelMappingContext.class)
 public class MeetingMapperTest {
 
@@ -32,23 +32,19 @@ public class MeetingMapperTest {
 
         // then
         assertThat(meeting.getHostId()).isEqualTo(ID1);
-        assertThat(meeting.getMeetingStatus()).isEqualTo(MeetingStatus.OPEN);
+        assertThat(meeting.getMeetingState()).isEqualTo(MeetingState.OPEN);
         assertThat(meeting.getCategory()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getCategory());
         assertThat(meeting.getTitle()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getTitle());
         assertThat(meeting.getContent()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getContent());
         assertThat(meeting.getNotice()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getNotice());
 
         assertThat(meeting.getTags().size()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getTags().size());
-        assertThat(meeting.getLocations().size()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getLocations().size());
-        assertThat(meeting.getLocations().get(0).getAddress().getAddress1())
-                .isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getLocations().get(0).getAddress1());
+        assertThat(meeting.getAddress().getAddressIds())
+                .isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getAddress().getAddressIds());
+        assertThat(meeting.getAddress().getAddressInfo())
+                .isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getAddress().getAddressInfo());
 
-        assertThat(meeting.getDateTimes().get(0).getTimes().size())
-                .isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getEndTime().getHour()
-                        - MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getStartTime().getHour() + 1);
-
-        assertThat(meeting.getPriceInfo().getPricePolicy()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getPriceInfo().getPricePolicy());
-        assertThat(meeting.getPriceInfo().getPrice()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getPriceInfo().getPrice());
+        assertThat(meeting.getPrice()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getPrice());
 
     }
 
@@ -58,8 +54,8 @@ public class MeetingMapperTest {
         Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_ONE_DAY, ID1);
 
         // then
-        assertThat(meeting.getDateTimes().size())
-                .isEqualTo(1L);
+        assertThat(meeting.getDateTimeInfo().getDateTimes().size())
+                .isEqualTo(0);
     }
 
     @Test
@@ -68,10 +64,10 @@ public class MeetingMapperTest {
         Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_PERIOD, ID1);
 
         // then
-        assertThat(ChronoUnit.DAYS.between(meeting.getStartDate(), meeting.getEndDate()) + 1)
+        assertThat(ChronoUnit.DAYS.between(meeting.getDateTimeInfo().getStartDate(), meeting.getDateTimeInfo().getEndDate()) + 1)
                 .isEqualTo(7L);
-        assertThat(meeting.getDateTimes().size())
-                .isEqualTo(MEETING_REQUEST_DTO_WITH_PERIOD.getDateTime().getDayWeeks().size());
+        assertThat(meeting.getDateTimeInfo().getDateTimes().size())
+                .isEqualTo(0);
     }
 
     @Test
@@ -80,8 +76,10 @@ public class MeetingMapperTest {
         Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_FREE, ID1);
 
         // then
-        assertThat(meeting.getDateTimes().size())
-                .isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getDates().size());
+        assertThat(meeting.getDateTimeInfo().getDateTimes().size())
+                .isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getDates().size()
+                        * (MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getEndTime().getHour()
+                        - MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getStartTime().getHour() + 1));
     }
 
 }

@@ -1,29 +1,22 @@
 package com.example.momobe.meeting.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.meeting.domain.enums.Category;
-import com.example.momobe.meeting.domain.enums.MeetingStatus;
+import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.meeting.domain.enums.Tag;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
-@Builder
 @Entity
 @Getter
-@AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
 public class Meeting extends BaseTime {
     @Id
@@ -50,43 +43,39 @@ public class Meeting extends BaseTime {
     @Column(name = "tag", nullable = false)
     private List<Tag> tags;
 
+    @Column(nullable = false)
+    private Integer personnel;
+
     @Enumerated(STRING)
     @Column(nullable = false)
-    private MeetingStatus meetingStatus;
+    private MeetingState meetingState;
 
     @Embedded
-    private PriceInfo priceInfo;
+    private DateTimeInfo dateTimeInfo;
+
+    @Column(nullable = false)
+    private Long price;
 
     private String notice;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "meeting_id", nullable = false)
-    private List<Location> locations = new ArrayList<>();
+    @Embedded
+    private Address address;
 
-    @Column(nullable = false)
-    private LocalDate startDate;
-    private LocalDate endDate;
-    @Column(nullable = false)
-    private LocalTime startTime;
-    @Column(nullable = false)
-    private LocalTime endTime;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "meeting_id", nullable = false)
-    private List<DateTime> dateTimes = new ArrayList<>();
-
+    @Builder
     public Meeting(String title, String content, Long hostId, Category category, List<Tag> tags,
-                   MeetingStatus meetingStatus, PriceInfo priceInfo, String notice,
-                   List<Location> locations, List<DateTime> dateTimes) {
+                   Integer personnel, MeetingState meetingState, DateTimeInfo dateTimeInfo,
+                   Long price, String notice, Address address) {
         this.title = title;
         this.content = content;
         this.hostId = hostId;
         this.category = category;
         this.tags = tags;
-        this.meetingStatus = meetingStatus;
-        this.priceInfo = priceInfo;
+        this.personnel = personnel;
+        this.meetingState = meetingState;
+        this.dateTimeInfo = dateTimeInfo;
+        dateTimeInfo.getDateTimes().forEach(dateTime -> dateTime.init(this));
+        this.price = price;
         this.notice = notice;
-        this.locations = locations;
-        this.dateTimes = dateTimes;
+        this.address = address;
     }
 }
