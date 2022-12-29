@@ -1,7 +1,8 @@
 package com.example.momobe.meeting.dao;
 
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
-import com.example.momobe.meeting.dto.MeetingResponseDto;
+import com.example.momobe.meeting.domain.Meeting;
+import com.example.momobe.meeting.dto.MeetingHostResponseDto;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,40 +18,44 @@ import org.springframework.data.domain.PageRequest;
 
 import javax.persistence.EntityManager;
 
-import static com.example.momobe.common.enums.TestConstants.REMOTE_PATH;
+import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstant.generateMeeting;
+import static com.example.momobe.reservation.enums.ReservationConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureDataJpa
 @Import(JpaQueryFactoryConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class MeetingQueryRepositoryTest {
+class MeetingHostQueryRepositoryTest {
     @Autowired
     private EntityManager em;
 
-    private MeetingQueryRepository meetingQueryRepository;
+    private MeetingHostQueryRepository meetingHostQueryRepository;
 
     @BeforeEach
     void init() {
-        meetingQueryRepository = new MeetingQueryRepository(new JPAQueryFactory(em), new MeetingQueryFactoryUtil());
+        meetingHostQueryRepository = new MeetingHostQueryRepository(new JPAQueryFactory(em), new MeetingQueryFactoryUtil());
     }
 
     @Test
-    public void meetingQuery() throws Exception {
+    public void meetingHostQuery() throws Exception {
         // given
-        User user = (User.builder().avatar(new Avatar(REMOTE_PATH)).build());
+        User user = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(user);
-        em.persist(generateMeeting(user.getId()));
+        Meeting meeting = generateMeeting(user.getId());
+        em.persist(meeting);
+        em.persist(generateAcceptReservation(user.getId(), meeting.getId()));
+        em.persist(generatePaymentSuccessReservation(user.getId(), meeting.getId()));
+        em.persist(generateDenyReservation(user.getId(), meeting.getId()));
 
         // when
-        Page<MeetingResponseDto> meetings =
-                meetingQueryRepository.findAll(null, null, PageRequest.of(0, 3));
+        Page<MeetingHostResponseDto> meetings =
+                meetingHostQueryRepository.findAll(user.getId(), PageRequest.of(0, 3));
 
         // then
         assertThat(meetings).isNotNull();
         assertThat(meetings.getContent()).isNotNull();
         assertThat(meetings.getContent().size()).isGreaterThan(0);
     }
-
 }

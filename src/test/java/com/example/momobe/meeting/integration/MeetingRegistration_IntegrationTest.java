@@ -1,6 +1,5 @@
 package com.example.momobe.meeting.integration;
 
-import com.example.momobe.meeting.enums.MeetingConstant;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstant.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
@@ -53,8 +51,7 @@ public class MeetingRegistration_IntegrationTest {
         );
 
         // then
-        actions.andExpect(status().isCreated())
-                .andDo(print());
+        actions.andExpect(status().isCreated());
     }
 
     @Test
@@ -72,8 +69,7 @@ public class MeetingRegistration_IntegrationTest {
         );
 
         // then
-        actions.andExpect(status().isCreated())
-                .andDo(print());
+        actions.andExpect(status().isCreated());
     }
 
     @Test
@@ -91,8 +87,7 @@ public class MeetingRegistration_IntegrationTest {
         );
 
         // then
-        actions.andExpect(status().isCreated())
-                .andDo(print());
+        actions.andExpect(status().isCreated());
     }
 
     @Test

@@ -25,6 +25,7 @@ public class DateTimeInfo {
 
     @Column(nullable = false)
     private LocalDate startDate;
+    @Column(nullable = false)
     private LocalDate endDate;
 
     @Column(nullable = false)

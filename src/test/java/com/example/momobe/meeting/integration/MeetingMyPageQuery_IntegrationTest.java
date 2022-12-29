@@ -1,5 +1,7 @@
 package com.example.momobe.meeting.integration;
 
+import com.example.momobe.meeting.domain.Meeting;
+import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
 import org.junit.jupiter.api.Test;
@@ -12,8 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import static com.example.momobe.common.enums.TestConstants.REMOTE_PATH;
+import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstant.generateMeeting;
+import static com.example.momobe.reservation.enums.ReservationConstants.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -22,27 +25,36 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MeetingQuery_IntegrationTest {
+public class MeetingMyPageQuery_IntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private EntityManager em;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Test
-    public void meetingQuery() throws Exception {
+    public void meetingMyPageQuery() throws Exception {
         // given
-        User user = (User.builder().avatar(new Avatar(REMOTE_PATH)).build());
+        User user = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(user);
-        em.persist(generateMeeting(user.getId()));
+        Meeting meeting = generateMeeting(user.getId());
+        em.persist(meeting);
+        String accessToken = jwtTokenUtil.createAccessToken(EMAIL1, user.getId(), ROLE_USER_LIST, NICKNAME1);
+        em.persist(generateAcceptReservation(user.getId(), meeting.getId()));
+        em.persist(generatePaymentSuccessReservation(user.getId(), meeting.getId()));
+        em.persist(generateDenyReservation(user.getId(), meeting.getId()));
 
         // when
         ResultActions actions = mockMvc.perform(
-                get("/meetings")
+                get("/mypage/meetings/hosts")
+                        .header(JWT_HEADER, accessToken)
         );
 
         // then
         actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").isNotEmpty());
+                .andExpect(jsonPath("$.content").isNotEmpty())
+                .andDo(print());
     }
 
 }
