@@ -1,5 +1,6 @@
 package com.example.momobe.meeting.integration;
 
+import com.example.momobe.address.domain.Address;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.user.domain.Avatar;
@@ -13,6 +14,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+
+import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstant.generateMeeting;
@@ -38,7 +41,18 @@ public class MeetingMyPageQuery_IntegrationTest {
         // given
         User user = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(user);
-        Meeting meeting = generateMeeting(user.getId());
+
+        Address address1 = Address.builder()
+                .si("서울시")
+                .gu("강남구")
+                .build();
+        Address address2 = Address.builder()
+                .si("서울시")
+                .gu("강북구")
+                .build();
+        em.persist(address1);
+        em.persist(address2);
+        Meeting meeting = generateMeeting(user.getId(), List.of(address1.getId(), address2.getId()));
         em.persist(meeting);
         String accessToken = jwtTokenUtil.createAccessToken(EMAIL1, user.getId(), ROLE_USER_LIST, NICKNAME1);
         em.persist(generateAcceptReservation(user.getId(), meeting.getId()));
@@ -53,8 +67,7 @@ public class MeetingMyPageQuery_IntegrationTest {
 
         // then
         actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").isNotEmpty())
-                .andDo(print());
+                .andExpect(jsonPath("$.content").isNotEmpty());
     }
 
 }

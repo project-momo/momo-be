@@ -61,6 +61,23 @@ public class MeetingConstant {
                 .build();
     }
 
+    public static Meeting generateMeeting(Long hostId, List<Long> addressIds) {
+        return Meeting.builder()
+                .title(TITLE1)
+                .content(CONTENT1)
+                .hostId(hostId)
+                .category(Category.MEETING)
+                .meetingState(MeetingState.OPEN)
+                .price(PRICE)
+                .dateTimeInfo(new DateTimeInfo(DatePolicy.ONE_DAY,
+                        START_DATE, END_DATE, START_TIME, END_TIME, MAX_TIME,
+                        List.of(new DateTime(LocalDateTime.of(START_DATE, START_TIME)))))
+                .personnel(1)
+                .notice(NOTICE)
+                .address(new Address(addressIds, "추가 주소"))
+                .build();
+    }
+
     public static final MeetingRequestDto.AddressDto ADDRESS_DTO1 = MeetingRequestDto.AddressDto.builder()
             .addressIds(List.of(1L, 2L))
             .addressInfo(SUB_ADDRESS1)
