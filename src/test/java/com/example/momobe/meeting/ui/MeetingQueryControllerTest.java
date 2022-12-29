@@ -3,7 +3,9 @@ package com.example.momobe.meeting.ui;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.dao.MeetingQueryRepository;
+import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.dto.MeetingResponseDto;
+import com.example.momobe.meeting.enums.MeetingConstant;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -25,6 +27,7 @@ import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.domain.enums.Category.MENTORING;
 import static com.example.momobe.meeting.domain.enums.MeetingState.OPEN;
 import static com.example.momobe.meeting.domain.enums.PricePolicy.HOUR;
+import static com.example.momobe.meeting.enums.MeetingConstant.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -54,7 +57,7 @@ class MeetingQueryControllerTest {
     public void meetingQuery() throws Exception {
         // given
         MeetingResponseDto meetingResponseDto = new MeetingResponseDto(
-                ID1, MENTORING, ID1, NICKNAME, TISTORY_URL, TITLE1, CONTENT1, ADDRESS1, OPEN, 1000L
+                ID1, MENTORING, ID1, NICKNAME, TISTORY_URL, TITLE1, CONTENT1, ADDRESS1, OPEN, DatePolicy.FREE, 1000L, NOTICE
         );
         PageRequest pageRequest = PageRequest.of(PAGE - 1, SIZE);
 
@@ -81,18 +84,10 @@ class MeetingQueryControllerTest {
                                 PWN_PAGE, PWN_SIZE
                         ),
                         responseFields(
-                                FWP_CONTENT,
-                                fieldWithPath("content[].meetingId").type(NUMBER).description("모임 식별자"),
-                                fieldWithPath("content[].category").type(STRING).description("카테고리"),
-                                fieldWithPath("content[].host").type(OBJECT).description("주최자 정보"),
-                                fieldWithPath("content[].host.hostId").type(NUMBER).description("주최자 식별자"),
-                                fieldWithPath("content[].host.nickname").type(STRING).description("주최자 닉네임"),
-                                fieldWithPath("content[].host.imageUrl").type(STRING).description("주최자 이미지"),
-                                fieldWithPath("content[].title").type(STRING).description("제목"),
-                                fieldWithPath("content[].content").type(STRING).description("내용"),
-                                fieldWithPath("content[].address").type(STRING).description("주소"),
-                                fieldWithPath("content[].isOpen").type(BOOLEAN).description("모임 오픈 여부"),
-                                fieldWithPath("content[].price").type(NUMBER).description("가격"),
+                                FWP_CONTENT, FWP_CONTENT_MEETING_ID, FWP_CONTENT_CATEGORY,
+                                FWP_CONTENT_HOST, FWP_CONTENT_HOST_USER_ID, FWP_CONTENT_HOST_NICKNAME, FWP_CONTENT_HOST_IMAGE_URL,
+                                FWP_CONTENT_TITLE, FWP_CONTENT_CONTENT, FWP_CONTENT_ADDRESS, FWP_CONTENT_MEETING_STATE,
+                                FWP_CONTENT_IS_OPEN, FWP_CONTENT_DATE_POLICY, FWP_CONTENT_PRICE, FWP_CONTENT_NOTICE,
                                 FWP_PAGE_INFO, FWP_PAGE, FWP_SIZE, FWP_TOTAL_ELEMENTS, FWP_TOTAL_PAGES
                         )
 
