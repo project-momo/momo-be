@@ -66,7 +66,6 @@ public class MeetingRequestDto {
         private LocalTime startTime;
         @NotNull
         private LocalTime endTime;
-        @NotNull
         @Min(1)
         private Integer maxTime;
 

@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class HostResponseDto {
-    private final Long hostId;
+public class MeetingUserResponseDto {
+    private final Long userId;
     private final String nickname;
     private final String imageUrl;
 }

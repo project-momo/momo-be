@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+import static com.example.momobe.address.domain.QAddress.address;
 import static com.example.momobe.meeting.domain.QMeeting.meeting;
 import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.example.momobe.user.domain.QUser.user;
@@ -25,9 +26,11 @@ import static com.example.momobe.user.domain.QUser.user;
 @Transactional(readOnly = true)
 public class MeetingQueryRepository {
     private final JPAQueryFactory queryFactory;
+    private final MeetingQueryFactoryUtil meetingQueryFactoryUtil;
 
     public Page<MeetingResponseDto> findAll(String keyword, Category category, Pageable pageable) {
-        List<MeetingResponseDto> dtos = queryFactory
+        List<MeetingResponseDto> dtos = meetingQueryFactoryUtil
+                .generateMeetingQuery(queryFactory, pageable)
                 .select(new QMeetingResponseDto(
                         meeting.id,
                         meeting.category,
@@ -36,17 +39,12 @@ public class MeetingQueryRepository {
                         avatar.remotePath,
                         meeting.title,
                         meeting.content,
-                        meeting.address.addressInfo,
+                        address.si.append(" " + address.gu),
                         meeting.meetingState,
-                        meeting.price))
-                .from(meeting)
-                .innerJoin(user).on(meeting.hostId.eq(user.id))
-                .innerJoin(user.avatar, avatar)
+                        meeting.dateTimeInfo.datePolicy,
+                        meeting.price,
+                        meeting.notice))
                 .where(containsKeyword(keyword), eqCategory(category))
-                .groupBy(meeting.id)
-                .orderBy(meeting.createdAt.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
