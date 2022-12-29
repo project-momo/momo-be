@@ -26,8 +26,4 @@ public class UserCommonService {
         user.changeUserState(new UserState(UserStateType.DEACTIVATED, LocalDateTime.now()));
         return true;
     }
-    public User getUser(String email){
-        User findUser = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(ErrorCode.DATA_NOT_FOUND));
-        return findUser;
-    }
 }
