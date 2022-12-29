@@ -4,7 +4,7 @@ import com.example.momobe.MomoBeApplication;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.user.application.UserCommonService;
-import com.example.momobe.user.ui.UserController;
+import com.example.momobe.user.ui.UserWithdrawalController;
 import com.example.momobe.user.domain.enums.UserStateType;
 import com.example.momobe.user.mapper.UserMapper;
 import org.assertj.core.api.Assertions;
@@ -32,7 +32,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest({UserController.class, UserMapper.class})
+@WebMvcTest({UserWithdrawalController.class, UserMapper.class})
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(SecurityTestConfig.class)
 @AutoConfigureRestDocs

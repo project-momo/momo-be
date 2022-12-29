@@ -6,7 +6,8 @@ import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.user.application.UserCommonService;
 import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.dto.UserResponseDto;
-import com.example.momobe.user.ui.UserController;
+import com.example.momobe.user.ui.UserFindController;
+import com.example.momobe.user.ui.UserWithdrawalController;
 import com.example.momobe.user.mapper.UserMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +23,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Optional;
+
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
 import static com.example.momobe.common.enums.TestConstants.*;
@@ -33,7 +37,7 @@ import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest({UserController.class,UserMapper.class})
+@WebMvcTest({UserFindController.class,UserMapper.class})
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(SecurityTestConfig.class)
 @AutoConfigureRestDocs
@@ -74,7 +78,7 @@ public class UserControllerTest {
                 .point(100L)
                 .build();
 
-        given(userCommonService.getUser(any())).willReturn(new User());
+        given(userRepository.findById(any())).willReturn(Optional.of(new User()));
         given(mapper.userDtoOfUser(any(User.class))).willReturn(userDto);
 
         //when
