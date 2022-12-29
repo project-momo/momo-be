@@ -16,8 +16,11 @@ import static javax.persistence.GenerationType.*;
 @AllArgsConstructor
 public class Reservation extends BaseTime {
     @Id
+    @Column(name = "reservation_id")
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
+    private Long meetingId;
 
     @Embedded
     private ReservationDate reservationDate;
@@ -34,12 +37,13 @@ public class Reservation extends BaseTime {
 
     private ReservationState reservationState;
 
-    public Reservation(ReservationDate reservationDate, Money amount, ReservedUser reservedUser, ReservationMemo reservationMemo, ReservationState reservationState) {
+    public Reservation(ReservationDate reservationDate, Money amount, ReservedUser reservedUser, ReservationMemo reservationMemo, ReservationState reservationState, Long meetingId) {
         this.reservationDate = reservationDate;
         this.amount = amount;
         this.reservedUser = reservedUser;
         this.reservationMemo = reservationMemo;
         this.reservationState = reservationState;
+        this.meetingId = meetingId;
     }
 
     public boolean checkIfCanceledReservation() {
