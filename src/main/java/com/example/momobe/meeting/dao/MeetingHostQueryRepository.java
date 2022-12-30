@@ -1,10 +1,11 @@
 package com.example.momobe.meeting.dao;
 
+import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.dto.MeetingHostResponseDto;
 import com.example.momobe.meeting.dto.MeetingResponseDto;
 import com.example.momobe.meeting.dto.QMeetingHostResponseDto;
+import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.querydsl.core.group.Group;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,8 +28,10 @@ import static com.example.momobe.reservation.domain.QReservation.reservation;
 import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.example.momobe.user.domain.QUser.user;
 import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.set;
 import static com.querydsl.core.types.Projections.list;
 
+@SuppressWarnings("unchecked")
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -62,96 +67,100 @@ public class MeetingHostQueryRepository {
                 .from(meeting)
                 .where(meeting.hostId.eq(hostId));
 
-//        List<Long> meetingIds = dtos.stream()
-//                .map(MeetingResponseDto::getMeetingId).collect(Collectors.toList());
+        List<Long> meetingIds = dtos.stream()
+                .map(MeetingResponseDto::getMeetingId).collect(Collectors.toList());
 
-//        Map<Long, Group> groupMap = queryFactory
-//                .from(meeting)
-//                .where(meeting.id.in(meetingIds))
-//                .innerJoin(reservation).on(reservation.meetingId.in(meetingIds))
-//                .innerJoin(user).on(reservation.reservedUser.userId.eq(user.id))
-//                .innerJoin(user.avatar, avatar)
-//                .innerJoin(address).on(address.id.in(meeting.address.addressIds))
-//                .innerJoin(meeting.dateTimeInfo.dateTimes, dateTime1)
-//                .transform(groupBy(meeting.id).as(
-//                        list(user.id, user.nickname.nickname, avatar.remotePath, user.email.address,
-//                                reservation.meetingId, reservation.reservationDate.date,
-//                                reservation.reservationDate.startTime, reservation.reservationDate.endTime,
-//                                reservation.reservationMemo.content, reservation.reservationState),
-//                        list(address.gu, address.si),
-//                        list(dateTime1.dateTime))
-//                );
-
-//        groupMap.forEach((k, v) -> System.out.println(Arrays.toString(v.toArray())));
-
-
-//        List<Tuple> tuples = queryFactory.select(
-//                        user.id, user.nickname.nickname, avatar.remotePath, user.email.address,
-//                        reservation.meetingId, reservation.reservationDate.date,
-//                        reservation.reservationDate.startTime, reservation.reservationDate.endTime,
-//                        reservation.reservationMemo.content, reservation.reservationState
-//                )
-//                .from(reservation)
-//                .where(reservation.meetingId.in(meetingIds))
-//                .innerJoin(user).on(reservation.reservedUser.userId.eq(user.id))
-//                .innerJoin(user.avatar, avatar)
-//                .fetch();
+        Map<Long, Group> groupMap = queryFactory
+                .from(meeting)
+                .where(meeting.id.in(meetingIds))
+                .leftJoin(reservation).on(reservation.meetingId.in(meetingIds))
+                .leftJoin(user).on(reservation.reservedUser.userId.eq(user.id))
+                .leftJoin(user.avatar, avatar)
+                .leftJoin(address).on(address.id.in(meeting.address.addressIds))
+                .leftJoin(meeting.dateTimeInfo.dateTimes, dateTime1)
+                .transform(
+                        groupBy(meeting.id).as(
+                                list(
+                                        user.id, user.nickname.nickname, avatar.remotePath, reservation.reservationState,
+                                        user.email.address, reservation.reservationDate.date,
+                                        reservation.reservationDate.startTime, reservation.reservationDate.endTime,
+                                        reservation.reservationMemo.content),
+                                set(address.si.append(" ").append(address.gu)),
+                                list(dateTime1.dateTime)
+                        )
+                );
 
         Map<Long, List<MeetingHostResponseDto.RequestDto>> requestMaps = new LinkedHashMap<>();
         Map<Long, List<MeetingHostResponseDto.RequestConfirmedDto>> confirmedMaps = new LinkedHashMap<>();
+        Map<Long, List<String>> addressesMaps = new LinkedHashMap<>();
+        Map<Long, List<Integer>> dayWeeksMaps = new LinkedHashMap<>();
+        Map<Long, List<LocalDate>> datesMaps = new LinkedHashMap<>();
+        Map<Long, MeetingResponseDto.DateTimeDto> dateInfoMap = new LinkedHashMap<>();
 
         dtos.forEach(dto -> {
             requestMaps.put(dto.getMeetingId(), new ArrayList<>());
             confirmedMaps.put(dto.getMeetingId(), new ArrayList<>());
+            addressesMaps.put(dto.getMeetingId(), new ArrayList<>());
+            dayWeeksMaps.put(dto.getMeetingId(), null);
+            datesMaps.put(dto.getMeetingId(), null);
+            dateInfoMap.put(dto.getMeetingId(), dto.getDateTime());
         });
 
+        groupMap.forEach(
+                (meetingId, group) -> {
+                    Object[] array = group.toArray();
 
-//        groupMap.forEach(
-//                (meetingId, group) -> {
-//                    List<List<?>> list = group.getList(list(user.id, user.nickname.nickname, avatar.remotePath, user.email.address,
-//                            reservation.meetingId, reservation.reservationDate.date,
-//                            reservation.reservationDate.startTime, reservation.reservationDate.endTime,
-//                            reservation.reservationMemo.content, reservation.reservationState));
-//                }
-//        );
+                    List<?> reservations = (List<?>) array[1];
 
-//        tuples.forEach(tuple -> {
-//            ReservationState state = tuple.get(reservation.reservationState);
-//
-//            Long meetingId = tuple.get(reservation.meetingId);
-//            if (state == ReservationState.ACCEPT) {
-//                confirmedMaps.get(meetingId).add(new MeetingHostResponseDto.RequestConfirmedDto(
-//                        tuple.get(user.id), tuple.get(user.nickname.nickname),
-//                        tuple.get(avatar.remotePath), tuple.get(reservation.reservationState),
-//                        tuple.get(user.email.address),
-//                        tuple.get(reservation.reservationDate.date),
-//                        tuple.get(reservation.reservationDate.startTime),
-//                        tuple.get(reservation.reservationDate.endTime),
-//                        tuple.get(reservation.reservationMemo.content)
-//                ));
-//            } else {
-//                requestMaps.get(meetingId).add(new MeetingHostResponseDto.RequestDto(
-//                        tuple.get(user.id), tuple.get(user.nickname.nickname),
-//                        tuple.get(avatar.remotePath), tuple.get(reservation.reservationState),
-//                        tuple.get(reservation.reservationDate.date),
-//                        tuple.get(reservation.reservationDate.startTime),
-//                        tuple.get(reservation.reservationDate.endTime),
-//                        tuple.get(reservation.reservationMemo.content)
-//                ));
-//            }
-//        });
+                    if (reservations.get(3) == ReservationState.ACCEPT) {
+                        confirmedMaps.get(meetingId).add(new MeetingHostResponseDto.RequestConfirmedDto(
+                                (Long) reservations.get(0), (String) reservations.get(1), (String) reservations.get(2),
+                                (ReservationState) reservations.get(3), (String) reservations.get(4),
+                                (LocalDate) reservations.get(5), (LocalTime) reservations.get(6),
+                                (LocalTime) reservations.get(7), (String) reservations.get(8)
+                        ));
+                    } else {
+                        requestMaps.get(meetingId).add(new MeetingHostResponseDto.RequestDto(
+                                (Long) reservations.get(0), (String) reservations.get(1), (String) reservations.get(2),
+                                (ReservationState) reservations.get(3),
+                                (LocalDate) reservations.get(5), (LocalTime) reservations.get(6),
+                                (LocalTime) reservations.get(7), (String) reservations.get(8)
+                        ));
+                    }
+
+                    Set<String> addresses = (Set<String>) array[2];
+                    addressesMaps.put(meetingId, new ArrayList<>(addresses));
+                    List<LocalDateTime> dateTimes = (List<LocalDateTime>) array[3];
+                    MeetingResponseDto.DateTimeDto dateTimeDto = dateInfoMap.get(meetingId);
+
+                    if (dateTimeDto.getDatePolicy() == DatePolicy.FREE) {
+                        LinkedHashSet<LocalDate> set = new LinkedHashSet<>();
+                        dateTimes.forEach(dateTime -> {
+                            if (dateTime != null)
+                                set.add(dateTime.toLocalDate());
+                        });
+                        datesMaps.put(meetingId, new ArrayList<>(set));
+                    } else if (dateTimeDto.getDatePolicy() == DatePolicy.PERIOD) {
+                        TreeSet<Integer> set = new TreeSet<>();
+                        dateTimes.forEach(dateTime -> {
+                            if (dateTime != null)
+                                set.add(dateTime.getDayOfWeek().getValue());
+                        });
+                        dayWeeksMaps.put(meetingId, new ArrayList<>(set));
+                    }
+                }
+        );
 
         dtos.forEach(dto ->
                 dto.init(
-                        // 목데이터
-                        List.of("서울시 강남구", "서울시 강북구"),
-                        List.of(1, 3, 7), List.of(LocalDate.now(), LocalDate.now().plusDays(1)),
+                        addressesMaps.get(dto.getMeetingId()),
+                        dayWeeksMaps.get(dto.getMeetingId()),
+                        datesMaps.get(dto.getMeetingId()),
                         new MeetingHostResponseDto.ApplicationDto(
                                 requestMaps.get(dto.getMeetingId()),
                                 confirmedMaps.get(dto.getMeetingId())
                         ))
         );
-
 
         return PageableExecutionUtils.getPage(dtos, pageable, countQuery::fetchOne);
     }
