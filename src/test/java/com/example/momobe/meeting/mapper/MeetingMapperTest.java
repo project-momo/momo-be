@@ -55,7 +55,7 @@ public class MeetingMapperTest {
 
         // then
         assertThat(meeting.getDateTimeInfo().getDateTimes().size())
-                .isEqualTo(0);
+                .isEqualTo(1);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class MeetingMapperTest {
         assertThat(ChronoUnit.DAYS.between(meeting.getDateTimeInfo().getStartDate(), meeting.getDateTimeInfo().getEndDate()) + 1)
                 .isEqualTo(7L);
         assertThat(meeting.getDateTimeInfo().getDateTimes().size())
-                .isEqualTo(0);
+                .isEqualTo(MEETING_REQUEST_DTO_WITH_PERIOD.getDateTime().getDayWeeks().size());
     }
 
     @Test
