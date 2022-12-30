@@ -78,4 +78,8 @@ public class Meeting extends BaseTime {
         this.notice = notice;
         this.address = address;
     }
+
+    public Long calculateRemainingQuota(Long quota) {
+        return this.personnel - quota;
+    }
 }

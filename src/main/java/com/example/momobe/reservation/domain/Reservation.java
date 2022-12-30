@@ -6,14 +6,16 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import static com.example.momobe.reservation.domain.enums.ReservationState.*;
 import static javax.persistence.GenerationType.*;
+import static lombok.AccessLevel.*;
 
 @Entity
 @Getter
 @Builder
 @EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class Reservation extends BaseTime {
     @Id
     @Column(name = "reservation_id")
@@ -31,22 +33,25 @@ public class Reservation extends BaseTime {
     @Embedded
     private ReservedUser reservedUser;
 
-    //TODO : 예약자가 남기는 메모를 의미한다. 로직 완성 후 주석은 삭제할 것
     @Embedded
     private ReservationMemo reservationMemo;
 
     private ReservationState reservationState;
 
-    public Reservation(ReservationDate reservationDate, Money amount, ReservedUser reservedUser, ReservationMemo reservationMemo, ReservationState reservationState, Long meetingId) {
+    public Reservation(ReservationDate reservationDate, Money amount, ReservedUser reservedUser, ReservationMemo reservationMemo, Long meetingId) {
         this.reservationDate = reservationDate;
         this.amount = amount;
         this.reservedUser = reservedUser;
         this.reservationMemo = reservationMemo;
-        this.reservationState = reservationState;
         this.meetingId = meetingId;
+        this.reservationState = PAYMENT_BEFORE;
     }
 
-    public boolean checkIfCanceledReservation() {
-        return this.reservationState.equals(ReservationState.CANCEL);
+    public Boolean isCanceledReservation() {
+        return this.reservationState.equals(CANCEL);
+    }
+
+    public Boolean checkIfPaymentFree() {
+        return this.amount.getWon() == 0;
     }
 }

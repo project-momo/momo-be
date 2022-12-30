@@ -1,13 +1,14 @@
 package com.example.momobe.reservation.domain;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReservedUser {
     private Long userId;
