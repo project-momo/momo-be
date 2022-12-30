@@ -44,7 +44,7 @@ public class MeetingHostQueryRepository {
                         avatar.remotePath,
                         meeting.title,
                         meeting.content,
-                        address.si.append(" ").concat(address.gu),
+                        meeting.address.addressInfo,
                         meeting.meetingState,
                         meeting.dateTimeInfo.datePolicy,
                         meeting.price,

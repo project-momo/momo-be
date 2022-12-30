@@ -39,7 +39,7 @@ public class MeetingQueryRepository {
                         avatar.remotePath,
                         meeting.title,
                         meeting.content,
-                        address.si.append(" " + address.gu),
+                        meeting.address.addressInfo,
                         meeting.meetingState,
                         meeting.dateTimeInfo.datePolicy,
                         meeting.price,

@@ -3,6 +3,7 @@ package com.example.momobe.user.domain;
 import com.example.momobe.MomoBeApplication;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
+import com.example.momobe.meeting.domain.MeetingRepository;
 import com.example.momobe.user.application.UserCommonService;
 import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.dto.UserResponseDto;
@@ -62,6 +63,8 @@ public class UserControllerTest {
     private  UserMapper mapper;
     @MockBean
     private JwtArgumentResolver resolver;
+    @MockBean
+    private MeetingRepository meetingRepository;
 
     @Test
     @DisplayName("회원 정보 조회 테스트")
