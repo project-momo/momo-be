@@ -80,10 +80,6 @@ public class Meeting extends BaseTime {
     }
 
     public Boolean checkIfCanReservation(Long currentAttendees) {
-        return this.personnel - currentAttendees <= 0;
-    }
-
-    public Boolean checkIfNeedPay() {
-        return this.price > 0;
+        return this.personnel - currentAttendees > 0;
     }
 }
