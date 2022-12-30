@@ -15,7 +15,6 @@ public class MeetingQueryFactoryUtil {
 
     public JPAQuery<?> generateMeetingQuery(JPAQueryFactory queryFactory, Pageable pageable) {
         return queryFactory.from(meeting)
-                .innerJoin(address).on(meeting.address.addressIds.contains(address.id))
                 .innerJoin(user).on(meeting.hostId.eq(user.id))
                 .innerJoin(user.avatar, avatar)
                 .groupBy(meeting.id)

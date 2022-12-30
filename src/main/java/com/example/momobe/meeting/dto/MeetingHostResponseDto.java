@@ -18,11 +18,12 @@ public class MeetingHostResponseDto extends MeetingResponseDto {
     private ApplicationDto applications;
 
     @QueryProjection
-    public MeetingHostResponseDto(Long meetingId, Category category, Long hostId, String hostNickname, String hostImageUrl, String title, String content, String address, MeetingState meetingState, DatePolicy datePolicy, Long price, String notice) {
-        super(meetingId, category, hostId, hostNickname, hostImageUrl, title, content, address, meetingState, datePolicy, price, notice);
+    public MeetingHostResponseDto(Long meetingId, Category category, Long hostId, String hostNickname, String hostImageUrl, String title, String content, String addressInfo, MeetingState meetingState, DatePolicy datePolicy, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer maxTime, Long price) {
+        super(meetingId, category, hostId, hostNickname, hostImageUrl, title, content, addressInfo, meetingState, datePolicy, startDate, endDate, startTime, endTime, maxTime, price);
     }
 
-    public void init(ApplicationDto applications) {
+    public void init(List<String> addresses, List<Integer> dayWeeks, List<LocalDate> dates, ApplicationDto applications) {
+        super.init(addresses, dayWeeks, dates);
         this.applications = applications;
     }
 
@@ -78,6 +79,5 @@ public class MeetingHostResponseDto extends MeetingResponseDto {
             this.time = startTime + " - " + endTime + " (" + startTime.until(endTime, ChronoUnit.HOURS) + "시간)";
         }
     }
-
 
 }
