@@ -79,7 +79,11 @@ public class Meeting extends BaseTime {
         this.address = address;
     }
 
-    public Long calculateRemainingQuota(Long quota) {
-        return this.personnel - quota;
+    public Boolean checkIfCanReservation(Long currentAttendees) {
+        return this.personnel - currentAttendees <= 0;
+    }
+
+    public Boolean checkIfNeedPay() {
+        return this.price > 0;
     }
 }
