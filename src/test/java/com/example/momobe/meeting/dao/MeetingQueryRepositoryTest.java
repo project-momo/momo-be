@@ -1,6 +1,8 @@
 package com.example.momobe.meeting.dao;
 
+import com.example.momobe.address.domain.Address;
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
+import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.dto.MeetingResponseDto;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
@@ -17,7 +19,10 @@ import org.springframework.data.domain.PageRequest;
 
 import javax.persistence.EntityManager;
 
-import static com.example.momobe.common.enums.TestConstants.REMOTE_PATH;
+import java.util.List;
+
+import static com.example.momobe.common.enums.TestConstants.*;
+import static com.example.momobe.common.enums.TestConstants.PASSWORD1;
 import static com.example.momobe.meeting.enums.MeetingConstant.generateMeeting;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,9 +44,19 @@ class MeetingQueryRepositoryTest {
     @Test
     public void meetingQuery() throws Exception {
         // given
-        User user = (User.builder().avatar(new Avatar(REMOTE_PATH)).build());
+        User user = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(user);
-        em.persist(generateMeeting(user.getId()));
+        Address address1 = Address.builder()
+                .si("서울시")
+                .gu("강남구")
+                .build();
+        Address address2 = Address.builder()
+                .si("서울시")
+                .gu("강북구")
+                .build();
+        em.persist(address1);
+        em.persist(address2);
+        em.persist(generateMeeting(user.getId(), List.of(address1.getId(), address2.getId())));
 
         // when
         Page<MeetingResponseDto> meetings =
