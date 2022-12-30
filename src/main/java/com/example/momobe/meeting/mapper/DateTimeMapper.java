@@ -29,6 +29,12 @@ public interface DateTimeMapper {
         if (dateTimeDto.getDatePolicy() == DatePolicy.FREE) {
             dateTimeDto.getDates()
                     .forEach(date -> addGeneratedDateTime(dateTimes, date, startTime, endTime));
+        } else if (dateTimeDto.getDatePolicy() == DatePolicy.PERIOD) {
+            dateTimeDto.getStartDate().datesUntil(dateTimeDto.getEndDate().plusDays(1))
+                    .filter(date -> dateTimeDto.getDayWeeks().contains(date.getDayOfWeek().getValue()))
+                    .forEach(date -> dateTimes.add(new DateTime(LocalDateTime.of(date, dateTimeDto.getStartTime()))));
+        } else {
+            dateTimes.add(new DateTime(LocalDateTime.of(dateTimeDto.getStartDate(), dateTimeDto.getStartTime())));
         }
 
         return dateTimes;
