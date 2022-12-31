@@ -78,4 +78,8 @@ public class Meeting extends BaseTime {
         this.notice = notice;
         this.address = address;
     }
+
+    public Boolean checkIfCanReservation(Long currentAttendees) {
+        return this.personnel - currentAttendees > 0;
+    }
 }

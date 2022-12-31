@@ -1,10 +1,7 @@
 package com.example.momobe.meeting.domain;
 
 import com.example.momobe.meeting.domain.enums.DatePolicy;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +12,7 @@ import java.util.List;
 import static javax.persistence.EnumType.STRING;
 
 @Getter
+@Builder
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -25,6 +23,7 @@ public class DateTimeInfo {
 
     @Column(nullable = false)
     private LocalDate startDate;
+    @Column(nullable = false)
     private LocalDate endDate;
 
     @Column(nullable = false)

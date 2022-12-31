@@ -37,7 +37,44 @@ include::{snippets}/meeting/query/http-response.adoc[]
 [caption=]
 include::{snippets}/meeting/query/response-fields.adoc[]
 
-***
+=== 만든 모임 목록 조회
+.http-request
+include::{snippets}/mypage/meetings/hosts/http-request.adoc[]
+
+.request-headers
+[caption=]
+include::{snippets}/mypage/meetings/hosts/request-headers.adoc[]
+
+.request-parameters
+[caption=]
+include::{snippets}/mypage/meetings/hosts/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/mypage/meetings/hosts/http-response.adoc[]
+
+.response-fields
+[caption=]
+include::{snippets}/mypage/meetings/hosts/response-fields.adoc[]
+
+=== 참여 모임 목록 조회
+.http-request
+include::{snippets}/mypage/meetings/participants/http-request.adoc[]
+
+.request-headers
+[caption=]
+include::{snippets}/mypage/meetings/participants/request-headers.adoc[]
+
+.request-parameters
+[caption=]
+include::{snippets}/mypage/meetings/participants/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/mypage/meetings/participants/http-response.adoc[]
+
+.response-fields
+[caption=]
+include::{snippets}/mypage/meetings/participants/response-fields.adoc[]
+
 == 회원
 === 회원 정보 조회
 .http-request

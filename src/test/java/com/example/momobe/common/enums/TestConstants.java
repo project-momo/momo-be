@@ -17,6 +17,7 @@ public class TestConstants {
     public final static String PASSWORD2 = "passWORD321!";
     public final static Long ID1 = 1L;
     public final static Long ID2 = 2L;
+    public final static Long ID3 = 3L;
     public final static String NICKNAME1 = "test1";
     public final static String NICKNAME2 = "test2";
 
@@ -34,8 +35,8 @@ public class TestConstants {
     public final static String CONTENT2 = "내용2";
     public final static String CONTENT3 = "내용3";
 
-    public final static String ADDRESS1 = "주소1";
-    public final static String ADDRESS2 = "주소2";
+    public final static String ADDRESS1 = "서울시 강남구";
+    public final static String ADDRESS2 = "서울시 강북구";
     public final static String SUB_ADDRESS1 = "추가 주소1";
     public final static String SUB_ADDRESS2 = "추가 주소2";
 

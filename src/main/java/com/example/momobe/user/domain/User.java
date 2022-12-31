@@ -1,12 +1,9 @@
 package com.example.momobe.user.domain;
 
-import com.example.momobe.common.exception.CustomException;
 import com.example.momobe.common.exception.enums.ErrorCode;
-import com.example.momobe.user.application.UserCommonService;
 import com.example.momobe.user.domain.enums.UserStateType;
 import com.example.momobe.common.domain.BaseTime;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 

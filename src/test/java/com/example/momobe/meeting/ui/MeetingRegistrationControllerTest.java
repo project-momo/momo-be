@@ -22,7 +22,7 @@ import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentReque
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.common.util.ReflectionUtil.setField;
-import static com.example.momobe.meeting.enums.MeetingConstant.MEETING_REQUEST_DTO_WITH_ALL;
+import static com.example.momobe.meeting.enums.MeetingConstants.MEETING_REQUEST_DTO_WITH_ALL;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;

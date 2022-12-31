@@ -13,7 +13,7 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import java.time.temporal.ChronoUnit;
 
 import static com.example.momobe.common.enums.TestConstants.ID1;
-import static com.example.momobe.meeting.enums.MeetingConstant.*;
+import static com.example.momobe.meeting.enums.MeetingConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @WebMvcTest({ExceptionController.class, MeetingMapper.class, DateTimeMapper.class})
@@ -55,7 +55,7 @@ public class MeetingMapperTest {
 
         // then
         assertThat(meeting.getDateTimeInfo().getDateTimes().size())
-                .isEqualTo(0);
+                .isEqualTo(1);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class MeetingMapperTest {
         assertThat(ChronoUnit.DAYS.between(meeting.getDateTimeInfo().getStartDate(), meeting.getDateTimeInfo().getEndDate()) + 1)
                 .isEqualTo(7L);
         assertThat(meeting.getDateTimeInfo().getDateTimes().size())
-                .isEqualTo(0);
+                .isEqualTo(MEETING_REQUEST_DTO_WITH_PERIOD.getDateTime().getDayWeeks().size());
     }
 
     @Test

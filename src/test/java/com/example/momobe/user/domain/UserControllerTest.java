@@ -1,72 +1,75 @@
-//package com.example.momobe.user.domain;
-//
-//import com.example.momobe.MomoBeApplication;
-//import com.example.momobe.common.config.SecurityTestConfig;
-//import com.example.momobe.common.resolver.JwtArgumentResolver;
-//import com.example.momobe.user.application.UserCommonService;
-//import com.example.momobe.user.application.UserFindService;
-//import com.example.momobe.user.dto.UserResponseDto;
-//import com.example.momobe.user.ui.UserFindController;
-//import com.example.momobe.user.ui.UserWithdrawalController;
-//import com.example.momobe.user.mapper.UserMapper;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-//import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-//import org.springframework.boot.test.mock.mockito.MockBean;
-//import org.springframework.context.annotation.Import;
-//import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-//import org.springframework.http.MediaType;
-//import org.springframework.security.test.context.support.WithMockUser;
-//import org.springframework.test.context.ContextConfiguration;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.ResultActions;
-//
-//import java.util.Optional;
-//
-//import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
-//import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
-//import static com.example.momobe.common.enums.TestConstants.*;
-//import static org.mockito.ArgumentMatchers.*;
-//import static org.mockito.BDDMockito.given;
-//import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-//import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-//import static org.springframework.restdocs.payload.JsonFieldType.*;
-//import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-//
-//@WebMvcTest({UserFindController.class,UserMapper.class})
-//@MockBean(JpaMetamodelMappingContext.class)
-//@Import(SecurityTestConfig.class)
-//@AutoConfigureRestDocs
-//@WithMockUser
-//@ContextConfiguration(classes = MomoBeApplication.class)
-//public class UserControllerTest {
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @Autowired
-//    private ObjectMapper objectMapper;
-//
-//    @MockBean
-//    private UserCommonService userCommonService;
-//
-//    @MockBean
-//    private UserFindService userFindService;
-//
-//    @MockBean
-//    private UserRepository userRepository;
-//    @MockBean
-//    private  UserMapper mapper;
-//    @MockBean
-//    private JwtArgumentResolver resolver;
-//
-//    @Test
-//    @DisplayName("회원 정보 조회 테스트")
-//    public void getUser() throws Exception {
-//        //given
+package com.example.momobe.user.domain;
+
+import com.example.momobe.MomoBeApplication;
+import com.example.momobe.common.config.SecurityTestConfig;
+import com.example.momobe.common.resolver.JwtArgumentResolver;
+import com.example.momobe.meeting.domain.MeetingRepository;
+import com.example.momobe.user.application.UserCommonService;
+import com.example.momobe.user.application.UserFindService;
+import com.example.momobe.user.dto.UserResponseDto;
+import com.example.momobe.user.ui.UserFindController;
+import com.example.momobe.user.ui.UserWithdrawalController;
+import com.example.momobe.user.mapper.UserMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Optional;
+
+import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
+import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
+import static com.example.momobe.common.enums.TestConstants.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest({UserFindController.class,UserMapper.class})
+@MockBean(JpaMetamodelMappingContext.class)
+@Import(SecurityTestConfig.class)
+@AutoConfigureRestDocs
+@WithMockUser
+@ContextConfiguration(classes = MomoBeApplication.class)
+public class UserControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockBean
+    private UserCommonService userCommonService;
+
+    @MockBean
+    private UserFindService userFindService;
+
+    @MockBean
+    private UserRepository userRepository;
+    @MockBean
+    private  UserMapper mapper;
+    @MockBean
+    private JwtArgumentResolver resolver;
+    @MockBean
+    private MeetingRepository meetingRepository;
+
+    @Test
+    @DisplayName("회원 정보 조회 테스트")
+    public void getUser() throws Exception {
+        //given
 //        UserResponseDto userDto = UserResponseDto.builder()
 //                .email("email@mail.com")
 //                .nickname("dodanmom")
