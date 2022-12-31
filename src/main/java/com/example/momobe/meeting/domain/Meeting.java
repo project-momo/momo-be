@@ -5,10 +5,13 @@ import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.meeting.domain.enums.Tag;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static javax.persistence.EnumType.STRING;
@@ -81,5 +84,11 @@ public class Meeting extends BaseTime {
 
     public Boolean checkIfCanReservation(Long currentAttendees) {
         return this.personnel - currentAttendees > 0;
+    }
+
+    public Boolean verifyReservationSchedule(LocalDate date,
+                                             LocalTime startTime,
+                                             LocalTime endTime) {
+        return dateTimeInfo.match(date, startTime, endTime);
     }
 }

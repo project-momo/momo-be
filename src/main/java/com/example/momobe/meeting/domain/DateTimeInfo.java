@@ -36,4 +36,27 @@ public class DateTimeInfo {
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DateTime> dateTimes = new ArrayList<>();
+
+    protected Boolean match(LocalDate date,
+                         LocalTime startTime,
+                         LocalTime endTime) {
+        return dateMatch(date) && startTimeMatch(startTime) && endTimeMatch(endTime) && maxTimeMatch(startTime, endTime);
+    }
+
+    private Boolean dateMatch(LocalDate date) {
+        return (date.toEpochDay() >= this.startDate.toEpochDay()) && (date.toEpochDay() <= this.endDate.toEpochDay());
+    }
+
+    private Boolean startTimeMatch(LocalTime startTime) {
+        return (startTime.getSecond() >= this.startTime.getSecond()) && (startTime.getSecond() <= this.endTime.getSecond());
+    }
+
+    private Boolean endTimeMatch(LocalTime endTime) {
+        return (endTime.getSecond() >= this.startTime.getSecond()) && (endTime.getSecond() <= this.endTime.getSecond());
+    }
+
+    private Boolean maxTimeMatch(LocalTime startTime,
+                                 LocalTime endTime) {
+        return endTime.getSecond() - startTime.getSecond() < maxTime;
+    }
 }
