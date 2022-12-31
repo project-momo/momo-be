@@ -40,7 +40,6 @@ import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(MeetingMyPageQueryController.class)
@@ -68,7 +67,7 @@ public class MeetingMyPageQueryControllerTest {
                         ID3, NICKNAME2, REMOTE_PATH, ACCEPT, EMAIL1, LocalDate.now(), START_TIME, END_TIME, "잘 부탁드려요~"))
         );
         MeetingHostResponseDto meetingHostResponseDto = new MeetingHostResponseDto(
-                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, TITLE1, CONTENT1, ADDRESS1, OPEN,
+                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
                 DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L
         );
         meetingHostResponseDto.init(
@@ -145,7 +144,7 @@ public class MeetingMyPageQueryControllerTest {
                         new MeetingParticipantResponseDto.DateTimeInfo(
                                 LocalDate.now(), START_TIME, END_TIME));
         MeetingParticipantResponseDto meetingParticipantResponseDto = new MeetingParticipantResponseDto(
-                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, TITLE1, CONTENT1, ADDRESS1, OPEN,
+                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
                 DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L, applicationDto
         );
         meetingParticipantResponseDto.init(
