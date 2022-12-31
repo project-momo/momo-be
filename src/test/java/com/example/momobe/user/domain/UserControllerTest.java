@@ -71,39 +71,34 @@ public class UserControllerTest {
     public void getUser() throws Exception {
         //given
 //        UserResponseDto userDto = UserResponseDto.builder()
-//                .email(new Email("email@mail.com"))
-//                .nickname(new Nickname("dodanmom"))
-//                .point(new Point(100L))
+//                .email("email@mail.com")
+//                .nickname("dodanmom")
+//                .point(100L)
 //                .build();
-        UserResponseDto userDto = UserResponseDto.builder()
-                .email("email@mail.com")
-                .nickname("dodanmom")
-                .point(100L)
-                .build();
-
-        given(userRepository.findById(any())).willReturn(Optional.of(new User()));
-        given(mapper.userDtoOfUser(any(User.class))).willReturn(userDto);
-
-        //when
-        ResultActions actions =
-                mockMvc.perform(
-                        get("/mypage/profile")
-                                .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.APPLICATION_JSON)
-                );
-        //then
-       actions.andExpect(status().isOk())
-                .andDo(document("user/getUser",
-                        getDocumentRequest(),
-                        getDocumentResponse(),
-                        REQUEST_HEADER_JWT,
-                        responseFields(
-                                fieldWithPath("nickname").type(STRING).description("닉네임"),
-                                fieldWithPath("email").type(STRING).description("이메일"),
-                                fieldWithPath("point").type(NUMBER).description("포인트")
-                        )
-                ));
-    }
-
-}
+//
+//        given(userRepository.findById(any())).willReturn(Optional.of(new User()));
+//        given(mapper.userDtoOfUser(any(User.class))).willReturn(userDto);
+//
+//        //when
+//        ResultActions actions =
+//                mockMvc.perform(
+//                        get("/mypage/profile")
+//                                .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
+//                                .accept(MediaType.APPLICATION_JSON)
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                );
+//        //then
+//       actions.andExpect(status().isOk())
+//                .andDo(document("user/getUser",
+//                        getDocumentRequest(),
+//                        getDocumentResponse(),
+//                        REQUEST_HEADER_JWT,
+//                        responseFields(
+//                                fieldWithPath("nickname").type(STRING).description("닉네임"),
+//                                fieldWithPath("email").type(STRING).description("이메일"),
+//                                fieldWithPath("point").type(NUMBER).description("포인트")
+//                        )
+//                ));
+//    }
+//
+//}
