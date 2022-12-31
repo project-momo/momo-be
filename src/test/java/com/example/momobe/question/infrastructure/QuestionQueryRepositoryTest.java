@@ -25,7 +25,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
-import static com.example.momobe.meeting.enums.MeetingConstant.generateMeeting;
+import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest

@@ -5,7 +5,6 @@ import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +18,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
-import static com.example.momobe.meeting.enums.MeetingConstant.generateMeeting;
+import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
 import static com.example.momobe.reservation.enums.ReservationConstants.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

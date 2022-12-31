@@ -29,7 +29,7 @@ import static com.example.momobe.common.enums.PageConstants.*;
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.domain.enums.Category.SOCIAL;
 import static com.example.momobe.meeting.domain.enums.MeetingState.OPEN;
-import static com.example.momobe.meeting.enums.MeetingConstant.*;
+import static com.example.momobe.meeting.enums.MeetingConstants.*;
 import static com.example.momobe.reservation.domain.enums.ReservationState.ACCEPT;
 import static com.example.momobe.reservation.domain.enums.ReservationState.PAYMENT_SUCCESS;
 import static org.mockito.ArgumentMatchers.any;
