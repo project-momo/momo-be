@@ -19,7 +19,7 @@ import static com.example.momobe.meeting.domain.enums.Category.SOCIAL;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 
-public class MeetingConstant {
+public class MeetingConstants {
     public static final LocalDate START_DATE = LocalDate.of(2022, 12, 25);
     public static final LocalDate END_DATE = LocalDate.of(2022, 12, 31);
     public static final LocalTime START_TIME = LocalTime.of(1, 0);

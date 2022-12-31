@@ -2,7 +2,6 @@ package com.example.momobe.meeting.dao;
 
 import com.example.momobe.address.domain.Address;
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
-import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.dto.MeetingResponseDto;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
@@ -23,7 +22,7 @@ import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.common.enums.TestConstants.PASSWORD1;
-import static com.example.momobe.meeting.enums.MeetingConstant.generateMeeting;
+import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest

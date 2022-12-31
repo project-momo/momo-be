@@ -3,7 +3,6 @@ package com.example.momobe.meeting.dao;
 import com.example.momobe.address.domain.Address;
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.dto.MeetingHostResponseDto;
 import com.example.momobe.meeting.dto.MeetingParticipantResponseDto;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
@@ -23,7 +22,7 @@ import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.common.enums.TestConstants.REMOTE_PATH;
-import static com.example.momobe.meeting.enums.MeetingConstant.generateMeeting;
+import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
 import static com.example.momobe.reservation.enums.ReservationConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 

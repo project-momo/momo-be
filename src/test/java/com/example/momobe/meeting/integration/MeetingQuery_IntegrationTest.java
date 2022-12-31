@@ -17,7 +17,7 @@ import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.common.enums.TestConstants.PASSWORD1;
-import static com.example.momobe.meeting.enums.MeetingConstant.generateMeeting;
+import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
