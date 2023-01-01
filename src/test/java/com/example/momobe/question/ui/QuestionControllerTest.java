@@ -194,7 +194,7 @@ class QuestionControllerTest {
         BDDMockito.given(questionQueryRepository.getQuestions(any())).willReturn(List.of(question, question));
 
         // when
-        ResultActions perform = mockMvc.perform(get("/meetings/{meeting-id}", 1L)
+        ResultActions perform = mockMvc.perform(get("/meetings/{meeting-id}/qna", 1L)
                 .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json));
