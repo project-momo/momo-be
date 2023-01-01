@@ -44,7 +44,7 @@ public class Reservation extends BaseTime {
         this.reservedUser = reservedUser;
         this.reservationMemo = reservationMemo;
         this.meetingId = meetingId;
-        this.reservationState = PAYMENT_BEFORE;
+        this.reservationState = (amount.getWon() <= 0) ? PAYMENT_SUCCESS : PAYMENT_BEFORE;
     }
 
     public Reservation(ReservationDate reservationDate, Money amount, ReservedUser reservedUser, ReservationMemo reservationMemo, ReservationState reservationState, Long meetingId) {
@@ -54,14 +54,13 @@ public class Reservation extends BaseTime {
         this.reservationMemo = reservationMemo;
         this.meetingId = meetingId;
         this.reservationState = reservationState;
-        this.reservationState = PAYMENT_BEFORE;
     }
 
     public Boolean isCanceledReservation() {
         return this.reservationState.equals(CANCEL);
     }
 
-    public Boolean checkIfPaymentFree() {
-        return this.amount.getWon() == 0;
+    public ReservationState checkReservationState() {
+        return this.reservationState;
     }
 }
