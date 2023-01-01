@@ -48,6 +48,7 @@ public class MeetingHostQueryRepository {
                         meeting.hostId,
                         user.nickname.nickname,
                         avatar.remotePath,
+                        user.email.address,
                         meeting.title,
                         meeting.content,
                         meeting.address.addressInfo,
@@ -81,8 +82,8 @@ public class MeetingHostQueryRepository {
                 .transform(
                         groupBy(meeting.id).as(
                                 list(
-                                        user.id, user.nickname.nickname, avatar.remotePath, reservation.reservationState,
-                                        user.email.address, reservation.reservationDate.date,
+                                        user.id, user.nickname.nickname, avatar.remotePath, user.email.address,
+                                        reservation.reservationState, reservation.reservationDate.date,
                                         reservation.reservationDate.startTime, reservation.reservationDate.endTime,
                                         reservation.reservationMemo.content),
                                 set(address.si.append(" ").append(address.gu)),
@@ -115,14 +116,14 @@ public class MeetingHostQueryRepository {
                     if (reservations.get(3) == ReservationState.ACCEPT) {
                         confirmedMaps.get(meetingId).add(new MeetingHostResponseDto.RequestConfirmedDto(
                                 (Long) reservations.get(0), (String) reservations.get(1), (String) reservations.get(2),
-                                (ReservationState) reservations.get(3), (String) reservations.get(4),
+                                (String) reservations.get(3), (ReservationState) reservations.get(4),
                                 (LocalDate) reservations.get(5), (LocalTime) reservations.get(6),
                                 (LocalTime) reservations.get(7), (String) reservations.get(8)
                         ));
                     } else {
                         requestMaps.get(meetingId).add(new MeetingHostResponseDto.RequestDto(
                                 (Long) reservations.get(0), (String) reservations.get(1), (String) reservations.get(2),
-                                (ReservationState) reservations.get(3),
+                                (ReservationState) reservations.get(4),
                                 (LocalDate) reservations.get(5), (LocalTime) reservations.get(6),
                                 (LocalTime) reservations.get(7), (String) reservations.get(8)
                         ));

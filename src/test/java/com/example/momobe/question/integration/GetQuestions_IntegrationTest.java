@@ -94,7 +94,7 @@ public class GetQuestions_IntegrationTest {
         entityManager.persist(answer2);
 
         //when
-        ResultActions result = mockMvc.perform(get("/meetings/{meeting-id}", meeting.getId()));
+        ResultActions result = mockMvc.perform(get("/meetings/{meeting-id}/qna", meeting.getId()));
 
         //then
         result.andExpect(status().isOk())
