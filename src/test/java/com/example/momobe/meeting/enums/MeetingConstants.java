@@ -4,7 +4,9 @@ import com.example.momobe.meeting.domain.Address;
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.domain.enums.*;
+import com.example.momobe.meeting.domain.enums.DatePolicy;
+import com.example.momobe.meeting.domain.enums.MeetingState;
+import com.example.momobe.meeting.domain.enums.Tag;
 import com.example.momobe.meeting.dto.MeetingRequestDto;
 import org.springframework.restdocs.payload.FieldDescriptor;
 
@@ -40,7 +42,6 @@ public class MeetingConstants {
                         START_DATE, END_DATE, START_TIME, END_TIME, MAX_TIME,
                         List.of(new DateTime(LocalDateTime.of(START_DATE, START_TIME)))))
                 .personnel(1)
-                .notice(NOTICE)
                 .address(new Address(List.of(1L, 2L), "추가 주소"))
                 .build();
     }
@@ -57,7 +58,6 @@ public class MeetingConstants {
                         START_DATE, END_DATE, START_TIME, END_TIME, MAX_TIME,
                         List.of(new DateTime(LocalDateTime.of(START_DATE, START_TIME)))))
                 .personnel(1)
-                .notice(NOTICE)
                 .address(new Address(List.of(1L, 2L), "추가 주소"))
                 .build();
     }
@@ -74,7 +74,6 @@ public class MeetingConstants {
                         START_DATE, END_DATE, START_TIME, END_TIME, MAX_TIME,
                         List.of(new DateTime(LocalDateTime.of(START_DATE, START_TIME)))))
                 .personnel(1)
-                .notice(NOTICE)
                 .address(new Address(addressIds, "추가 주소"))
                 .build();
     }
@@ -184,6 +183,7 @@ public class MeetingConstants {
     public static final FieldDescriptor FWP_CONTENT_HOST_USER_ID = fieldWithPath("content[].host.userId").type(NUMBER).description("주최자 식별자");
     public static final FieldDescriptor FWP_CONTENT_HOST_NICKNAME = fieldWithPath("content[].host.nickname").type(STRING).description("주최자 닉네임");
     public static final FieldDescriptor FWP_CONTENT_HOST_IMAGE_URL = fieldWithPath("content[].host.imageUrl").type(STRING).description("주최자 이미지");
+    public static final FieldDescriptor FWP_CONTENT_HOST_EMAIL = fieldWithPath("content[].host.email").type(STRING).description("주최자 이메일");
     public static final FieldDescriptor FWP_CONTENT_TITLE = fieldWithPath("content[].title").type(STRING).description("제목");
     public static final FieldDescriptor FWP_CONTENT_CONTENT = fieldWithPath("content[].content").type(STRING).description("내용");
     public static final FieldDescriptor FWP_CONTENT_ADDRESS = fieldWithPath("content[].address").type(OBJECT).description("주소 정보");
@@ -199,6 +199,6 @@ public class MeetingConstants {
     public static final FieldDescriptor FWP_CONTENT_DATE_TIME_END_TIME = fieldWithPath("content[].dateTime.endTime").type(STRING).description("끝나는 시간");
     public static final FieldDescriptor FWP_CONTENT_DATE_TIME_MAX_TIME = fieldWithPath("content[].dateTime.maxTime").type(NUMBER).description("최대 예약 가능 시간");
     public static final FieldDescriptor FWP_CONTENT_DATE_TIME_DAY_WEEKS = fieldWithPath("content[].dateTime.dayWeeks").type(ARRAY).description("요일 (월: 1 ~ 일: 7, datePolicy가 PEROID일 때만)");
-    public static final FieldDescriptor FWP_CONTENT_DATE_TIME_DATES = fieldWithPath("content[].dateTime.dates").type(ARRAY).description("날짜");
+    public static final FieldDescriptor FWP_CONTENT_DATE_TIME_DATES = fieldWithPath("content[].dateTime.dates").type(ARRAY).description("날짜 (datePolicy가 FREE일 때만)");
     public static final FieldDescriptor FWP_CONTENT_PRICE = fieldWithPath("content[].price").type(NUMBER).description("가격");
 }

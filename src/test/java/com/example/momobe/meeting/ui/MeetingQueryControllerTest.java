@@ -2,8 +2,10 @@ package com.example.momobe.meeting.ui;
 
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
+import com.example.momobe.meeting.dao.MeetingDetailQueryRepository;
 import com.example.momobe.meeting.dao.MeetingQueryRepository;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
+import com.example.momobe.meeting.dto.MeetingDetailResponseDto;
 import com.example.momobe.meeting.dto.MeetingResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
@@ -32,9 +36,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(MeetingQueryController.class)
@@ -49,12 +54,14 @@ class MeetingQueryControllerTest {
     private JwtArgumentResolver jwtArgumentResolver;
     @MockBean
     private MeetingQueryRepository meetingQueryRepository;
+    @MockBean
+    private MeetingDetailQueryRepository meetingDetailQueryRepository;
 
     @Test
     public void meetingQuery() throws Exception {
         // given
         MeetingResponseDto meetingResponseDto = new MeetingResponseDto(
-                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, TITLE1, CONTENT1, ADDRESS1, OPEN,
+                ID1, SOCIAL, ID1, NICKNAME, EMAIL1, REMOTE_PATH, TITLE1, CONTENT1, ADDRESS1, OPEN,
                 DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L
         );
         meetingResponseDto.init(
@@ -86,7 +93,8 @@ class MeetingQueryControllerTest {
                         ),
                         responseFields(
                                 FWP_CONTENT, FWP_CONTENT_MEETING_ID, FWP_CONTENT_CATEGORY,
-                                FWP_CONTENT_HOST, FWP_CONTENT_HOST_USER_ID, FWP_CONTENT_HOST_NICKNAME, FWP_CONTENT_HOST_IMAGE_URL,
+                                FWP_CONTENT_HOST, FWP_CONTENT_HOST_USER_ID, FWP_CONTENT_HOST_NICKNAME,
+                                FWP_CONTENT_HOST_IMAGE_URL, FWP_CONTENT_HOST_EMAIL,
                                 FWP_CONTENT_TITLE, FWP_CONTENT_CONTENT,
                                 FWP_CONTENT_ADDRESS, FWP_CONTENT_ADDRESS_ADDRESSES, FWP_CONTENT_ADDRESS_ADDRESS_INFO,
                                 FWP_CONTENT_MEETING_STATE, FWP_CONTENT_IS_OPEN,
@@ -98,6 +106,60 @@ class MeetingQueryControllerTest {
                                 FWP_PAGE_INFO, FWP_PAGE, FWP_SIZE, FWP_TOTAL_ELEMENTS, FWP_TOTAL_PAGES
                         )
 
+                ));
+    }
+
+    @Test
+    public void meetingDetailQuery() throws Exception {
+        // given
+        MeetingDetailResponseDto meetingDetailResponseDto = new MeetingDetailResponseDto(
+                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL1, TITLE1, CONTENT1, ADDRESS1, OPEN,
+                DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L,
+                new LinkedHashSet<>(List.of("서울시 강남구", "서울시 강북구")),
+                List.of(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
+
+        given(meetingDetailQueryRepository.findById(ID1))
+                .willReturn(meetingDetailResponseDto);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/meetings/{meeting-id}", ID1)
+        );
+
+        // then
+        actions.andExpect(status().isOk())
+                .andDo(document("meeting/query",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("meeting-id").description("모임 식별자")
+                        ),
+                        responseFields(
+                                fieldWithPath("meetingId").type(NUMBER).description("모임 식별자"),
+                                fieldWithPath("category").type(STRING).description("카테고리"),
+                                fieldWithPath("host").type(OBJECT).description("주최자"),
+                                fieldWithPath("host.userId").type(NUMBER).description("주최자 식별자"),
+                                fieldWithPath("host.nickname").type(STRING).description("주최자 닉네임"),
+                                fieldWithPath("host.imageUrl").type(STRING).description("주최자 이미지"),
+                                fieldWithPath("host.email").type(STRING).description("주최자 이메일"),
+                                fieldWithPath("title").type(STRING).description("제목"),
+                                fieldWithPath("content").type(STRING).description("내용"),
+                                fieldWithPath("address").type(OBJECT).description("주소 정보"),
+                                fieldWithPath("address.addresses").type(ARRAY).description("주소"),
+                                fieldWithPath("address.addressInfo").type(STRING).description("추가 주소"),
+                                fieldWithPath("meetingState").type(STRING).description("모임 상태"),
+                                fieldWithPath("isOpen").type(BOOLEAN).description("모임 오픈 여부"),
+                                fieldWithPath("dateTime").type(OBJECT).description("날짜 정보"),
+                                fieldWithPath("dateTime.datePolicy").type(STRING).description("날짜 정책"),
+                                fieldWithPath("dateTime.startDate").type(STRING).description("시작 날짜"),
+                                fieldWithPath("dateTime.endDate").type(STRING).description("끝나는 날짜"),
+                                fieldWithPath("dateTime.startTime").type(STRING).description("시작 시간"),
+                                fieldWithPath("dateTime.endTime").type(STRING).description("끝나는 시간"),
+                                fieldWithPath("dateTime.maxTime").type(NUMBER).description("최대 예약 가능 시간"),
+                                fieldWithPath("dateTime.dayWeeks").type(ARRAY).description("요일 (월: 1 ~ 일: 7, datePolicy가 PEROID일 때만)"),
+                                fieldWithPath("dateTime.dates").type(ARRAY).description("날짜 (datePolicy가 FREE일 때만)"),
+                                fieldWithPath("price").type(NUMBER).description("가격")
+                        )
                 ));
     }
 
