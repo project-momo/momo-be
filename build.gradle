@@ -122,34 +122,33 @@ ext {
 
 test {
 	outputs.dir snippetsDir
-	exclude '**/*'	//임시 테스트 skip
+	exclude '**/*'
 }
 
-//임시 테스트 skip
 //asciidoctor {
 //	inputs.dir snippetsDir
 //	configurations 'asciidoctorExt'
 //	dependsOn test
 //}
 
-task copyDocument(type: Copy) {
-	dependsOn asciidoctor
-	println "asciidoctor output: ${asciidoctor.outputDir}"
-	from file("build/docs/asciidoc/")
-	into file("src/main/resources/static/docs")
-}
+//task copyDocument(type: Copy) {
+//	dependsOn asciidoctor
+//	println "asciidoctor output: ${asciidoctor.outputDir}"
+//	from file("build/docs/asciidoc/")
+//	into file("src/main/resources/static/docs")
+//}
 
-build {
-	dependsOn copyDocument
-}
+//build {
+//	dependsOn copyDocument
+//}
 
-bootJar {
-	enabled = true
-	dependsOn copyDocument
-	from ("${asciidoctor.outputDir}") {
-		into 'static/docs'
-	}
-}
+//bootJar {
+//	enabled = true
+//	dependsOn copyDocument
+//	from ("${asciidoctor.outputDir}") {
+//		into 'static/docs'
+//	}
+//}
 
 // querydsl
 def querydslDir = "$buildDir/generated/'querydsl'"
