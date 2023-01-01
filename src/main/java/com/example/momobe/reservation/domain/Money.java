@@ -23,7 +23,7 @@ public class Money {
         return this.won;
     };
 
-    public Boolean match(Long won) {
+    protected Boolean match(Long won) {
         return Objects.equals(this.won, won);
     }
 }
