@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.momobe.meeting.domain.enums.DatePolicy.*;
 import static javax.persistence.EnumType.STRING;
 
 @Getter
@@ -58,5 +59,9 @@ public class DateTimeInfo {
     private Boolean maxTimeMatch(LocalTime startTime,
                                  LocalTime endTime) {
         return endTime.getSecond() - startTime.getSecond() < maxTime;
+    }
+
+    public Boolean hasFreePolish() {
+        return this.datePolicy == FREE;
     }
 }
