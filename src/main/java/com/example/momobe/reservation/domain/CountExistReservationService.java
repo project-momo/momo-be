@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CheckExistReservationService {
+public class CountExistReservationService {
     private final CustomReservationRepository customReservationRepository;
 
     public Long countOf(Long meetingId,
