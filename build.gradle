@@ -35,6 +35,7 @@ repositories {
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
 	set('testcontainersVersion', "1.17.6")
+	set('springCloudVersion', "Hoxton.SR6")
 }
 
 dependencies {
@@ -98,12 +99,16 @@ dependencies {
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-core:${queryDslVersion}"
 
+	//parameter store
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config'
+
 
 }
 
 dependencyManagement {
 	imports {
 		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }
 
