@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -89,5 +90,16 @@ public class Meeting extends BaseTime {
                                              LocalTime startTime,
                                              LocalTime endTime) {
         return dateTimeInfo.match(date, startTime, endTime);
+    }
+
+    public Boolean matchPrice(Long price,
+                              LocalTime startTime,
+                              LocalTime endTime) {
+        if (this.dateTimeInfo.hasFreePolish()) {
+            int period = endTime.getHour() - startTime.getHour();
+            return Objects.equals(period * this.price, price);
+        }
+
+        return Objects.equals(this.price, price);
     }
 }
