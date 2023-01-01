@@ -31,7 +31,7 @@ public class QuestionController {
         return questionQueryRepository.getQuestions(meetingId);
     }
 
-    @GetMapping("/{meetingId}")
+    @GetMapping("/{meetingId}/qna")
     @ResponseStatus(HttpStatus.OK)
     public List<ResponseQuestionDto> getQuestions(@PathVariable(name = "meetingId") Long meetingId) {
         return questionQueryRepository.getQuestions(meetingId);

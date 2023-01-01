@@ -5,6 +5,7 @@ import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.dao.MeetingHostQueryRepository;
 import com.example.momobe.meeting.dao.MeetingParticipantQueryRepository;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
+import com.example.momobe.meeting.dto.MeetingDateTimeDto;
 import com.example.momobe.meeting.dto.MeetingHostResponseDto;
 import com.example.momobe.meeting.dto.MeetingParticipantResponseDto;
 import org.junit.jupiter.api.Test;
@@ -64,10 +65,10 @@ public class MeetingMyPageQueryControllerTest {
                 List.of(new MeetingHostResponseDto.RequestDto(
                         ID2, NICKNAME1, REMOTE_PATH, PAYMENT_SUCCESS, LocalDate.now(), START_TIME, END_TIME, "잘 부탁드려요~")),
                 List.of(new MeetingHostResponseDto.RequestConfirmedDto(
-                        ID3, NICKNAME2, REMOTE_PATH, ACCEPT, EMAIL1, LocalDate.now(), START_TIME, END_TIME, "잘 부탁드려요~"))
+                        ID3, NICKNAME2, REMOTE_PATH, EMAIL1, ACCEPT, LocalDate.now(), START_TIME, END_TIME, "잘 부탁드려요~"))
         );
         MeetingHostResponseDto meetingHostResponseDto = new MeetingHostResponseDto(
-                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
+                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL2, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
                 DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L
         );
         meetingHostResponseDto.init(
@@ -98,7 +99,8 @@ public class MeetingMyPageQueryControllerTest {
                         ),
                         responseFields(
                                 FWP_CONTENT, FWP_CONTENT_MEETING_ID, FWP_CONTENT_CATEGORY,
-                                FWP_CONTENT_HOST, FWP_CONTENT_HOST_USER_ID, FWP_CONTENT_HOST_NICKNAME, FWP_CONTENT_HOST_IMAGE_URL,
+                                FWP_CONTENT_HOST, FWP_CONTENT_HOST_USER_ID, FWP_CONTENT_HOST_NICKNAME,
+                                FWP_CONTENT_HOST_IMAGE_URL, FWP_CONTENT_HOST_EMAIL,
                                 FWP_CONTENT_TITLE, FWP_CONTENT_CONTENT,
                                 FWP_CONTENT_ADDRESS, FWP_CONTENT_ADDRESS_ADDRESSES, FWP_CONTENT_ADDRESS_ADDRESS_INFO,
                                 FWP_CONTENT_MEETING_STATE, FWP_CONTENT_IS_OPEN,
@@ -113,10 +115,10 @@ public class MeetingMyPageQueryControllerTest {
                                 fieldWithPath("content[].applications.requests[].nickname").type(STRING).description("지원자 닉네임"),
                                 fieldWithPath("content[].applications.requests[].imageUrl").type(STRING).description("지원자 이미지"),
                                 fieldWithPath("content[].applications.requests[].reservationState").type(STRING).description("예약 상태"),
+                                fieldWithPath("content[].applications.requests[].message").type(STRING).description("전달 사항"),
                                 fieldWithPath("content[].applications.requests[].dateTimeInfo").type(OBJECT).description("날짜 정보"),
                                 fieldWithPath("content[].applications.requests[].dateTimeInfo.date").type(STRING).description("예약 날짜"),
                                 fieldWithPath("content[].applications.requests[].dateTimeInfo.time").type(STRING).description("예약 시간"),
-                                fieldWithPath("content[].applications.requests[].message").type(STRING).description("전달 사항"),
 
                                 fieldWithPath("content[].applications.confirmed").type(ARRAY).description("확정된 지원자 목록"),
                                 fieldWithPath("content[].applications.confirmed[].userId").type(NUMBER).description("지원자 식별자"),
@@ -139,12 +141,12 @@ public class MeetingMyPageQueryControllerTest {
         // given
         MeetingParticipantResponseDto.ApplicationDto applicationDto =
                 new MeetingParticipantResponseDto.ApplicationDto(
-                        ID2, NICKNAME1, REMOTE_PATH, PAYMENT_SUCCESS,
-                        EMAIL1, "잘 부탁드려요~",
-                        new MeetingParticipantResponseDto.DateTimeInfo(
+                        ID2, NICKNAME1, REMOTE_PATH, EMAIL1,
+                        PAYMENT_SUCCESS, "잘 부탁드려요~",
+                        new MeetingDateTimeDto(
                                 LocalDate.now(), START_TIME, END_TIME));
         MeetingParticipantResponseDto meetingParticipantResponseDto = new MeetingParticipantResponseDto(
-                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
+                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL1, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
                 DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L, applicationDto
         );
         meetingParticipantResponseDto.init(
@@ -174,7 +176,8 @@ public class MeetingMyPageQueryControllerTest {
                         ),
                         responseFields(
                                 FWP_CONTENT, FWP_CONTENT_MEETING_ID, FWP_CONTENT_CATEGORY,
-                                FWP_CONTENT_HOST, FWP_CONTENT_HOST_USER_ID, FWP_CONTENT_HOST_NICKNAME, FWP_CONTENT_HOST_IMAGE_URL,
+                                FWP_CONTENT_HOST, FWP_CONTENT_HOST_USER_ID, FWP_CONTENT_HOST_NICKNAME,
+                                FWP_CONTENT_HOST_IMAGE_URL, FWP_CONTENT_HOST_EMAIL,
                                 FWP_CONTENT_TITLE, FWP_CONTENT_CONTENT,
                                 FWP_CONTENT_ADDRESS, FWP_CONTENT_ADDRESS_ADDRESSES, FWP_CONTENT_ADDRESS_ADDRESS_INFO,
                                 FWP_CONTENT_MEETING_STATE, FWP_CONTENT_IS_OPEN,

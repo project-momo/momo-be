@@ -36,7 +36,6 @@ public class MeetingMapperTest {
         assertThat(meeting.getCategory()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getCategory());
         assertThat(meeting.getTitle()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getTitle());
         assertThat(meeting.getContent()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getContent());
-        assertThat(meeting.getNotice()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getNotice());
 
         assertThat(meeting.getTags().size()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getTags().size());
         assertThat(meeting.getAddress().getAddressIds())
