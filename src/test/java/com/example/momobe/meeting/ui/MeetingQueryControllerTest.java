@@ -128,7 +128,7 @@ class MeetingQueryControllerTest {
 
         // then
         actions.andExpect(status().isOk())
-                .andDo(document("meeting/query",
+                .andDo(document("meeting/query/detail",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
