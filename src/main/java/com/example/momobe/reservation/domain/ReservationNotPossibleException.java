@@ -4,6 +4,10 @@ import com.example.momobe.common.exception.CustomException;
 import com.example.momobe.common.exception.enums.ErrorCode;
 
 public class ReservationNotPossibleException extends CustomException {
+    public ReservationNotPossibleException(ErrorCode errorCode, String message) {
+        super(errorCode, message);
+    }
+
     public ReservationNotPossibleException(ErrorCode errorCode) {
         super(errorCode);
     }
