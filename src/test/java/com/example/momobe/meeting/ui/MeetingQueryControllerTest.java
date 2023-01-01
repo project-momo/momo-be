@@ -61,7 +61,7 @@ class MeetingQueryControllerTest {
     public void meetingQuery() throws Exception {
         // given
         MeetingResponseDto meetingResponseDto = new MeetingResponseDto(
-                ID1, SOCIAL, ID1, NICKNAME, EMAIL1, REMOTE_PATH, TITLE1, CONTENT1, ADDRESS1, OPEN,
+                ID1, SOCIAL, ID1, NICKNAME, EMAIL1, REMOTE_PATH, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
                 DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L
         );
         meetingResponseDto.init(
@@ -113,7 +113,7 @@ class MeetingQueryControllerTest {
     public void meetingDetailQuery() throws Exception {
         // given
         MeetingDetailResponseDto meetingDetailResponseDto = new MeetingDetailResponseDto(
-                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL1, TITLE1, CONTENT1, ADDRESS1, OPEN,
+                ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL1, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
                 DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L,
                 new LinkedHashSet<>(List.of("서울시 강남구", "서울시 강북구")),
                 List.of(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
