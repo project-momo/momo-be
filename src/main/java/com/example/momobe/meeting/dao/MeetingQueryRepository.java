@@ -48,6 +48,7 @@ public class MeetingQueryRepository {
                         meeting.hostId,
                         user.nickname.nickname,
                         avatar.remotePath,
+                        user.email.address,
                         meeting.title,
                         meeting.content,
                         meeting.address.addressInfo,
@@ -68,9 +69,6 @@ public class MeetingQueryRepository {
         Map<Long, Group> groupMap = queryFactory
                 .from(meeting)
                 .where(meeting.id.in(meetingIds))
-                .leftJoin(reservation).on(reservation.meetingId.in(meetingIds))
-                .leftJoin(user).on(reservation.reservedUser.userId.eq(user.id))
-                .leftJoin(user.avatar, avatar)
                 .leftJoin(address).on(address.id.in(meeting.address.addressIds))
                 .leftJoin(meeting.dateTimeInfo.dateTimes, dateTime1)
                 .transform(
