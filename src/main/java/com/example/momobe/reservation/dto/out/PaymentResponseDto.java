@@ -1,5 +1,7 @@
 package com.example.momobe.reservation.dto.out;
 
+import com.example.momobe.common.resolver.UserInfo;
+import com.example.momobe.meeting.domain.Meeting;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,11 +25,13 @@ public class PaymentResponseDto {
     private String createDate;
     private String paySuccessYn;
 
-    public static PaymentResponseDto freeOrder(String ordername) {
+    public static PaymentResponseDto freeOrder(Meeting meeting, UserInfo userInfo) {
         return PaymentResponseDto.builder()
-                .orderName(ordername)
+                .orderName(meeting.getTitle())
                 .amount(0L)
                 .createDate(LocalDate.now().toString())
+                .customerEmail(userInfo.getEmail())
+                .customerName(userInfo.getNickname())
                 .build();
     }
 }

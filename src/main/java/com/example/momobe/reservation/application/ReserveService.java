@@ -43,7 +43,7 @@ public class ReserveService {
 
     private PaymentResponseDto savePaymentInformationOf(UserInfo userInfo, Reservation reservation, Meeting meeting) {
         if (reservation.checkReservationState() == ReservationState.PAYMENT_SUCCESS) {
-            return PaymentResponseDto.freeOrder(meeting.getTitle());
+            return PaymentResponseDto.freeOrder(meeting, userInfo);
         }
 
         ReservationPaymentDto paymentInfo = reservationMapper.of(userInfo, reservation, meeting);
