@@ -1,6 +1,7 @@
 package com.example.momobe.meeting.domain;
 
 import com.example.momobe.meeting.domain.enums.DatePolicy;
+import com.example.momobe.meeting.domain.enums.MeetingState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -142,5 +143,83 @@ class MeetingTest {
 
         //then
         assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 free일 때, 인자로 2배의 금액과 2시간이 들어오면 true 반환한다")
+    void matchAmountTest5() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .build();
+
+        //when
+        Boolean result = meeting.matchPrice(meeting.getPrice() * 2, LocalTime.of(10, 0), LocalTime.of(12, 0));
+
+        //then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 free일 때, 인자로 3배의 금액과 3시간이 들어오면 true 반환한다")
+    void matchAmountTest6() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .build();
+
+        //when
+        Boolean result = meeting.matchPrice(meeting.getPrice() * 2, LocalTime.of(10, 0), LocalTime.of(12, 0));
+
+        //then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("meeting의 state가 closed가 아니라면 false를 반환한다")
+    void isClosedTest1() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .meetingState(MeetingState.OPEN)
+                .build();
+
+        //when
+        Boolean result = meeting.isClosed();
+
+        //then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("meeting의 state가 closed라면 true를 반환한다")
+    void isClosedTest2() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .meetingState(MeetingState.CLOSE)
+                .build();
+
+        //when
+        Boolean result = meeting.isClosed();
+
+        //then
+        assertThat(result).isTrue();
     }
 }

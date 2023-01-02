@@ -6,6 +6,7 @@ import com.example.momobe.reservation.application.ReserveService;
 import com.example.momobe.reservation.dto.in.RequestReservationDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 public class ReservationController {
     private final ReserveService reserveService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{meetingId}/reservations")
     public PaymentResponseDto postReservation(@PathVariable(name = "meetingId") Long meetingId,
                                               @Valid @RequestBody RequestReservationDto request,

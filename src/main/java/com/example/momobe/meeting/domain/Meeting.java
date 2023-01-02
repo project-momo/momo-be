@@ -99,4 +99,8 @@ public class Meeting extends BaseTime {
 
         return Objects.equals(this.price, price);
     }
+
+    public Boolean isClosed() {
+        return this.meetingState == MeetingState.CLOSE;
+    }
 }

@@ -41,7 +41,11 @@ public class DateTimeInfo {
     protected Boolean match(LocalDate date,
                          LocalTime startTime,
                          LocalTime endTime) {
-        return dateMatch(date) && startTimeMatch(startTime) && endTimeMatch(endTime) && maxTimeMatch(startTime, endTime);
+        if (this.datePolicy.equals(FREE)) {
+            return dateMatch(date) && startTimeMatch(startTime) && endTimeMatch(endTime) && maxTimeMatch(startTime, endTime);
+        } else {
+            return dateMatch(date) && startTime == this.startTime && endTime == this.endTime;
+        }
     }
 
     private Boolean dateMatch(LocalDate date) {

@@ -262,7 +262,7 @@ class ReservationControllerTest {
                 .content(json));
 
         //then
-        perform.andExpect(status().isOk())
+        perform.andExpect(status().isCreated())
                 .andDo(document("postReservation/201",
                                 requestHeaders(
                                         headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
