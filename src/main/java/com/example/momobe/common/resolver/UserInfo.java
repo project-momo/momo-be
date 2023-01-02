@@ -13,11 +13,14 @@ public final class UserInfo {
     @Getter
     private final String email;
     private final List<String> roles;
+    @Getter
+    private final String nickname;
 
-    public UserInfo(Long id, String email, List<String> roles) {
+    public UserInfo(Long id, String email, List<String> roles, String nickname) {
         this.id = id;
         this.email = email;
         this.roles = roles;
+        this.nickname = nickname;
     }
 
     public List<String> getRoles() {

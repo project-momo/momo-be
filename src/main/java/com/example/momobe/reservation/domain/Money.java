@@ -8,6 +8,8 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
 
+import java.util.Objects;
+
 import static lombok.AccessLevel.*;
 
 @Embeddable
@@ -20,4 +22,8 @@ public class Money {
     public Long getWon() {
         return this.won;
     };
+
+    protected Boolean match(Long won) {
+        return Objects.equals(this.won, won);
+    }
 }

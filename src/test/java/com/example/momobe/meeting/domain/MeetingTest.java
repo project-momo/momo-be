@@ -1,15 +1,16 @@
 package com.example.momobe.meeting.domain;
 
-import org.assertj.core.api.Assertions;
+import com.example.momobe.meeting.domain.enums.DatePolicy;
+import com.example.momobe.meeting.domain.enums.MeetingState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MeetingTest {
     Meeting meeting;
@@ -29,7 +30,7 @@ class MeetingTest {
     void checkIfCanReservation1() {
         //given
         //when
-        Boolean result = meeting.checkIfCanReservation(10L);
+        Boolean result = meeting.verifyRemainingReservations(10L);
 
         //then
         assertThat(result).isFalse();
@@ -40,7 +41,7 @@ class MeetingTest {
     void checkIfCanReservation2() {
         //given
         //when
-        Boolean result = meeting.checkIfCanReservation(11L);
+        Boolean result = meeting.verifyRemainingReservations(11L);
 
         //then
         assertThat(result).isFalse();
@@ -51,7 +52,7 @@ class MeetingTest {
     void checkIfCanReservation3() {
         //given
         //when
-        Boolean result = meeting.checkIfCanReservation(9L);
+        Boolean result = meeting.verifyRemainingReservations(9L);
 
         //then
         assertThat(result).isTrue();
@@ -62,7 +63,161 @@ class MeetingTest {
     void checkIfCanReservation4() {
         //given
         //when
-        Boolean result = meeting.checkIfCanReservation(0L);
+        Boolean result = meeting.verifyRemainingReservations(0L);
+
+        //then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 free일 때, 인자로 같은 금액과 1시간이 들어오면 true 반환한다")
+    void matchAmountTest1() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .build();
+
+        //when
+        Boolean result = meeting.matchPrice(meeting.getPrice(), LocalTime.of(10, 0), LocalTime.of(11, 0));
+
+        //then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 free일 때, 인자로 같은 금액과 2시간이 들어오면 false 반환한다")
+    void matchAmountTest2() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .build();
+
+        //when
+        Boolean result = meeting.matchPrice(meeting.getPrice(), LocalTime.of(10, 0), LocalTime.of(12, 0));
+
+        //then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 free가 아닐 때, 기간 관계 없이 금액만 같으면 true를 반환한다.")
+    void matchAmountTest3() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.ONE_DAY)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .build();
+
+        //when
+        Boolean result = meeting.matchPrice(meeting.getPrice(), LocalTime.of(10, 0), LocalTime.of(15, 0));
+
+        //then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 free가 아닐 때, 기간 관계 없이 금액이 다르면 false를 반환한다.")
+    void matchAmountTest4() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.ONE_DAY)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .build();
+
+        //when
+        Boolean result = meeting.matchPrice(meeting.getPrice() - 500, LocalTime.of(10, 0), LocalTime.of(15, 0));
+
+        //then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 free일 때, 인자로 2배의 금액과 2시간이 들어오면 true 반환한다")
+    void matchAmountTest5() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .build();
+
+        //when
+        Boolean result = meeting.matchPrice(meeting.getPrice() * 2, LocalTime.of(10, 0), LocalTime.of(12, 0));
+
+        //then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 free일 때, 인자로 3배의 금액과 3시간이 들어오면 true 반환한다")
+    void matchAmountTest6() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .build();
+
+        //when
+        Boolean result = meeting.matchPrice(meeting.getPrice() * 2, LocalTime.of(10, 0), LocalTime.of(12, 0));
+
+        //then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("meeting의 state가 closed가 아니라면 false를 반환한다")
+    void isClosedTest1() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .meetingState(MeetingState.OPEN)
+                .build();
+
+        //when
+        Boolean result = meeting.isClosed();
+
+        //then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("meeting의 state가 closed라면 true를 반환한다")
+    void isClosedTest2() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .meetingState(MeetingState.CLOSE)
+                .build();
+
+        //when
+        Boolean result = meeting.isClosed();
 
         //then
         assertThat(result).isTrue();

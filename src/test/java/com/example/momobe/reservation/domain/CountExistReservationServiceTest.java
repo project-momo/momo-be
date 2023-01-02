@@ -19,9 +19,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class CheckExistReservationServiceTest {
+class CountExistReservationServiceTest {
     @InjectMocks
-    CheckExistReservationService checkExistReservationService;
+    CountExistReservationService countExistReservationService;
 
     @Mock
     CustomReservationRepository customReservationRepository;
@@ -40,7 +40,7 @@ class CheckExistReservationServiceTest {
         BDDMockito.given(customReservationRepository.findReservationBetween(ID1, DATE, START, END)).willReturn(List.of(reservation));
 
         //when
-        checkExistReservationService.countOf(ID1, DATE, START, END);
+        countExistReservationService.countOf(ID1, DATE, START, END);
 
         //then
         verify(customReservationRepository, times(1)).findReservationBetween(ID1, DATE, START, END);
@@ -63,7 +63,7 @@ class CheckExistReservationServiceTest {
         BDDMockito.given(customReservationRepository.findReservationBetween(ID1, DATE, START, END)).willReturn(reservations);
 
         //when
-        Long result = checkExistReservationService.countOf(ID1, DATE, START, END);
+        Long result = countExistReservationService.countOf(ID1, DATE, START, END);
 
         //then
         Assertions.assertThat(result).isEqualTo(3L);
