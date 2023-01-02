@@ -11,6 +11,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class MomoBeApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("aws.accessKeyId", "AKIAU66CN3NBOVJUA6G4");
+		System.setProperty("aws.secretKey", "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");
+		System.setProperty("aws.region", "ap-northeast-2");
 		SpringApplication.run(MomoBeApplication.class, args);
 	}
 
