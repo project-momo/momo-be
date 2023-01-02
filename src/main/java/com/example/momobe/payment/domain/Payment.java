@@ -10,6 +10,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static com.example.momobe.payment.domain.enums.PayState.*;
+import static java.util.UUID.*;
 import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
@@ -49,6 +51,8 @@ public class Payment extends BaseTime {
     private String createDate;
 
     public Payment(PayType payType, Long amount, String customerEmail, String customerName, Long userId, Long reservationID, String successUrl, String failUrl, String orderName) {
+        this.orderId = randomUUID().toString();
+        this.createDate = LocalDate.now().toString();
         this.payType = payType;
         this.amount = amount;
         this.customerEmail = customerEmail;
@@ -58,5 +62,6 @@ public class Payment extends BaseTime {
         this.successUrl = successUrl;
         this.failUrl = failUrl;
         this.orderName = orderName;
+        this.payState = BEFORE;
     }
 }
