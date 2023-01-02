@@ -1,0 +1,6 @@
+aws:
+  paramstore:
+    enabled: true
+    prefix: /config
+    name: momo-store
+    profile-separator: _

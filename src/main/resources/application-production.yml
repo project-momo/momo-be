@@ -1,6 +1,9 @@
 spring:
   config:
-    import: 'aws-parameterstore:'
+    activate:
+      on-profile: production
+    use-legacy-processing: true
+#    import: 'aws-parameterstore:'
   data:
     web:
       pageable:
@@ -20,9 +23,12 @@ spring:
       max-file-size: 10MB
       max-request-size: 20MB
   datasource:
-    url: jdbc:mysql://localhost:3306/momoDB?serverTimezone=Asia/Seoul
-    username: root
-    password: 1234
+    url: ${rds.url}
+    username: ${master.name}
+    password: ${master.password}
+#    url: jdbc:mysql://localhost:3306/momoDB?serverTimezone=Asia/Seoul
+#    username: testuser
+#    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: ${REDIS_HOST:localhost}
@@ -65,12 +71,13 @@ jwt:
   secretKey: ${jwt.secretKey}
   refreshKey: ${jwt.refreshKey}
 
-aws:
-  paramstore:
-    enabled: true
-    prefix: /config
-    profile-separator: _
-    name: momo-store
+#aws:
+#  paramstore:
+#    enabled: true
+#    prefix: /config
+#    name: momo-store
+#    profile-separator: _
 
-awsParameterStorePropertySource:
-  enabled: true
+
+#awsParameterStorePropertySource:
+#  enabled: true
