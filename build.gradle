@@ -102,6 +102,9 @@ dependencies {
 	//parameter store
 	implementation group: 'io.awspring.cloud', name: 'spring-cloud-starter-aws-parameter-store-config'
 
+	//bootstrap
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.0.2'
+
 }
 
 dependencyManagement {
@@ -121,7 +124,6 @@ ext {
 
 test {
 	outputs.dir snippetsDir
-	exclude '**/*'
 }
 
 //asciidoctor {
