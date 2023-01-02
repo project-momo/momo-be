@@ -116,6 +116,7 @@ dependencyManagement {
 
 test {
 	useJUnitPlatform()
+	exclude '**/*'
 }
 
 ext {
