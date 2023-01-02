@@ -197,8 +197,7 @@ public class ReservationIntegrationTest {
                 .andExpect(jsonPath("$.successUrl").isString())
                 .andExpect(jsonPath("$.failUrl").isString())
                 .andExpect(jsonPath("$.createDate").value(LocalDate.now().toString()))
-                .andExpect(jsonPath("$.paySuccessYn").isString())
-                .andDo(print());
+                .andExpect(jsonPath("$.paySuccessYn").isString());
     }
 
     @Test
@@ -224,8 +223,7 @@ public class ReservationIntegrationTest {
                 .header(JWT_HEADER, accessToken));
 
         //then
-        perform.andExpect(status().isNotFound())
-                .andDo(print());
+        perform.andExpect(status().isNotFound());
     }
 
     @Test
@@ -251,8 +249,7 @@ public class ReservationIntegrationTest {
                 .header(JWT_HEADER, accessToken));
 
         //then
-        perform.andExpect(status().isConflict())
-                .andDo(print());
+        perform.andExpect(status().isConflict());
     }
 
     @Test
@@ -283,8 +280,7 @@ public class ReservationIntegrationTest {
                 .header(JWT_HEADER, accessToken));
 
         //then
-        perform.andExpect(status().isConflict())
-                .andDo(print());
+        perform.andExpect(status().isConflict());
     }
 
     @Test
@@ -315,8 +311,7 @@ public class ReservationIntegrationTest {
                 .header(JWT_HEADER, accessToken));
 
         //then
-        perform.andExpect(status().isConflict())
-                .andDo(print());
+        perform.andExpect(status().isConflict());
     }
 
     @Test
@@ -347,8 +342,7 @@ public class ReservationIntegrationTest {
                 .header(JWT_HEADER, accessToken));
 
         //then
-        perform.andExpect(status().isConflict())
-                .andDo(print());
+        perform.andExpect(status().isConflict());
     }
 
     @Test
@@ -379,8 +373,7 @@ public class ReservationIntegrationTest {
                 .header(JWT_HEADER, accessToken));
 
         //then
-        perform.andExpect(status().isConflict())
-                .andDo(print());
+        perform.andExpect(status().isConflict());
     }
 
     @Test
@@ -416,8 +409,7 @@ public class ReservationIntegrationTest {
                 .andExpect(jsonPath("$.successUrl").isEmpty())
                 .andExpect(jsonPath("$.failUrl").isEmpty())
                 .andExpect(jsonPath("$.createDate").value(LocalDate.now().toString()))
-                .andExpect(jsonPath("$.paySuccessYn").isEmpty())
-                .andDo(print());
+                .andExpect(jsonPath("$.paySuccessYn").isEmpty());
     }
 
     @Test
@@ -443,8 +435,7 @@ public class ReservationIntegrationTest {
                 .header(JWT_HEADER, accessToken));
 
         //then
-        perform.andExpect(status().isConflict())
-                .andDo(print());
+        perform.andExpect(status().isConflict());
     }
 
     @Test
@@ -477,7 +468,6 @@ public class ReservationIntegrationTest {
                 .header(JWT_HEADER, accessToken));
 
         //then
-        perform.andExpect(status().isConflict())
-                .andDo(print());
+        perform.andExpect(status().isConflict());
     }
 }
