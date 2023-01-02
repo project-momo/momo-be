@@ -2,7 +2,8 @@ package com.example.momobe.meeting.dao;
 
 import com.example.momobe.address.domain.Address;
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
-import com.example.momobe.meeting.dto.MeetingResponseDto;
+import com.example.momobe.meeting.domain.Meeting;
+import com.example.momobe.meeting.dto.MeetingParticipantResponseDto;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,34 +18,39 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
-import static com.example.momobe.common.enums.TestConstants.PASSWORD1;
+import static com.example.momobe.common.enums.TestConstants.REMOTE_PATH;
 import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
+import static com.example.momobe.reservation.enums.ReservationConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureDataJpa
 @Import(JpaQueryFactoryConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class MeetingQueryRepositoryTest {
+public class MeetingParticipantQueryRepositoryTest {
     @Autowired
     private EntityManager em;
 
-    private MeetingQueryRepository meetingQueryRepository;
+    private MeetingParticipantQueryRepository meetingParticipantQueryRepository;
 
     @BeforeEach
     void init() {
-        meetingQueryRepository = new MeetingQueryRepository(new JPAQueryFactory(em), new MeetingQueryFactoryUtil());
+        meetingParticipantQueryRepository = new MeetingParticipantQueryRepository(new JPAQueryFactory(em));
     }
 
     @Test
-    public void meetingQuery() throws Exception {
+    public void meetingHostQuery() throws Exception {
         // given
-        User user = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
-        em.persist(user);
+        User host1 = new User(EMAIL1, NICKNAME1, PASSWORD1, new Avatar(GITHUB_URL));
+        User host2 = new User(EMAIL2, NICKNAME2, PASSWORD2, new Avatar(TISTORY_URL));
+        User participant = new User(EMAIL, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
+        em.persist(host1);
+        em.persist(host2);
+        em.persist(participant);
+
         Address address1 = Address.builder()
                 .si("서울시")
                 .gu("강남구")
@@ -55,16 +61,21 @@ class MeetingQueryRepositoryTest {
                 .build();
         em.persist(address1);
         em.persist(address2);
-        em.persist(generateMeeting(user.getId(), List.of(address1.getId(), address2.getId())));
+        Meeting meeting1 = generateMeeting(host1.getId(), List.of(address1.getId(), address2.getId()));
+        Meeting meeting2 = generateMeeting(host2.getId(), List.of(address1.getId(), address2.getId()));
+        em.persist(meeting1);
+        em.persist(meeting2);
+        em.persist(generatePaymentSuccessReservation(participant.getId(), meeting1.getId()));
+        em.persist(generateDenyReservation(participant.getId(), meeting2.getId()));
 
         // when
-        Page<MeetingResponseDto> meetings =
-                meetingQueryRepository.findAll(null, null, PageRequest.of(0, 3));
+        Page<MeetingParticipantResponseDto> meetings =
+                meetingParticipantQueryRepository.findAll(participant.getId(), PageRequest.of(0, 3));
 
         // then
         assertThat(meetings).isNotNull();
         assertThat(meetings.getContent()).isNotNull();
-        assertThat(meetings.getContent().size()).isGreaterThan(0);
+        assertThat(meetings.getContent().size()).isEqualTo(2);
     }
 
 }

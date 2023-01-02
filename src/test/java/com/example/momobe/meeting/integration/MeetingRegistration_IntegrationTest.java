@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.momobe.common.enums.TestConstants.*;
-import static com.example.momobe.meeting.enums.MeetingConstant.*;
+import static com.example.momobe.meeting.enums.MeetingConstants.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

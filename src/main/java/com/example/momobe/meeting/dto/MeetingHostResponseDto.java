@@ -40,7 +40,6 @@ public class MeetingHostResponseDto extends MeetingResponseDto {
         private final DateTimeInfo dateTimeInfo;
         private final String message;
 
-        @QueryProjection
         public RequestDto(Long userId, String nickname, String imageUrl, ReservationState reservationState,
                           LocalDate date, LocalTime startTime, LocalTime endTime, String message) {
             super(userId, nickname, imageUrl);
@@ -54,18 +53,17 @@ public class MeetingHostResponseDto extends MeetingResponseDto {
     public static class RequestConfirmedDto extends MeetingUserResponseDto {
         private final ReservationState reservationState;
         private final String email;
-        private final DateTimeInfo dateTimeInfo;
         private final String message;
+        private final DateTimeInfo dateTimeInfo;
 
-        @QueryProjection
         public RequestConfirmedDto(Long userId, String nickname, String imageUrl,
                                    ReservationState reservationState, String email,
                                    LocalDate date, LocalTime startTime, LocalTime endTime, String message) {
             super(userId, nickname, imageUrl);
             this.reservationState = reservationState;
             this.email = email;
-            this.dateTimeInfo = new DateTimeInfo(date, startTime, endTime);
             this.message = message;
+            this.dateTimeInfo = new DateTimeInfo(date, startTime, endTime);
         }
     }
 

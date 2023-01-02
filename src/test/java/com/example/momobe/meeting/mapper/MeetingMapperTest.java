@@ -13,7 +13,7 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import java.time.temporal.ChronoUnit;
 
 import static com.example.momobe.common.enums.TestConstants.ID1;
-import static com.example.momobe.meeting.enums.MeetingConstant.*;
+import static com.example.momobe.meeting.enums.MeetingConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @WebMvcTest({ExceptionController.class, MeetingMapper.class, DateTimeMapper.class})

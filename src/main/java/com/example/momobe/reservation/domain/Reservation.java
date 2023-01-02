@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 
 import static com.example.momobe.reservation.domain.enums.ReservationState.*;
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
@@ -36,6 +37,7 @@ public class Reservation extends BaseTime {
     @Embedded
     private ReservationMemo reservationMemo;
 
+    @Enumerated(STRING)
     private ReservationState reservationState;
 
     public Reservation(ReservationDate reservationDate, Money amount, ReservedUser reservedUser, ReservationMemo reservationMemo, Long meetingId) {
