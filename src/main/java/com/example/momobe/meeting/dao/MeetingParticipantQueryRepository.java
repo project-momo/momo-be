@@ -49,6 +49,7 @@ public class MeetingParticipantQueryRepository {
                         meeting.hostId,
                         host.nickname.nickname,
                         hostAvatar.remotePath,
+                        host.email.address,
                         meeting.title,
                         meeting.content,
                         meeting.address.addressInfo,
@@ -64,10 +65,10 @@ public class MeetingParticipantQueryRepository {
                                 Expressions.constant(participantId),
                                 participant.nickname.nickname,
                                 participantAvatar.remotePath,
-                                reservation.reservationState,
                                 participant.email.address,
+                                reservation.reservationState,
                                 reservation.reservationMemo.content,
-                                new QMeetingParticipantResponseDto_DateTimeInfo(
+                                new QMeetingDateTimeDto(
                                         reservation.reservationDate.date,
                                         reservation.reservationDate.startTime,
                                         reservation.reservationDate.endTime

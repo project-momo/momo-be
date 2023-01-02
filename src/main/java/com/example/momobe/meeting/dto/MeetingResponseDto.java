@@ -15,7 +15,7 @@ import java.util.List;
 public class MeetingResponseDto {
     private final Long meetingId;
     private final String category;
-    private final MeetingUserResponseDto host;
+    private final MeetingUserResponseWithEmailDto host;
     private final String title;
     private final String content;
     private final AddressDto address;
@@ -52,7 +52,7 @@ public class MeetingResponseDto {
 
     @QueryProjection
     public MeetingResponseDto(Long meetingId, Category category, Long hostId,
-                              String hostNickname, String hostImageUrl,
+                              String hostNickname, String hostImageUrl, String hostEmail,
                               String title, String content, String addressInfo,
                               MeetingState meetingState, DatePolicy datePolicy,
                               LocalDate startDate, LocalDate endDate,
@@ -60,7 +60,7 @@ public class MeetingResponseDto {
                               Long price) {
         this.meetingId = meetingId;
         this.category = category.getDescription();
-        this.host = new MeetingUserResponseDto(hostId, hostNickname, hostImageUrl);
+        this.host = new MeetingUserResponseWithEmailDto(hostId, hostNickname, hostImageUrl, hostEmail);
         this.title = title;
         this.content = content;
         this.address = new AddressDto(addressInfo);

@@ -35,6 +35,7 @@ repositories {
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
 	set('testcontainersVersion', "1.17.6")
+//	set('springCloudVersion', "Hoxton.SR6")
 }
 
 dependencies {
@@ -98,12 +99,15 @@ dependencies {
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-core:${queryDslVersion}"
 
+	//parameter store
+	implementation group: 'io.awspring.cloud', name: 'spring-cloud-starter-aws-parameter-store-config'
 
 }
 
 dependencyManagement {
 	imports {
 		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+		mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:2.3.3"
 	}
 }
 
@@ -117,32 +121,33 @@ ext {
 
 test {
 	outputs.dir snippetsDir
+	exclude '**/*'
 }
 
-asciidoctor {
-	inputs.dir snippetsDir
-	configurations 'asciidoctorExt'
-	dependsOn test
-}
-
-task copyDocument(type: Copy) {
-	dependsOn asciidoctor
-	println "asciidoctor output: ${asciidoctor.outputDir}"
-	from file("build/docs/asciidoc/")
-	into file("src/main/resources/static/docs")
-}
-
-build {
-	dependsOn copyDocument
-}
-
-bootJar {
-	enabled = true
-	dependsOn copyDocument
-	from ("${asciidoctor.outputDir}") {
-		into 'static/docs'
-	}
-}
+//asciidoctor {
+//	inputs.dir snippetsDir
+//	configurations 'asciidoctorExt'
+//	dependsOn test
+//}
+//
+//task copyDocument(type: Copy) {
+//	dependsOn asciidoctor
+//	println "asciidoctor output: ${asciidoctor.outputDir}"
+//	from file("build/docs/asciidoc/")
+//	into file("src/main/resources/static/docs")
+//}
+//
+//build {
+//	dependsOn copyDocument
+//}
+//
+//bootJar {
+//	enabled = true
+//	dependsOn copyDocument
+//	from ("${asciidoctor.outputDir}") {
+//		into 'static/docs'
+//	}
+//}
 
 // querydsl
 def querydslDir = "$buildDir/generated/'querydsl'"

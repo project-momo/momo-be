@@ -29,6 +29,11 @@ public class UserFindController {
         return mapper.userDtoOfUser(findUser);
     }
 
+    @GetMapping("/test")
+    public String healthCheck(){
+        return "test 입니다.";
+    }
+
 //    @GetMapping("/meetings/{meeting-id}/reservations")
 //    @ResponseStatus(HttpStatus.OK)
 //    public UserResponseDto getUserReservation(@Token UserInfo request, @PathVariable(name = "meeting-id") Long meetingId){

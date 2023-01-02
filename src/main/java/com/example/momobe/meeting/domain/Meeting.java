@@ -59,15 +59,13 @@ public class Meeting extends BaseTime {
     @Column(nullable = false)
     private Long price;
 
-    private String notice;
-
     @Embedded
     private Address address;
 
     @Builder
     public Meeting(String title, String content, Long hostId, Category category, List<Tag> tags,
                    Integer personnel, MeetingState meetingState, DateTimeInfo dateTimeInfo,
-                   Long price, String notice, Address address) {
+                   Long price, Address address) {
         this.title = title;
         this.content = content;
         this.hostId = hostId;
@@ -78,7 +76,6 @@ public class Meeting extends BaseTime {
         this.dateTimeInfo = dateTimeInfo;
         dateTimeInfo.getDateTimes().forEach(dateTime -> dateTime.init(this));
         this.price = price;
-        this.notice = notice;
         this.address = address;
     }
 
