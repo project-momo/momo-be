@@ -1,5 +1,6 @@
 package com.example.momobe.common.exception.dto;
 
+import com.example.momobe.common.exception.CustomException;
 import com.example.momobe.common.exception.enums.ErrorCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,15 @@ public final class ErrorResponseEntity {
         return ResponseEntity
                 .status(e.getHttpStatus())
                 .body(new ErrorResponseEntity(e.getHttpStatus().value(), e.name(), e.getMessage()));
+    }
+
+    public static ResponseEntity<ErrorResponseEntity> of(CustomException e) {
+        HttpStatus status = e.getErrorCode().getHttpStatus();
+        String message = (e.getMessage() == null) ? e.getErrorCode().getMessage() : e.getMessage();
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(new ErrorResponseEntity(status.value(), status.toString(), message));
     }
 
     public static ResponseEntity<ErrorResponseEntity> of(MethodArgumentNotValidException e) {

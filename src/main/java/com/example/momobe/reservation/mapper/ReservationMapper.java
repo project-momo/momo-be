@@ -4,6 +4,7 @@ import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.reservation.domain.*;
 import com.example.momobe.reservation.dto.in.RequestReservationDto;
+import com.example.momobe.reservation.dto.out.ReservationPaymentDto;
 import org.mapstruct.Mapper;
 
 import java.time.LocalDate;
@@ -26,5 +27,16 @@ public interface ReservationMapper {
                 new ReservationMemo(reservationDto.getReservationMemo()),
                 meeting.getId()
         );
+    }
+
+    default ReservationPaymentDto of(UserInfo userInfo, Reservation reservation, Meeting meeting) {
+        return ReservationPaymentDto.builder()
+                .amount(reservation.getAmount().getWon())
+                .customerEmail(userInfo.getEmail())
+                .customerName(userInfo.getNickname())
+                .reservationID(reservation.getId())
+                .userId(userInfo.getId())
+                .orderName(meeting.getTitle())
+                .build();
     }
 }

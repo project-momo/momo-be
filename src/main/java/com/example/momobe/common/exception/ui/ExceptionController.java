@@ -16,6 +16,6 @@ public class ExceptionController {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponseEntity> handleIllegalArgumentExceptions(CustomException e) {
-        return ErrorResponseEntity.of(e.getErrorCode());
+        return ErrorResponseEntity.of(e);
     }
 }

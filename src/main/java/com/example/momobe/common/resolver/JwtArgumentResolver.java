@@ -38,11 +38,12 @@ public class JwtArgumentResolver implements HandlerMethodArgumentResolver {
         Claims claims = jwtTokenUtil.parseAccessToken(bearerToken);
         String email = claims.getSubject();
         List<String> roles = (List) claims.get(ROLES);
+        String nickname = (String) claims.get("nickname");
         Long id;
         if (claims.get(ID).getClass().equals(Integer.class)) {
             id = ((Integer)claims.get(ID)).longValue();
         } else { id = (Long)claims.get(ID); }
 
-        return new UserInfo(id, email, roles);
+        return new UserInfo(id, email, roles, nickname);
     }
 }
