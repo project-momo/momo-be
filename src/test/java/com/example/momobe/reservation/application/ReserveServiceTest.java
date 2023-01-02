@@ -90,7 +90,6 @@ class ReserveServiceTest {
                 .personnel(10)
                 .price(10000L)
                 .content(CONTENT2)
-                .notice(CONTENT3)
                 .tags(List.of(Tag.OFFLINE, Tag.MENTORING))
                 .meetingState(OPEN)
                 .address(new Address(List.of(1L,2L),"화곡동"))

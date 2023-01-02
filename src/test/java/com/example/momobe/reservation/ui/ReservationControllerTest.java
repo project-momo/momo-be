@@ -5,6 +5,7 @@ import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
+import com.example.momobe.meeting.domain.MeetingNotFoundException;
 import com.example.momobe.payment.domain.enums.PayState;
 import com.example.momobe.payment.domain.enums.PayType;
 import com.example.momobe.reservation.application.ReserveService;
@@ -286,6 +287,48 @@ class ReservationControllerTest {
                                 fieldWithPath("createDate").type(STRING).description("결제 생성일"),
                                 fieldWithPath("paySuccessYn").type(STRING).description("결제 완료 여부")
                         )
+                        )
+                );
+    }
+
+    @Test
+    @DisplayName("요청한 meeting을 찾지 못할 경우 404 반환")
+    void postReservation_fail5() throws Exception {
+        //given
+        given(reserveService.reserve(anyLong(), any(RequestReservationDto.class), any()))
+                .willThrow(new MeetingNotFoundException(DATA_NOT_FOUND));
+
+        RequestReservationDto request = RequestReservationDto.builder()
+                .dateInfo(RequestReservationDto.ReservationDateDto.builder()
+                        .reservationDate(LocalDate.now())
+                        .startTime(LocalTime.now())
+                        .endTime(LocalTime.now().plus(1, ChronoUnit.HOURS))
+                        .build())
+                .amount(1000L)
+                .reservationMemo(CONTENT1)
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/meetings/{meetingId}/reservations", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
+                .content(json));
+
+        //then
+        perform.andExpect(status().isNotFound())
+                .andDo(document("postReservation/404",
+                                requestHeaders(
+                                        headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
+                                ),
+                                requestFields(
+                                        fieldWithPath("dateInfo.reservationDate").description("예약일"),
+                                        fieldWithPath("dateInfo.startTime").description("시작 시간"),
+                                        fieldWithPath("dateInfo.endTime").description("마지막 시간"),
+                                        fieldWithPath("amount").description("비용"),
+                                        fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
+                                )
                         )
                 );
     }

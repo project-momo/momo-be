@@ -1,14 +1,18 @@
 package com.example.momobe.meeting.domain;
 
+import com.example.momobe.meeting.domain.enums.DatePolicy;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 import static java.time.temporal.ChronoUnit.*;
+import static org.assertj.core.api.Assertions.*;
 
 class DateTimeInfoTest {
     DateTimeInfo dateTimeInfo;
@@ -28,6 +32,7 @@ class DateTimeInfoTest {
                 .startTime(startTime)
                 .endTime(endTime)
                 .maxTime(maxTime)
+                .datePolicy(DatePolicy.FREE)
                 .build();
     }
 
@@ -39,7 +44,7 @@ class DateTimeInfoTest {
         Boolean result = dateTimeInfo.match(startDate.minus(1, DAYS), startTime, startTime.plus(1, HOURS));
 
         //then
-        Assertions.assertThat(result).isFalse();
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -50,7 +55,7 @@ class DateTimeInfoTest {
         Boolean result = dateTimeInfo.match(endDate.plus(1, DAYS), startTime, startTime.plus(1, HOURS));
 
         //then
-        Assertions.assertThat(result).isFalse();
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -61,7 +66,7 @@ class DateTimeInfoTest {
         Boolean result = dateTimeInfo.match(startDate, startTime, startTime.plus(1, HOURS));
 
         //then
-        Assertions.assertThat(result).isTrue();
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -72,7 +77,7 @@ class DateTimeInfoTest {
         Boolean result = dateTimeInfo.match(endDate, startTime, startTime.plus(1, HOURS));
 
         //then
-        Assertions.assertThat(result).isTrue();
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -83,7 +88,7 @@ class DateTimeInfoTest {
         Boolean result = dateTimeInfo.match(startDate.plus(1, DAYS), startTime, startTime.plus(1, HOURS));
 
         //then
-        Assertions.assertThat(result).isTrue();
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -94,7 +99,7 @@ class DateTimeInfoTest {
         Boolean result = dateTimeInfo.match(startDate.plus(1, DAYS), startTime.minus(1, HOURS), startTime.plus(1, HOURS));
 
         //then
-        Assertions.assertThat(result).isTrue();
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -105,7 +110,7 @@ class DateTimeInfoTest {
         Boolean result = dateTimeInfo.match(startDate.plus(1, DAYS), endTime, endTime.plus(1, HOURS));
 
         //then
-        Assertions.assertThat(result).isTrue();
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -116,7 +121,7 @@ class DateTimeInfoTest {
         Boolean result = dateTimeInfo.match(startDate.plus(1, DAYS), startTime.plus(2, HOURS), startTime.plus(4, HOURS));
 
         //then
-        Assertions.assertThat(result).isTrue();
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -127,7 +132,7 @@ class DateTimeInfoTest {
         Boolean result = dateTimeInfo.match(startDate.plus(1, DAYS), startTime, startTime.plus(4, HOURS));
 
         //then
-        Assertions.assertThat(result).isTrue();
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -138,6 +143,61 @@ class DateTimeInfoTest {
         Boolean result = dateTimeInfo.match(startDate.plus(1, DAYS), startTime, startTime.plus(5, HOURS));
 
         //then
-        Assertions.assertThat(result).isTrue();
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 Free가 아닌 경우 시작 시간과 끝나는 시간이 정확히 일치하지 않으면 false을 반환한다(1)")
+    void matchTest11() {
+        //given
+        ReflectionTestUtils.setField(dateTimeInfo, "datePolicy", DatePolicy.ONE_DAY);
+        //when
+        Boolean result = dateTimeInfo.match(startDate, startTime, endTime.minus(1, HOURS));
+        //then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 Free가 아닌 경우 시작 시간과 끝나는 시간이 정확히 일치하지 않으면 false을 반환한다(2)")
+    void matchTest12() {
+        //given
+        ReflectionTestUtils.setField(dateTimeInfo, "datePolicy", DatePolicy.ONE_DAY);
+        //when
+        Boolean result = dateTimeInfo.match(startDate, startTime.plus(1, HOURS), endTime);
+        //then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 Free가 아닌 경우 시작 시간과 끝나는 시간이 정확히 일치하면 true을 반환한다(1)")
+    void matchTest13() {
+        //given
+        ReflectionTestUtils.setField(dateTimeInfo, "datePolicy", DatePolicy.ONE_DAY);
+        //when
+        Boolean result = dateTimeInfo.match(startDate, startTime, endTime);
+        //then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 Free가 아닌 경우 시작 시간과 끝나는 시간이 정확히 일치하면 true을 반환한다(2)")
+    void matchTest14() {
+        //given
+        ReflectionTestUtils.setField(dateTimeInfo, "datePolicy", DatePolicy.ONE_DAY);
+        //when
+        Boolean result = dateTimeInfo.match(endDate, startTime, endTime);
+        //then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("datePolicy가 Free가 아닌 경우 시작 시간과 끝나는 시간이 정확히 일치하면 true을 반환한다(1)")
+    void matchTest15() {
+        //given
+        ReflectionTestUtils.setField(dateTimeInfo, "datePolicy", DatePolicy.ONE_DAY);
+        //when
+        Boolean result = dateTimeInfo.match(endDate.minus(2, DAYS), startTime, endTime);
+        //then
+        assertThat(result).isTrue();
     }
 }
