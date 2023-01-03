@@ -4,9 +4,8 @@ import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.meeting.domain.MeetingNotFoundException;
 import com.example.momobe.meeting.dto.MeetingDetailResponseDto;
 import com.example.momobe.meeting.dto.QMeetingDetailResponseDto;
-import com.example.momobe.question.dto.out.QResponseQuestionDto;
-import com.example.momobe.question.dto.out.QResponseQuestionDto_Answer;
 import com.example.momobe.question.dto.out.ResponseQuestionDto;
+import com.example.momobe.question.infrastructure.QuestionQueryRepository;
 import com.example.momobe.user.domain.QUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +28,7 @@ import static com.querydsl.core.types.dsl.Expressions.constant;
 @Transactional(readOnly = true)
 public class MeetingDetailQueryRepository {
     private final JPAQueryFactory queryFactory;
+    private final QuestionQueryRepository questionQueryRepository;
 
     QUser host = new QUser("host");
     QUser questioner = new QUser("questioner");
@@ -71,27 +71,7 @@ public class MeetingDetailQueryRepository {
                                 list(dateTime1.dateTime))
                         ));
 
-        List<ResponseQuestionDto> questionDtos = queryFactory
-                .from(question)
-                .where(question.meeting.meetingId.eq(meetingId))
-                .leftJoin(question).on(question.meeting.meetingId.eq(meetingId))
-                .leftJoin(answer).on(answer.question.questionId.eq(question.id))
-                .leftJoin(questioner).on(question.writer.writerId.eq(questioner.id))
-                .leftJoin(answerer).on(answer.writer.writerId.eq(answerer.id))
-                .leftJoin(questioner.avatar, avatar)
-                .leftJoin(answerer.avatar, avatar)
-                .transform(groupBy(question.id)
-                        .list(new QResponseQuestionDto(
-                                question.id, question.content.content, questioner.id, questioner.email.address,
-                                questioner.nickname.nickname, questioner.avatar.remotePath,
-                                question.createdAt, question.lastModifiedAt,
-                                list(new QResponseQuestionDto_Answer(
-                                        answer.id, answer.content.content, answerer.id, answerer.email.address,
-                                        answerer.nickname.nickname, answerer.avatar.remotePath,
-                                        answer.createdAt, answer.lastModifiedAt))
-                        ))
-                );
-
+        List<ResponseQuestionDto> questionDtos = questionQueryRepository.getQuestions(meetingId);
         if (dtos.isEmpty()) throw new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND);
 
         dtos.get(0).init(questionDtos);
