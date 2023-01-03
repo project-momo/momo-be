@@ -12,8 +12,8 @@ COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java", "-jar", "app.jar" \
 "--spring.config.location=/config/application-production.yml"]
 
-#redis 포트 개방
-EXPOSE 6739
+# #redis 포트 개방
+# EXPOSE 6739
 
-#redis 실행
-CMD ["redis-server", "--protected-mode no"]
+# #redis 실행
+# CMD ["redis-server", "--protected-mode no"]
