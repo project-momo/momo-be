@@ -14,7 +14,7 @@ spring:
       max-file-size: 10MB
       max-request-size: 20MB
   datasource:
-    url: jdbc:mysql://rdsinstance.cg6o3rqphy1s.ap-northeast-2.rds.amazonaws.com:3306/rdsDB?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: ${DB_URL}
     username: root
     password: ${MASTER_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
