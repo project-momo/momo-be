@@ -35,6 +35,7 @@ public class DateTimeInfo {
     @Column(nullable = false)
     private Integer maxTime;
 
+    @Builder.Default
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DateTime> dateTimes = new ArrayList<>();
 

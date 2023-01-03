@@ -78,7 +78,7 @@ public class MeetingMapperTest {
         assertThat(meeting.getDateTimeInfo().getDateTimes().size())
                 .isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getDates().size()
                         * (MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getEndTime().getHour()
-                        - MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getStartTime().getHour() + 1));
+                        - MEETING_REQUEST_DTO_WITH_FREE.getDateTime().getStartTime().getHour()));
     }
 
 }
