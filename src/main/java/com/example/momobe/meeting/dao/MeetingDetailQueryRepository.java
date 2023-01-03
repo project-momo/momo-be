@@ -71,10 +71,11 @@ public class MeetingDetailQueryRepository {
                                 list(dateTime1.dateTime))
                         ));
 
-        List<ResponseQuestionDto> questionDtos = questionQueryRepository.getQuestions(meetingId);
         if (dtos.isEmpty()) throw new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND);
 
+        List<ResponseQuestionDto> questionDtos = questionQueryRepository.getQuestions(meetingId);
         dtos.get(0).init(questionDtos);
+
         return dtos.get(0);
     }
 }
