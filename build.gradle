@@ -99,24 +99,16 @@ dependencies {
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-core:${queryDslVersion}"
 
-	//parameter store
-	implementation group: 'io.awspring.cloud', name: 'spring-cloud-starter-aws-parameter-store-config'
-
-	//bootstrap
-	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.0.2'
-
 }
 
 dependencyManagement {
 	imports {
 		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
-		mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:2.3.3"
 	}
 }
 
 test {
 	useJUnitPlatform()
-	exclude '**/*'
 }
 
 ext {
