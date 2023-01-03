@@ -18,6 +18,9 @@ spring:
     username: root
     password: sidsidvjscl12!
     driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
   mail:
     host: smtp.gmail.com
     username:
@@ -65,3 +68,7 @@ server:
     encoding:
       charset: UTF-8
       force: true
+
+jwt:
+  secretKey: jwt-tokens-that-should-be-changed-production
+  refreshKey: jwt-refresh-tokens-that-should-be-changed-production
