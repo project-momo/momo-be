@@ -1,16 +1,19 @@
 package com.example.momobe.meeting.dao;
 
 import com.example.momobe.address.domain.Address;
+import com.example.momobe.answer.domain.Answer;
+import com.example.momobe.answer.domain.Content;
+import com.example.momobe.answer.domain.Writer;
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.meeting.dto.MeetingDetailResponseDto;
+import com.example.momobe.question.domain.Question;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
@@ -27,7 +30,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @AutoConfigureDataJpa
 @Import(JpaQueryFactoryConfig.class)
-@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class MeetingDetailQueryRepositoryTest {
     @Autowired
@@ -45,6 +47,10 @@ public class MeetingDetailQueryRepositoryTest {
         // given
         User host = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(host);
+        User questioner = new User(EMAIL2, NICKNAME, PASSWORD2, new Avatar(REMOTE_PATH));
+        em.persist(questioner);
+        User answerer = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
+        em.persist(answerer);
         Address address1 = Address.builder()
                 .si("서울시")
                 .gu("강남구")
@@ -57,6 +63,14 @@ public class MeetingDetailQueryRepositoryTest {
         em.persist(address2);
         Meeting meeting = generateMeeting(host.getId(), List.of(address1.getId(), address2.getId()));
         em.persist(meeting);
+        Question question = new Question(meeting.getId(), CONTENT1, questioner.getId());
+        em.persist(question);
+        Answer answer = new Answer(
+                new Content(CONTENT2),
+                new com.example.momobe.answer.domain.Meeting(meeting.getId()),
+                new Writer(answerer.getId()),
+                new com.example.momobe.answer.domain.Question(question.getId()));
+        em.persist(answer);
 
         // when
         MeetingDetailResponseDto responseDto = meetingDetailQueryRepository.findById(meeting.getId());
@@ -83,6 +97,25 @@ public class MeetingDetailQueryRepositoryTest {
         assertThat(responseDto.getDateTime().getEndTime()).isEqualTo(meeting.getDateTimeInfo().getEndTime());
         assertThat(responseDto.getDateTime().getMaxTime()).isEqualTo(meeting.getDateTimeInfo().getMaxTime());
         assertThat(responseDto.getPrice()).isEqualTo(meeting.getPrice());
+
+        assertThat(responseDto.getQuestions()).isNotEmpty();
+        assertThat(responseDto.getQuestions().get(0).getQuestionId()).isEqualTo(question.getId());
+        assertThat(responseDto.getQuestions().get(0).getContent()).isEqualTo(question.getContent().getContent());
+        assertThat(responseDto.getQuestions().get(0).getQuestioner().getUserId()).isEqualTo(questioner.getId());
+        assertThat(responseDto.getQuestions().get(0).getQuestioner().getEmail()).isEqualTo(questioner.getEmail().getAddress());
+        assertThat(responseDto.getQuestions().get(0).getQuestioner().getNickname()).isEqualTo(questioner.getNickname().getNickname());
+        assertThat(responseDto.getQuestions().get(0).getQuestioner().getImageUrl()).isEqualTo(questioner.getAvatar().getRemotePath());
+        assertThat(responseDto.getQuestions().get(0).getCreatedAt()).isNotNull();
+        assertThat(responseDto.getQuestions().get(0).getModifiedAt()).isNotNull();
+
+        assertThat(responseDto.getQuestions().get(0).getAnswers()).isNotEmpty();
+        assertThat(responseDto.getQuestions().get(0).getAnswers().get(0).getAnswerId()).isEqualTo(answer.getId());
+        assertThat(responseDto.getQuestions().get(0).getAnswers().get(0).getContent()).isEqualTo(answer.getContent().getContent());
+        assertThat(responseDto.getQuestions().get(0).getAnswers().get(0).getAnswerer().getUserId()).isEqualTo(answerer.getId());
+        assertThat(responseDto.getQuestions().get(0).getAnswers().get(0).getAnswerer().getEmail()).isEqualTo(answerer.getEmail().getAddress());
+        assertThat(responseDto.getQuestions().get(0).getAnswers().get(0).getAnswerer().getNickname()).isEqualTo(answerer.getNickname().getNickname());
+        assertThat(responseDto.getQuestions().get(0).getAnswers().get(0).getCreatedAt()).isNotNull();
+        assertThat(responseDto.getQuestions().get(0).getAnswers().get(0).getModifiedAt()).isNotNull();
     }
 
 }
