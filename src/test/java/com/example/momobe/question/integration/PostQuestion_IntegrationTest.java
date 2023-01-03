@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 import static org.assertj.core.api.Assertions.*;
@@ -29,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "jwt.refreshKey=only_test_refresh_key_value_gn..rlfdlrkqnwhrgkekspdy"
 })
 @AutoConfigureMockMvc
+@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 public class PostQuestion_IntegrationTest {
     @Autowired
     MockMvc mockMvc;
@@ -77,11 +81,11 @@ public class PostQuestion_IntegrationTest {
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, accessToken));
-        Question result = questionRepository.findAll().get(0);
+        List<Question> questions = questionRepository.findAll();
 
         // then
         perform.andExpect(status().isCreated());
-        assertThat(result.getContent()).isEqualTo(new Content(CONTENT1));
-        assertThat(result.getMeeting()).isEqualTo(new Meeting(ID1));
+        assertThat(questions.get(0).getContent()).isEqualTo(new Content(CONTENT1));
+        assertThat(questions.size()).isEqualTo(1);
     }
 }

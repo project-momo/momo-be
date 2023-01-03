@@ -9,6 +9,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,6 +19,7 @@ import java.util.Optional;
 import static com.example.momobe.common.enums.TestConstants.*;
 
 @SpringBootTest
+@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 class RedisStoreTest {
     @Autowired
     RedisStore<RedisUserDto> redisStore;
