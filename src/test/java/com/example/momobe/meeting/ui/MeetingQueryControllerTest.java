@@ -7,6 +7,7 @@ import com.example.momobe.meeting.dao.MeetingQueryRepository;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.dto.MeetingDetailResponseDto;
 import com.example.momobe.meeting.dto.MeetingResponseDto;
+import com.example.momobe.question.dto.out.ResponseQuestionDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -112,11 +113,20 @@ class MeetingQueryControllerTest {
     @Test
     public void meetingDetailQuery() throws Exception {
         // given
+        ResponseQuestionDto responseQuestionDto = new ResponseQuestionDto(
+                ID1, CONTENT1, ID2, EMAIL1, NICKNAME, REMOTE_PATH, LocalDateTime.now(), LocalDateTime.now(),
+                List.of(new ResponseQuestionDto.Answer(
+                        ID1, CONTENT1, ID3, EMAIL1, NICKNAME, REMOTE_PATH, LocalDateTime.now(), LocalDateTime.now()
+                ))
+        );
+
         MeetingDetailResponseDto meetingDetailResponseDto = new MeetingDetailResponseDto(
                 ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL1, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
                 DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L,
                 new LinkedHashSet<>(List.of("서울시 강남구", "서울시 강북구")),
                 List.of(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
+
+        meetingDetailResponseDto.init(List.of(responseQuestionDto));
 
         given(meetingDetailQueryRepository.findById(ID1))
                 .willReturn(meetingDetailResponseDto);
@@ -158,7 +168,29 @@ class MeetingQueryControllerTest {
                                 fieldWithPath("dateTime.maxTime").type(NUMBER).description("최대 예약 가능 시간"),
                                 fieldWithPath("dateTime.dayWeeks").type(ARRAY).description("요일 (월: 1 ~ 일: 7, datePolicy가 PEROID일 때만)"),
                                 fieldWithPath("dateTime.dates").type(ARRAY).description("날짜 (datePolicy가 FREE일 때만)"),
-                                fieldWithPath("price").type(NUMBER).description("가격")
+                                fieldWithPath("price").type(NUMBER).description("가격"),
+
+                                fieldWithPath("questions").type(ARRAY).description("질문/답변"),
+                                fieldWithPath("questions[].questionId").type(NUMBER).description("질문 식별자"),
+                                fieldWithPath("questions[].content").type(STRING).description("질문 내용"),
+                                fieldWithPath("questions[].questioner").type(OBJECT).description("질문자"),
+                                fieldWithPath("questions[].questioner.userId").type(NUMBER).description("질문자 식별자"),
+                                fieldWithPath("questions[].questioner.email").type(STRING).description("질문자 이메일"),
+                                fieldWithPath("questions[].questioner.nickname").type(STRING).description("질문자 닉네임"),
+                                fieldWithPath("questions[].questioner.imageUrl").type(STRING).description("질문자 이미지"),
+                                fieldWithPath("questions[].createdAt").type(STRING).description("질문 작성일시"),
+                                fieldWithPath("questions[].modifiedAt").type(STRING).description("질문자 수정일시"),
+
+                                fieldWithPath("questions[].answers").type(ARRAY).description("답변"),
+                                fieldWithPath("questions[].answers[].answerId").type(NUMBER).description("답변 식별자"),
+                                fieldWithPath("questions[].answers[].content").type(STRING).description("답변 내용"),
+                                fieldWithPath("questions[].answers[].answerer").type(OBJECT).description("답변자"),
+                                fieldWithPath("questions[].answers[].answerer.userId").type(NUMBER).description("답변자 식별자"),
+                                fieldWithPath("questions[].answers[].answerer.email").type(STRING).description("답변자 이메일"),
+                                fieldWithPath("questions[].answers[].answerer.nickname").type(STRING).description("답변자 닉네임"),
+                                fieldWithPath("questions[].answers[].answerer.imageUrl").type(STRING).description("답변자 이미지"),
+                                fieldWithPath("questions[].answers[].createdAt").type(STRING).description("답변 작성일시"),
+                                fieldWithPath("questions[].answers[].modifiedAt").type(STRING).description("답변자 수정일시")
                         )
                 ));
     }

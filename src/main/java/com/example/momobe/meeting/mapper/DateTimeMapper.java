@@ -41,7 +41,7 @@ public interface DateTimeMapper {
     }
 
     default void addGeneratedDateTime(ArrayList<DateTime> dateTimes, LocalDate date, int startTime, int endTime) {
-        for (int i = startTime; i <= endTime; i++) {
+        for (int i = startTime; i < endTime; i++) {
             dateTimes.add(new DateTime(LocalDateTime.of(date, LocalTime.of(i, 0))));
         }
     }

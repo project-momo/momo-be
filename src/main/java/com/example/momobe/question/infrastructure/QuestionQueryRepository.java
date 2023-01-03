@@ -36,7 +36,7 @@ public class QuestionQueryRepository {
                 .leftJoin(questioner.avatar, avatar)
                 .leftJoin(answerer.avatar, avatar)
                 .where(question.meeting.meetingId.eq(meetingId))
-                .orderBy(question.createdAt.desc())
+                .orderBy(question.createdAt.asc())
                 .transform(groupBy(question.id)
                         .list(
                                 new QResponseQuestionDto(question.id, question.content.content, questioner.id, questioner.email.address,
