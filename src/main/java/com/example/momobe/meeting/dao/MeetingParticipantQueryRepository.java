@@ -26,11 +26,8 @@ import static com.example.momobe.meeting.domain.QMeeting.meeting;
 import static com.example.momobe.reservation.domain.QReservation.reservation;
 import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.example.momobe.user.domain.QUser.user;
-import static com.querydsl.core.group.GroupBy.groupBy;
-import static com.querydsl.core.group.GroupBy.set;
-import static com.querydsl.core.types.Projections.list;
+import static com.querydsl.core.group.GroupBy.*;
 
-@SuppressWarnings("unchecked")
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -89,7 +86,7 @@ public class MeetingParticipantQueryRepository {
         List<Long> meetingIds = dtos.stream()
                 .map(MeetingResponseDto::getMeetingId).collect(Collectors.toList());
 
-        Map<Long, Group> groupMap = queryFactory
+        Map<Long, MeetingInfoDto> meetingInfoDtoMap = queryFactory
                 .from(meeting)
                 .where(meeting.id.in(meetingIds))
                 .leftJoin(reservation).on(reservation.meetingId.in(meetingIds))
@@ -98,9 +95,9 @@ public class MeetingParticipantQueryRepository {
                 .leftJoin(address).on(address.id.in(meeting.address.addressIds))
                 .leftJoin(meeting.dateTimeInfo.dateTimes, dateTime1)
                 .transform(
-                        groupBy(meeting.id).as(
+                        groupBy(meeting.id).as(new QMeetingInfoDto(
                                 set(address.si.append(" ").append(address.gu)),
-                                list(dateTime1.dateTime)
+                                list(dateTime1.dateTime))
                         )
                 );
 
@@ -116,25 +113,21 @@ public class MeetingParticipantQueryRepository {
             dateInfoMap.put(dto.getMeetingId(), dto.getDateTime());
         });
 
-        groupMap.forEach(
-                (meetingId, group) -> {
-                    Object[] array = group.toArray();
-
-                    Set<String> addresses = (Set<String>) array[1];
-                    addressesMaps.put(meetingId, new ArrayList<>(addresses));
-                    List<LocalDateTime> dateTimes = (List<LocalDateTime>) array[2];
+        meetingInfoDtoMap.forEach(
+                (meetingId, meetingInfoDto) -> {
+                    addressesMaps.put(meetingId, new ArrayList<>(meetingInfoDto.getAddresses()));
                     MeetingResponseDto.DateTimeDto dateTimeDto = dateInfoMap.get(meetingId);
 
                     if (dateTimeDto.getDatePolicy() == DatePolicy.FREE) {
                         LinkedHashSet<LocalDate> set = new LinkedHashSet<>();
-                        dateTimes.forEach(dateTime -> {
+                        meetingInfoDto.getDateTimes().forEach(dateTime -> {
                             if (dateTime != null)
                                 set.add(dateTime.toLocalDate());
                         });
                         datesMaps.put(meetingId, new ArrayList<>(set));
                     } else if (dateTimeDto.getDatePolicy() == DatePolicy.PERIOD) {
                         TreeSet<Integer> set = new TreeSet<>();
-                        dateTimes.forEach(dateTime -> {
+                        meetingInfoDto.getDateTimes().forEach(dateTime -> {
                             if (dateTime != null)
                                 set.add(dateTime.getDayOfWeek().getValue());
                         });

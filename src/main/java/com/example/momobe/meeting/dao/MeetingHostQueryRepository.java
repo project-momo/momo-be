@@ -1,11 +1,8 @@
 package com.example.momobe.meeting.dao;
 
 import com.example.momobe.meeting.domain.enums.DatePolicy;
-import com.example.momobe.meeting.dto.MeetingHostResponseDto;
-import com.example.momobe.meeting.dto.MeetingResponseDto;
-import com.example.momobe.meeting.dto.QMeetingHostResponseDto;
+import com.example.momobe.meeting.dto.*;
 import com.example.momobe.reservation.domain.enums.ReservationState;
-import com.querydsl.core.group.Group;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +24,8 @@ import static com.example.momobe.meeting.domain.QMeeting.meeting;
 import static com.example.momobe.reservation.domain.QReservation.reservation;
 import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.example.momobe.user.domain.QUser.user;
-import static com.querydsl.core.group.GroupBy.groupBy;
-import static com.querydsl.core.group.GroupBy.set;
-import static com.querydsl.core.types.Projections.list;
+import static com.querydsl.core.group.GroupBy.*;
 
-@SuppressWarnings("unchecked")
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -71,7 +65,7 @@ public class MeetingHostQueryRepository {
         List<Long> meetingIds = dtos.stream()
                 .map(MeetingResponseDto::getMeetingId).collect(Collectors.toList());
 
-        Map<Long, Group> groupMap = queryFactory
+        Map<Long, MeetingInfoDto> meetingInfoMap = queryFactory
                 .from(meeting)
                 .where(meeting.id.in(meetingIds))
                 .leftJoin(reservation).on(reservation.meetingId.in(meetingIds))
@@ -81,15 +75,16 @@ public class MeetingHostQueryRepository {
                 .leftJoin(meeting.dateTimeInfo.dateTimes, dateTime1)
                 .transform(
                         groupBy(meeting.id).as(
-                                list(
-                                        user.id, user.nickname.nickname, avatar.remotePath, user.email.address,
-                                        reservation.reservationState, reservation.reservationDate.date,
-                                        reservation.reservationDate.startTime, reservation.reservationDate.endTime,
-                                        reservation.reservationMemo.content),
-                                set(address.si.append(" ").append(address.gu)),
-                                list(dateTime1.dateTime)
-                        )
-                );
+                                new QMeetingInfoDto(
+                                        list(new QMeetingInfoDto_ReservationDto(
+                                                user.id, user.nickname.nickname, avatar.remotePath, user.email.address,
+                                                reservation.reservationState, reservation.reservationDate.date,
+                                                reservation.reservationDate.startTime, reservation.reservationDate.endTime,
+                                                reservation.reservationMemo.content)),
+                                        set(address.si.append(" ").append(address.gu)),
+                                        list(dateTime1.dateTime))
+
+                        ));
 
         Map<Long, List<MeetingHostResponseDto.RequestDto>> requestMaps = new LinkedHashMap<>();
         Map<Long, List<MeetingHostResponseDto.RequestConfirmedDto>> confirmedMaps = new LinkedHashMap<>();
@@ -107,43 +102,31 @@ public class MeetingHostQueryRepository {
             dateInfoMap.put(dto.getMeetingId(), dto.getDateTime());
         });
 
-        groupMap.forEach(
-                (meetingId, group) -> {
-                    Object[] array = group.toArray();
+        meetingInfoMap.forEach(
+                (meetingId, meetingInfoDto) -> {
+                    meetingInfoDto.getReservations().forEach(
+                            reservationDto -> {
+                                if (reservationDto.getReservationState() == ReservationState.ACCEPT) {
+                                    confirmedMaps.get(meetingId).add(new MeetingHostResponseDto.RequestConfirmedDto(reservationDto));
+                                } else {
+                                    requestMaps.get(meetingId).add(new MeetingHostResponseDto.RequestDto(reservationDto));
+                                }
+                            }
+                    );
 
-                    List<?> reservations = (List<?>) array[1];
-
-                    if (reservations.get(3) == ReservationState.ACCEPT) {
-                        confirmedMaps.get(meetingId).add(new MeetingHostResponseDto.RequestConfirmedDto(
-                                (Long) reservations.get(0), (String) reservations.get(1), (String) reservations.get(2),
-                                (String) reservations.get(3), (ReservationState) reservations.get(4),
-                                (LocalDate) reservations.get(5), (LocalTime) reservations.get(6),
-                                (LocalTime) reservations.get(7), (String) reservations.get(8)
-                        ));
-                    } else {
-                        requestMaps.get(meetingId).add(new MeetingHostResponseDto.RequestDto(
-                                (Long) reservations.get(0), (String) reservations.get(1), (String) reservations.get(2),
-                                (ReservationState) reservations.get(4),
-                                (LocalDate) reservations.get(5), (LocalTime) reservations.get(6),
-                                (LocalTime) reservations.get(7), (String) reservations.get(8)
-                        ));
-                    }
-
-                    Set<String> addresses = (Set<String>) array[2];
-                    addressesMaps.put(meetingId, new ArrayList<>(addresses));
-                    List<LocalDateTime> dateTimes = (List<LocalDateTime>) array[3];
+                    addressesMaps.put(meetingId, new ArrayList<>(meetingInfoDto.getAddresses()));
                     MeetingResponseDto.DateTimeDto dateTimeDto = dateInfoMap.get(meetingId);
 
                     if (dateTimeDto.getDatePolicy() == DatePolicy.FREE) {
                         LinkedHashSet<LocalDate> set = new LinkedHashSet<>();
-                        dateTimes.forEach(dateTime -> {
+                        meetingInfoDto.getDateTimes().forEach(dateTime -> {
                             if (dateTime != null)
                                 set.add(dateTime.toLocalDate());
                         });
                         datesMaps.put(meetingId, new ArrayList<>(set));
                     } else if (dateTimeDto.getDatePolicy() == DatePolicy.PERIOD) {
                         TreeSet<Integer> set = new TreeSet<>();
-                        dateTimes.forEach(dateTime -> {
+                        meetingInfoDto.getDateTimes().forEach(dateTime -> {
                             if (dateTime != null)
                                 set.add(dateTime.getDayOfWeek().getValue());
                         });

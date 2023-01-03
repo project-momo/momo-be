@@ -39,12 +39,12 @@ public class MeetingHostResponseDto extends MeetingResponseDto {
         private final String message;
         private final MeetingDateTimeDto dateTimeInfo;
 
-        public RequestDto(Long userId, String nickname, String imageUrl, ReservationState reservationState,
-                          LocalDate date, LocalTime startTime, LocalTime endTime, String message) {
-            super(userId, nickname, imageUrl);
-            this.reservationState = reservationState;
-            this.message = message;
-            this.dateTimeInfo = new MeetingDateTimeDto(date, startTime, endTime);
+        public RequestDto(MeetingInfoDto.ReservationDto reservationDto) {
+            super(reservationDto.getUserId(), reservationDto.getNickname(), reservationDto.getImageUrl());
+            this.reservationState = reservationDto.getReservationState();
+            this.message = reservationDto.getMessage();
+            this.dateTimeInfo = new MeetingDateTimeDto(
+                    reservationDto.getReservationDate(), reservationDto.getStartTime(), reservationDto.getEndTime());
         }
     }
 
@@ -54,13 +54,12 @@ public class MeetingHostResponseDto extends MeetingResponseDto {
         private final String message;
         private final MeetingDateTimeDto dateTimeInfo;
 
-        public RequestConfirmedDto(Long userId, String nickname, String imageUrl, String email,
-                                   ReservationState reservationState,
-                                   LocalDate date, LocalTime startTime, LocalTime endTime, String message) {
-            super(userId, nickname, imageUrl, email);
-            this.reservationState = reservationState;
-            this.message = message;
-            this.dateTimeInfo = new MeetingDateTimeDto(date, startTime, endTime);
+        public RequestConfirmedDto(MeetingInfoDto.ReservationDto reservationDto) {
+            super(reservationDto.getUserId(), reservationDto.getNickname(), reservationDto.getImageUrl(), reservationDto.getEmail());
+            this.reservationState = reservationDto.getReservationState();
+            this.message = reservationDto.getMessage();
+            this.dateTimeInfo = new MeetingDateTimeDto(
+                    reservationDto.getReservationDate(), reservationDto.getStartTime(), reservationDto.getEndTime());
         }
     }
 
