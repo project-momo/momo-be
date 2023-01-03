@@ -30,7 +30,7 @@ import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.set;
 import static com.querydsl.core.types.Projections.list;
 
-
+@SuppressWarnings("unchecked")
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

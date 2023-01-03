@@ -3,14 +3,19 @@ package com.example.momobe.meeting.dto;
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.domain.enums.MeetingState;
+import com.example.momobe.question.dto.out.ResponseQuestionDto;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
+@Getter
 public class MeetingDetailResponseDto extends MeetingResponseDto {
+    private List<ResponseQuestionDto> questions;
+
     @QueryProjection
     public MeetingDetailResponseDto(Long meetingId, Category category, Long hostId, String hostNickname, String hostImageUrl, String hostEmail, String title, String content, String addressInfo, MeetingState meetingState, DatePolicy datePolicy, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer maxTime, Long price,
                                     Set<String> addresses, List<LocalDateTime> dateTimes) {
@@ -18,7 +23,7 @@ public class MeetingDetailResponseDto extends MeetingResponseDto {
 
         List<Integer> dayWeeks = new ArrayList<>();
         List<LocalDate> dates = new ArrayList<>();
-        
+
         if (datePolicy == DatePolicy.FREE) {
             LinkedHashSet<LocalDate> set = new LinkedHashSet<>();
             dateTimes.forEach(dateTime -> {
@@ -36,5 +41,9 @@ public class MeetingDetailResponseDto extends MeetingResponseDto {
         }
 
         this.init(new ArrayList<>(addresses), dayWeeks, dates);
+    }
+
+    public void init(List<ResponseQuestionDto> questions) {
+        this.questions = questions;
     }
 }
