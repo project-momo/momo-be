@@ -117,7 +117,6 @@ ext {
 
 test {
 	outputs.dir snippetsDir
-	exclude '**/*'
 }
 
 //asciidoctor {
