@@ -1,12 +1,10 @@
 package com.example.momobe.answer.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 
+@Getter
 @Embeddable
 @EqualsAndHashCode
 @AllArgsConstructor

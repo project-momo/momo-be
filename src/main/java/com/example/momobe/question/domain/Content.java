@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Embeddable;
 
+@Getter
 @Embeddable
 @EqualsAndHashCode
 @AllArgsConstructor
