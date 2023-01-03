@@ -1,13 +1,4 @@
 spring:
-  config:
-    activate:
-      on-profile: production
-    use-legacy-processing: true
-#    import: 'aws-parameterstore:'
-  data:
-    web:
-      pageable:
-        one-indexed-parameters: true
   jpa:
     hibernate:
       ddl-auto: validate #update create-update validate
@@ -16,19 +7,16 @@ spring:
         format_sql: true
         show_sql: true
         default_batch_fetch_size: 500
-      database: mysql
-      open-in-view: false
+    database: mysql
+    open-in-view: false
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 20MB
   datasource:
-    url: ${rds.url}
-    username: ${master.name}
-    password: ${master.password}
-#    url: jdbc:mysql://localhost:3306/momoDB?serverTimezone=Asia/Seoul
-#    username: testuser
-#    password: 1234
+    url: jdbc:mysql://rdsinstance.cg6o3rqphy1s.ap-northeast-2.rds.amazonaws.com:3306/momoRDS?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: sidsidvjscl12!
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: ${REDIS_HOST:localhost}
@@ -52,7 +40,7 @@ spring:
       client:
         registration:
           kakao:
-            client-id: ${kakao.client-id}
+            client-id: 0e66fc783b0681fce8f3ee79303c75ca
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: POST
@@ -67,17 +55,20 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+
+logging:
+  level:
+    org.springframework.web.client: debug
+    org.hibernate.sql: debug
+    org.hibernate.type: trace
+    org.springframework.security: debug
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
 jwt:
-  secretKey: ${jwt.secretKey}
-  refreshKey: ${jwt.refreshKey}
-
-#aws:
-#  paramstore:
-#    enabled: true
-#    prefix: /config
-#    name: momo-store
-#    profile-separator: _
-
-
-#awsParameterStorePropertySource:
-#  enabled: true
+  secretKey: jwt-tokens-that-should-be-changed-production
+  refreshKey: jwt-refresh-tokens-that-should-be-changed-production
