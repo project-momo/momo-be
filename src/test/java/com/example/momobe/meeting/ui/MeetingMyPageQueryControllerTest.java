@@ -7,6 +7,7 @@ import com.example.momobe.meeting.dao.MeetingParticipantQueryRepository;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.dto.MeetingDateTimeDto;
 import com.example.momobe.meeting.dto.MeetingHostResponseDto;
+import com.example.momobe.meeting.dto.MeetingInfoDto;
 import com.example.momobe.meeting.dto.MeetingParticipantResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +64,13 @@ public class MeetingMyPageQueryControllerTest {
         // given
         MeetingHostResponseDto.ApplicationDto applicationDto = new MeetingHostResponseDto.ApplicationDto(
                 List.of(new MeetingHostResponseDto.RequestDto(
-                        ID2, NICKNAME1, REMOTE_PATH, PAYMENT_SUCCESS, LocalDate.now(), START_TIME, END_TIME, "잘 부탁드려요~")),
+                        new MeetingInfoDto.ReservationDto(
+                                ID2, NICKNAME1, REMOTE_PATH, EMAIL2, PAYMENT_SUCCESS,
+                                LocalDate.now(), START_TIME, END_TIME, "잘 부탁드려요~"))),
                 List.of(new MeetingHostResponseDto.RequestConfirmedDto(
-                        ID3, NICKNAME2, REMOTE_PATH, EMAIL1, ACCEPT, LocalDate.now(), START_TIME, END_TIME, "잘 부탁드려요~"))
+                        new MeetingInfoDto.ReservationDto(
+                                ID3, NICKNAME2, REMOTE_PATH, EMAIL1, ACCEPT,
+                                LocalDate.now(), START_TIME, END_TIME, "잘 부탁드려요~")))
         );
         MeetingHostResponseDto meetingHostResponseDto = new MeetingHostResponseDto(
                 ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL2, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
