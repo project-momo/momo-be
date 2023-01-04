@@ -22,7 +22,7 @@ import static com.example.momobe.user.domain.QUser.*;
 import static com.querydsl.core.group.GroupBy.*;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class QuestionQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
