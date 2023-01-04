@@ -7,6 +7,7 @@ import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.Tag;
 import com.example.momobe.reservation.dto.in.RequestReservationDto;
 import com.example.momobe.security.domain.JwtTokenUtil;
+import com.example.momobe.user.domain.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -57,6 +58,9 @@ public class ReservationIntegrationTest {
 
     @Autowired
     EntityManager entityManager;
+
+    @Autowired
+    EntityManager em;
 
     Meeting meeting;
     Meeting closedMeeting;
@@ -152,7 +156,9 @@ public class ReservationIntegrationTest {
                 .address(new Address(List.of(1L,2L),"화곡동"))
                 .build();
 
-        accessToken = jwtTokenUtil.createAccessToken(EMAIL1, ID1, List.of(ROLE_USER), NICKNAME1);
+        User user = User.builder().build();
+        em.persist(user);
+        accessToken = jwtTokenUtil.createAccessToken(EMAIL1, user.getId(), ROLE_USER_LIST, NICKNAME1);
         userMail = EMAIL1;
         userNickname = NICKNAME1;
 

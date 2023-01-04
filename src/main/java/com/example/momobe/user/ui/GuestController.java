@@ -1,5 +1,7 @@
 package com.example.momobe.user.ui;
 
+import com.example.momobe.common.resolver.Token;
+import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.user.application.GenerateTokenService;
 import com.example.momobe.user.application.GenerateGuestUserService;
 import com.example.momobe.user.domain.User;

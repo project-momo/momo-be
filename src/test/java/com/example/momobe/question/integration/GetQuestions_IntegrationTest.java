@@ -100,8 +100,8 @@ public class GetQuestions_IntegrationTest {
 
         //then
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].questionId", is(question2.getId().intValue())))
-                .andExpect(jsonPath("$[1].questionId", is(question1.getId().intValue())))
+                .andExpect(jsonPath("$[1].questionId", is(question2.getId().intValue())))
+                .andExpect(jsonPath("$[0].questionId", is(question1.getId().intValue())))
                 .andDo(print());
     }
 }

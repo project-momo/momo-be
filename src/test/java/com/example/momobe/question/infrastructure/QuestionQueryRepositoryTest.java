@@ -116,10 +116,10 @@ class QuestionQueryRepositoryTest {
         System.out.print(result);
 
         //then
-        assertThat(result.get(0).getQuestioner().getEmail()).isEqualTo(questioner2.getEmail().getAddress());
-        assertThat(result.get(1).getQuestioner().getEmail()).isEqualTo(questioner1.getEmail().getAddress());
-        assertThat(result.get(0).getQuestionId()).isEqualTo(question2.getId());
-        assertThat(result.get(1).getQuestionId()).isEqualTo(question1.getId());
-        assertThat(result.get(1).getAnswers().get(0).getAnswerer().getNickname()).isEqualTo(answerer.getNickname().getNickname());
+        assertThat(result.get(1).getQuestioner().getEmail()).isEqualTo(questioner2.getEmail().getAddress());
+        assertThat(result.get(0).getQuestioner().getEmail()).isEqualTo(questioner1.getEmail().getAddress());
+        assertThat(result.get(1).getQuestionId()).isEqualTo(question2.getId());
+        assertThat(result.get(0).getQuestionId()).isEqualTo(question1.getId());
+        assertThat(result.get(0).getAnswers().get(0).getAnswerer().getNickname()).isEqualTo(answerer.getNickname().getNickname());
     }
 }

@@ -4,6 +4,7 @@ import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.security.controller.TestController;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.security.exception.InvalidJwtTokenException;
+import com.example.momobe.user.application.UserFindService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.assertj.core.api.Assertions;
@@ -35,6 +36,9 @@ class JwtArgumentResolverTest {
 
     @MockBean
     JwtTokenUtil jwtTokenUtil;
+
+    @MockBean
+    UserFindService userFindService;
 
     @Test
     @DisplayName("@Token 어노테이션은 있으나 헤더에 토큰이 없는 경우 null을 반환한다. (해당 컨트롤러는 반환값이 있으므로 예외 발생)")

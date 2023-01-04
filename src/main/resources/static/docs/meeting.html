@@ -531,13 +531,13 @@ Host: docs.api.com
   },
   "dateTime" : {
     "datePolicy" : "FREE",
-    "startDate" : "2023-01-02",
-    "endDate" : "2023-01-12",
+    "startDate" : "2023-01-03",
+    "endDate" : "2023-01-13",
     "startTime" : "01:00:00",
     "endTime" : "05:00:00",
     "maxTime" : 3,
     "dayWeeks" : [ 1, 2, 7 ],
-    "dates" : [ "2023-01-02", "2023-01-04", "2023-01-07", "2023-01-12" ]
+    "dates" : [ "2023-01-03", "2023-01-05", "2023-01-08", "2023-01-13" ]
   },
   "personnel" : 1,
   "notice" : "전달 사항",
@@ -697,7 +697,220 @@ Content-Length: 1
 </div>
 </div>
 <div class="sect2">
-<h3 id="_목록_조회">1.2. 목록 조회</h3>
+<h3 id="_상세_조회">1.2. 상세 조회</h3>
+<div class="listingblock">
+<div class="title">http-request</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /meetings/1 HTTP/1.1
+Host: docs.api.com</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">/meetings/{meeting-id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>meeting-id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">모임 식별자</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="title">http-response</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 685
+
+{
+  "meetingId" : 1,
+  "category" : "소셜",
+  "host" : {
+    "userId" : 1,
+    "nickname" : "nickname",
+    "imageUrl" : "https://7357.tistory.com/",
+    "email" : "user@test.com"
+  },
+  "title" : "제목1",
+  "content" : "내용1",
+  "address" : {
+    "addresses" : [ "서울시 강남구", "서울시 강북구" ],
+    "addressInfo" : "추가 주소1"
+  },
+  "meetingState" : "모집중",
+  "isOpen" : true,
+  "dateTime" : {
+    "datePolicy" : "FREE",
+    "startDate" : "2022-12-25",
+    "endDate" : "2022-12-31",
+    "startTime" : "01:00:00",
+    "endTime" : "05:00:00",
+    "maxTime" : 3,
+    "dayWeeks" : [ ],
+    "dates" : [ "2023-01-03", "2023-01-04" ]
+  },
+  "price" : 1000
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">response-fields</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>meetingId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">모임 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>host</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주최자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>host.userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주최자 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>host.nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주최자 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>host.imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주최자 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>host.email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주최자 이메일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>address</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주소 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>address.addresses</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주소</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>address.addressInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">추가 주소</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>meetingState</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">모임 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isOpen</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">모임 오픈 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">날짜 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.datePolicy</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">날짜 정책</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.startDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">시작 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.endDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">끝나는 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.startTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">시작 시간</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.endTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">끝나는 시간</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.maxTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">최대 예약 가능 시간</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.dayWeeks</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요일 (월: 1 ~ 일: 7, datePolicy가 PEROID일 때만)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateTime.dates</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">날짜 (datePolicy가 FREE일 때만)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가격</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_목록_조회">1.3. 목록 조회</h3>
 <div class="listingblock">
 <div class="title">http-request</div>
 <div class="content">
@@ -750,7 +963,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 844
+Content-Length: 872
 
 {
   "content" : [ {
@@ -759,13 +972,14 @@ Content-Length: 844
     "host" : {
       "userId" : 1,
       "nickname" : "nickname",
-      "imageUrl" : "https://7357.tistory.com/"
+      "imageUrl" : "user@test.com",
+      "email" : "https://7357.tistory.com/"
     },
     "title" : "제목1",
     "content" : "내용1",
     "address" : {
       "addresses" : [ "서울시 강남구", "서울시 강북구" ],
-      "addressInfo" : "서울시 강남구"
+      "addressInfo" : "추가 주소1"
     },
     "meetingState" : "모집중",
     "isOpen" : true,
@@ -777,7 +991,7 @@ Content-Length: 844
       "endTime" : "05:00:00",
       "maxTime" : 3,
       "dayWeeks" : [ 1, 3, 7 ],
-      "dates" : [ "2023-01-02", "2023-01-03" ]
+      "dates" : [ "2023-01-03", "2023-01-04" ]
     },
     "price" : 1000
   } ],
@@ -839,6 +1053,11 @@ Content-Length: 844
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].host.imageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주최자 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].host.email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주최자 이메일</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].title</code></p></td>
@@ -918,7 +1137,7 @@ Content-Length: 844
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].dateTime.dates</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">날짜</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">날짜 (datePolicy가 FREE일 때만)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].price</code></p></td>
@@ -954,7 +1173,7 @@ Content-Length: 844
 </table>
 </div>
 <div class="sect2">
-<h3 id="_만든_모임_목록_조회">1.3. 만든 모임 목록 조회</h3>
+<h3 id="_만든_모임_목록_조회">1.4. 만든 모임 목록 조회</h3>
 <div class="listingblock">
 <div class="title">http-request</div>
 <div class="content">
@@ -1019,7 +1238,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 1581
+Content-Length: 1615
 
 {
   "content" : [ {
@@ -1028,7 +1247,8 @@ Content-Length: 1581
     "host" : {
       "userId" : 1,
       "nickname" : "nickname",
-      "imageUrl" : "https://7357.tistory.com/"
+      "imageUrl" : "https://7357.tistory.com/",
+      "email" : "user2@test.com"
     },
     "title" : "제목1",
     "content" : "내용1",
@@ -1046,7 +1266,7 @@ Content-Length: 1581
       "endTime" : "05:00:00",
       "maxTime" : 3,
       "dayWeeks" : [ 1, 3, 7 ],
-      "dates" : [ "2023-01-02", "2023-01-03" ]
+      "dates" : [ "2023-01-03", "2023-01-04" ]
     },
     "price" : 1000,
     "applications" : {
@@ -1055,21 +1275,21 @@ Content-Length: 1581
         "nickname" : "test1",
         "imageUrl" : "https://7357.tistory.com/",
         "reservationState" : "PAYMENT_SUCCESS",
+        "message" : "잘 부탁드려요~",
         "dateTimeInfo" : {
-          "date" : "2023-01-02",
+          "date" : "2023-01-03",
           "time" : "01:00 - 05:00 (4시간)"
-        },
-        "message" : "잘 부탁드려요~"
+        }
       } ],
       "confirmed" : [ {
         "userId" : 3,
         "nickname" : "test2",
         "imageUrl" : "https://7357.tistory.com/",
-        "reservationState" : "ACCEPT",
         "email" : "user@test.com",
+        "reservationState" : "ACCEPT",
         "message" : "잘 부탁드려요~",
         "dateTimeInfo" : {
-          "date" : "2023-01-02",
+          "date" : "2023-01-03",
           "time" : "01:00 - 05:00 (4시간)"
         }
       } ]
@@ -1135,6 +1355,11 @@ Content-Length: 1581
 <td class="tableblock halign-left valign-top"><p class="tableblock">주최자 이미지</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].host.email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주최자 이메일</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">제목</p></td>
@@ -1212,7 +1437,7 @@ Content-Length: 1581
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].dateTime.dates</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">날짜</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">날짜 (datePolicy가 FREE일 때만)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].price</code></p></td>
@@ -1250,6 +1475,11 @@ Content-Length: 1581
 <td class="tableblock halign-left valign-top"><p class="tableblock">예약 상태</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].applications.requests[].message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">전달 사항</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].applications.requests[].dateTimeInfo</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">날짜 정보</p></td>
@@ -1263,11 +1493,6 @@ Content-Length: 1581
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].applications.requests[].dateTimeInfo.time</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">예약 시간</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].applications.requests[].message</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">전달 사항</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].applications.confirmed</code></p></td>
@@ -1348,7 +1573,7 @@ Content-Length: 1581
 </table>
 </div>
 <div class="sect2">
-<h3 id="_참여_모임_목록_조회">1.4. 참여 모임 목록 조회</h3>
+<h3 id="_참여_모임_목록_조회">1.5. 참여 모임 목록 조회</h3>
 <div class="listingblock">
 <div class="title">http-request</div>
 <div class="content">
@@ -1413,7 +1638,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 1192
+Content-Length: 1225
 
 {
   "content" : [ {
@@ -1422,7 +1647,8 @@ Content-Length: 1192
     "host" : {
       "userId" : 1,
       "nickname" : "nickname",
-      "imageUrl" : "https://7357.tistory.com/"
+      "imageUrl" : "https://7357.tistory.com/",
+      "email" : "user@test.com"
     },
     "title" : "제목1",
     "content" : "내용1",
@@ -1440,18 +1666,18 @@ Content-Length: 1192
       "endTime" : "05:00:00",
       "maxTime" : 3,
       "dayWeeks" : [ 1, 3, 7 ],
-      "dates" : [ "2023-01-02", "2023-01-03" ]
+      "dates" : [ "2023-01-03", "2023-01-04" ]
     },
     "price" : 1000,
     "application" : {
       "userId" : 2,
       "nickname" : "test1",
       "imageUrl" : "https://7357.tistory.com/",
-      "reservationState" : "PAYMENT_SUCCESS",
       "email" : "user@test.com",
+      "reservationState" : "PAYMENT_SUCCESS",
       "message" : "잘 부탁드려요~",
       "dateTimeInfo" : {
-        "date" : "2023-01-02",
+        "date" : "2023-01-03",
         "time" : "01:00 - 05:00 (4시간)"
       }
     }
@@ -1514,6 +1740,11 @@ Content-Length: 1192
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].host.imageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주최자 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].host.email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주최자 이메일</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].title</code></p></td>
@@ -1593,7 +1824,7 @@ Content-Length: 1192
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].dateTime.dates</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">날짜</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">날짜 (datePolicy가 FREE일 때만)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].price</code></p></td>
@@ -1684,7 +1915,7 @@ Content-Length: 1192
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-01-02 16:11:05 +0900
+Last updated 2023-01-02 16:13:22 +0900
 </div>
 </div>
 </body>

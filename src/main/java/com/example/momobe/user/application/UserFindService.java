@@ -18,9 +18,11 @@ import java.time.LocalDateTime;
 public class UserFindService {
     private final UserRepository userRepository;
 
-    /** common logic*/
     public User verifyUser(String email){
         return userRepository.findUserByEmail(email).orElseThrow(()-> new UserNotFoundException(ErrorCode.DATA_NOT_FOUND));
     }
 
+    public User verifyUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(ErrorCode.DATA_NOT_FOUND));
+    }
 }
