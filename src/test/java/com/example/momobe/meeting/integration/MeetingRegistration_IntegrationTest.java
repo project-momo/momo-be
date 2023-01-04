@@ -1,6 +1,7 @@
 package com.example.momobe.meeting.integration;
 
 import com.example.momobe.security.domain.JwtTokenUtil;
+import com.example.momobe.user.domain.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstants.*;
@@ -31,11 +34,16 @@ public class MeetingRegistration_IntegrationTest {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    @Autowired
+    EntityManager em;
+
     private String accessToken;
 
     @BeforeEach
     void init() {
-        accessToken = jwtTokenUtil.createAccessToken(EMAIL1, ID1, ROLE_USER_LIST, NICKNAME1);
+        User user = User.builder().build();
+        em.persist(user);
+        accessToken = jwtTokenUtil.createAccessToken(EMAIL1, user.getId(), ROLE_USER_LIST, NICKNAME1);
     }
 
     @Test
