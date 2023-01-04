@@ -35,12 +35,13 @@ public enum ErrorCode {
     * */
     REQUEST_CONFLICT(CONFLICT, "해당 요청을 수행할 수 없습니다, 관리자에게 문의하세요."),
     UNABLE_TO_PROCESS(SERVICE_UNAVAILABLE, "현재 해당 요청을 수행할 수 없습니다, 관리자에게 문의하세요."),
-    DATA_NOT_FOUND(NOT_FOUND, "조회하려는 데이터가 존재하지 않습니다.");
+    DATA_NOT_FOUND(NOT_FOUND, "조회하려는 데이터가 존재하지 않습니다."),
+    REQUEST_DENIED(FORBIDDEN, "권한이 없습니다.");
 
-    private HttpStatus httpStatus;
-    private String message;
+    private final HttpStatus httpStatus;
+    private final String message;
 
-    ErrorCode(HttpStatus httpStatus,String message) {
+    ErrorCode(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;
         this.message = message;
     }

@@ -2,7 +2,7 @@ ifndef::snippets[]
 :snippets: ./build/generated-snippets
 endif::[]
 
-= 토큰 관련 API
+= 회원 관련 API
 :sectnums:
 :toc: left
 :toclevels: 4

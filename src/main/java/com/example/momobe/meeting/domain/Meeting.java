@@ -1,6 +1,7 @@
 package com.example.momobe.meeting.domain;
 
 import com.example.momobe.common.domain.BaseTime;
+import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.meeting.domain.enums.Tag;
@@ -102,5 +103,12 @@ public class Meeting extends BaseTime {
 
     public Boolean isClosed() {
         return this.meetingState == MeetingState.CLOSE;
+    }
+
+    public void closeWithHostId(Long hostId) {
+        if (!this.getHostId().equals(hostId)) {
+            throw new CanNotChangeMeetingStateException(ErrorCode.REQUEST_DENIED);
+        }
+        this.meetingState = MeetingState.CLOSE;
     }
 }

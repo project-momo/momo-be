@@ -9,6 +9,7 @@ import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.meeting.domain.enums.Tag;
 import com.example.momobe.meeting.dto.MeetingRequestDto;
 import org.springframework.restdocs.payload.FieldDescriptor;
+import org.springframework.restdocs.request.PathParametersSnippet;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +21,8 @@ import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.domain.enums.Category.SOCIAL;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
 public class MeetingConstants {
     public static final LocalDate START_DATE = LocalDate.of(2022, 12, 25);
@@ -176,6 +179,10 @@ public class MeetingConstants {
             .notice(NOTICE)
             .price(PRICE)
             .build();
+
+    public static final PathParametersSnippet PATH_PARAM_MEETING_ID = pathParameters(
+            parameterWithName("meeting-id").description("모임 식별자")
+    );
 
     public static final FieldDescriptor FWP_CONTENT_MEETING_ID = fieldWithPath("content[].meetingId").type(NUMBER).description("모임 식별자");
     public static final FieldDescriptor FWP_CONTENT_CATEGORY = fieldWithPath("content[].category").type(STRING).description("카테고리");

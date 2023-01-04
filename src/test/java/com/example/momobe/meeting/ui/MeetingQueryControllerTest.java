@@ -141,9 +141,7 @@ class MeetingQueryControllerTest {
                 .andDo(document("meeting/query/detail",
                         getDocumentRequest(),
                         getDocumentResponse(),
-                        pathParameters(
-                                parameterWithName("meeting-id").description("모임 식별자")
-                        ),
+                        PATH_PARAM_MEETING_ID,
                         responseFields(
                                 fieldWithPath("meetingId").type(NUMBER).description("모임 식별자"),
                                 fieldWithPath("category").type(STRING).description("카테고리"),
