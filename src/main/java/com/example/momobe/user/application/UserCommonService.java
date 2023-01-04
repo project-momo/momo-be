@@ -21,8 +21,8 @@ public class UserCommonService {
     private final UserRepository userRepository;
 
     //예외 처리 추가 필요
-    public boolean withdrawalUser(String email){
-        User user = userFindService.verifyUser(email);
+    public boolean withdrawalUser(Long id){
+        User user = userFindService.verifyUser(id);
         user.changeUserState(new UserState(UserStateType.DEACTIVATED, LocalDateTime.now()));
         return true;
     }

@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
 import static com.example.momobe.common.enums.TestConstants.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -83,7 +84,7 @@ public class WithdrawalTest {
                 .userState(new UserState(UserStateType.ACTIVE, LocalDateTime.now()))
                 .build();
 
-        given(userCommonService.withdrawalUser(anyString())).willReturn(true);
+        given(userCommonService.withdrawalUser(anyLong())).willReturn(true);
 
         //when
         ResultActions actions =
