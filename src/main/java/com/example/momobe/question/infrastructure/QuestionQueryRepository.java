@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +56,10 @@ public class QuestionQueryRepository {
                     if (answer.getAnswerId() == null) {
                         e.getAnswers().remove(answer);
                     }
-                }).collect(Collectors.toList());
+                    if (answer.getAnswerId() != null) {
+                        e.getAnswers().sort(Comparator.comparing(ResponseQuestionDto.Answer::getCreatedAt));
+                    }
+                })
+                .collect(Collectors.toList());
     }
 }
