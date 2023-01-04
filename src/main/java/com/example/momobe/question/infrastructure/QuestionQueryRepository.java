@@ -51,8 +51,9 @@ public class QuestionQueryRepository {
                         ))
                 .stream()
                 .peek(e -> {
-                    if (e.getAnswers().get(0).getAnswerer() == null) {
-                        e.getAnswers().remove(0);
+                    ResponseQuestionDto.Answer answer = e.getAnswers().get(0);
+                    if (answer.getAnswerId() == null) {
+                        e.getAnswers().remove(answer);
                     }
                 }).collect(Collectors.toList());
     }

@@ -12,6 +12,7 @@ import com.example.momobe.question.domain.Writer;
 import com.example.momobe.question.dto.out.ResponseQuestionDto;
 import com.example.momobe.user.domain.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -121,5 +122,33 @@ class QuestionQueryRepositoryTest {
         assertThat(result.get(1).getQuestionId()).isEqualTo(question2.getId());
         assertThat(result.get(0).getQuestionId()).isEqualTo(question1.getId());
         assertThat(result.get(0).getAnswers().get(0).getAnswerer().getNickname()).isEqualTo(answerer.getNickname().getNickname());
+    }
+
+    @Test
+    @DisplayName("만약 질문에 답변이 하나도 없다면 답글은 빈 배열로 반환한다")
+    void test2() {
+        //given
+        Meeting meeting = generateMeeting();
+        meetingRepository.save(meeting);
+
+        User questioner1 = User.builder()
+                .email(new Email(EMAIL1))
+                .nickname(new Nickname(NICKNAME1))
+                .avatar(null)
+                .build();
+        userRepository.save(questioner1);
+
+        Question question1 = Question.builder()
+                .meeting(new com.example.momobe.question.domain.Meeting(meeting.getId()))
+                .content(new Content(CONTENT1))
+                .writer(new Writer(questioner1.getId()))
+                .build();
+        questionRepository.save(question1);
+
+        //when
+        List<ResponseQuestionDto> questions = questionQueryRepository.getQuestions(meeting.getId());
+
+        //then
+        Assertions.assertThat(questions.get(0).getAnswers().size()).isEqualTo(0);
     }
 }
