@@ -5,6 +5,7 @@ import com.example.momobe.common.resolver.Token;
 import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.meeting.domain.MeetingRepository;
 import com.example.momobe.user.application.UserCommonService;
+import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserNotFoundException;
 import com.example.momobe.user.domain.UserRepository;
@@ -19,13 +20,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserFindController {
     private final UserRepository userRepository;
+    private final UserFindService userFindService;
     private final UserMapper mapper;
     private final MeetingRepository meetingRepository;
 
     @GetMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
     public UserResponseDto getUser(@Token UserInfo request){
-        User findUser = userRepository.findUserByEmail(request.getEmail()).orElseThrow(() -> new UserNotFoundException(ErrorCode.DATA_NOT_FOUND));
+        User findUser = userFindService.verifyUser(request.getEmail());
         return mapper.userDtoOfUser(findUser);
     }
 

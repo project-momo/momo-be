@@ -24,9 +24,9 @@ public class UserState {
     }
 
     //회원 활성화 상태 확인
-    public boolean isUserActive(){
-        if(userStateType == UserStateType.ACTIVE){
+    public boolean isUserActive() {
+        if (userStateType == UserStateType.ACTIVE) {
             return true;
-        }else return false;
+        }return false;
     }
 }
