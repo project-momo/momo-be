@@ -17,4 +17,8 @@ public class MeetingCommonService {
         return meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND));
     }
+
+    public void closeMeeting(Long userId, Long meetingId) {
+        findMeetingOrThrowException(meetingId).closeWithHostId(userId);
+    }
 }

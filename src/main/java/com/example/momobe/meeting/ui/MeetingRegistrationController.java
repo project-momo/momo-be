@@ -17,9 +17,9 @@ import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
-@Validated
 public class MeetingRegistrationController {
 
     private final MeetingMapper meetingMapper;
