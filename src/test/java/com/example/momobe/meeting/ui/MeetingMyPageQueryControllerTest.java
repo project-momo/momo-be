@@ -49,7 +49,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(SecurityTestConfig.class)
 @AutoConfigureRestDocs
 public class MeetingMyPageQueryControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
     @MockBean
