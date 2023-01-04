@@ -33,6 +33,7 @@ public enum ErrorCode {
     /*
     * etc
     * */
+    CAN_NOT_CONVERT(BAD_REQUEST, "유효하지 않은 요청 형태입니다."),
     REQUEST_CONFLICT(CONFLICT, "해당 요청을 수행할 수 없습니다, 관리자에게 문의하세요."),
     UNABLE_TO_PROCESS(SERVICE_UNAVAILABLE, "현재 해당 요청을 수행할 수 없습니다, 관리자에게 문의하세요."),
     DATA_NOT_FOUND(NOT_FOUND, "조회하려는 데이터가 존재하지 않습니다.");
