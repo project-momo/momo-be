@@ -11,6 +11,7 @@ import com.querydsl.core.group.GroupBy;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import static com.example.momobe.user.domain.QUser.*;
 import static com.querydsl.core.group.GroupBy.*;
 
 @Repository
+@Transactional
 @RequiredArgsConstructor
 public class QuestionQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
