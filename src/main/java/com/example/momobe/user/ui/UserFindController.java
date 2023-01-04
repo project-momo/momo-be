@@ -27,7 +27,7 @@ public class UserFindController {
     @GetMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
     public UserResponseDto getUser(@Token UserInfo request){
-        User findUser = userFindService.verifyUser(request.getEmail());
+        User findUser = userFindService.verifyUser(request.getId());
         return mapper.userDtoOfUser(findUser);
     }
 
