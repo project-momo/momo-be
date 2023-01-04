@@ -10,7 +10,6 @@ import java.time.LocalTime;
 import static lombok.AccessLevel.*;
 
 @Getter
-@Builder
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
@@ -22,6 +21,7 @@ public class ReservationDate {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
+    @Builder
     public ReservationDate(LocalDate date, LocalTime startTime, LocalTime endTime) {
         this.date = date;
         this.startTime = startTime;

@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.momobe.answer.domain.QAnswer.*;
 import static com.example.momobe.question.domain.QQuestion.*;
@@ -47,6 +49,17 @@ public class QuestionQueryRepository {
                                                 new QResponseQuestionDto_Answer(answer.id, answer.content.content, answerer.id, answerer.email.address, answerer.nickname.nickname, answerer.avatar.remotePath,
                                                         answer.createdAt, answer.lastModifiedAt)
                                 ))
-                        ));
+                        ))
+                .stream()
+                .peek(e -> {
+                    ResponseQuestionDto.Answer answer = e.getAnswers().get(0);
+                    if (answer.getAnswerId() == null) {
+                        e.getAnswers().remove(answer);
+                    }
+                    if (answer.getAnswerId() != null) {
+                        e.getAnswers().sort(Comparator.comparing(ResponseQuestionDto.Answer::getCreatedAt));
+                    }
+                })
+                .collect(Collectors.toList());
     }
 }
