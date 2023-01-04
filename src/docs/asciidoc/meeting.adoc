@@ -2,7 +2,7 @@ ifndef::snippets[]
 :snippets: ./build/generated-snippets
 endif::[]
 
-= 토큰 관련 API
+= 모임 관련 API
 :sectnums:
 :toc: left
 :toclevels: 4
@@ -120,4 +120,17 @@ include::{snippets}/mypage/meetings/participants/http-response.adoc[]
 [caption=]
 include::{snippets}/mypage/meetings/participants/response-fields.adoc[]
 
+=== 모임 닫기
+.http-request
+include::{snippets}/meeting/delete/http-request.adoc[]
 
+.request-headers
+[caption=]
+include::{snippets}/meeting/delete/request-headers.adoc[]
+
+.path-parameters
+[caption=]
+include::{snippets}/meeting/delete/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/meeting/delete/http-response.adoc[]
