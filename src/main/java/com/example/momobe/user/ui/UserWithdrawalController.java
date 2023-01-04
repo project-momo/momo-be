@@ -16,7 +16,7 @@ public class UserWithdrawalController {
     @DeleteMapping("/profile")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public boolean withdrawal(@Token UserInfo request){
-        userCommonService.withdrawalUser(request.getEmail());
+        userCommonService.withdrawalUser(request.getId());
         return true;
     }
 }
