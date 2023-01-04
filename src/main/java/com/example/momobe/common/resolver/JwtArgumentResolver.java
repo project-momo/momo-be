@@ -1,12 +1,13 @@
 package com.example.momobe.common.resolver;
 
+import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.user.application.UserFindService;
+import com.example.momobe.user.domain.UserNotFoundException;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -17,6 +18,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static com.example.momobe.common.exception.enums.ErrorCode.*;
 import static com.example.momobe.security.enums.SecurityConstants.*;
 import static org.springframework.http.HttpMethod.*;
 
@@ -40,6 +42,16 @@ public class JwtArgumentResolver implements HandlerMethodArgumentResolver {
             return null;
         }
 
+        UserInfo userInfo = createUserInfoDto(bearerToken);
+
+        if (!GET.matches(getRequestMethod(webRequest))) {
+            verifyUser(userInfo.getId());
+        }
+
+       return userInfo;
+    }
+
+    private UserInfo createUserInfoDto(String bearerToken) {
         Claims claims = jwtTokenUtil.parseAccessToken(bearerToken);
         String email = claims.getSubject();
         List<String> roles = (List) claims.get(ROLES);
@@ -49,15 +61,19 @@ public class JwtArgumentResolver implements HandlerMethodArgumentResolver {
             id = ((Integer)claims.get(ID)).longValue();
         } else { id = (Long)claims.get(ID); }
 
-        String method = getRequestMethod(webRequest);
-        verifyUser(id, method);
-
-        return new UserInfo(id, email, roles, nickname);
+        return UserInfo.builder()
+                .id(id)
+                .nickname(nickname)
+                .roles(roles)
+                .email(email)
+                .build();
     }
 
-    private void verifyUser(Long id, String method) {
-        if (POST.matches(method) || PUT.matches(method) || PATCH.matches(method)) {
+    private void verifyUser(Long id) {
+        try {
             userFindService.verifyUser(id);
+        } catch (Exception e) {
+            throw new UserNotFoundException(NOT_FOUND_USER);
         }
     }
 
