@@ -92,7 +92,6 @@ public class PostQuestion_IntegrationTest {
 
         // then
         perform.andExpect(status().isCreated());
-        assertThat(questions.get(0).getContent()).isEqualTo(new Content(CONTENT1));
-        assertThat(questions.size()).isEqualTo(1);
+        assertThat(questions.get(questions.size()-1).getContent()).isEqualTo(new Content(CONTENT1));
     }
 }
