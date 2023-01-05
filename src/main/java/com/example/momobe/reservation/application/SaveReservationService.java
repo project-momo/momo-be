@@ -24,7 +24,7 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ReserveService {
+public class SaveReservationService {
     private final MeetingCommonService meetingCommonService;
     private final ReservationMapper reservationMapper;
     private final ReservationRepository reservationRepository;

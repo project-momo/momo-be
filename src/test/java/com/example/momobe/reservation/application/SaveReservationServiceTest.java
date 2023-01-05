@@ -1,15 +1,11 @@
 package com.example.momobe.reservation.application;
 
-import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.meeting.application.MeetingCommonService;
 import com.example.momobe.meeting.domain.Address;
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.domain.enums.Category;
-import com.example.momobe.meeting.domain.enums.DatePolicy;
-import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.meeting.domain.enums.Tag;
 import com.example.momobe.payment.application.SavePaymentService;
 import com.example.momobe.payment.mapper.PaymentMapper;
@@ -18,17 +14,13 @@ import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.example.momobe.reservation.dto.in.RequestReservationDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.example.momobe.reservation.mapper.ReservationMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
@@ -40,14 +32,13 @@ import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.domain.enums.Category.*;
 import static com.example.momobe.meeting.domain.enums.DatePolicy.*;
 import static com.example.momobe.meeting.domain.enums.MeetingState.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ReserveServiceTest {
+class SaveReservationServiceTest {
     @InjectMocks
-    ReserveService reserveService;
+    SaveReservationService saveReservationService;
 
     @Mock
     MeetingCommonService meetingCommonService;
@@ -134,7 +125,7 @@ class ReserveServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = reserveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(meetingCommonService, times(1)).findMeetingOrThrowException(any());
@@ -148,7 +139,7 @@ class ReserveServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = reserveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(reservationMapper, times(1)).of(any(Meeting.class), any(), any());
@@ -163,7 +154,7 @@ class ReserveServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = reserveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(countExistReservationService, times(1)).countOf(any(), any(), any(), any());
@@ -177,7 +168,7 @@ class ReserveServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = reserveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(reservationRepository, times(1)).save(any());
@@ -191,7 +182,7 @@ class ReserveServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = reserveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(savePaymentService, times(1)).save(any());
@@ -206,7 +197,7 @@ class ReserveServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = reserveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(savePaymentService, times(0)).save(any());
