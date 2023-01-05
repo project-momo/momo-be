@@ -1,7 +1,3 @@
-ifndef::snippets[]
-:snippets: ./build/generated-snippets
-endif::[]
-
 = MoMo API
 :toc: left
 :toclevels: 3
@@ -10,6 +6,10 @@ endif::[]
 :source-highlighter: prettify
 :app-name: momo
 :author: YANGEUNCHAN
+
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
 
 본 REST API 문서에서 사용하는 HTTP 상태 코드는 가능한한 표준 HTTP와 REST 규약을 따릅니다.
 |===
@@ -124,7 +124,6 @@ include::{snippets}/mypage/meetings/participants/http-response.adoc[]
 [caption=]
 include::{snippets}/mypage/meetings/participants/response-fields.adoc[]
 
-***
 == 질문/답변 조회
 === 성공 200
 
@@ -140,7 +139,6 @@ include::{snippets}/question_get/200/http-response.adoc[]
 .response-fields
 include::{snippets}/question_get/200/response-fields.adoc[]
 
-***
 == 질문 작성
 === 성공 201
 
@@ -193,7 +191,6 @@ include::{snippets}/answers/400/request-headers.adoc[]
 .http-response
 include::{snippets}/answers/400/http-response.adoc[]
 
-***
 == 예약 가능 일시 조회
 === 성공 201
 
@@ -209,7 +206,6 @@ include::{snippets}/getMeetingDates/200/http-response.adoc[]
 .response-fields
 include::{snippets}/getMeetingDates/200/response-fields.adoc[]
 
-***
 == 예약
 === 성공 201
 
@@ -275,8 +271,6 @@ include::{snippets}/postReservation/409/full/request-fields.adoc[]
 .http-response
 include::{snippets}/postReservation/409/full/http-response.adoc[]
 
-
-***
 == 로그인 및 회원가입
 === 성공 200
 .response-headers
@@ -294,7 +288,6 @@ include::{snippets}/postReservation/409/full/http-response.adoc[]
 
 |===
 
-***
 == 토큰 갱신
 === 성공 201
 
@@ -332,7 +325,6 @@ include::{snippets}/token/put/404/request-headers.adoc[]
 .http-response
 include::{snippets}/token/put/404/http-response.adoc[]
 
-***
 == 로그아웃
 === 성공 204
 
@@ -345,7 +337,6 @@ include::{snippets}/token/delete/204/request-headers.adoc[]
 .http-response
 include::{snippets}/token/delete/204/http-response.adoc[]
 
-***
 == 회원
 === 회원 정보 조회
 .http-request
@@ -374,7 +365,6 @@ include::{snippets}/user/withdrawalUser/request-headers.adoc[]
 .http-response
 include::{snippets}/user/withdrawalUser/http-response.adoc[]
 
-***
 == 주소
 === 주소 조회
 .http-request
