@@ -21,7 +21,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequiredArgsConstructor
 public class MeetingRegistrationController {
-
     private final MeetingMapper meetingMapper;
     private final MeetingRepository meetingRepository;
 
