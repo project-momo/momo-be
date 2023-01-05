@@ -75,7 +75,7 @@ class MeetingCommonServiceTest {
         // when
         // then
         assertThatThrownBy(() -> meetingCommonService.closeMeeting(ID2, meetingId))
-                .isInstanceOf(CanNotChangeMeetingStateException.class);
+                .isInstanceOf(CanNotUpdateMeetingException.class);
     }
 
     @Test
