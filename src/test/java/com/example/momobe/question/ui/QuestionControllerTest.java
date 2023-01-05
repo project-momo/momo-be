@@ -1,5 +1,6 @@
 package com.example.momobe.question.ui;
 
+import com.example.momobe.common.config.ApiDocumentUtils;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
@@ -77,6 +78,8 @@ class QuestionControllerTest {
         // then
         perform.andExpect(status().isBadRequest())
                 .andDo(document("question_post/400",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
                                 headerWithName(JWT_HEADER).description("유효한 액세스 토큰")
                         ),
@@ -128,6 +131,8 @@ class QuestionControllerTest {
         // then
         perform.andExpect(status().isCreated())
                 .andDo(document("question_post/201",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
                                 headerWithName(JWT_HEADER).description("유효한 액세스 토큰")
                         ),
@@ -202,6 +207,8 @@ class QuestionControllerTest {
         // then
         perform.andExpect(status().isOk())
                 .andDo(document("question_get/200",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
                                 headerWithName(JWT_HEADER).description("유효한 액세스 토큰")
                         ),

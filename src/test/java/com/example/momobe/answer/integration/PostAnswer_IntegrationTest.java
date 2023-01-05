@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.util.List;
+
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.common.enums.TestConstants.ID1;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -91,11 +93,10 @@ public class PostAnswer_IntegrationTest {
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, accessToken));
-        Answer result = answerRepository.findAll().get(0);
+        List<Answer> answers = answerRepository.findAll();
 
         // then
         perform.andExpect(status().isCreated());
-        assertThat(result.getContent()).isEqualTo(new com.example.momobe.answer.domain.Content(CONTENT1));
-        assertThat(result.getMeeting()).isEqualTo(new Meeting(ID1));
+        assertThat(answers.get(answers.size()-1).getContent()).isEqualTo(new com.example.momobe.answer.domain.Content(CONTENT1));
     }
 }

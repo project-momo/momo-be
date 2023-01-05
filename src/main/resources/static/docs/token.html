@@ -552,7 +552,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /auth/token HTTP/1.1
 RefreshToken: Bearer RefreshToken
-Host: localhost:8080</code></pre>
+Host: docs.api.com</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -622,7 +622,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /auth/token HTTP/1.1
 RefreshToken: Bearer RefreshToken
-Host: localhost:8080</code></pre>
+Host: docs.api.com</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -658,9 +658,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 87
+Content-Length: 109
 
-{"status":401,"code":"MALFORMED_EXCEPTION","message":"malformed token","validation":{}}</code></pre>
+{
+  "status" : 401,
+  "code" : "MALFORMED_EXCEPTION",
+  "message" : "malformed token",
+  "validation" : { }
+}</code></pre>
 </div>
 </div>
 </div>
@@ -671,7 +676,7 @@ Content-Length: 87
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /auth/token HTTP/1.1
 RefreshToken: Bearer RefreshToken
-Host: localhost:8080</code></pre>
+Host: docs.api.com</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -707,9 +712,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 121
+Content-Length: 143
 
-{"status":404,"code":"404 NOT_FOUND","message":"조회하려는 데이터가 존재하지 않습니다.","validation":{}}</code></pre>
+{
+  "status" : 404,
+  "code" : "404 NOT_FOUND",
+  "message" : "조회하려는 데이터가 존재하지 않습니다.",
+  "validation" : { }
+}</code></pre>
 </div>
 </div>
 <hr>
@@ -726,7 +736,7 @@ Content-Length: 121
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /auth/token HTTP/1.1
 RefreshToken: Bearer RefreshToken
-Host: localhost:8080</code></pre>
+Host: docs.api.com</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">

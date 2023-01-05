@@ -1,5 +1,6 @@
 package com.example.momobe.user.ui;
 
+import com.example.momobe.common.config.ApiDocumentUtils;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.common.exception.enums.ErrorCode;
@@ -69,6 +70,8 @@ class TokenControllerTest {
         //then
         perform.andExpect(status().isNoContent())
                 .andDo(document("token/delete/204",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
                                 headerWithName(REFRESH_TOKEN).description("유효한 리프레시 토큰")
                         )));
@@ -85,6 +88,8 @@ class TokenControllerTest {
         //then
         perform.andExpect(status().isNotFound())
                 .andDo(document("token/put/404",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
                                 headerWithName(REFRESH_TOKEN).description("존재하지 않는 리프레시 토큰")
                         )));
@@ -101,6 +106,8 @@ class TokenControllerTest {
         //then
         perform.andExpect(status().isUnauthorized())
                 .andDo(document("token/put/401",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
                                 headerWithName(REFRESH_TOKEN).description("만료되었거나 유효하지 않은 토큰")
                         )));
@@ -119,6 +126,8 @@ class TokenControllerTest {
         //then
         perform.andExpect(status().isOk())
                 .andDo(document("token/put/200",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
                                 headerWithName(REFRESH_TOKEN).description("유효한 리프레시 토큰")
                         ),

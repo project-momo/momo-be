@@ -2,6 +2,7 @@ package com.example.momobe.reservation.dto.in;
 
 import lombok.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
@@ -13,40 +14,24 @@ import static lombok.AccessLevel.*;
 
 @Getter
 @Builder
-@AllArgsConstructor(access = PRIVATE)
-@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor
 public class RequestReservationDto {
+    @Valid
     @NotNull
     private ReservationDateDto dateInfo;
     @NotNull
     private Long amount;
     private String reservationMemo;
 
-    @AssertFalse
-    boolean isReservationDateEmpty() {
-        return dateInfo == null || dateInfo.getReservationDate() == null;
-    }
-
-    @AssertFalse
-    boolean isStartTimeEmpty() {
-        return dateInfo == null || dateInfo.getStartTime() == null;
-    }
-
-    @AssertFalse
-    boolean isEndTimeEmpty() {
-        return dateInfo == null || dateInfo.getEndTime() == null;
-    }
-
     @Getter
     @Builder
     @AllArgsConstructor
-    @NoArgsConstructor
     public static class ReservationDateDto {
-        @NotBlank
+        @NotNull
         private LocalDate reservationDate;
-        @NotBlank
+        @NotNull
         private LocalTime startTime;
-        @NotBlank
+        @NotNull
         private LocalTime endTime;
     }
 }
