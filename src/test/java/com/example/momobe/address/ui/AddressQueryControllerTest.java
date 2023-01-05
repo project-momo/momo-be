@@ -54,6 +54,7 @@ class AddressQueryControllerTest {
         // when
         ResultActions actions = mockMvc.perform(
                 get("/addresses")
+                        .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
         );
 
         // then
@@ -61,6 +62,7 @@ class AddressQueryControllerTest {
                 .andDo(document("address/get",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        REQUEST_HEADER_JWT,
                         responseFields(
                                 fieldWithPath("[]").type(ARRAY).description("주소"),
                                 fieldWithPath("[].si").type(STRING).description("주소 (시)"),
