@@ -44,7 +44,7 @@ public class User extends BaseTime {
 
     @Embedded
     @Builder.Default
-    private Point point = new Point(0L);
+    private UserPoint userPoint = new UserPoint(0L);
 
     @OneToOne(cascade = PERSIST)
     @JoinColumn(name = "avatar_id")
@@ -55,7 +55,7 @@ public class User extends BaseTime {
         this.email = new Email(email);
         this.nickname = new Nickname(nickname);
         this.password = new Password(password);
-        this.point = new Point(0L);
+        this.userPoint = new UserPoint(0L);
         this.avatar = avatar;
         this.userState = new UserState(UserStateType.ACTIVE, LocalDateTime.now());
     }
