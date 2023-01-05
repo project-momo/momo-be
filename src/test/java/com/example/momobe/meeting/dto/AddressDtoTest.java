@@ -11,10 +11,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AddressDtoTest {
 
     @Test
-    @DisplayName("LocationDto의 addressIds.size()가 1 미만이면 예외가 발생한다.")
+    @DisplayName("AddressDto의 addressIds.size()가 1 미만이면 예외가 발생한다.")
     public void addressIds_failed_1() throws Exception {
         // given
-        MeetingRequestDto.AddressDto addressDto = 
+        MeetingRequestDto.AddressDto addressDto =
                 MeetingRequestDto.AddressDto.builder().addressIds(List.of()).build();
 
         // when
@@ -25,7 +25,7 @@ public class AddressDtoTest {
     }
 
     @Test
-    @DisplayName("LocationDto의 addressIds가 null이면 예외가 발생한다.")
+    @DisplayName("AddressDto의 addressIds가 null이면 예외가 발생한다.")
     public void addressIds_failed_2() throws Exception {
         // given
         MeetingRequestDto.AddressDto addressDto = MeetingRequestDto.AddressDto.builder().build();

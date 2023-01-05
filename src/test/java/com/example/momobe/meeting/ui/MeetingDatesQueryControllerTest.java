@@ -1,6 +1,7 @@
 package com.example.momobe.meeting.ui;
 
 import com.example.momobe.answer.mapper.AnswerMapper;
+import com.example.momobe.common.config.ApiDocumentUtils;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.common.exception.ui.ExceptionController;
@@ -100,6 +101,8 @@ class MeetingDatesQueryControllerTest {
         //then
         perform.andExpect(status().isOk())
                 .andDo(document("getMeetingDates/200",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
                                 headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
                         ),
