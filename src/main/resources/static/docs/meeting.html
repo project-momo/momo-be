@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>토큰 관련 API</title>
+<title>모임 관련 API</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 </div>
 <div id="content">
-<h1 id="_토큰_관련_api" class="sect0">토큰 관련 API</h1>
+<h1 id="_모임_관련_api" class="sect0">모임 관련 API</h1>
 <div class="paragraph">
 <p>본 REST API 문서에서 사용하는 HTTP 상태 코드는 가능한한 표준 HTTP와 REST 규약을 따릅니다.</p>
 </div>
@@ -531,13 +531,13 @@ Host: docs.api.com
   },
   "dateTime" : {
     "datePolicy" : "FREE",
-    "startDate" : "2023-01-03",
-    "endDate" : "2023-01-13",
+    "startDate" : "2023-01-05",
+    "endDate" : "2023-01-15",
     "startTime" : "01:00:00",
     "endTime" : "05:00:00",
     "maxTime" : 3,
     "dayWeeks" : [ 1, 2, 7 ],
-    "dates" : [ "2023-01-03", "2023-01-05", "2023-01-08", "2023-01-13" ]
+    "dates" : [ "2023-01-05", "2023-01-07", "2023-01-10", "2023-01-15" ]
   },
   "personnel" : 1,
   "notice" : "전달 사항",
@@ -738,7 +738,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 685
+Content-Length: 1365
 
 {
   "meetingId" : 1,
@@ -765,9 +765,33 @@ Content-Length: 685
     "endTime" : "05:00:00",
     "maxTime" : 3,
     "dayWeeks" : [ ],
-    "dates" : [ "2023-01-03", "2023-01-04" ]
+    "dates" : [ "2023-01-05", "2023-01-06" ]
   },
-  "price" : 1000
+  "price" : 1000,
+  "questions" : [ {
+    "questionId" : 1,
+    "content" : "내용1",
+    "questioner" : {
+      "userId" : 2,
+      "email" : "user@test.com",
+      "nickname" : "nickname",
+      "imageUrl" : "https://7357.tistory.com/"
+    },
+    "createdAt" : "2023-01-05T14:07:57.323577",
+    "modifiedAt" : "2023-01-05T14:07:57.323589",
+    "answers" : [ {
+      "answerId" : 1,
+      "content" : "내용1",
+      "answerer" : {
+        "userId" : 3,
+        "email" : "user@test.com",
+        "nickname" : "nickname",
+        "imageUrl" : "https://7357.tistory.com/"
+      },
+      "createdAt" : "2023-01-05T14:07:57.323594",
+      "modifiedAt" : "2023-01-05T14:07:57.323597"
+    } ]
+  } ]
 }</code></pre>
 </div>
 </div>
@@ -906,6 +930,106 @@ Content-Length: 685
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">가격</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">질문/답변</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].questionId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">질문 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">질문 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].questioner</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">질문자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].questioner.userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">질문자 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].questioner.email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">질문자 이메일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].questioner.nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">질문자 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].questioner.imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">질문자 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">질문 작성일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].modifiedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">질문자 수정일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].answers</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].answers[].answerId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].answers[].content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].answers[].answerer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].answers[].answerer.userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변자 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].answers[].answerer.email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변자 이메일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].answers[].answerer.nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변자 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].answers[].answerer.imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변자 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].answers[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변 작성일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questions[].answers[].modifiedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변자 수정일시</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -991,7 +1115,7 @@ Content-Length: 872
       "endTime" : "05:00:00",
       "maxTime" : 3,
       "dayWeeks" : [ 1, 3, 7 ],
-      "dates" : [ "2023-01-03", "2023-01-04" ]
+      "dates" : [ "2023-01-05", "2023-01-06" ]
     },
     "price" : 1000
   } ],
@@ -1266,7 +1390,7 @@ Content-Length: 1615
       "endTime" : "05:00:00",
       "maxTime" : 3,
       "dayWeeks" : [ 1, 3, 7 ],
-      "dates" : [ "2023-01-03", "2023-01-04" ]
+      "dates" : [ "2023-01-05", "2023-01-06" ]
     },
     "price" : 1000,
     "applications" : {
@@ -1277,7 +1401,7 @@ Content-Length: 1615
         "reservationState" : "PAYMENT_SUCCESS",
         "message" : "잘 부탁드려요~",
         "dateTimeInfo" : {
-          "date" : "2023-01-03",
+          "date" : "2023-01-05",
           "time" : "01:00 - 05:00 (4시간)"
         }
       } ],
@@ -1289,7 +1413,7 @@ Content-Length: 1615
         "reservationState" : "ACCEPT",
         "message" : "잘 부탁드려요~",
         "dateTimeInfo" : {
-          "date" : "2023-01-03",
+          "date" : "2023-01-05",
           "time" : "01:00 - 05:00 (4시간)"
         }
       } ]
@@ -1666,7 +1790,7 @@ Content-Length: 1225
       "endTime" : "05:00:00",
       "maxTime" : 3,
       "dayWeeks" : [ 1, 3, 7 ],
-      "dates" : [ "2023-01-03", "2023-01-04" ]
+      "dates" : [ "2023-01-05", "2023-01-06" ]
     },
     "price" : 1000,
     "application" : {
@@ -1677,7 +1801,7 @@ Content-Length: 1225
       "reservationState" : "PAYMENT_SUCCESS",
       "message" : "잘 부탁드려요~",
       "dateTimeInfo" : {
-        "date" : "2023-01-03",
+        "date" : "2023-01-05",
         "time" : "01:00 - 05:00 (4시간)"
       }
     }
@@ -1909,13 +2033,77 @@ Content-Length: 1225
 </tbody>
 </table>
 </div>
+<div class="sect2">
+<h3 id="_모임_닫기">1.6. 모임 닫기</h3>
+<div class="listingblock">
+<div class="title">http-request</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /meetings/1 HTTP/1.1
+Authorization: Bearer AccessToken
+Host: docs.api.com</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">request-headers</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer AccessToken</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">/meetings/{meeting-id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>meeting-id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">모임 식별자</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="title">http-response</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-01-02 16:13:22 +0900
+Last updated 2023-01-05 14:05:00 +0900
 </div>
 </div>
 </body>
