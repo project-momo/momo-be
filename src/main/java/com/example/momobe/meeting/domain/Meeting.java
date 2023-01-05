@@ -105,10 +105,14 @@ public class Meeting extends BaseTime {
         return this.meetingState == MeetingState.CLOSE;
     }
 
-    public void closeWithHostId(Long hostId) {
+    public void verifyHostId(Long hostId) {
         if (!this.getHostId().equals(hostId)) {
-            throw new CanNotChangeMeetingStateException(ErrorCode.REQUEST_DENIED);
+            throw new CanNotUpdateMeetingException(ErrorCode.REQUEST_DENIED);
         }
+    }
+
+    public void closeWithHostId(Long hostId) {
+        verifyHostId(hostId);
         this.meetingState = MeetingState.CLOSE;
     }
 }
