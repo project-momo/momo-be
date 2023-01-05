@@ -1,5 +1,6 @@
 package com.example.momobe.reservation.ui;
 
+import com.example.momobe.common.config.ApiDocumentUtils;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.common.exception.enums.ErrorCode;
@@ -86,6 +87,8 @@ class ReservationControllerTest {
         //then
         perform.andExpect(status().isBadRequest())
                 .andDo(document("postReservation/400",
+                                ApiDocumentUtils.getDocumentRequest(),
+                                ApiDocumentUtils.getDocumentResponse(),
                                 requestHeaders(
                                         headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
                                 ),
@@ -128,17 +131,19 @@ class ReservationControllerTest {
         //then
         perform.andExpect(status().isConflict())
                 .andDo(document("postReservation/409/full",
-                        requestHeaders(
-                                headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
-                        ),
-                        requestFields(
-                                fieldWithPath("dateInfo.reservationDate").description("예약일"),
-                                fieldWithPath("dateInfo.startTime").description("예약 시작 시간"),
-                                fieldWithPath("dateInfo.endTime").description("예약 종료 시간"),
-                                fieldWithPath("amount").description("비용"),
-                                fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
+                                ApiDocumentUtils.getDocumentRequest(),
+                                ApiDocumentUtils.getDocumentResponse(),
+                                requestHeaders(
+                                        headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
+                                ),
+                                requestFields(
+                                        fieldWithPath("dateInfo.reservationDate").description("예약일"),
+                                        fieldWithPath("dateInfo.startTime").description("예약 시작 시간"),
+                                        fieldWithPath("dateInfo.endTime").description("예약 종료 시간"),
+                                        fieldWithPath("amount").description("비용"),
+                                        fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
+                                )
                         )
-                )
                 );
     }
 
@@ -170,15 +175,17 @@ class ReservationControllerTest {
         //then
         perform.andExpect(status().isConflict())
                 .andDo(document("postReservation/409/invalid",
-                                requestHeaders(
-                                        headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
-                                ),
-                                requestFields(
-                                        fieldWithPath("dateInfo.reservationDate").description("예약할 수 없는 예약일/시간 (요청 자체가 올바르지 않음을 의미)"),
-                                        fieldWithPath("dateInfo.startTime").description("예약할 수 없는 예약일/시간 (요청 자체가 올바르지 않음을 의미)"),
-                                        fieldWithPath("dateInfo.endTime").description("예약할 수 없는 예약일/시간 (요청 자체가 올바르지 않음을 의미)"),
-                                        fieldWithPath("amount").description("비용"),
-                                        fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
+                        ),
+                        requestFields(
+                                fieldWithPath("dateInfo.reservationDate").description("예약할 수 없는 예약일/시간 (요청 자체가 올바르지 않음을 의미)"),
+                                fieldWithPath("dateInfo.startTime").description("예약할 수 없는 예약일/시간 (요청 자체가 올바르지 않음을 의미)"),
+                                fieldWithPath("dateInfo.endTime").description("예약할 수 없는 예약일/시간 (요청 자체가 올바르지 않음을 의미)"),
+                                fieldWithPath("amount").description("비용"),
+                                fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
                                 )
                         )
                 );
@@ -212,16 +219,18 @@ class ReservationControllerTest {
         //then
         perform.andExpect(status().isConflict())
                 .andDo(document("postReservation/409/money",
-                                requestHeaders(
-                                        headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
-                                ),
-                                requestFields(
-                                        fieldWithPath("dateInfo.reservationDate").description("예약일"),
-                                        fieldWithPath("dateInfo.startTime").description("예약 시작 시간"),
-                                        fieldWithPath("dateInfo.endTime").description("예약 종료 시간"),
-                                        fieldWithPath("amount").description("서버에서 계산한 금액과 일치하지 않음"),
-                                        fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
-                                )
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
+                        ),
+                        requestFields(
+                                fieldWithPath("dateInfo.reservationDate").description("예약일"),
+                                fieldWithPath("dateInfo.startTime").description("예약 시작 시간"),
+                                fieldWithPath("dateInfo.endTime").description("예약 종료 시간"),
+                                fieldWithPath("amount").description("서버에서 계산한 금액과 일치하지 않음"),
+                                fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
+                        )
                         )
                 );
     }
@@ -265,16 +274,18 @@ class ReservationControllerTest {
         //then
         perform.andExpect(status().isCreated())
                 .andDo(document("postReservation/201",
-                                requestHeaders(
-                                        headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
-                                ),
-                                requestFields(
-                                        fieldWithPath("dateInfo.reservationDate").description("예약일"),
-                                        fieldWithPath("dateInfo.startTime").description("예약 시작 시간"),
-                                        fieldWithPath("dateInfo.endTime").description("예약 종료 시간"),
-                                        fieldWithPath("amount").description("서버에서 계산한 금액과 일치하지 않음"),
-                                        fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
-                                ),
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
+                        ),
+                        requestFields(
+                                fieldWithPath("dateInfo.reservationDate").description("예약일"),
+                                fieldWithPath("dateInfo.startTime").description("예약 시작 시간"),
+                                fieldWithPath("dateInfo.endTime").description("예약 종료 시간"),
+                                fieldWithPath("amount").description("서버에서 계산한 금액과 일치하지 않음"),
+                                fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
+                        ),
                         responseFields(
                                 fieldWithPath("payType").type(STRING).description("결제 형태"),
                                 fieldWithPath("amount").type(LONG).description("결제 금액"),
@@ -319,16 +330,18 @@ class ReservationControllerTest {
         //then
         perform.andExpect(status().isNotFound())
                 .andDo(document("postReservation/404",
-                                requestHeaders(
-                                        headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
-                                ),
-                                requestFields(
-                                        fieldWithPath("dateInfo.reservationDate").description("예약일"),
-                                        fieldWithPath("dateInfo.startTime").description("시작 시간"),
-                                        fieldWithPath("dateInfo.endTime").description("마지막 시간"),
-                                        fieldWithPath("amount").description("비용"),
-                                        fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
-                                )
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
+                        ),
+                        requestFields(
+                                fieldWithPath("dateInfo.reservationDate").description("예약일"),
+                                fieldWithPath("dateInfo.startTime").description("시작 시간"),
+                                fieldWithPath("dateInfo.endTime").description("마지막 시간"),
+                                fieldWithPath("amount").description("비용"),
+                                fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
+                        )
                         )
                 );
     }
