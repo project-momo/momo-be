@@ -12,6 +12,6 @@ public interface UserMapper {
 
     @Mapping(target = "nickname", source = "nickname.nickname")
     @Mapping(target = "email", source = "email.address")
-    @Mapping(target = "point", source = "point.point")
+    @Mapping(target = "point", source = "userPoint.point")
     UserResponseDto userDtoOfUser(User user);
 }

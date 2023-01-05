@@ -1,7 +1,5 @@
 package com.example.momobe.user.domain;
 
-import com.example.momobe.common.exception.CustomException;
-import com.example.momobe.common.exception.enums.ErrorCode;
 import lombok.*;
 
 import javax.persistence.Access;
@@ -14,20 +12,20 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 @Access(AccessType.FIELD)
 @Builder(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Point {
+public class UserPoint {
     private Long point;
 
-    public Point(Long point) {
+    public UserPoint(Long point) {
         this.point = point;
     }
 
-    public Point plus(Long point) {
-        return new Point(this.point + point);
+    public UserPoint plus(Long point) {
+        return new UserPoint(this.point + point);
     }
 
-    public Point minus(Long point) {
+    public UserPoint minus(Long point) {
         if (this.point - point < 0) throw new NotEnoughPointException(REQUEST_CONFLICT);
-        return new Point(this.point - point);
+        return new UserPoint(this.point - point);
     }
 
     public Long getPoint() {
