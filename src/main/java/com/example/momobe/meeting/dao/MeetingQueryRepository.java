@@ -2,9 +2,11 @@ package com.example.momobe.meeting.dao;
 
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
+import com.example.momobe.meeting.dto.MeetingInfoDto;
 import com.example.momobe.meeting.dto.MeetingResponseDto;
+import com.example.momobe.meeting.dto.QMeetingInfoDto;
 import com.example.momobe.meeting.dto.QMeetingResponseDto;
-import com.querydsl.core.group.Group;
+import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,9 +30,7 @@ import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.example.momobe.user.domain.QUser.user;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.set;
-import static com.querydsl.core.types.Projections.list;
 
-@SuppressWarnings("unchecked")
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -66,15 +65,18 @@ public class MeetingQueryRepository {
         List<Long> meetingIds = dtos.stream()
                 .map(MeetingResponseDto::getMeetingId).collect(Collectors.toList());
 
-        Map<Long, Group> groupMap = queryFactory
+        Map<Long, MeetingInfoDto> meetingInfoDtoMap = queryFactory
                 .from(meeting)
                 .where(meeting.id.in(meetingIds))
+                .leftJoin(reservation).on(reservation.meetingId.in(meetingIds))
+                .leftJoin(user).on(reservation.reservedUser.userId.eq(user.id))
+                .leftJoin(user.avatar, avatar)
                 .leftJoin(address).on(address.id.in(meeting.address.addressIds))
                 .leftJoin(meeting.dateTimeInfo.dateTimes, dateTime1)
                 .transform(
-                        groupBy(meeting.id).as(
+                        groupBy(meeting.id).as(new QMeetingInfoDto(
                                 set(address.si.append(" ").append(address.gu)),
-                                list(dateTime1.dateTime)
+                                GroupBy.list(dateTime1.dateTime))
                         )
                 );
 
@@ -90,25 +92,21 @@ public class MeetingQueryRepository {
             dateInfoMap.put(dto.getMeetingId(), dto.getDateTime());
         });
 
-        groupMap.forEach(
-                (meetingId, group) -> {
-                    Object[] array = group.toArray();
-
-                    Set<String> addresses = (Set<String>) array[1];
-                    addressesMaps.put(meetingId, new ArrayList<>(addresses));
-                    List<LocalDateTime> dateTimes = (List<LocalDateTime>) array[2];
+        meetingInfoDtoMap.forEach(
+                (meetingId, meetingInfoDto) -> {
+                    addressesMaps.put(meetingId, new ArrayList<>(meetingInfoDto.getAddresses()));
                     MeetingResponseDto.DateTimeDto dateTimeDto = dateInfoMap.get(meetingId);
 
                     if (dateTimeDto.getDatePolicy() == DatePolicy.FREE) {
                         LinkedHashSet<LocalDate> set = new LinkedHashSet<>();
-                        dateTimes.forEach(dateTime -> {
+                        meetingInfoDto.getDateTimes().forEach(dateTime -> {
                             if (dateTime != null)
                                 set.add(dateTime.toLocalDate());
                         });
                         datesMaps.put(meetingId, new ArrayList<>(set));
                     } else if (dateTimeDto.getDatePolicy() == DatePolicy.PERIOD) {
                         TreeSet<Integer> set = new TreeSet<>();
-                        dateTimes.forEach(dateTime -> {
+                        meetingInfoDto.getDateTimes().forEach(dateTime -> {
                             if (dateTime != null)
                                 set.add(dateTime.getDayOfWeek().getValue());
                         });
