@@ -1,8 +1,4 @@
 spring:
-  data:
-    web:
-      pageable:
-        one-indexed-parameters: true
   jpa:
     hibernate:
       ddl-auto: update #update create-update validate
@@ -20,7 +16,7 @@ spring:
   datasource:
     url: jdbc:mysql://rdsinstance.cg6o3rqphy1s.ap-northeast-2.rds.amazonaws.com:3306/rdsDB?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password: ${MASTER_PASSWORD}
+    password: sidsidvjscl12!
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: ${REDIS_HOST:localhost}
@@ -44,7 +40,7 @@ spring:
       client:
         registration:
           kakao:
-            client-id: ${KAKAO_CLIENT}
+            client-id: fc651896d01311768df6b801a157fc66
             redirect-uri: http://54.180.193.137:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: POST
@@ -74,5 +70,5 @@ server:
       force: true
 
 jwt:
-  secretKey: ${JWT_SECRET}
-  refreshKey: ${JWT_REFRESH}
+  secretKey: jwt-tokens-that-should-be-changed-production
+  refreshKey: jwt-refresh-tokens-that-should-be-changed-production

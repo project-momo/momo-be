@@ -139,11 +139,12 @@ public class MeetingQueryRepository {
         return meeting.category.eq(category);
     }
 
-    public List<Meeting> findMeetingClosedBefore3days(){
-        List<Meeting> results = queryFactory.selectFrom(meeting)
+    public List<Long> findMeetingClosedBefore3days(){
+        return queryFactory
+                .select(meeting.id)
+                .from(meeting)
                 .where(endDateFilter())
                 .fetch();
-        return results;
     }
 
     private BooleanExpression endDateFilter(){

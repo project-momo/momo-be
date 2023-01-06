@@ -1,7 +1,9 @@
 package com.example.momobe.reservation.infrastructure;
 
+import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.reservation.domain.CustomReservationRepository;
 import com.example.momobe.reservation.domain.Reservation;
+import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -30,6 +32,13 @@ public class CustomJpaQueryRepositoryImpl implements CustomReservationRepository
                         .and(reservation.reservationDate.date.eq(date))
                         .and((reservation.reservationDate.startTime.between(startTime, endTime.minus(1, MINUTES)))
                         .or(reservation.reservationDate.endTime.between(startTime.plus(1, MINUTES), endTime.minus(1, MINUTES)))))
+                .fetch();
+    }
+
+    @Override
+    public List<Reservation> findPaymentCompletedReservation(Long meetingId) {
+        return jpaQueryFactory.selectFrom(reservation)
+                .where(reservation.reservationState.eq(ReservationState.PAYMENT_SUCCESS))
                 .fetch();
     }
 }
