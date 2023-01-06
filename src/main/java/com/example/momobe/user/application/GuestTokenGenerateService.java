@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class GenerateGuestUserService {
+public class GuestTokenGenerateService {
     private final UserRepository userRepository;
     private final RandomKeyGenerator randomKeyGenerator;
     private final PasswordEncoder passwordEncoder;

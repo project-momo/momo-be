@@ -1,20 +1,14 @@
 package com.example.momobe.user.ui;
 
-import com.example.momobe.common.config.ApiDocumentUtils;
 import com.example.momobe.common.config.SecurityTestConfig;
-import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
-import com.example.momobe.user.application.GenerateGuestUserService;
-import com.example.momobe.user.application.GenerateTokenService;
-import com.example.momobe.user.domain.Email;
-import com.example.momobe.user.domain.Nickname;
-import com.example.momobe.user.domain.Password;
+import com.example.momobe.user.application.GuestTokenGenerateService;
+import com.example.momobe.user.application.TokenGenerateService;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.dto.JwtTokenDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -45,10 +39,10 @@ class GuestControllerTest {
     JwtArgumentResolver jwtArgumentResolver;
 
     @MockBean
-    GenerateGuestUserService generateGuestUserService;
+    GuestTokenGenerateService guestTokenGenerateService;
 
     @MockBean
-    GenerateTokenService generateTokenService;
+    TokenGenerateService tokenGenerateService;
 
     @Autowired
     MockMvc mockMvc;
@@ -62,8 +56,8 @@ class GuestControllerTest {
                 .build();
 
         JwtTokenDto response = new JwtTokenDto(BEARER_ACCESS_TOKEN, BEARER_REFRESH_TOKEN);
-        given(generateGuestUserService.generate()).willReturn(gueset);
-        given(generateTokenService.getJwtToken(gueset.getId())).willReturn(response);
+        given(guestTokenGenerateService.generate()).willReturn(gueset);
+        given(tokenGenerateService.getJwtToken(gueset.getId())).willReturn(response);
 
         //when
         ResultActions result = mockMvc.perform(get("/auth/token/guest"));

@@ -12,16 +12,16 @@ import static com.example.momobe.common.exception.enums.ErrorCode.DATA_NOT_FOUND
 
 @Service
 @RequiredArgsConstructor
-public class ReissueTokenService {
+public class TokenReissueService {
     private final RedisStore<RedisUserDto> redisStore;
     private final JwtTokenUtil jwtTokenUtil;
-    private final GenerateTokenService generateTokenService;
+    private final TokenGenerateService tokenGenerateService;
 
     public JwtTokenDto reIssueToken(String refreshToken) {
         validateToken(refreshToken);
         RedisUserDto user = findValueOrThrowException(refreshToken);
 
-        return generateTokenService.getJwtToken(user.getId());
+        return tokenGenerateService.getJwtToken(user.getId());
     }
 
     private void validateToken(String refreshToken) {

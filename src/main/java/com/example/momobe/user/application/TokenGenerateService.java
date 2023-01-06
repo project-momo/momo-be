@@ -1,10 +1,8 @@
 package com.example.momobe.user.application;
 
 import com.example.momobe.common.domain.RedisStore;
-import com.example.momobe.common.exception.CustomException;
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.security.domain.JwtTokenUtil;
-import com.example.momobe.security.enums.SecurityConstants;
 import com.example.momobe.user.domain.*;
 import com.example.momobe.user.dto.JwtTokenDto;
 import com.example.momobe.user.dto.RedisUserDto;
@@ -12,13 +10,11 @@ import com.example.momobe.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static com.example.momobe.security.enums.SecurityConstants.*;
 
 @Service
 @RequiredArgsConstructor
-public class GenerateTokenService {
+public class TokenGenerateService {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserRepository userRepository;
     private final RedisStore<RedisUserDto> userRedisStore;

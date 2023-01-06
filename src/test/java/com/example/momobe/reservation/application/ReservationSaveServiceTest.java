@@ -6,8 +6,7 @@ import com.example.momobe.meeting.domain.Address;
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.domain.enums.Tag;
-import com.example.momobe.payment.application.SavePaymentService;
+import com.example.momobe.payment.application.PaymentSaveService;
 import com.example.momobe.payment.mapper.PaymentMapper;
 import com.example.momobe.reservation.domain.*;
 import com.example.momobe.reservation.domain.enums.ReservationState;
@@ -36,9 +35,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class SaveReservationServiceTest {
+class ReservationSaveServiceTest {
     @InjectMocks
-    SaveReservationService saveReservationService;
+    ReservationSaveService reservationSaveService;
 
     @Mock
     MeetingCommonService meetingCommonService;
@@ -53,7 +52,7 @@ class SaveReservationServiceTest {
     CountExistReservationService countExistReservationService;
 
     @Mock
-    SavePaymentService savePaymentService;
+    PaymentSaveService paymentSaveService;
 
     @Mock
     PaymentMapper paymentMapper;
@@ -125,7 +124,7 @@ class SaveReservationServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(meetingCommonService, times(1)).getMeetingOrThrowException(any());
@@ -139,7 +138,7 @@ class SaveReservationServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(reservationMapper, times(1)).of(any(Meeting.class), any(), any());
@@ -154,7 +153,7 @@ class SaveReservationServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(countExistReservationService, times(1)).countOf(any(), any(), any(), any());
@@ -168,7 +167,7 @@ class SaveReservationServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(reservationRepository, times(1)).save(any());
@@ -182,10 +181,10 @@ class SaveReservationServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
-        verify(savePaymentService, times(1)).save(any());
+        verify(paymentSaveService, times(1)).save(any());
     }
 
     @Test
@@ -197,9 +196,9 @@ class SaveReservationServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
-        verify(savePaymentService, times(0)).save(any());
+        verify(paymentSaveService, times(0)).save(any());
     }
 }

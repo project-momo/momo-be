@@ -2,12 +2,11 @@ package com.example.momobe.reservation.ui;
 
 import com.example.momobe.common.config.ApiDocumentUtils;
 import com.example.momobe.common.config.SecurityTestConfig;
-import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.domain.MeetingNotFoundException;
 import com.example.momobe.reservation.application.ReservationConfirmService;
-import com.example.momobe.reservation.application.SaveReservationService;
+import com.example.momobe.reservation.application.ReservationSaveService;
 import com.example.momobe.reservation.domain.CanNotChangeReservationStateException;
 import com.example.momobe.reservation.domain.ReservationNotPossibleException;
 import com.example.momobe.reservation.dto.in.PatchReservationDto;
@@ -16,14 +15,12 @@ import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -60,7 +57,7 @@ class ReservationControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    SaveReservationService saveReservationService;
+    ReservationSaveService reservationSaveService;
 
     @MockBean
     ReservationConfirmService reservationConfirmService;
@@ -112,7 +109,7 @@ class ReservationControllerTest {
     @DisplayName("해당 예약 시간에 예약이 불가능한 경우 409 반환")
     void postReservation_fail2() throws Exception {
         //given
-        given(saveReservationService.reserve(anyLong(), any(PostReservationDto.class), any()))
+        given(reservationSaveService.reserve(anyLong(), any(PostReservationDto.class), any()))
                 .willThrow(new ReservationNotPossibleException(FULL_OF_PEOPLE, "인원이 가득 찼습니다."));
 
         PostReservationDto request = PostReservationDto.builder()
@@ -156,7 +153,7 @@ class ReservationControllerTest {
     @DisplayName("요청 시간과 예약 가능한 시간이 일치하지 않음 (시간대 자체가 올바르지 않음) 409 반환")
     void postReservation_fail3() throws Exception {
         //given
-        given(saveReservationService.reserve(anyLong(), any(PostReservationDto.class), any()))
+        given(reservationSaveService.reserve(anyLong(), any(PostReservationDto.class), any()))
                 .willThrow(new ReservationNotPossibleException(INVALID_RESERVATION_TIME));
 
         PostReservationDto request = PostReservationDto.builder()
@@ -200,7 +197,7 @@ class ReservationControllerTest {
     @DisplayName("예약 요청 시 신청한 금액과 실제 결제해야할 금액이 일치하지 않을 경우 409 반환")
     void postReservation_fail4() throws Exception {
         //given
-        given(saveReservationService.reserve(anyLong(), any(PostReservationDto.class), any()))
+        given(reservationSaveService.reserve(anyLong(), any(PostReservationDto.class), any()))
                 .willThrow(new ReservationNotPossibleException(AMOUNT_DOSE_NOT_MATCH));
 
         PostReservationDto request = PostReservationDto.builder()
@@ -268,7 +265,7 @@ class ReservationControllerTest {
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
-        given(saveReservationService.reserve(anyLong(), any(PostReservationDto.class), any())).willReturn(response);
+        given(reservationSaveService.reserve(anyLong(), any(PostReservationDto.class), any())).willReturn(response);
 
         //when
         ResultActions perform = mockMvc.perform(post("/meetings/{meetingId}/reservations", 1)
@@ -311,7 +308,7 @@ class ReservationControllerTest {
     @DisplayName("요청한 meeting을 찾지 못할 경우 404 반환")
     void postReservation_fail5() throws Exception {
         //given
-        given(saveReservationService.reserve(anyLong(), any(PostReservationDto.class), any()))
+        given(reservationSaveService.reserve(anyLong(), any(PostReservationDto.class), any()))
                 .willThrow(new MeetingNotFoundException(DATA_NOT_FOUND));
 
         PostReservationDto request = PostReservationDto.builder()
