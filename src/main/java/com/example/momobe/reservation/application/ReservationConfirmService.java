@@ -2,8 +2,8 @@ package com.example.momobe.reservation.application;
 
 import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.meeting.application.MeetingCommonService;
-import com.example.momobe.meeting.domain.CanNotChangeMeetingStateException;
 import com.example.momobe.meeting.domain.Meeting;
+import com.example.momobe.reservation.domain.CanNotChangeReservationStateException;
 import com.example.momobe.reservation.domain.Reservation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class ReservationConfirmService {
 
     public void confirm(Long meetingId, Long reservationId, UserInfo userInfo, Boolean isAccepted) {
         Meeting meeting = meetingCommonService.getMeetingOrThrowException(meetingId);
-        if (!meeting.matchHostId(userInfo.getId())) throw new CanNotChangeMeetingStateException(REQUEST_DENIED);
+        if (!meeting.matchHostId(userInfo.getId())) throw new CanNotChangeReservationStateException(REQUEST_DENIED);
         Reservation reservation = reservationCommonService.getReservationOrThrowException(reservationId);
 
         if (!isAccepted) {

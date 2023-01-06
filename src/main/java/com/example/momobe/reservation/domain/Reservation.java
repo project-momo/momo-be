@@ -1,7 +1,6 @@
 package com.example.momobe.reservation.domain;
 
 import com.example.momobe.common.domain.BaseTime;
-import com.example.momobe.meeting.domain.CanNotChangeMeetingStateException;
 import com.example.momobe.reservation.domain.enums.ReservationState;
 import lombok.*;
 
