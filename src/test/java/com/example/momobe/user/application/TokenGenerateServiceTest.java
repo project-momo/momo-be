@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class GenerateTokenServiceTest {
+class TokenGenerateServiceTest {
     @Mock
     JwtTokenUtil jwtTokenUtil;
 
@@ -36,7 +36,7 @@ class GenerateTokenServiceTest {
     UserMapper userMapper;
 
     @InjectMocks
-    GenerateTokenService generateTokenService;
+    TokenGenerateService tokenGenerateService;
 
     @Test
     @DisplayName("유저가 존재하지 않을 경우 UserNotFoudException이 발생한다")
@@ -45,7 +45,7 @@ class GenerateTokenServiceTest {
         given(userRepository.findById(any())).willReturn(Optional.empty());
 
         //when //then
-        assertThatThrownBy(() -> generateTokenService.getJwtToken(ID1))
+        assertThatThrownBy(() -> tokenGenerateService.getJwtToken(ID1))
                 .isInstanceOf(UserNotFoundException.class);
     }
 
@@ -65,7 +65,7 @@ class GenerateTokenServiceTest {
         given(userMapper.of(user)).willReturn(RedisUserDto.builder().email(new Email(EMAIL1)).build());
 
         //when
-        generateTokenService.getJwtToken(ID1);
+        tokenGenerateService.getJwtToken(ID1);
 
         //then
         verify(userRepository,times(1)).findById(1L);
@@ -87,7 +87,7 @@ class GenerateTokenServiceTest {
         given(userMapper.of(user)).willReturn(RedisUserDto.builder().email(new Email(EMAIL1)).build());
 
         //when
-        generateTokenService.getJwtToken(ID1);
+        tokenGenerateService.getJwtToken(ID1);
 
         //then
         verify(jwtTokenUtil, times(1)).createAccessToken(EMAIL1, ID1, ROLE_USER_LIST, NICKNAME1);
@@ -110,7 +110,7 @@ class GenerateTokenServiceTest {
         given(userMapper.of(user)).willReturn(RedisUserDto.builder().email(new Email(EMAIL1)).build());
 
         //when
-        generateTokenService.getJwtToken(ID1);
+        tokenGenerateService.getJwtToken(ID1);
 
         //then
         verify(userRedisStore, times(1)).saveData(anyString(), any(RedisUserDto.class), anyLong());
@@ -132,7 +132,7 @@ class GenerateTokenServiceTest {
         given(userMapper.of(user)).willReturn(RedisUserDto.builder().email(new Email(EMAIL1)).build());
 
         //when
-        JwtTokenDto result = generateTokenService.getJwtToken(ID1);
+        JwtTokenDto result = tokenGenerateService.getJwtToken(ID1);
 
         //then
         assertThat(result.getAccessToken()).isEqualTo(ACCESS_TOKEN);

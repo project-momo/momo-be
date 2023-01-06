@@ -3,7 +3,7 @@ package com.example.momobe.reservation.application;
 import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.meeting.application.MeetingCommonService;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.payment.application.SavePaymentService;
+import com.example.momobe.payment.application.PaymentSaveService;
 import com.example.momobe.payment.domain.Payment;
 import com.example.momobe.payment.mapper.PaymentMapper;
 import com.example.momobe.reservation.domain.*;
@@ -24,12 +24,12 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class SaveReservationService {
+public class ReservationSaveService {
     private final MeetingCommonService meetingCommonService;
     private final ReservationMapper reservationMapper;
     private final ReservationRepository reservationRepository;
     private final CountExistReservationService countExistReservationService;
-    private final SavePaymentService savePaymentService;
+    private final PaymentSaveService paymentSaveService;
     private final PaymentMapper paymentMapper;
 
     public PaymentResponseDto reserve(Long meetingId, PostReservationDto reservationDto, UserInfo userInfo) {
@@ -47,7 +47,7 @@ public class SaveReservationService {
         }
 
         ReservationPaymentDto paymentInfo = reservationMapper.of(userInfo, reservation, meeting);
-        Payment payment = savePaymentService.save(paymentInfo);
+        Payment payment = paymentSaveService.save(paymentInfo);
         return paymentMapper.of(payment);
     }
 

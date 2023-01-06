@@ -3,7 +3,7 @@ package com.example.momobe.reservation.ui;
 import com.example.momobe.common.resolver.Token;
 import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.reservation.application.ReservationConfirmService;
-import com.example.momobe.reservation.application.SaveReservationService;
+import com.example.momobe.reservation.application.ReservationSaveService;
 import com.example.momobe.reservation.dto.in.PatchReservationDto;
 import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
@@ -17,7 +17,7 @@ import javax.validation.Valid;
 @RequestMapping("/meetings")
 @RequiredArgsConstructor
 public class ReservationController {
-    private final SaveReservationService saveReservationService;
+    private final ReservationSaveService reservationSaveService;
     private final ReservationConfirmService reservationConfirmService;
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -25,7 +25,7 @@ public class ReservationController {
     public PaymentResponseDto postReservation(@PathVariable(name = "meetingId") Long meetingId,
                                               @Valid @RequestBody PostReservationDto request,
                                               @Token UserInfo userInfo) {
-        return saveReservationService.reserve(meetingId, request, userInfo);
+        return reservationSaveService.reserve(meetingId, request, userInfo);
     }
 
     @ResponseStatus(HttpStatus.OK)
