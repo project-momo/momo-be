@@ -11,8 +11,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Tag {
     @Id
@@ -21,5 +19,14 @@ public class Tag {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String korName;
+
+    @Column(nullable = false)
+    private String engName;
+
+    @Builder
+    public Tag(String korName, String engName) {
+        this.korName = korName;
+        this.engName = engName;
+    }
 }

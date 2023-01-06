@@ -1,7 +1,6 @@
 package com.example.momobe.user.application;
 
 import com.example.momobe.common.domain.RedisStore;
-import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.user.domain.TokenNotFoundException;
 import com.example.momobe.user.dto.JwtTokenDto;
@@ -20,7 +19,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ReissueTokenServiceTest {
+class TokenReissueServiceTest {
     @Mock
     RedisStore<RedisUserDto> redisStore;
 
@@ -28,10 +27,10 @@ class ReissueTokenServiceTest {
     JwtTokenUtil jwtTokenUtil;
 
     @Mock
-    GenerateTokenService generateTokenService;
+    TokenGenerateService tokenGenerateService;
 
     @InjectMocks
-    ReissueTokenService reissueTokenService;
+    TokenReissueService tokenReissueService;
 
     @Test
     @DisplayName("리프레시 토큰으로 조회된 값이 없을 경우 TokenNotFoundException 발생")
@@ -40,7 +39,7 @@ class ReissueTokenServiceTest {
         given(redisStore.getDataAndDelete(BEARER_REFRESH_TOKEN, RedisUserDto.class)).willReturn(Optional.empty());
 
         //when then
-        assertThatThrownBy(() -> reissueTokenService.reIssueToken(BEARER_REFRESH_TOKEN))
+        assertThatThrownBy(() -> tokenReissueService.reIssueToken(BEARER_REFRESH_TOKEN))
                 .isInstanceOf(TokenNotFoundException.class);
     }
 
@@ -51,9 +50,9 @@ class ReissueTokenServiceTest {
         RedisUserDto data = RedisUserDto.builder().id(ID1).build();
         JwtTokenDto jwtTokenDto = new JwtTokenDto(ACCESS_TOKEN, REFRESH_TOKEN);
         given(redisStore.getDataAndDelete(BEARER_REFRESH_TOKEN, RedisUserDto.class)).willReturn(Optional.ofNullable(data));
-        given(generateTokenService.getJwtToken(ID1)).willReturn(jwtTokenDto);
+        given(tokenGenerateService.getJwtToken(ID1)).willReturn(jwtTokenDto);
         //when
-        JwtTokenDto result = reissueTokenService.reIssueToken(BEARER_REFRESH_TOKEN);
+        JwtTokenDto result = tokenReissueService.reIssueToken(BEARER_REFRESH_TOKEN);
         //then
         assertThat(result.getAccessToken()).isEqualTo(ACCESS_TOKEN);
         assertThat(result.getRefreshToken()).isEqualTo(REFRESH_TOKEN);

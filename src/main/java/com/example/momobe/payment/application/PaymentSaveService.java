@@ -4,14 +4,13 @@ import com.example.momobe.payment.domain.Payment;
 import com.example.momobe.payment.domain.PaymentRepository;
 import com.example.momobe.reservation.dto.out.ReservationPaymentDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import static com.example.momobe.payment.domain.enums.PayType.*;
 
 @Service
 @RequiredArgsConstructor
-public class SavePaymentService {
+public class PaymentSaveService {
     private final PaymentRepository paymentRepository;
 
     /*

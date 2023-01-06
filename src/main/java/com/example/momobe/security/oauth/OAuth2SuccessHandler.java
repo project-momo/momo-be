@@ -1,7 +1,6 @@
 package com.example.momobe.security.oauth;
 
-import com.example.momobe.common.exception.CustomException;
-import com.example.momobe.user.application.GenerateTokenService;
+import com.example.momobe.user.application.TokenGenerateService;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserNotFoundException;
 import com.example.momobe.user.domain.UserRepository;
@@ -28,13 +27,13 @@ import static com.example.momobe.security.enums.SecurityConstants.*;
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final UserRepository userRepository;
-    private final GenerateTokenService generateTokenService;
+    private final TokenGenerateService tokenGenerateService;
 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         if (response.isCommitted()) return;
 
         User user = findUserBy(authentication);
-        JwtTokenDto jwtTokenDto = generateTokenService.getJwtToken(user.getId());
+        JwtTokenDto jwtTokenDto = tokenGenerateService.getJwtToken(user.getId());
 
         String responseUrl = createResponseUrl(jwtTokenDto.getAccessToken(), jwtTokenDto.getRefreshToken());
         getRedirectStrategy().sendRedirect(request, response, responseUrl);

@@ -2,10 +2,9 @@ package com.example.momobe.meeting.ui;
 
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
+import com.example.momobe.meeting.application.MeetingRegistrationService;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.domain.MeetingRepository;
-import com.example.momobe.meeting.mapper.DateTimeMapper;
-import com.example.momobe.meeting.mapper.MeetingMapper;
+import com.example.momobe.meeting.dto.MeetingRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,9 @@ import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRespo
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.common.util.ReflectionUtil.setField;
 import static com.example.momobe.meeting.enums.MeetingConstants.MEETING_REQUEST_DTO_WITH_ALL;
+import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -33,8 +34,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest({MeetingRegistrationController.class,
-        MeetingMapper.class, DateTimeMapper.class})
+@WebMvcTest(MeetingRegistrationController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(SecurityTestConfig.class)
 @AutoConfigureRestDocs
@@ -46,20 +46,18 @@ class MeetingRegistrationControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private MeetingRepository meetingRepository;
+    private MeetingRegistrationService meetingRegistrationService;
     @MockBean
     private JwtArgumentResolver jwtArgumentResolver;
 
     @Test
     void registerMeeting() throws Exception {
         // given
+        Meeting meeting = generateMeeting();
+        setField(meeting, "id", ID1);
         String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO_WITH_ALL);
-        given(meetingRepository.save(any(Meeting.class)))
-                .willAnswer(args -> {
-                    Meeting meeting = args.getArgument(0);
-                    setField(meeting, "id", ID1);
-                    return meeting;
-                });
+        given(meetingRegistrationService.saveMeeting(eq(null), any(MeetingRequestDto.class)))
+                .willReturn(meeting);
 
         // when
         ResultActions actions = mockMvc.perform(

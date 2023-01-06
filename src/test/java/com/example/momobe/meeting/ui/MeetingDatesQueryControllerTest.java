@@ -1,17 +1,14 @@
 package com.example.momobe.meeting.ui;
 
-import com.example.momobe.answer.mapper.AnswerMapper;
 import com.example.momobe.common.config.ApiDocumentUtils;
 import com.example.momobe.common.config.SecurityTestConfig;
-import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
-import com.example.momobe.meeting.dao.MeetingDatesQueryMapper;
+import com.example.momobe.meeting.dao.MonthlyMeetingScheduleInquiry;
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.dto.ResponseMeetingDatesDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.aspectj.apache.bcel.generic.ObjectType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -50,7 +47,7 @@ class MeetingDatesQueryControllerTest {
     JwtArgumentResolver jwtArgumentResolver;
 
     @MockBean
-    MeetingDatesQueryMapper meetingDatesQueryMapper;
+    MonthlyMeetingScheduleInquiry monthlyMeetingScheduleInquiry;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -92,7 +89,7 @@ class MeetingDatesQueryControllerTest {
 
         List<ResponseMeetingDatesDto> respone = List.of(dto1, dto2);
 
-        BDDMockito.given(meetingDatesQueryMapper.getTimes(meetingId, localDate.getMonthValue())).willReturn(respone);
+        BDDMockito.given(monthlyMeetingScheduleInquiry.getSchedules(meetingId, localDate.getMonthValue())).willReturn(respone);
 
         //when
         ResultActions perform = mockMvc.perform(get("/meetings/{meetingId}/reservations/dates/{date}", meetingId, localDate)

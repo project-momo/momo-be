@@ -38,9 +38,9 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class MeetingDatesQueryMapperTest {
+class MonthlyMeetingScheduleInquiryTest {
     @Autowired
-    private MeetingDatesQueryMapper meetingDatesQueryMapper;
+    private MonthlyMeetingScheduleInquiry monthlyMeetingScheduleInquiry;
 
     private DateTimeMapper dateTimeMapper;
 
@@ -96,7 +96,7 @@ class MeetingDatesQueryMapperTest {
                         .endDate(LocalDate.of(2022, 1, 20))
                         .dateTimes(dateTimes)
                         .build())
-                .tags(null)
+                .tagIds(null)
                 .build();
 
         em.persist(freeMeeting);
@@ -131,7 +131,7 @@ class MeetingDatesQueryMapperTest {
                         .endDate(LocalDate.of(2022, 1, 20))
                         .dateTimes(dateTimes2)
                         .build())
-                .tags(null)
+                .tagIds(null)
                 .build();
 
         em.persist(dayMeeting);
@@ -176,7 +176,7 @@ class MeetingDatesQueryMapperTest {
     void getTimesTest_free1() {
         //given
         //when
-        List<ResponseMeetingDatesDto> result = meetingDatesQueryMapper.getTimes(freeMeeting.getId(), startDate.getMonthValue());
+        List<ResponseMeetingDatesDto> result = monthlyMeetingScheduleInquiry.getSchedules(freeMeeting.getId(), startDate.getMonthValue());
 
         //then
         for (ResponseMeetingDatesDto t : result) {
@@ -190,7 +190,7 @@ class MeetingDatesQueryMapperTest {
     void getTimesTest_day2() {
         //given
         //when
-        List<ResponseMeetingDatesDto> result = meetingDatesQueryMapper.getTimes(freeMeeting.getId(), startDate.getMonthValue());
+        List<ResponseMeetingDatesDto> result = monthlyMeetingScheduleInquiry.getSchedules(freeMeeting.getId(), startDate.getMonthValue());
 
         //then
         for (ResponseMeetingDatesDto responseMeetingDatesDto : result) {
@@ -209,7 +209,7 @@ class MeetingDatesQueryMapperTest {
     void getTimesTest_day1() {
         //given
         //when
-        List<ResponseMeetingDatesDto> result = meetingDatesQueryMapper.getTimes(dayMeeting.getId(), startDate.getMonthValue());
+        List<ResponseMeetingDatesDto> result = monthlyMeetingScheduleInquiry.getSchedules(dayMeeting.getId(), startDate.getMonthValue());
 
         //then
         assertThat(result.size()).isEqualTo(20);
@@ -220,7 +220,7 @@ class MeetingDatesQueryMapperTest {
     void getTimesTest_free2() {
         //given
         //when
-        List<ResponseMeetingDatesDto> result = meetingDatesQueryMapper.getTimes(dayMeeting.getId(), startDate.getMonthValue());
+        List<ResponseMeetingDatesDto> result = monthlyMeetingScheduleInquiry.getSchedules(dayMeeting.getId(), startDate.getMonthValue());
 
         //then
         for (ResponseMeetingDatesDto responseMeetingDatesDto : result) {

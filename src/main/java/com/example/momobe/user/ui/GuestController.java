@@ -1,9 +1,7 @@
 package com.example.momobe.user.ui;
 
-import com.example.momobe.common.resolver.Token;
-import com.example.momobe.common.resolver.UserInfo;
-import com.example.momobe.user.application.GenerateTokenService;
-import com.example.momobe.user.application.GenerateGuestUserService;
+import com.example.momobe.user.application.TokenGenerateService;
+import com.example.momobe.user.application.GuestTokenGenerateService;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.dto.JwtTokenDto;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +16,13 @@ import static com.example.momobe.security.enums.SecurityConstants.*;
 @RequestMapping("/auth/token")
 @RequiredArgsConstructor
 public class GuestController {
-    private final GenerateGuestUserService generateGuestUserService;
-    private final GenerateTokenService generateTokenService;
+    private final GuestTokenGenerateService guestTokenGenerateService;
+    private final TokenGenerateService tokenGenerateService;
 
     @GetMapping("/guest")
     public ResponseEntity<JwtTokenDto> getGuestUserToken() {
-        User guestUser = generateGuestUserService.generate();
-        JwtTokenDto jwtToken = generateTokenService.getJwtToken(guestUser.getId());
+        User guestUser = guestTokenGenerateService.generate();
+        JwtTokenDto jwtToken = tokenGenerateService.getJwtToken(guestUser.getId());
 
         return ResponseEntity.status(201)
                 .header(ACCESS_TOKEN, jwtToken.getAccessToken())

@@ -37,7 +37,7 @@ class MeetingCommonServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> meetingCommonService.findMeetingOrThrowException(1L))
+        assertThatThrownBy(() -> meetingCommonService.getMeetingOrThrowException(1L))
                 .isInstanceOf(MeetingNotFoundException.class);
     }
 
@@ -57,7 +57,7 @@ class MeetingCommonServiceTest {
         given(meetingRepository.findById(ID1)).willReturn(Optional.of(meeting));
 
         //when
-        Meeting result = meetingCommonService.findMeetingOrThrowException(ID1);
+        Meeting result = meetingCommonService.getMeetingOrThrowException(ID1);
 
         //then
         assertThat(result.getPersonnel()).isEqualTo(meeting.getPersonnel());
