@@ -40,12 +40,12 @@ public class Meeting extends BaseTime {
     @Column(nullable = false)
     private Category category;
 
+
     @ElementCollection
     @CollectionTable(name = "meeting_tag",
             joinColumns = @JoinColumn(name = "meeting_id"))
-    @Enumerated(STRING)
-    @Column(name = "tag", nullable = false)
-    private List<Tag> tags;
+    @Column(name = "tag_id", nullable = false)
+    private List<Long> tagIds;
 
     @Column(nullable = false)
     private Integer personnel;
@@ -64,14 +64,14 @@ public class Meeting extends BaseTime {
     private Address address;
 
     @Builder
-    public Meeting(String title, String content, Long hostId, Category category, List<Tag> tags,
+    public Meeting(String title, String content, Long hostId, Category category, List<Long> tagIds,
                    Integer personnel, MeetingState meetingState, DateTimeInfo dateTimeInfo,
                    Long price, Address address) {
         this.title = title;
         this.content = content;
         this.hostId = hostId;
         this.category = category;
-        this.tags = tags;
+        this.tagIds = tagIds;
         this.personnel = personnel;
         this.meetingState = meetingState;
         this.dateTimeInfo = dateTimeInfo;

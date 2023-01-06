@@ -88,7 +88,7 @@ public class ReservationIntegrationTest {
                 .personnel(10)
                 .price(10000L)
                 .content(CONTENT2)
-                .tags(List.of(Tag.OFFLINE, Tag.MENTORING))
+                .tagIds(List.of(ID1, ID2))
                 .meetingState(OPEN)
                 .address(new Address(List.of(1L,2L),"화곡동"))
                 .build();
@@ -109,7 +109,7 @@ public class ReservationIntegrationTest {
                 .personnel(10)
                 .price(10000L)
                 .content(CONTENT2)
-                .tags(List.of(Tag.OFFLINE, Tag.MENTORING))
+                .tagIds(List.of(ID1, ID2))
                 .meetingState(CLOSE)
                 .address(new Address(List.of(1L,2L),"화곡동"))
                 .build();
@@ -130,7 +130,7 @@ public class ReservationIntegrationTest {
                 .personnel(1)
                 .price(10000L)
                 .content(CONTENT2)
-                .tags(List.of(Tag.OFFLINE, Tag.MENTORING))
+                .tagIds(List.of(ID1, ID2))
                 .meetingState(OPEN)
                 .address(new Address(List.of(1L,2L),"화곡동"))
                 .build();
@@ -151,7 +151,7 @@ public class ReservationIntegrationTest {
                 .personnel(1)
                 .price(0L)
                 .content(CONTENT2)
-                .tags(List.of(Tag.OFFLINE, Tag.MENTORING))
+                .tagIds(List.of(ID1, ID2))
                 .meetingState(OPEN)
                 .address(new Address(List.of(1L,2L),"화곡동"))
                 .build();

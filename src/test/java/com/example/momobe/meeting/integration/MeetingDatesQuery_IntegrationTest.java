@@ -117,7 +117,7 @@ public class MeetingDatesQuery_IntegrationTest {
                         .endDate(LocalDate.of(2022, 1, 20))
                         .dateTimes(dateTimes)
                         .build())
-                .tags(null)
+                .tagIds(null)
                 .build();
 
         em.persist(freeMeeting);
@@ -152,7 +152,7 @@ public class MeetingDatesQuery_IntegrationTest {
                         .endDate(LocalDate.of(2022, 1, 20))
                         .dateTimes(dateTimes2)
                         .build())
-                .tags(null)
+                .tagIds(null)
                 .build();
 
         em.persist(dayMeeting);

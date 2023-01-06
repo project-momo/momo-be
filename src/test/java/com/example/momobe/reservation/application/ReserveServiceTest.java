@@ -1,16 +1,11 @@
 package com.example.momobe.reservation.application;
 
-import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.meeting.application.MeetingCommonService;
 import com.example.momobe.meeting.domain.Address;
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.domain.enums.Category;
-import com.example.momobe.meeting.domain.enums.DatePolicy;
-import com.example.momobe.meeting.domain.enums.MeetingState;
-import com.example.momobe.meeting.domain.enums.Tag;
 import com.example.momobe.payment.application.SavePaymentService;
 import com.example.momobe.payment.mapper.PaymentMapper;
 import com.example.momobe.reservation.domain.*;
@@ -18,17 +13,13 @@ import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.example.momobe.reservation.dto.in.RequestReservationDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.example.momobe.reservation.mapper.ReservationMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
@@ -37,10 +28,9 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
-import static com.example.momobe.meeting.domain.enums.Category.*;
-import static com.example.momobe.meeting.domain.enums.DatePolicy.*;
-import static com.example.momobe.meeting.domain.enums.MeetingState.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.example.momobe.meeting.domain.enums.Category.AI;
+import static com.example.momobe.meeting.domain.enums.DatePolicy.FREE;
+import static com.example.momobe.meeting.domain.enums.MeetingState.OPEN;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
@@ -80,28 +70,28 @@ class ReserveServiceTest {
                 .title(CONTENT1)
                 .dateTimeInfo(DateTimeInfo.builder()
                         .datePolicy(FREE)
-                        .startDate(LocalDate.of(2022,1,1))
-                        .endDate(LocalDate.of(2022,1,10))
-                        .startTime(LocalTime.of(10,0,0))
-                        .endTime(LocalTime.of(18,0,0))
+                        .startDate(LocalDate.of(2022, 1, 1))
+                        .endDate(LocalDate.of(2022, 1, 10))
+                        .startTime(LocalTime.of(10, 0, 0))
+                        .endTime(LocalTime.of(18, 0, 0))
                         .maxTime(4)
-                        .dateTimes(List.of(new DateTime(LocalDateTime.of(2022,1,1,12,0,0))))
+                        .dateTimes(List.of(new DateTime(LocalDateTime.of(2022, 1, 1, 12, 0, 0))))
                         .build())
                 .personnel(10)
                 .price(10000L)
                 .content(CONTENT2)
-                .tags(List.of(Tag.OFFLINE, Tag.MENTORING))
+                .tagIds(List.of(ID1, ID2))
                 .meetingState(OPEN)
-                .address(new Address(List.of(1L,2L),"화곡동"))
+                .address(new Address(List.of(1L, 2L), "화곡동"))
                 .build();
 
         reservationDto = RequestReservationDto.builder()
                 .reservationMemo(CONTENT1)
                 .amount(10000L)
                 .dateInfo(RequestReservationDto.ReservationDateDto.builder()
-                        .reservationDate(LocalDate.of(2022,1,5))
-                        .startTime(LocalTime.of(11,0,0))
-                        .endTime(LocalTime.of(12,0,0))
+                        .reservationDate(LocalDate.of(2022, 1, 5))
+                        .startTime(LocalTime.of(11, 0, 0))
+                        .endTime(LocalTime.of(12, 0, 0))
                         .build())
                 .build();
 
@@ -118,9 +108,9 @@ class ReserveServiceTest {
                 .amount(new Money(10000L))
                 .reservedUser(new ReservedUser(ID1))
                 .reservationDate(ReservationDate.builder()
-                        .date(LocalDate.of(2022,1,5))
-                        .startTime(LocalTime.of(11,0,0))
-                        .endTime(LocalTime.of(12,0,0))
+                        .date(LocalDate.of(2022, 1, 5))
+                        .startTime(LocalTime.of(11, 0, 0))
+                        .endTime(LocalTime.of(12, 0, 0))
                         .build())
                 .reservationMemo(new ReservationMemo(CONTENT1))
                 .build();

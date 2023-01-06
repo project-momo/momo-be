@@ -1,9 +1,11 @@
 package com.example.momobe.tag.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
-    Optional<Tag> findByName(String name);
+    @Query("select t.id from Tag t where t.engName in :engNames")
+    List<Long> findTagIds(List<String> engNames);
 }
