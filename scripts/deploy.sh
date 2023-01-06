@@ -7,7 +7,7 @@ sudo docker rmi dodannnn/momoproject:1.0
 # 도커허브 이미지 pull
 sudo docker pull dodannnn/momoproject:1.0
 
-sudo rm -rf /apps/momo-be/src/main/resources/application.yml
+# sudo rm -rf /apps/momo-be/src/main/resources/application.yml
 
 # 도커 run
 docker run -d -p 8080:8080 -v /home/ec2-user:/config --name momoproject dodannnn/momoproject:1.0
