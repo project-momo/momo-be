@@ -81,7 +81,7 @@ public class Reservation extends BaseTime {
     }
 
     public void accept() {
-        if (this.reservationState == CANCEL) throw new CanNotChangeMeetingStateException(CANCELED_RESERVATION);
+        if (this.reservationState == CANCEL) throw new CanNotChangeReservationStateException(CANCELED_RESERVATION);
 
         this.reservationState = ACCEPT;
     }
