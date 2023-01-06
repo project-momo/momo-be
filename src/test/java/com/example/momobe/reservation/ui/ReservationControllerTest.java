@@ -5,7 +5,6 @@ import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
-import com.example.momobe.meeting.domain.CanNotChangeMeetingStateException;
 import com.example.momobe.meeting.domain.MeetingNotFoundException;
 import com.example.momobe.reservation.application.ReservationConfirmService;
 import com.example.momobe.reservation.application.SaveReservationService;
@@ -389,7 +388,7 @@ class ReservationControllerTest {
         //given
         PatchReservationDto request = new PatchReservationDto("true");
         String json = objectMapper.writeValueAsString(request);
-        willThrow(new CanNotChangeMeetingStateException(REQUEST_DENIED)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), anyBoolean());
+        willThrow(new CanNotChangeReservationStateException(REQUEST_DENIED)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), anyBoolean());
 
         //when
         ResultActions perform = mockMvc.perform(patch("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
