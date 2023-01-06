@@ -1,8 +1,7 @@
 package com.example.momobe.meeting.ui;
 
 import com.example.momobe.common.exception.CanNotConvertException;
-import com.example.momobe.common.exception.enums.ErrorCode;
-import com.example.momobe.meeting.dao.MeetingDatesQueryMapper;
+import com.example.momobe.meeting.dao.MonthlyMeetingScheduleInquiry;
 import com.example.momobe.meeting.dto.ResponseMeetingDatesDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,14 +19,14 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 @RequiredArgsConstructor
 @RequestMapping("/meetings")
 public class MeetingDatesQueryController {
-    private final MeetingDatesQueryMapper meetingDatesQueryMapper;
+    private final MonthlyMeetingScheduleInquiry monthlyMeetingScheduleInquiry;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{meetingId}/reservations/dates/{date}")
     public List<ResponseMeetingDatesDto> getDates(@PathVariable(name = "meetingId") Long meetingId,
                                                   @PathVariable(name = "date") String date) {
         LocalDate localDate = convertLocalDate(date);
-        return meetingDatesQueryMapper.getTimes(meetingId, localDate.getMonthValue());
+        return monthlyMeetingScheduleInquiry.getSchedules(meetingId, localDate.getMonthValue());
     }
 
     private LocalDate convertLocalDate(String date) {

@@ -14,6 +14,8 @@ public enum ErrorCode {
     AMOUNT_DOSE_NOT_MATCH(CONFLICT, "신청한 결제 금액과 실제 결제해야할 금액이 일치하지 않습니다. 관리자에게 문의하세요."),
     INVALID_RESERVATION_TIME(CONFLICT, "유효하지 않은 예약 시간대입니다."),
     CLOSED_MEETING(CONFLICT, "모집이 종료된 모임입니다."),
+    CANCELED_RESERVATION(CONFLICT, "이미 취소된 예약입니다, 관리자에게 문의하세요."),
+    CONFIRMED_RESERVATION(CONFLICT, "이미 확정된 예약입니다, 관리자에게 문의하세요."),
 
     /*
     * Token Exception

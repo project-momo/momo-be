@@ -1,5 +1,6 @@
 package com.example.momobe.meeting.domain;
 
+import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.domain.enums.MeetingState;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import static com.example.momobe.common.enums.TestConstants.*;
 import static org.assertj.core.api.Assertions.*;
 
 class MeetingTest {
@@ -221,5 +223,89 @@ class MeetingTest {
 
         //then
         assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("hostId가 동일하지 않다면 false를 반환한다.")
+    void matchHostIdTest1() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .hostId(ID1)
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .meetingState(MeetingState.CLOSE)
+                .build();
+
+        //when
+        Boolean result = meeting.matchHostId(ID2);
+
+        //then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("hostId가 동일하다면 true를 반환한다.")
+    void matchHostIdTest2() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .hostId(ID1)
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .meetingState(MeetingState.CLOSE)
+                .build();
+
+        //when
+        Boolean result = meeting.matchHostId(ID1);
+
+        //then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("해당 HostId가 null이라면 false를 반환한다.")
+    void matchHostIdTest3() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .hostId(ID1)
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .meetingState(MeetingState.CLOSE)
+                .build();
+
+        //when
+        Boolean result = meeting.matchHostId(null);
+
+        //then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("Meeting 객체의 HostId가 null이라면 false를 반환한다.")
+    void matchHostIdTest4() {
+        //given
+        Meeting meeting = Meeting.builder()
+                .hostId(null)
+                .price(10000L)
+                .dateTimeInfo(DateTimeInfo.builder()
+                        .datePolicy(DatePolicy.FREE)
+                        .dateTimes(List.of(new DateTime(LocalDateTime.now())))
+                        .build())
+                .meetingState(MeetingState.CLOSE)
+                .build();
+
+        //when
+        Boolean result = meeting.matchHostId(ID1);
+
+        //then
+        assertThat(result).isFalse();
     }
 }

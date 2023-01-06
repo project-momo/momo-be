@@ -1,6 +1,6 @@
 package com.example.momobe.meeting.integration;
 
-import com.example.momobe.meeting.dao.MeetingDatesQueryMapper;
+import com.example.momobe.meeting.dao.MonthlyMeetingScheduleInquiry;
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
@@ -53,7 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class MeetingDatesQuery_IntegrationTest {
     @Autowired
-    private MeetingDatesQueryMapper meetingDatesQueryMapper;
+    private MonthlyMeetingScheduleInquiry monthlyMeetingScheduleInquiry;
 
     @Autowired
     private EntityManager em;

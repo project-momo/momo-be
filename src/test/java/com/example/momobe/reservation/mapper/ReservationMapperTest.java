@@ -1,15 +1,13 @@
 package com.example.momobe.reservation.mapper;
 
-import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.reservation.domain.Money;
 import com.example.momobe.reservation.domain.Reservation;
-import com.example.momobe.reservation.dto.in.RequestReservationDto;
+import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.dto.out.ReservationPaymentDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +18,6 @@ import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ReservationMapperTest {
     private ReservationMapper reservationMapper;
@@ -42,10 +39,10 @@ class ReservationMapperTest {
                         .build())
                 .build();
 
-        RequestReservationDto dto = RequestReservationDto.builder()
+        PostReservationDto dto = PostReservationDto.builder()
                 .amount(10000L)
                 .reservationMemo(CONTENT1)
-                .dateInfo(RequestReservationDto.ReservationDateDto.builder()
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
                         .reservationDate(LocalDate.of(2022, 1, 1))
                         .startTime(LocalTime.of(6, 0))
                         .endTime(LocalTime.of(7, 0))

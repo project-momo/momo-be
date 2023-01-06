@@ -14,13 +14,13 @@ public class MeetingCommonService {
     private final MeetingRepository meetingRepository;
 
     @Transactional(readOnly = true)
-    public Meeting findMeetingOrThrowException(Long meetingId) {
+    public Meeting getMeetingOrThrowException(Long meetingId) {
         return meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND));
     }
 
     @Transactional
     public void closeMeeting(Long userId, Long meetingId) {
-        findMeetingOrThrowException(meetingId).closeWithHostId(userId);
+        getMeetingOrThrowException(meetingId).closeWithHostId(userId);
     }
 }

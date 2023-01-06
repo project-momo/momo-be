@@ -3,7 +3,7 @@ package com.example.momobe.reservation.mapper;
 import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.reservation.domain.*;
-import com.example.momobe.reservation.dto.in.RequestReservationDto;
+import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.dto.out.ReservationPaymentDto;
 import org.mapstruct.Mapper;
 
@@ -12,7 +12,7 @@ import java.time.LocalTime;
 
 @Mapper(componentModel = "spring")
 public interface ReservationMapper {
-    default Reservation of(Meeting meeting, RequestReservationDto reservationDto, UserInfo userInfo) {
+    default Reservation of(Meeting meeting, PostReservationDto reservationDto, UserInfo userInfo) {
         LocalDate reservationDate = reservationDto.getDateInfo()
                 .getReservationDate();
         LocalTime startTime = reservationDto.getDateInfo()
