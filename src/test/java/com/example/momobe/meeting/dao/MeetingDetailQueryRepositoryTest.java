@@ -10,6 +10,7 @@ import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.meeting.dto.MeetingDetailResponseDto;
 import com.example.momobe.question.domain.Question;
 import com.example.momobe.question.infrastructure.QuestionQueryRepository;
+import com.example.momobe.tag.domain.Tag;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -66,7 +67,12 @@ public class MeetingDetailQueryRepositoryTest {
                 .build();
         em.persist(address1);
         em.persist(address2);
-        Meeting meeting = generateMeeting(host.getId(), List.of(address1.getId(), address2.getId()));
+        Tag tag1 = new Tag("온라인", "ONLINE");
+        Tag tag2 = new Tag("오프라인", "OFFLINE");
+        em.persist(tag1);
+        em.persist(tag2);
+        Meeting meeting = generateMeeting(
+                host.getId(), List.of(address1.getId(), address2.getId()), List.of(tag1.getId(), tag2.getId()));
         em.persist(meeting);
         Question question = new Question(meeting.getId(), CONTENT1, questioner.getId());
         em.persist(question);
@@ -102,6 +108,9 @@ public class MeetingDetailQueryRepositoryTest {
         assertThat(responseDto.getDateTime().getEndTime()).isEqualTo(meeting.getDateTimeInfo().getEndTime());
         assertThat(responseDto.getDateTime().getMaxTime()).isEqualTo(meeting.getDateTimeInfo().getMaxTime());
         assertThat(responseDto.getPrice()).isEqualTo(meeting.getPrice());
+        assertThat(responseDto.getTags().size()).isEqualTo(2);
+        assertThat(responseDto.getTags().get(0)).isIn(List.of(tag1.getKorName(), tag2.getKorName()));
+        assertThat(responseDto.getTags().get(1)).isIn(List.of(tag1.getKorName(), tag2.getKorName()));
 
         assertThat(responseDto.getQuestions()).isNotEmpty();
         assertThat(responseDto.getQuestions().get(0).getQuestionId()).isEqualTo(question.getId());

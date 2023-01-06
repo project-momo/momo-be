@@ -8,6 +8,7 @@ import com.example.momobe.answer.domain.Writer;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.question.domain.Question;
+import com.example.momobe.tag.domain.Tag;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
 import org.junit.jupiter.api.Test;
@@ -62,7 +63,12 @@ public class MeetingDetailQuery_IntegrationTest {
                 .build();
         em.persist(address1);
         em.persist(address2);
-        Meeting meeting = generateMeeting(host.getId(), List.of(address1.getId(), address2.getId()));
+        Tag tag1 = new Tag("온라인", "ONLINE");
+        Tag tag2 = new Tag("오프라인", "OFFLINE");
+        em.persist(tag1);
+        em.persist(tag2);
+        Meeting meeting = generateMeeting(
+                host.getId(), List.of(address1.getId(), address2.getId()), List.of(tag1.getId(), tag2.getId()));
         em.persist(meeting);
         Question question = new Question(meeting.getId(), CONTENT1, questioner.getId());
         em.persist(question);
@@ -98,6 +104,8 @@ public class MeetingDetailQuery_IntegrationTest {
                 .andExpect(jsonPath("$.dateTime.endTime").value(meeting.getDateTimeInfo().getEndTime().format(DateTimeFormatter.ISO_LOCAL_TIME)))
                 .andExpect(jsonPath("$.dateTime.maxTime").value(meeting.getDateTimeInfo().getMaxTime()))
                 .andExpect(jsonPath("$.price").value(meeting.getPrice()))
+                .andExpect(jsonPath("$.tags[0]").value(tag1.getKorName()))
+                .andExpect(jsonPath("$.tags[1]").value(tag2.getKorName()))
 
                 .andExpect(jsonPath("$.questions[0].questionId").value(question.getId()))
                 .andExpect(jsonPath("$.questions[0].content").value(question.getContent().getContent()))
@@ -115,8 +123,7 @@ public class MeetingDetailQuery_IntegrationTest {
                 .andExpect(jsonPath("$.questions[0].answers[0].answerer.nickname").value(answerer.getNickname().getNickname()))
                 .andExpect(jsonPath("$.questions[0].answers[0].answerer.imageUrl").value(answerer.getAvatar().getRemotePath()))
                 .andExpect(jsonPath("$.questions[0].answers[0].createdAt").isString())
-                .andExpect(jsonPath("$.questions[0].answers[0].modifiedAt").isString())
-                .andDo(print());
+                .andExpect(jsonPath("$.questions[0].answers[0].modifiedAt").isString());
     }
 
 }
