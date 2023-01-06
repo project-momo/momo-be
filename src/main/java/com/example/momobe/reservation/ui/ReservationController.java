@@ -2,8 +2,10 @@ package com.example.momobe.reservation.ui;
 
 import com.example.momobe.common.resolver.Token;
 import com.example.momobe.common.resolver.UserInfo;
-import com.example.momobe.reservation.application.ReserveService;
-import com.example.momobe.reservation.dto.in.RequestReservationDto;
+import com.example.momobe.reservation.application.ReservationConfirmService;
+import com.example.momobe.reservation.application.SaveReservationService;
+import com.example.momobe.reservation.dto.in.PatchReservationDto;
+import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,13 +17,23 @@ import javax.validation.Valid;
 @RequestMapping("/meetings")
 @RequiredArgsConstructor
 public class ReservationController {
-    private final ReserveService reserveService;
+    private final SaveReservationService saveReservationService;
+    private final ReservationConfirmService reservationConfirmService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{meetingId}/reservations")
     public PaymentResponseDto postReservation(@PathVariable(name = "meetingId") Long meetingId,
-                                              @Valid @RequestBody RequestReservationDto request,
+                                              @Valid @RequestBody PostReservationDto request,
                                               @Token UserInfo userInfo) {
-        return reserveService.reserve(meetingId, request, userInfo);
+        return saveReservationService.reserve(meetingId, request, userInfo);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{meetingId}/reservations/{reservationId}")
+    public void patchReservation(@PathVariable Long meetingId,
+                                 @PathVariable Long reservationId,
+                                 @Valid @RequestBody PatchReservationDto isAccepted,
+                                 @Token UserInfo userInfo) {
+        reservationConfirmService.confirm(meetingId, reservationId, userInfo, Boolean.valueOf(isAccepted.getIsAccepted()));
     }
 }
