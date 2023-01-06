@@ -1,6 +1,7 @@
 package com.example.momobe.meeting.integration;
 
 import com.example.momobe.security.domain.JwtTokenUtil;
+import com.example.momobe.tag.domain.Tag;
 import com.example.momobe.user.domain.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +45,9 @@ public class MeetingRegistration_IntegrationTest {
         User user = User.builder().build();
         em.persist(user);
         accessToken = jwtTokenUtil.createAccessToken(EMAIL1, user.getId(), ROLE_USER_LIST, NICKNAME1);
+        MEETING_REQUEST_DTO_WITH_ONE_DAY.getTags().forEach(tag ->
+                em.persist(new Tag(tag.getDescription(), tag.name()))
+        );
     }
 
     @Test

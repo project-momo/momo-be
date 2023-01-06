@@ -1,6 +1,7 @@
 package com.example.momobe.meeting.integration;
 
 import com.example.momobe.meeting.domain.Meeting;
+import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
@@ -18,6 +19,7 @@ import javax.persistence.EntityManager;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,9 +50,13 @@ public class MeetingCommand_IntegrationTest {
                 delete("/meetings/{meeting-id}", meeting.getId())
                         .header(JWT_HEADER, accessToken)
         );
+        em.flush();
+        em.clear();
+        Meeting savedMeeting = em.find(Meeting.class, meeting.getId());
 
         // then
         actions.andExpect(status().isNoContent());
+        assertThat(savedMeeting.getMeetingState()).isEqualTo(MeetingState.CLOSE);
     }
 
     @Test
