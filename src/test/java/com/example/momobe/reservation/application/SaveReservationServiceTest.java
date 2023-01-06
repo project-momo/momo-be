@@ -11,7 +11,7 @@ import com.example.momobe.payment.application.SavePaymentService;
 import com.example.momobe.payment.mapper.PaymentMapper;
 import com.example.momobe.reservation.domain.*;
 import com.example.momobe.reservation.domain.enums.ReservationState;
-import com.example.momobe.reservation.dto.in.RequestReservationDto;
+import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.example.momobe.reservation.mapper.ReservationMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,7 +59,7 @@ class SaveReservationServiceTest {
     PaymentMapper paymentMapper;
 
     Meeting meeting;
-    RequestReservationDto reservationDto;
+    PostReservationDto reservationDto;
     UserInfo userInfo;
     Reservation reservation;
 
@@ -86,10 +86,10 @@ class SaveReservationServiceTest {
                 .address(new Address(List.of(1L,2L),"화곡동"))
                 .build();
 
-        reservationDto = RequestReservationDto.builder()
+        reservationDto = PostReservationDto.builder()
                 .reservationMemo(CONTENT1)
                 .amount(10000L)
-                .dateInfo(RequestReservationDto.ReservationDateDto.builder()
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
                         .reservationDate(LocalDate.of(2022,1,5))
                         .startTime(LocalTime.of(11,0,0))
                         .endTime(LocalTime.of(12,0,0))
@@ -121,21 +121,21 @@ class SaveReservationServiceTest {
     @DisplayName("meetingCommonService가 1회 호출된다")
     void reserveTest_verify1() {
         //given
-        given(meetingCommonService.findMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
         PaymentResponseDto reseult = saveReservationService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
-        verify(meetingCommonService, times(1)).findMeetingOrThrowException(any());
+        verify(meetingCommonService, times(1)).getMeetingOrThrowException(any());
     }
 
     @Test
     @DisplayName("reservationMapper가 인자별로 각 1회씩 총 2회 호출된다")
     void reserveTest_verify2() {
         //given
-        given(meetingCommonService.findMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
@@ -150,7 +150,7 @@ class SaveReservationServiceTest {
     @DisplayName("countExistReservationService가 1회 호출된다.")
     void reserveTest_verify3() {
         //given
-        given(meetingCommonService.findMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
@@ -164,7 +164,7 @@ class SaveReservationServiceTest {
     @DisplayName("reservationRepository가 1회 호출된다.")
     void reserveTest_verify4() {
         //given
-        given(meetingCommonService.findMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
@@ -178,7 +178,7 @@ class SaveReservationServiceTest {
     @DisplayName("reservationState가 Before인 경우 savePaymentService가 1회 호출된다.")
     void reserveTest_verify5() {
         //given
-        given(meetingCommonService.findMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
@@ -193,7 +193,7 @@ class SaveReservationServiceTest {
     void reserveTest_verify6() {
         //givne
         ReflectionTestUtils.setField(reservation, "reservationState", ReservationState.PAYMENT_SUCCESS);
-        given(meetingCommonService.findMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when

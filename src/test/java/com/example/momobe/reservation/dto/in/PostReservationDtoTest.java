@@ -1,7 +1,5 @@
 package com.example.momobe.reservation.dto.in;
 
-import com.example.momobe.common.enums.TestConstants;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +16,7 @@ import java.util.Set;
 import static com.example.momobe.common.enums.TestConstants.*;
 import static org.assertj.core.api.Assertions.*;
 
-class RequestReservationDtoTest {
+class PostReservationDtoTest {
     private static ValidatorFactory factory;
     private static Validator validator;
 
@@ -32,14 +30,14 @@ class RequestReservationDtoTest {
     @DisplayName("dateInfo가 null일 경우 예외 발생")
     void test1() {
         //given
-        RequestReservationDto dto = RequestReservationDto.builder()
+        PostReservationDto dto = PostReservationDto.builder()
                 .dateInfo(null)
                 .reservationMemo(CONTENT1)
                 .amount(10000L)
                 .build();
 
         //when
-        Set<ConstraintViolation<RequestReservationDto>> result = validator.validate(dto);
+        Set<ConstraintViolation<PostReservationDto>> result = validator.validate(dto);
 
         //then
         assertThat(result.size()).isNotZero();
@@ -49,8 +47,8 @@ class RequestReservationDtoTest {
     @DisplayName("dateInfo의 reservationDate가 null일 경우 예외 발생")
     void test2() {
         //given
-        RequestReservationDto dto = RequestReservationDto.builder()
-                .dateInfo(RequestReservationDto.ReservationDateDto.builder()
+        PostReservationDto dto = PostReservationDto.builder()
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
                         .reservationDate(null)
                         .startTime(LocalTime.now())
                         .endTime(LocalTime.now())
@@ -60,7 +58,7 @@ class RequestReservationDtoTest {
                 .build();
 
         //when
-        Set<ConstraintViolation<RequestReservationDto>> result = validator.validate(dto);
+        Set<ConstraintViolation<PostReservationDto>> result = validator.validate(dto);
 
         //then
         assertThat(result.size()).isNotZero();
@@ -70,8 +68,8 @@ class RequestReservationDtoTest {
     @DisplayName("dateInfo의 startTime이 null일 경우 예외 발생")
     void test3() {
         //given
-        RequestReservationDto dto = RequestReservationDto.builder()
-                .dateInfo(RequestReservationDto.ReservationDateDto.builder()
+        PostReservationDto dto = PostReservationDto.builder()
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
                         .reservationDate(LocalDate.now())
                         .startTime(null)
                         .endTime(LocalTime.now())
@@ -81,7 +79,7 @@ class RequestReservationDtoTest {
                 .build();
 
         //when
-        Set<ConstraintViolation<RequestReservationDto>> result = validator.validate(dto);
+        Set<ConstraintViolation<PostReservationDto>> result = validator.validate(dto);
 
         //then
         assertThat(result.size()).isNotZero();
@@ -91,8 +89,8 @@ class RequestReservationDtoTest {
     @DisplayName("dateInfo의 endTime이 null일 경우 예외 발생")
     void test4() {
         //given
-        RequestReservationDto dto = RequestReservationDto.builder()
-                .dateInfo(RequestReservationDto.ReservationDateDto.builder()
+        PostReservationDto dto = PostReservationDto.builder()
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
                         .reservationDate(LocalDate.now())
                         .startTime(LocalTime.now())
                         .endTime(null)
@@ -102,7 +100,7 @@ class RequestReservationDtoTest {
                 .build();
 
         //when
-        Set<ConstraintViolation<RequestReservationDto>> result = validator.validate(dto);
+        Set<ConstraintViolation<PostReservationDto>> result = validator.validate(dto);
 
         //then
         assertThat(result.size()).isNotZero();
@@ -112,8 +110,8 @@ class RequestReservationDtoTest {
     @DisplayName("amount가 null일 경우 예외 발생")
     void test5() {
         //given
-        RequestReservationDto dto = RequestReservationDto.builder()
-                .dateInfo(RequestReservationDto.ReservationDateDto.builder()
+        PostReservationDto dto = PostReservationDto.builder()
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
                         .reservationDate(LocalDate.now())
                         .startTime(LocalTime.now())
                         .endTime(LocalTime.now())
@@ -123,7 +121,7 @@ class RequestReservationDtoTest {
                 .build();
 
         //when
-        Set<ConstraintViolation<RequestReservationDto>> result = validator.validate(dto);
+        Set<ConstraintViolation<PostReservationDto>> result = validator.validate(dto);
 
         //then
         assertThat(result.size()).isNotZero();
@@ -133,8 +131,8 @@ class RequestReservationDtoTest {
     @DisplayName("reservationMemo가 Null이여도 예외 발생하지 않음")
     void test6() {
         //given
-        RequestReservationDto dto = RequestReservationDto.builder()
-                .dateInfo(RequestReservationDto.ReservationDateDto.builder()
+        PostReservationDto dto = PostReservationDto.builder()
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
                         .reservationDate(LocalDate.now())
                         .startTime(LocalTime.now())
                         .endTime(LocalTime.now())
@@ -144,7 +142,7 @@ class RequestReservationDtoTest {
                 .build();
 
         //when
-        Set<ConstraintViolation<RequestReservationDto>> result = validator.validate(dto);
+        Set<ConstraintViolation<PostReservationDto>> result = validator.validate(dto);
 
         //then
         assertThat(result.size()).isZero();

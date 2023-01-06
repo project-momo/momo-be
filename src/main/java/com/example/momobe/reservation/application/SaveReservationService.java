@@ -8,7 +8,7 @@ import com.example.momobe.payment.domain.Payment;
 import com.example.momobe.payment.mapper.PaymentMapper;
 import com.example.momobe.reservation.domain.*;
 import com.example.momobe.reservation.domain.enums.ReservationState;
-import com.example.momobe.reservation.dto.in.RequestReservationDto;
+import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.dto.out.ReservationPaymentDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.example.momobe.reservation.mapper.ReservationMapper;
@@ -32,8 +32,8 @@ public class SaveReservationService {
     private final SavePaymentService savePaymentService;
     private final PaymentMapper paymentMapper;
 
-    public PaymentResponseDto reserve(Long meetingId, RequestReservationDto reservationDto, UserInfo userInfo) {
-        Meeting meeting = meetingCommonService.findMeetingOrThrowException(meetingId);
+    public PaymentResponseDto reserve(Long meetingId, PostReservationDto reservationDto, UserInfo userInfo) {
+        Meeting meeting = meetingCommonService.getMeetingOrThrowException(meetingId);
 
         checkAvailabilityOfReservations(meetingId, reservationDto, meeting);
         Reservation reservation = saveReservation(reservationDto, userInfo, meeting);
@@ -51,7 +51,7 @@ public class SaveReservationService {
         return paymentMapper.of(payment);
     }
 
-    private void checkAvailabilityOfReservations(Long meetingId, RequestReservationDto reservationDto, Meeting meeting) {
+    private void checkAvailabilityOfReservations(Long meetingId, PostReservationDto reservationDto, Meeting meeting) {
         LocalDate reservationDate = reservationDto.getDateInfo().getReservationDate();
         LocalTime startTime = reservationDto.getDateInfo().getStartTime();
         LocalTime endTime = reservationDto.getDateInfo().getEndTime();
@@ -79,7 +79,7 @@ public class SaveReservationService {
         return countExistReservationService.countOf(meetingId, reservationDate, startTime, endTime);
     }
 
-    private Reservation saveReservation(RequestReservationDto reservationDto, UserInfo userInfo, Meeting meeting) {
+    private Reservation saveReservation(PostReservationDto reservationDto, UserInfo userInfo, Meeting meeting) {
         Reservation reservation = reservationMapper.of(meeting, reservationDto, userInfo);
         return reservationRepository.save(reservation);
     }
