@@ -1,5 +1,6 @@
 package com.example.momobe.meeting.dao;
 
+import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.dto.MeetingInfoDto;
@@ -138,4 +139,15 @@ public class MeetingQueryRepository {
         return meeting.category.eq(category);
     }
 
+    public List<Meeting> findMeetingClosedBefore3days(){
+        List<Meeting> results = queryFactory.selectFrom(meeting)
+                .where(endDateFilter())
+                .fetch();
+        return results;
+    }
+
+    private BooleanExpression endDateFilter(){
+        LocalDate now = LocalDate.now();
+        return meeting.dateTimeInfo.endDate.between(now.minusDays(3),now.minusDays(10));
+    }
 }
