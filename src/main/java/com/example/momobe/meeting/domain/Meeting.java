@@ -111,4 +111,8 @@ public class Meeting extends BaseTime {
         }
         this.meetingState = MeetingState.CLOSE;
     }
+
+    public Boolean matchHostId(Long hostId) {
+        return Objects.equals(this.hostId, hostId);
+    }
 }
