@@ -19,6 +19,7 @@ import static com.example.momobe.answer.domain.QAnswer.answer;
 import static com.example.momobe.meeting.domain.QDateTime.dateTime1;
 import static com.example.momobe.meeting.domain.QMeeting.meeting;
 import static com.example.momobe.question.domain.QQuestion.question;
+import static com.example.momobe.tag.domain.QTag.tag;
 import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.querydsl.core.group.GroupBy.*;
 import static com.querydsl.core.types.dsl.Expressions.constant;
@@ -41,6 +42,7 @@ public class MeetingDetailQueryRepository {
                 .leftJoin(host).on(meeting.hostId.eq(host.id))
                 .leftJoin(host.avatar, avatar)
                 .leftJoin(address).on(meeting.address.addressIds.contains(address.id))
+                .leftJoin(tag).on(meeting.tagIds.contains(tag.id))
                 .leftJoin(meeting.dateTimeInfo.dateTimes, dateTime1)
                 .leftJoin(question).on(question.meeting.meetingId.eq(meetingId))
                 .leftJoin(answer).on(answer.question.questionId.eq(question.id))
@@ -68,6 +70,7 @@ public class MeetingDetailQueryRepository {
                                 meeting.dateTimeInfo.maxTime,
                                 meeting.price,
                                 set(address.si.append(" ").append(address.gu)),
+                                set(tag.korName),
                                 list(dateTime1.dateTime))
                         ));
 

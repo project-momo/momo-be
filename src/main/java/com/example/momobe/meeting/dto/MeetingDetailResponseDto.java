@@ -14,11 +14,12 @@ import java.util.*;
 
 @Getter
 public class MeetingDetailResponseDto extends MeetingResponseDto {
+    private final List<String> tags;
     private List<ResponseQuestionDto> questions;
 
     @QueryProjection
     public MeetingDetailResponseDto(Long meetingId, Category category, Long hostId, String hostNickname, String hostImageUrl, String hostEmail, String title, String content, String addressInfo, MeetingState meetingState, DatePolicy datePolicy, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer maxTime, Long price,
-                                    Set<String> addresses, List<LocalDateTime> dateTimes) {
+                                    Set<String> addresses, Set<String> tags, List<LocalDateTime> dateTimes) {
         super(meetingId, category, hostId, hostNickname, hostImageUrl, hostEmail, title, content, addressInfo, meetingState, datePolicy, startDate, endDate, startTime, endTime, maxTime, price);
 
         List<Integer> dayWeeks = new ArrayList<>();
@@ -40,6 +41,7 @@ public class MeetingDetailResponseDto extends MeetingResponseDto {
             dayWeeks = new ArrayList<>(set);
         }
 
+        this.tags = new ArrayList<>(tags);
         this.init(new ArrayList<>(addresses), dayWeeks, dates);
     }
 
