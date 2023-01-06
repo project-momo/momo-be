@@ -14,7 +14,7 @@ COPY ${JAR_FILE} app.jar
 
 # 빌드된 이미지가 run될 때 실행할 명령어
 ENTRYPOINT ["java","-jar","app.jar", \
-"—spring.config.location= optional:/config/application.yml"]
+"—spring.config.location=classpath:/config/application.yml"]
 
 # #redis 포트 개방
 # EXPOSE 6739
