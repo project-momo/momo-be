@@ -11,8 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
-import static com.example.momobe.common.enums.TestConstants.ID1;
+import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,7 +29,8 @@ public class MeetingMapperTest {
     @Test
     public void meetingMapper() throws Exception {
         // given / when
-        Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_FREE, ID1);
+        List<Long> tagIds = List.of(ID1, ID2, ID3);
+        Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_FREE, ID1, tagIds);
 
         // then
         assertThat(meeting.getHostId()).isEqualTo(ID1);
@@ -37,7 +39,7 @@ public class MeetingMapperTest {
         assertThat(meeting.getTitle()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getTitle());
         assertThat(meeting.getContent()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getContent());
 
-        assertThat(meeting.getTags().size()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getTags().size());
+        assertThat(meeting.getTagIds().size()).isEqualTo(tagIds.size());
         assertThat(meeting.getAddress().getAddressIds())
                 .isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getAddress().getAddressIds());
         assertThat(meeting.getAddress().getAddressInfo())
@@ -50,7 +52,8 @@ public class MeetingMapperTest {
     @Test
     public void meetingMapperWithOneDay() throws Exception {
         // given / when
-        Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_ONE_DAY, ID1);
+        List<Long> tagIds = List.of(ID1, ID2, ID3);
+        Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_ONE_DAY, ID1, tagIds);
 
         // then
         assertThat(meeting.getDateTimeInfo().getDateTimes().size())
@@ -60,7 +63,8 @@ public class MeetingMapperTest {
     @Test
     public void meetingMapperWithPeriod() throws Exception {
         // given / when
-        Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_PERIOD, ID1);
+        List<Long> tagIds = List.of(ID1, ID2, ID3);
+        Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_PERIOD, ID1, tagIds);
 
         // then
         assertThat(ChronoUnit.DAYS.between(meeting.getDateTimeInfo().getStartDate(), meeting.getDateTimeInfo().getEndDate()) + 1)
@@ -72,7 +76,8 @@ public class MeetingMapperTest {
     @Test
     public void meetingMapperWithFree() throws Exception {
         // given / when
-        Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_FREE, ID1);
+        List<Long> tagIds = List.of(ID1, ID2, ID3);
+        Meeting meeting = meetingMapper.toMeeting(MEETING_REQUEST_DTO_WITH_FREE, ID1, tagIds);
 
         // then
         assertThat(meeting.getDateTimeInfo().getDateTimes().size())
