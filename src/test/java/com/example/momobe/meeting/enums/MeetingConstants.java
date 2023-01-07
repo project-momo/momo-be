@@ -7,7 +7,7 @@ import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.meeting.domain.enums.Tag;
-import com.example.momobe.meeting.dto.MeetingRequestDto;
+import com.example.momobe.meeting.dto.in.MeetingRequestDto;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.PathParametersSnippet;
 

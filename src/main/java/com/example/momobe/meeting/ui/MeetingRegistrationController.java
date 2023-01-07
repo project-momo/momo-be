@@ -4,7 +4,7 @@ import com.example.momobe.common.resolver.Token;
 import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.meeting.application.MeetingRegistrationService;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.dto.MeetingRequestDto;
+import com.example.momobe.meeting.dto.in.MeetingRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

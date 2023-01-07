@@ -1,5 +1,6 @@
 package com.example.momobe.meeting.dto;
 
+import com.example.momobe.meeting.dto.in.MeetingRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
