@@ -1,5 +1,6 @@
 package com.example.momobe.meeting.integration;
 
+import com.example.momobe.address.domain.Address;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.tag.domain.Tag;
 import com.example.momobe.user.domain.User;
@@ -45,9 +46,13 @@ class MeetingRegistration_IntegrationTest {
         User user = User.builder().build();
         em.persist(user);
         accessToken = jwtTokenUtil.createAccessToken(EMAIL1, user.getId(), ROLE_USER_LIST, NICKNAME1);
-        MEETING_REQUEST_DTO_WITH_ONE_DAY.getTags().forEach(tag ->
-                em.persist(new Tag(tag.getDescription(), tag.name()))
-        );
+        MEETING_REQUEST_DTO_WITH_ONE_DAY.getTags().stream()
+                .filter(tag -> em.createQuery("select t.id from Tag t where t.engName = '" + tag.name() + "'", Long.class)
+                        .getSingleResult() == null)
+                .forEach(tag -> em.persist(new Tag(tag.getDescription(), tag.name())));
+        MEETING_REQUEST_DTO_WITH_ONE_DAY.getAddress().getAddressIds().stream()
+                .filter(addressId -> em.find(Address.class, addressId) == null)
+                .forEach(addressId -> em.persist(Address.builder().id(addressId).si("시").gu("구").build()));
     }
 
     @Test

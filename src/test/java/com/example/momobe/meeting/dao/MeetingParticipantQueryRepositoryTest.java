@@ -44,7 +44,7 @@ class MeetingParticipantQueryRepositoryTest {
     }
 
     @Test
-    void meetingHostQuery() throws Exception {
+    void meetingParticipantQuery() throws Exception {
         // given
         User host1 = new User(EMAIL1, NICKNAME1, PASSWORD1, new Avatar(GITHUB_URL));
         User host2 = new User(EMAIL2, NICKNAME2, PASSWORD2, new Avatar(TISTORY_URL));
