@@ -53,11 +53,6 @@ public class MeetingHostQueryRepository {
                 .where(meeting.hostId.eq(hostId))
                 .fetch();
 
-        JPAQuery<Long> countQuery = queryFactory
-                .select(meeting.count())
-                .from(meeting)
-                .where(meeting.hostId.eq(hostId));
-
         List<Long> meetingIds = dtos.stream()
                 .map(MeetingResponseDto::getMeetingId).collect(Collectors.toList());
 
@@ -86,6 +81,11 @@ public class MeetingHostQueryRepository {
         meetingInfoUtil.updateReservations(meetingInfoDtoMap);
         meetingInfoUtil.updateAddressesAndDateTimes(meetingInfoDtoMap);
         meetingInfoUtil.initMeetingHostResponseDto(dtos);
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(meeting.count())
+                .from(meeting)
+                .where(meeting.hostId.eq(hostId));
 
         return PageableExecutionUtils.getPage(dtos, pageable, countQuery::fetchOne);
     }
