@@ -41,4 +41,12 @@ public class CustomJpaQueryRepositoryImpl implements CustomReservationRepository
                 .where(reservation.reservationState.eq(ReservationState.PAYMENT_SUCCESS))
                 .fetch();
     }
+
+    @Override
+    public List<Long> findReservationAmounts(Long meetingId) {
+        return jpaQueryFactory.select(reservation.amount.won)
+                .from(reservation)
+                .where(reservation.reservationState.eq(ReservationState.PAYMENT_SUCCESS))
+                .fetch();
+    }
 }
