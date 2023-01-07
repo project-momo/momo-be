@@ -4,7 +4,6 @@ import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.dto.*;
 import com.example.momobe.user.domain.QAvatar;
 import com.example.momobe.user.domain.QUser;
-import com.querydsl.core.group.Group;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
