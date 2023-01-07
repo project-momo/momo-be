@@ -67,7 +67,7 @@ class MeetingCommonServiceTest {
 
     @Test
     @DisplayName("Meeting의 hostId와 요청한 userId가 다르면 예외가 발생한다.")
-    public void closeMeetingTest1() throws Exception {
+    void closeMeetingTest1() throws Exception {
         // given
         Long meetingId = ID1;
         given(meetingRepository.findById(meetingId)).willReturn(Optional.of(generateMeeting(ID1)));
@@ -80,7 +80,7 @@ class MeetingCommonServiceTest {
 
     @Test
     @DisplayName("Meeting의 hostId와 요청한 userId가 같으면 MeetingState가 CLOSE로 바뀐다.")
-    public void closeMeetingTest2() throws Exception {
+    void closeMeetingTest2() throws Exception {
         // given
         Long meetingId = ID1;
         Meeting meeting = generateMeeting(ID1);

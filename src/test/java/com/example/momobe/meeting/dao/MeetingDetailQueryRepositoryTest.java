@@ -7,7 +7,7 @@ import com.example.momobe.answer.domain.Writer;
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.MeetingState;
-import com.example.momobe.meeting.dto.MeetingDetailResponseDto;
+import com.example.momobe.meeting.dto.out.MeetingDetailResponseDto;
 import com.example.momobe.question.domain.Question;
 import com.example.momobe.question.infrastructure.QuestionQueryRepository;
 import com.example.momobe.tag.domain.Tag;
@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(JpaQueryFactoryConfig.class)
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class MeetingDetailQueryRepositoryTest {
+class MeetingDetailQueryRepositoryTest {
     @Autowired
     private EntityManager em;
 
@@ -49,7 +49,7 @@ public class MeetingDetailQueryRepositoryTest {
     }
 
     @Test
-    public void meetingDetailQuery() throws Exception {
+    void meetingDetailQuery() throws Exception {
         // given
         User host = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(host);
@@ -108,7 +108,7 @@ public class MeetingDetailQueryRepositoryTest {
         assertThat(responseDto.getDateTime().getEndTime()).isEqualTo(meeting.getDateTimeInfo().getEndTime());
         assertThat(responseDto.getDateTime().getMaxTime()).isEqualTo(meeting.getDateTimeInfo().getMaxTime());
         assertThat(responseDto.getPrice()).isEqualTo(meeting.getPrice());
-        assertThat(responseDto.getTags().size()).isEqualTo(2);
+        assertThat(responseDto.getTags()).hasSize(2);
         assertThat(responseDto.getTags().get(0)).isIn(List.of(tag1.getKorName(), tag2.getKorName()));
         assertThat(responseDto.getTags().get(1)).isIn(List.of(tag1.getKorName(), tag2.getKorName()));
 

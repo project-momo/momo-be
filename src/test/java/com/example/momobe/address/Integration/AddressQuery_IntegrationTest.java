@@ -20,18 +20,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
-public class AddressQuery_IntegrationTest {
+class AddressQuery_IntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private EntityManager em;
 
     @Test
-    public void getAddresses() throws Exception {
+    void getAddresses() throws Exception {
         // given
-        em.persist(Address.builder().si("서울시").gu("전체").build());
-        em.persist(Address.builder().si("서울시").gu("강남구").build());
-        em.persist(Address.builder().si("서울시").gu("강북구").build());
+        em.persist(Address.builder().si("서울").gu("전체").build());
+        em.persist(Address.builder().si("서울").gu("강남구").build());
+        em.persist(Address.builder().si("서울").gu("강북구").build());
 
         // when
         ResultActions actions = mockMvc.perform(

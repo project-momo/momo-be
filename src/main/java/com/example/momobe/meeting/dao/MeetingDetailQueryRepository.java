@@ -2,7 +2,7 @@ package com.example.momobe.meeting.dao;
 
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.meeting.domain.MeetingNotFoundException;
-import com.example.momobe.meeting.dto.MeetingDetailResponseDto;
+import com.example.momobe.meeting.dto.out.MeetingDetailResponseDto;
 import com.example.momobe.meeting.dto.QMeetingDetailResponseDto;
 import com.example.momobe.question.dto.out.ResponseQuestionDto;
 import com.example.momobe.question.infrastructure.QuestionQueryRepository;

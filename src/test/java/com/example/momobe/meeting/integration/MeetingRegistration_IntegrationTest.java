@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
-public class MeetingRegistration_IntegrationTest {
+class MeetingRegistration_IntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -52,7 +52,7 @@ public class MeetingRegistration_IntegrationTest {
 
     @Test
     @DisplayName("모임 등록 (하루 일정) 201 반환")
-    public void meetingRegistrationWithOneDay() throws Exception {
+    void meetingRegistrationWithOneDay() throws Exception {
         // given
         String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO_WITH_ONE_DAY);
 
@@ -70,7 +70,7 @@ public class MeetingRegistration_IntegrationTest {
 
     @Test
     @DisplayName("모임 등록 (정기 일정) 201 반환")
-    public void meetingRegistrationWithPeriod() throws Exception {
+    void meetingRegistrationWithPeriod() throws Exception {
         // given
         String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO_WITH_PERIOD);
 
@@ -88,7 +88,7 @@ public class MeetingRegistration_IntegrationTest {
 
     @Test
     @DisplayName("모임 등록 (자유 일정) 201 반환")
-    public void meetingRegistrationWithFree() throws Exception {
+    void meetingRegistrationWithFree() throws Exception {
         // given
         String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO_WITH_FREE);
 
@@ -106,7 +106,7 @@ public class MeetingRegistration_IntegrationTest {
 
     @Test
     @DisplayName("유효성 검사 실패시 400 반환")
-    public void meetingRegistrationFail() throws Exception {
+    void meetingRegistrationFail() throws Exception {
         // given
         String content = objectMapper.writeValueAsString(" ");
 

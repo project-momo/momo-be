@@ -35,11 +35,11 @@ class AddressQueryRepositoryTest {
     }
 
     @Test
-    public void getAddresses() throws Exception {
+    void getAddresses() throws Exception {
         // given
-        em.persist(Address.builder().si("서울시").gu("전체").build());
-        em.persist(Address.builder().si("서울시").gu("강남구").build());
-        em.persist(Address.builder().si("서울시").gu("강북구").build());
+        em.persist(Address.builder().si("서울").gu("전체").build());
+        em.persist(Address.builder().si("서울").gu("강남구").build());
+        em.persist(Address.builder().si("서울").gu("강북구").build());
 
         // when
         List<AddressResponseDto> locationResponseDtos = addressQueryRepository.findAll();
@@ -48,7 +48,7 @@ class AddressQueryRepositoryTest {
         assertThat(locationResponseDtos).isNotEmpty();
         assertThat(locationResponseDtos.get(0).getSi()).isNotEmpty();
         assertThat(locationResponseDtos.get(0).getGu()).isNotEmpty();
-        assertThat(locationResponseDtos.get(0).getGu().get(0).getId()).isGreaterThan(0L);
+        assertThat(locationResponseDtos.get(0).getGu().get(0).getId()).isPositive();
         assertThat(locationResponseDtos.get(0).getGu().get(0).getName()).isNotEmpty();
     }
 

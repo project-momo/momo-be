@@ -13,7 +13,8 @@ import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.ID1;
 import static com.example.momobe.common.enums.TestConstants.ID2;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)

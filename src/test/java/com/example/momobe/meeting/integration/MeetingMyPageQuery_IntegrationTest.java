@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
-public class MeetingMyPageQuery_IntegrationTest {
+class MeetingMyPageQuery_IntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -39,7 +39,7 @@ public class MeetingMyPageQuery_IntegrationTest {
     private JwtTokenUtil jwtTokenUtil;
 
     @Test
-    public void meetingHostQuery() throws Exception {
+    void meetingHostQuery() throws Exception {
         // given
         User user = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(user);
@@ -73,7 +73,7 @@ public class MeetingMyPageQuery_IntegrationTest {
     }
 
     @Test
-    public void meetingParticipantQuery() throws Exception {
+    void meetingParticipantQuery() throws Exception {
         // given
         User host1 = new User(EMAIL1, NICKNAME1, PASSWORD1, new Avatar(GITHUB_URL));
         User host2 = new User(EMAIL2, NICKNAME2, PASSWORD2, new Avatar(TISTORY_URL));

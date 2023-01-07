@@ -41,7 +41,7 @@ class TagRepositoryTest {
         List<Long> tagIds = tagRepository.findTagIds(List.of("tag1", "tag2"));
 
         // then
-        assertThat(tagIds.size()).isEqualTo(2);
+        assertThat(tagIds).hasSize(2);
     }
 
     @Test
@@ -52,6 +52,6 @@ class TagRepositoryTest {
         List<Long> tagIds = tagRepository.findTagIds(List.of("tag1", "tag3"));
 
         // then
-        assertThat(tagIds.size()).isEqualTo(1);
+        assertThat(tagIds).hasSize(1);
     }
 }

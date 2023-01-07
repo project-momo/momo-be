@@ -4,7 +4,7 @@ import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.application.MeetingRegistrationService;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.dto.MeetingRequestDto;
+import com.example.momobe.meeting.dto.in.MeetingRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

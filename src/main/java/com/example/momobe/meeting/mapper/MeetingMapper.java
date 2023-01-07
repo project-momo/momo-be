@@ -2,7 +2,7 @@ package com.example.momobe.meeting.mapper;
 
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.MeetingState;
-import com.example.momobe.meeting.dto.MeetingRequestDto;
+import com.example.momobe.meeting.dto.in.MeetingRequestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
