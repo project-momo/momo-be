@@ -42,7 +42,7 @@ public class MeetingInfoUtil {
                         ));
     }
 
-    public void updateAddressAndDateTime(Map<Long, MeetingInfoDto> meetingInfoDtoMap) {
+    public void updateAddressesAndDateTimes(Map<Long, MeetingInfoDto> meetingInfoDtoMap) {
         meetingInfoDtoMap.forEach(
                 (meetingId, meetingInfoDto) -> {
                     addressesMaps.put(meetingId, new ArrayList<>(meetingInfoDto.getAddresses()));
@@ -67,7 +67,7 @@ public class MeetingInfoUtil {
         );
     }
 
-    public void initHostResponseDto(List<MeetingHostResponseDto> dtos) {
+    public void initMeetingHostResponseDto(List<MeetingHostResponseDto> dtos) {
         dtos.forEach(dto -> dto.init(
                 addressesMaps.get(dto.getMeetingId()),
                 dayWeeksMaps.get(dto.getMeetingId()),

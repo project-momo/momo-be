@@ -84,8 +84,8 @@ public class MeetingHostQueryRepository {
 
         MeetingInfoUtil meetingInfoUtil = new MeetingInfoUtil(dtos);
         meetingInfoUtil.updateReservations(meetingInfoDtoMap);
-        meetingInfoUtil.updateAddressAndDateTime(meetingInfoDtoMap);
-        meetingInfoUtil.initHostResponseDto(dtos);
+        meetingInfoUtil.updateAddressesAndDateTimes(meetingInfoDtoMap);
+        meetingInfoUtil.initMeetingHostResponseDto(dtos);
 
         return PageableExecutionUtils.getPage(dtos, pageable, countQuery::fetchOne);
     }

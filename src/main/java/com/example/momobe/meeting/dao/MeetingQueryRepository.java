@@ -80,7 +80,7 @@ public class MeetingQueryRepository {
                 );
 
         MeetingInfoUtil meetingInfoUtil = new MeetingInfoUtil(dtos);
-        meetingInfoUtil.updateAddressAndDateTime(meetingInfoDtoMap);
+        meetingInfoUtil.updateAddressesAndDateTimes(meetingInfoDtoMap);
         meetingInfoUtil.initMeetingResponseDto(dtos);
 
         JPAQuery<Long> countQuery = queryFactory
