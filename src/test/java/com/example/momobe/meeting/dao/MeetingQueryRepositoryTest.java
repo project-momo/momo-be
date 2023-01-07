@@ -43,7 +43,7 @@ class MeetingQueryRepositoryTest {
     }
 
     @Test
-    public void meetingQuery() throws Exception {
+    void meetingQuery() throws Exception {
         // given
         User user = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(user);
@@ -66,7 +66,7 @@ class MeetingQueryRepositoryTest {
         // then
         assertThat(meetings).isNotNull();
         assertThat(meetings.getContent()).isNotNull();
-        assertThat(meetings.getContent().size()).isGreaterThan(0);
+        assertThat(meetings.getContent()).isNotEmpty();
     }
 
 }

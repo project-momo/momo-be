@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(SecurityTestConfig.class)
 @AutoConfigureRestDocs
-public class MeetingCommandControllerTest {
+class MeetingCommandControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
@@ -34,7 +34,7 @@ public class MeetingCommandControllerTest {
     private MeetingCommonService meetingCommonService;
 
     @Test
-    public void deleteMeeting() throws Exception {
+    void deleteMeeting() throws Exception {
         // given
         // when
         ResultActions actions = mockMvc.perform(

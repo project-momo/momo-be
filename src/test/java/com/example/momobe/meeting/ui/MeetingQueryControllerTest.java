@@ -59,7 +59,7 @@ class MeetingQueryControllerTest {
     private MeetingDetailQueryRepository meetingDetailQueryRepository;
 
     @Test
-    public void meetingQuery() throws Exception {
+    void meetingQuery() throws Exception {
         // given
         MeetingResponseDto meetingResponseDto = new MeetingResponseDto(
                 ID1, SOCIAL, ID1, NICKNAME, EMAIL1, REMOTE_PATH, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
@@ -111,7 +111,7 @@ class MeetingQueryControllerTest {
     }
 
     @Test
-    public void meetingDetailQuery() throws Exception {
+    void meetingDetailQuery() throws Exception {
         // given
         ResponseQuestionDto responseQuestionDto = new ResponseQuestionDto(
                 ID1, CONTENT1, ID2, EMAIL1, NICKNAME, REMOTE_PATH, LocalDateTime.now(), LocalDateTime.now(),

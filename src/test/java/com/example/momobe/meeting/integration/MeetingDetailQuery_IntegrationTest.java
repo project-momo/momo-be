@@ -38,14 +38,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
-public class MeetingDetailQuery_IntegrationTest {
+class MeetingDetailQuery_IntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private EntityManager em;
 
     @Test
-    public void meetingDetailQuery() throws Exception {
+    void meetingDetailQuery() throws Exception {
         // given
         User host = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(host);

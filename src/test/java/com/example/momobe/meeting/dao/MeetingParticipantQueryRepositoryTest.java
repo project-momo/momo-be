@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(JpaQueryFactoryConfig.class)
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class MeetingParticipantQueryRepositoryTest {
+class MeetingParticipantQueryRepositoryTest {
     @Autowired
     private EntityManager em;
 
@@ -44,7 +44,7 @@ public class MeetingParticipantQueryRepositoryTest {
     }
 
     @Test
-    public void meetingHostQuery() throws Exception {
+    void meetingHostQuery() throws Exception {
         // given
         User host1 = new User(EMAIL1, NICKNAME1, PASSWORD1, new Avatar(GITHUB_URL));
         User host2 = new User(EMAIL2, NICKNAME2, PASSWORD2, new Avatar(TISTORY_URL));
@@ -77,7 +77,7 @@ public class MeetingParticipantQueryRepositoryTest {
         // then
         assertThat(meetings).isNotNull();
         assertThat(meetings.getContent()).isNotNull();
-        assertThat(meetings.getContent().size()).isEqualTo(2);
+        assertThat(meetings.getContent()).hasSize(2);
     }
 
 }

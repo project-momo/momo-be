@@ -40,10 +40,10 @@ class AddressQueryControllerTest {
     private AddressQueryRepository addressQueryRepository;
 
     @Test
-    public void getAddresses() throws Exception {
+    void getAddresses() throws Exception {
         // given
         List<AddressResponseDto> responseDtos = List.of(
-                new AddressResponseDto("서울시", List.of(
+                new AddressResponseDto("서울", List.of(
                         new AddressResponseDto.AddressDto(ID1, "전체"),
                         new AddressResponseDto.AddressDto(ID2, "강남구"),
                         new AddressResponseDto.AddressDto(ID3, "강동구")

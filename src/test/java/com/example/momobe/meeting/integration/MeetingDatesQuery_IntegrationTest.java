@@ -51,7 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class MeetingDatesQuery_IntegrationTest {
+class MeetingDatesQuery_IntegrationTest {
     @Autowired
     private MonthlyMeetingScheduleInquiry monthlyMeetingScheduleInquiry;
 
