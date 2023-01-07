@@ -1,6 +1,6 @@
 package com.example.momobe.meeting.dao;
 
-import com.example.momobe.meeting.dto.ResponseMeetingDatesDto;
+import com.example.momobe.meeting.dto.out.ResponseMeetingDatesDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 

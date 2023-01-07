@@ -1,4 +1,4 @@
-package com.example.momobe.meeting.dto;
+package com.example.momobe.meeting.dto.out;
 
 import lombok.Getter;
 

@@ -4,7 +4,7 @@ import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.dto.in.MeetingRequestDto;
-import com.example.momobe.meeting.dto.ResponseMeetingDatesDto;
+import com.example.momobe.meeting.dto.out.ResponseMeetingDatesDto;
 import com.example.momobe.meeting.mapper.DateTimeMapper;
 import com.example.momobe.meeting.mapper.DateTimeMapperImpl;
 import com.example.momobe.reservation.domain.Money;

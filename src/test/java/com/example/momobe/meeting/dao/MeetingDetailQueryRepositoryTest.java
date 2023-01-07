@@ -7,7 +7,7 @@ import com.example.momobe.answer.domain.Writer;
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.MeetingState;
-import com.example.momobe.meeting.dto.MeetingDetailResponseDto;
+import com.example.momobe.meeting.dto.out.MeetingDetailResponseDto;
 import com.example.momobe.question.domain.Question;
 import com.example.momobe.question.infrastructure.QuestionQueryRepository;
 import com.example.momobe.tag.domain.Tag;

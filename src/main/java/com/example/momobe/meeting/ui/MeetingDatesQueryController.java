@@ -2,7 +2,7 @@ package com.example.momobe.meeting.ui;
 
 import com.example.momobe.common.exception.CanNotConvertException;
 import com.example.momobe.meeting.dao.MonthlyMeetingScheduleInquiry;
-import com.example.momobe.meeting.dto.ResponseMeetingDatesDto;
+import com.example.momobe.meeting.dto.out.ResponseMeetingDatesDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

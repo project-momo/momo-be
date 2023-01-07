@@ -2,8 +2,8 @@ package com.example.momobe.meeting.dao;
 
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
-import com.example.momobe.meeting.dto.MeetingInfoDto;
-import com.example.momobe.meeting.dto.MeetingResponseDto;
+import com.example.momobe.meeting.dto.out.MeetingInfoDto;
+import com.example.momobe.meeting.dto.out.MeetingResponseDto;
 import com.example.momobe.meeting.dto.QMeetingInfoDto;
 import com.example.momobe.meeting.dto.QMeetingResponseDto;
 import com.querydsl.core.group.GroupBy;

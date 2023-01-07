@@ -3,7 +3,7 @@ package com.example.momobe.meeting.dao;
 import com.example.momobe.address.domain.Address;
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.dto.MeetingHostResponseDto;
+import com.example.momobe.meeting.dto.out.MeetingHostResponseDto;
 import com.example.momobe.user.domain.Avatar;
 import com.example.momobe.user.domain.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
