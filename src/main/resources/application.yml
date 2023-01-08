@@ -76,3 +76,10 @@ server:
 jwt:
   secretKey: ${JWT_SECRET}
   refreshKey: ${JWT_REFRESH}
+
+payments:
+  toss:
+    successUrl: successurl
+    failUrl: failurl
+    secretKey: secret
+    clientKey: client
