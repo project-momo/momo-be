@@ -40,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @WithMockUser
 class MeetingRegistrationControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -62,9 +61,9 @@ class MeetingRegistrationControllerTest {
         // when
         ResultActions actions = mockMvc.perform(
                 post("/meetings")
-                        .content(content)
-                        .contentType(APPLICATION_JSON)
                         .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
+                        .contentType(APPLICATION_JSON)
+                        .content(content)
         );
 
         // then
@@ -91,7 +90,6 @@ class MeetingRegistrationControllerTest {
                                 fieldWithPath("dateTime.dates").type(ARRAY).description("날짜 (datePolicy가 FREE일 때만)"),
                                 fieldWithPath("dateTime.maxTime").type(NUMBER).description("최대 예약 가능 시간"),
                                 fieldWithPath("personnel").type(NUMBER).description("최대 예약 가능 인원"),
-                                fieldWithPath("notice").type(STRING).description("전달 사항"),
                                 fieldWithPath("price").type(NUMBER).description("가격")
                         )
                 ));
