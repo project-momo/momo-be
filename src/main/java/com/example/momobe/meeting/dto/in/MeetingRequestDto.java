@@ -37,7 +37,6 @@ public class MeetingRequestDto {
     private DateTimeDto dateTime;
     @Min(1)
     private Integer personnel;
-    private String notice;
     @NotNull
     @Min(0)
     private Long price;
