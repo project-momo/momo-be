@@ -8,6 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.example.momobe.payment.domain.enums.PayState.*;
@@ -18,6 +19,7 @@ import static lombok.AccessLevel.*;
 @Entity
 @Getter
 @Builder
+@EqualsAndHashCode
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
 public class Payment extends BaseTime {
@@ -50,6 +52,8 @@ public class Payment extends BaseTime {
 
     private String createDate;
 
+    private String paymentKey;
+
     public Payment(PayType payType, Long amount, String customerEmail, String customerName, Long userId, Long reservationID, String successUrl, String failUrl, String orderName) {
         this.orderId = randomUUID().toString();
         this.createDate = LocalDate.now().toString();
@@ -63,5 +67,13 @@ public class Payment extends BaseTime {
         this.failUrl = failUrl;
         this.orderName = orderName;
         this.payState = BEFORE;
+    }
+
+    public Boolean matchAmount(Long amount) {
+        return Objects.equals(this.amount, amount);
+    }
+
+    public void setPaymentKey(String paymentKey) {
+        this.paymentKey = paymentKey;
     }
 }
