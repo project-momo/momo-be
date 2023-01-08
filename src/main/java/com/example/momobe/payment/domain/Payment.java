@@ -69,10 +69,6 @@ public class Payment extends BaseTime {
         this.payState = BEFORE;
     }
 
-    public Boolean matchOrderId(String orderId) {
-        return Objects.equals(this.orderId, orderId);
-    }
-
     public Boolean matchAmount(Long amount) {
         return Objects.equals(this.amount, amount);
     }
