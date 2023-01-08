@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class PaymentVerificationService {
-    private final PaymentCommonService paymentCommonService;
-
     @Transactional(readOnly = true)
     public Boolean verify(Long amount, Payment payment) {
         if (!payment.matchAmount(amount)) {
