@@ -64,32 +64,4 @@ class MeetingCommonServiceTest {
         assertThat(result.getPrice()).isEqualTo(meeting.getPrice());
         assertThat(result.getHostId()).isEqualTo(meeting.getHostId());
     }
-
-    @Test
-    @DisplayName("Meeting의 hostId와 요청한 userId가 다르면 예외가 발생한다.")
-    public void closeMeetingTest1() throws Exception {
-        // given
-        Long meetingId = ID1;
-        given(meetingRepository.findById(meetingId)).willReturn(Optional.of(generateMeeting(ID1)));
-
-        // when
-        // then
-        assertThatThrownBy(() -> meetingCommonService.closeMeeting(ID2, meetingId))
-                .isInstanceOf(CanNotUpdateMeetingException.class);
-    }
-
-    @Test
-    @DisplayName("Meeting의 hostId와 요청한 userId가 같으면 MeetingState가 CLOSE로 바뀐다.")
-    public void closeMeetingTest2() throws Exception {
-        // given
-        Long meetingId = ID1;
-        Meeting meeting = generateMeeting(ID1);
-        given(meetingRepository.findById(meetingId)).willReturn(Optional.of(meeting));
-
-        // when
-        meetingCommonService.closeMeeting(ID1, meetingId);
-
-        // then
-        assertThat(meeting.getMeetingState()).isEqualTo(MeetingState.CLOSE);
-    }
 }

@@ -3,7 +3,7 @@ package com.example.momobe.meeting.application;
 import com.example.momobe.address.application.AddressCommonService;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.MeetingRepository;
-import com.example.momobe.meeting.dto.MeetingRequestDto;
+import com.example.momobe.meeting.dto.in.MeetingRequestDto;
 import com.example.momobe.meeting.mapper.MeetingMapper;
 import com.example.momobe.tag.application.TagCommonService;
 import lombok.RequiredArgsConstructor;

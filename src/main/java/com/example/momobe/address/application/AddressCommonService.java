@@ -17,7 +17,7 @@ public class AddressCommonService {
     private final AddressRepository addressRepository;
 
     public void verifyAddressIdsOrThrowException(List<Long> addressIds) {
-        if (!addressRepository.existsAllByIdIn(addressIds)) {
+        if (Boolean.FALSE.equals(addressRepository.existsAllByIdIn(addressIds))) {
             throw new AddressNotFoundException(DATA_NOT_FOUND);
         }
     }

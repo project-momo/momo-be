@@ -3,7 +3,7 @@ package com.example.momobe.meeting.mapper;
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
-import com.example.momobe.meeting.dto.MeetingRequestDto;
+import com.example.momobe.meeting.dto.in.MeetingRequestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

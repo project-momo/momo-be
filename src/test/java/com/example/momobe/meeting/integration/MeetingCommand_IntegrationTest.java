@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
-public class MeetingCommand_IntegrationTest {
+class MeetingCommand_IntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -37,7 +37,7 @@ public class MeetingCommand_IntegrationTest {
 
     @Test
     @DisplayName("모임 닫기 204 반환")
-    public void deleteMeeting() throws Exception {
+    void deleteMeeting() throws Exception {
         // given
         User host = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(host);
@@ -61,7 +61,7 @@ public class MeetingCommand_IntegrationTest {
 
     @Test
     @DisplayName("모임 닫기 hostId가 다를 경우 403 반환")
-    public void deleteMeetingFail() throws Exception {
+    void deleteMeetingFail() throws Exception {
         // given
         User host = new User(EMAIL1, NICKNAME, PASSWORD1, new Avatar(REMOTE_PATH));
         em.persist(host);

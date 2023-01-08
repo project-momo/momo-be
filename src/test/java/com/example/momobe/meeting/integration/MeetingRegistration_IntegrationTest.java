@@ -1,5 +1,6 @@
 package com.example.momobe.meeting.integration;
 
+import com.example.momobe.address.domain.Address;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.tag.domain.Tag;
 import com.example.momobe.user.domain.User;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
-public class MeetingRegistration_IntegrationTest {
+class MeetingRegistration_IntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -45,14 +46,18 @@ public class MeetingRegistration_IntegrationTest {
         User user = User.builder().build();
         em.persist(user);
         accessToken = jwtTokenUtil.createAccessToken(EMAIL1, user.getId(), ROLE_USER_LIST, NICKNAME1);
-        MEETING_REQUEST_DTO_WITH_ONE_DAY.getTags().forEach(tag ->
-                em.persist(new Tag(tag.getDescription(), tag.name()))
-        );
+        MEETING_REQUEST_DTO_WITH_ONE_DAY.getTags().stream()
+                .filter(tag -> em.createQuery("select t.id from Tag t where t.engName = '" + tag.name() + "'", Long.class)
+                        .getSingleResult() == null)
+                .forEach(tag -> em.persist(new Tag(tag.getDescription(), tag.name())));
+        MEETING_REQUEST_DTO_WITH_ONE_DAY.getAddress().getAddressIds().stream()
+                .filter(addressId -> em.find(Address.class, addressId) == null)
+                .forEach(addressId -> em.persist(Address.builder().id(addressId).si("시").gu("구").build()));
     }
 
     @Test
     @DisplayName("모임 등록 (하루 일정) 201 반환")
-    public void meetingRegistrationWithOneDay() throws Exception {
+    void meetingRegistrationWithOneDay() throws Exception {
         // given
         String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO_WITH_ONE_DAY);
 
@@ -70,7 +75,7 @@ public class MeetingRegistration_IntegrationTest {
 
     @Test
     @DisplayName("모임 등록 (정기 일정) 201 반환")
-    public void meetingRegistrationWithPeriod() throws Exception {
+    void meetingRegistrationWithPeriod() throws Exception {
         // given
         String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO_WITH_PERIOD);
 
@@ -88,7 +93,7 @@ public class MeetingRegistration_IntegrationTest {
 
     @Test
     @DisplayName("모임 등록 (자유 일정) 201 반환")
-    public void meetingRegistrationWithFree() throws Exception {
+    void meetingRegistrationWithFree() throws Exception {
         // given
         String content = objectMapper.writeValueAsString(MEETING_REQUEST_DTO_WITH_FREE);
 
@@ -106,7 +111,7 @@ public class MeetingRegistration_IntegrationTest {
 
     @Test
     @DisplayName("유효성 검사 실패시 400 반환")
-    public void meetingRegistrationFail() throws Exception {
+    void meetingRegistrationFail() throws Exception {
         // given
         String content = objectMapper.writeValueAsString(" ");
 

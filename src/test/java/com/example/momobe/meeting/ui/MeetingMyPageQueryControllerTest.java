@@ -5,10 +5,10 @@ import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.dao.MeetingHostQueryRepository;
 import com.example.momobe.meeting.dao.MeetingParticipantQueryRepository;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
-import com.example.momobe.meeting.dto.MeetingDateTimeDto;
-import com.example.momobe.meeting.dto.MeetingHostResponseDto;
-import com.example.momobe.meeting.dto.MeetingInfoDto;
-import com.example.momobe.meeting.dto.MeetingParticipantResponseDto;
+import com.example.momobe.meeting.dto.out.MeetingDateTimeDto;
+import com.example.momobe.meeting.dto.out.MeetingHostResponseDto;
+import com.example.momobe.meeting.dto.out.MeetingInfoDto;
+import com.example.momobe.meeting.dto.out.MeetingParticipantResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(SecurityTestConfig.class)
 @AutoConfigureRestDocs
-public class MeetingMyPageQueryControllerTest {
+class MeetingMyPageQueryControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
@@ -59,7 +59,7 @@ public class MeetingMyPageQueryControllerTest {
     private MeetingParticipantQueryRepository meetingParticipantQueryRepository;
 
     @Test
-    public void meetingHostQuery() throws Exception {
+    void meetingHostQuery() throws Exception {
         // given
         MeetingHostResponseDto.ApplicationDto applicationDto = new MeetingHostResponseDto.ApplicationDto(
                 List.of(new MeetingHostResponseDto.RequestDto(
@@ -141,7 +141,7 @@ public class MeetingMyPageQueryControllerTest {
     }
 
     @Test
-    public void meetingParticipantQuery() throws Exception {
+    void meetingParticipantQuery() throws Exception {
         // given
         MeetingParticipantResponseDto.ApplicationDto applicationDto =
                 new MeetingParticipantResponseDto.ApplicationDto(

@@ -1,4 +1,4 @@
-package com.example.momobe.meeting.dto;
+package com.example.momobe.meeting.dto.in;
 
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;

@@ -7,7 +7,7 @@ import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.dao.MonthlyMeetingScheduleInquiry;
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
-import com.example.momobe.meeting.dto.ResponseMeetingDatesDto;
+import com.example.momobe.meeting.dto.out.ResponseMeetingDatesDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

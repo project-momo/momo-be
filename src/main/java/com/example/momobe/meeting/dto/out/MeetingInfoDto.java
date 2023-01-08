@@ -1,4 +1,4 @@
-package com.example.momobe.meeting.dto;
+package com.example.momobe.meeting.dto.out;
 
 import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.querydsl.core.annotations.QueryProjection;

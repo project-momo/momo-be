@@ -4,7 +4,7 @@ import com.example.momobe.common.dto.PageResponseDto;
 import com.example.momobe.meeting.dao.MeetingDetailQueryRepository;
 import com.example.momobe.meeting.dao.MeetingQueryRepository;
 import com.example.momobe.meeting.domain.enums.Category;
-import com.example.momobe.meeting.dto.MeetingResponseDto;
+import com.example.momobe.meeting.dto.out.MeetingResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
