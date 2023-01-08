@@ -17,7 +17,7 @@ public class PaymentProgressService {
     public PaymentResultDto progress(String orderId, String paymentKey, Long amount) {
         Payment payment = paymentCommonService.getPaymentOrThrowException(orderId);
 
-        if (paymentVerificationService.verify(orderId, paymentKey, amount, payment)) payment.setPaymentKey(paymentKey);
+        if (paymentVerificationService.verify(amount, payment)) payment.setPaymentKey(paymentKey);
 
         return paymentRequestService.requestPayment(paymentKey, orderId, amount);
     }
