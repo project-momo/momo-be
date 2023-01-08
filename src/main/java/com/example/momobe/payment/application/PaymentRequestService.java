@@ -1,34 +1,31 @@
 package com.example.momobe.payment.application;
 
-import com.amazonaws.util.Base64;
-import com.example.momobe.payment.domain.UnableProceedPaymentException;
 import com.example.momobe.payment.dto.PaymentResultDto;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONException;
-import org.json.JSONObject;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 
-import static com.example.momobe.common.exception.enums.ErrorCode.*;
 import static org.springframework.http.MediaType.*;
 
 @Slf4j
 @Service
 public class PaymentRequestService {
-    private final String TOSS_URL = "https://api.tosspayments.com/v1/payments/";
+    private final PaymentRestTemplate<PaymentResultDto> restTemplate;
     private final String secretKey;
 
-    public PaymentRequestService(@Value("${payments.toss.secretKey") String secretKey) {
+    public PaymentRequestService(@Value("${payments.toss.secretKey") String secretKey, PaymentRestTemplate<PaymentResultDto> restTemplate) {
         this.secretKey = secretKey + ":";
+        this.restTemplate = restTemplate;
     }
 
     @Transactional
@@ -36,7 +33,7 @@ public class PaymentRequestService {
         String authKey = generateAuthKey();
 
         HttpEntity<JSONObject> httpRequestEntity = generateHttpRequestEntity(orderId, amount, authKey);
-        ResponseEntity<PaymentResultDto> httpResponseEntity = postHttpRequest(paymentKey, httpRequestEntity);
+        ResponseEntity<PaymentResultDto> httpResponseEntity = restTemplate.postHttpRequest(paymentKey, httpRequestEntity);
 
         return httpResponseEntity.getBody();
     }
@@ -48,25 +45,11 @@ public class PaymentRequestService {
         return new HttpEntity<>(httpParameter, httpHeaders);
     }
 
-    private ResponseEntity<PaymentResultDto> postHttpRequest(String paymentKey, HttpEntity<JSONObject> httpEntity) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        return restTemplate.postForEntity(
-                TOSS_URL + paymentKey,
-                httpEntity,
-                PaymentResultDto.class
-        );
-    }
-
     private JSONObject generateHttpParameters(String orderId, Long amount) {
         JSONObject param = new JSONObject();
 
-        try {
-            param.put("orderId", orderId);
-            param.put("amount", amount);
-        } catch (JSONException e) {
-            throw new UnableProceedPaymentException(UNABLE_TO_PROCESS);
-        }
+        param.put("orderId", orderId);
+        param.put("amount", amount);
 
         return param;
     }
@@ -75,13 +58,13 @@ public class PaymentRequestService {
         HttpHeaders httpHeaders = new HttpHeaders();
 
         httpHeaders.setBasicAuth(authKey);
-        httpHeaders.setConnection(APPLICATION_JSON_VALUE);
+        httpHeaders.setContentType(APPLICATION_JSON);
         httpHeaders.setAccept(Collections.singletonList(APPLICATION_JSON));
 
         return httpHeaders;
     }
 
     private String generateAuthKey() {
-        return Arrays.toString(Base64.encode(secretKey.getBytes(StandardCharsets.UTF_8)));
+        return Arrays.toString(Base64.getEncoder().encode(secretKey.getBytes(StandardCharsets.UTF_8)));
     }
 }
