@@ -392,3 +392,40 @@ include::{snippets}/address/get/http-response.adoc[]
 .response-fields
 [caption=]
 include::{snippets}/address/get/response-fields.adoc[]
+
+
+== 결제 성공
+=== 성공 200
+.http-request
+include::{snippets}/payments/success/200/http-request.adoc[]
+
+.request-parameter
+include::{snippets}/payments/success/200/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/payments/success/200/http-response.adoc[]
+
+.response-fields
+[caption=]
+include::{snippets}/payments/success/200/response-fields.adoc[]
+
+=== 실패 404
+.http-request
+include::{snippets}/payments/success/404/http-request.adoc[]
+
+.request-parameter
+include::{snippets}/payments/success/404/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/payments/success/404/http-response.adoc[]
+
+=== 실패 503
+.http-request
+include::{snippets}/payments/success/500/http-request.adoc[]
+
+.request-parameter
+include::{snippets}/payments/success/500/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/payments/success/500/http-response.adoc[]
+
