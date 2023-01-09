@@ -1,6 +1,5 @@
 package com.example.momobe.reservation.infrastructure;
 
-import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.reservation.domain.CustomReservationRepository;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.reservation.domain.enums.ReservationState;
@@ -10,11 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static com.example.momobe.reservation.domain.QReservation.*;
-import static java.time.temporal.ChronoUnit.*;
+import static com.example.momobe.reservation.domain.QReservation.reservation;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 @Repository
 @RequiredArgsConstructor
@@ -38,7 +36,17 @@ public class CustomJpaQueryRepositoryImpl implements CustomReservationRepository
     @Override
     public List<Reservation> findPaymentCompletedReservation(Long meetingId) {
         return jpaQueryFactory.selectFrom(reservation)
-                .where(reservation.reservationState.eq(ReservationState.PAYMENT_SUCCESS))
+                .where(reservation.reservationState.eq(ReservationState.PAYMENT_SUCCESS)
+                        .and(reservation.meetingId.eq(meetingId)))
+                .fetch();
+    }
+
+    @Override
+    public List<Long> findReservationAmounts(Long meetingId) {
+        return jpaQueryFactory.select(reservation.amount.won)
+                .from(reservation)
+                .where(reservation.reservationState.eq(ReservationState.PAYMENT_SUCCESS)
+                        .and(reservation.meetingId.eq(meetingId)))
                 .fetch();
     }
 }

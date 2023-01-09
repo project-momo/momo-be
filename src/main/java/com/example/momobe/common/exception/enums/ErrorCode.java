@@ -8,7 +8,7 @@ import static org.springframework.http.HttpStatus.*;
 @Getter
 public enum ErrorCode {
     /*
-    * Reservation, Payment
+    * Reservation, Payment, Meeting
     * */
     FULL_OF_PEOPLE(CONFLICT, "예약 인원이 가득 찼습니다."),
     AMOUNT_DOSE_NOT_MATCH(CONFLICT, "신청한 결제 금액과 실제 결제해야할 금액이 일치하지 않습니다. 관리자에게 문의하세요."),
@@ -16,6 +16,7 @@ public enum ErrorCode {
     CLOSED_MEETING(CONFLICT, "모집이 종료된 모임입니다."),
     CANCELED_RESERVATION(CONFLICT, "이미 취소된 예약입니다, 관리자에게 문의하세요."),
     CONFIRMED_RESERVATION(CONFLICT, "이미 확정된 예약입니다, 관리자에게 문의하세요."),
+    CAN_NOT_FOUND_END_MEETING(NOT_FOUND,"금일 정산할 내역이 없습니다."),
 
     /*
     * Token Exception
