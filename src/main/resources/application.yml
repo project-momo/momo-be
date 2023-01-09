@@ -45,7 +45,7 @@ spring:
         registration:
           kakao:
             client-id: ${KAKAO_CLIENT}
-            redirect-uri: http://54.180.193.137:8080/login/oauth2/code/kakao
+            redirect-uri: https://momo-api.shop/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: POST
             client-name: Kakao
@@ -76,3 +76,10 @@ server:
 jwt:
   secretKey: ${JWT_SECRET}
   refreshKey: ${JWT_REFRESH}
+
+payments:
+  toss:
+    successUrl: successurl
+    failUrl: failurl
+    secretKey: secret
+    clientKey: client

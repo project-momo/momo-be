@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -81,7 +82,7 @@ public class MeetingQueryRepository {
                 );
 
         MeetingInfoUtil meetingInfoUtil = new MeetingInfoUtil(dtos);
-        meetingInfoUtil.updateAddressAndDateTime(meetingInfoDtoMap);
+        meetingInfoUtil.updateAddressesAndDateTimes(meetingInfoDtoMap);
         meetingInfoUtil.initMeetingResponseDto(dtos);
 
         JPAQuery<Long> countQuery = queryFactory

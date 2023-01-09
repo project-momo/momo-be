@@ -8,6 +8,7 @@ import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.meeting.domain.enums.Tag;
 import com.example.momobe.meeting.dto.in.MeetingRequestDto;
+import com.example.momobe.meeting.dto.in.MeetingUpdateDto;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.PathParametersSnippet;
 
@@ -31,7 +32,6 @@ public class MeetingConstants {
     public static final LocalTime END_TIME = LocalTime.of(5, 0);
     public static final Integer MAX_TIME = 3;
     public static final Long PRICE = 20000L;
-    public static final String NOTICE = "전달 사항";
 
     public static Meeting generateMeeting() {
         return Meeting.builder()
@@ -103,7 +103,7 @@ public class MeetingConstants {
             .addressInfo(SUB_ADDRESS1)
             .build();
     public static final MeetingRequestDto.AddressDto ADDRESS_DTO2 = MeetingRequestDto.AddressDto.builder()
-            .addressIds(List.of(1L, 2L))
+            .addressIds(List.of(3L, 4L))
             .addressInfo(SUB_ADDRESS2)
             .build();
 
@@ -124,7 +124,6 @@ public class MeetingConstants {
             .address(ADDRESS_DTO1)
             .dateTime(DATE_TIME_DTO_WITH_ONE_DAY)
             .personnel(3)
-            .notice(NOTICE)
             .price(PRICE)
             .build();
 
@@ -146,7 +145,6 @@ public class MeetingConstants {
             .address(ADDRESS_DTO1)
             .dateTime(DATE_TIME_DTO_WITH_PERIOD)
             .personnel(3)
-            .notice(NOTICE)
             .price(PRICE)
             .build();
 
@@ -169,7 +167,6 @@ public class MeetingConstants {
             .address(ADDRESS_DTO1)
             .dateTime(DATE_TIME_DTO_WITH_FREE)
             .personnel(1)
-            .notice(NOTICE)
             .price(PRICE)
             .build();
 
@@ -193,7 +190,16 @@ public class MeetingConstants {
             .address(ADDRESS_DTO1)
             .dateTime(DATE_TIME_DTO_WITH_ALL)
             .personnel(1)
-            .notice(NOTICE)
+            .price(PRICE)
+            .build();
+
+    public static final MeetingUpdateDto MEETING_UPDATE_DTO = MeetingUpdateDto.builder()
+            .category(SOCIAL)
+            .title(TITLE2)
+            .content(CONTENT2)
+            .tags(List.of(Tag.MENTORING, Tag.STUDY, Tag.FIVE, Tag.OFFLINE))
+            .address(ADDRESS_DTO2)
+            .personnel(1)
             .price(PRICE)
             .build();
 

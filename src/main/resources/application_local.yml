@@ -1,3 +1,4 @@
+
 spring:
   data:
     web:
@@ -66,7 +67,6 @@ logging:
     org.hibernate.sql: debug
     org.hibernate.type: trace
     org.springframework.security: debug
-
 server:
   servlet:
     encoding:
