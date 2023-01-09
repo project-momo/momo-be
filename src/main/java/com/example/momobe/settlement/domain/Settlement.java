@@ -1,6 +1,7 @@
 package com.example.momobe.settlement.domain;
 
 import com.example.momobe.common.domain.BaseTime;
+import com.example.momobe.settlement.domain.emun.SettlementState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +20,10 @@ public class Settlement extends BaseTime {
     @Column(name = "settlement_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private SettlementState state;
+
     @Column(nullable = false)
     private Long amount;
     @Column(nullable = false)
@@ -32,6 +37,7 @@ public class Settlement extends BaseTime {
 
     public Settlement(Long amount, Long host, Long meeting, List<Long> reservation) {
         this.amount = amount;
+        this.state = SettlementState.DONE;
         this.host = host;
         this.meeting = meeting;
         this.reservation = reservation;

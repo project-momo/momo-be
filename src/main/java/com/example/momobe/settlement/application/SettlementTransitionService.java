@@ -9,10 +9,11 @@ import com.example.momobe.payment.domain.Payment;
 import com.example.momobe.payment.domain.PaymentRepository;
 import com.example.momobe.payment.domain.UnableProceedPaymentException;
 import com.example.momobe.payment.domain.enums.PayState;
+import com.example.momobe.payment.infrastructure.PaymentQueryRepository;
 import com.example.momobe.reservation.domain.CustomReservationRepository;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.settlement.domain.Settlement;
-import com.example.momobe.settlement.infrastructure.SettlementRepository;
+import com.example.momobe.settlement.domain.SettlementRepository;
 import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserPoint;
@@ -30,17 +31,18 @@ import java.util.stream.Collectors;
 @EnableAsync
 @RequiredArgsConstructor
 @Transactional
-public class SettlementCommonService {
+public class SettlementTransitionService {
     private final SettlementRepository settlementRepository;
     private final MeetingQueryRepository meetingQueryRepository;
     private final CustomReservationRepository customReservationRepository;
     private final PaymentRepository paymentRepository;
+    private final PaymentQueryRepository paymentQueryRepository;
     private final UserFindService userFindService;
     private final MeetingRepository meetingRepository;
     private final UserRepository userRepository;
 
 
-    @Scheduled(cron = "10 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void transitionOfPayment(){
         List<Long> meetingId = meetingQueryRepository.findMeetingClosedBefore3days();
         meetingId.forEach(
@@ -50,7 +52,7 @@ public class SettlementCommonService {
                     List<Reservation> reservations = customReservationRepository.findPaymentCompletedReservation(x);
                     List<Long> reservationId = reservations.stream().map(Reservation::getId).collect(Collectors.toList());
                     reservationId.forEach(r -> {
-                        Payment payments = paymentRepository.findPaymentByReservationId(r).orElseThrow(() -> new UnableProceedPaymentException(ErrorCode.DATA_NOT_FOUND));
+                        Payment payments = paymentQueryRepository.findPaymentByReservationId(r);
                         payments.changePaymentState(PayState.SETTLEMENT_DONE);
                     });
                     Meeting meeting = meetingRepository.findById(x).orElseThrow(() -> new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND));
