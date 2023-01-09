@@ -22,6 +22,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
+import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentResponse;
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.common.exception.enums.ErrorCode.*;
 import static org.aspectj.apache.bcel.generic.ObjectType.*;
@@ -73,6 +75,8 @@ class PaymentSuccessControllerTest {
         //then
         perform.andExpect(status().isNotFound())
                 .andDo(document("payments/success/404",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
                         requestParameters(
                                 parameterWithName("paymentKey").description("카드 결제 요청 시 받은 paymentKey"),
                                 parameterWithName("orderId").description("서버에 존재하지 않는 orderId"),
@@ -97,6 +101,8 @@ class PaymentSuccessControllerTest {
         //then
         perform.andExpect(status().isServiceUnavailable())
                 .andDo(document("payments/success/500",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
                         requestParameters(
                                 parameterWithName("paymentKey").description("카드 결제 요청 시 받은 paymentKey"),
                                 parameterWithName("orderId").description("서버에서 발급한 orderId"),
@@ -157,6 +163,8 @@ class PaymentSuccessControllerTest {
         //then
         perform.andExpect(status().isOk())
                 .andDo(document("payments/success/200",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
                         requestParameters(
                                 parameterWithName("paymentKey").description("카드 결제 요청 시 받은 paymentKey"),
                                 parameterWithName("orderId").description("서버에서 발급한 orderId"),

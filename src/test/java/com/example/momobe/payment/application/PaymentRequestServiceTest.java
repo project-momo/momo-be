@@ -46,7 +46,6 @@ class PaymentRequestServiceTest {
 
     @BeforeEach
     void init() {
-        ReflectionTestUtils.setField(paymentRequestService, "TOSS_URL", url);
         ReflectionTestUtils.setField(paymentRequestService, "secretKey", secret);
 
         HttpHeaders httpHeaders = new HttpHeaders();

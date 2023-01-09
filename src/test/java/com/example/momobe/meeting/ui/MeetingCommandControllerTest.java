@@ -7,6 +7,7 @@ import com.example.momobe.meeting.application.MeetingCommonService;
 import com.example.momobe.meeting.application.MeetingUpdateService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -43,9 +44,9 @@ class MeetingCommandControllerTest {
     @MockBean
     private JwtArgumentResolver jwtArgumentResolver;
     @MockBean
-    private MeetingUpdateService meetingUpdateService;
+    private MeetingCloseService meetingCommonService;
     @MockBean
-    private MeetingCloseService meetingCloseService;
+    private MeetingUpdateService meetingUpdateService;
 
     @Test
     void updateMeeting() throws Exception {
