@@ -2,9 +2,13 @@ package com.example.momobe.meeting.mapper;
 
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
+import com.example.momobe.common.util.ReflectionUtil;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.MeetingState;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,14 +21,15 @@ import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@WebMvcTest({ExceptionController.class, MeetingMapper.class, DateTimeMapper.class})
-@MockBean(JpaMetamodelMappingContext.class)
+@ExtendWith(MockitoExtension.class)
 class MeetingMapperTest {
-
-    @Autowired
     private MeetingMapper meetingMapper;
-    @MockBean
-    private JwtArgumentResolver jwtArgumentResolver;
+
+    @BeforeEach
+    void init() throws NoSuchFieldException, IllegalAccessException {
+        meetingMapper = new MeetingMapperImpl();
+        ReflectionUtil.setField(meetingMapper, "dateTimeMapper", new DateTimeMapperImpl());
+    }
 
     @Test
     void meetingMapper() throws Exception {

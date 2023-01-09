@@ -21,6 +21,7 @@ import javax.persistence.EntityManager;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstants.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,9 +65,9 @@ class MeetingRegistration_IntegrationTest {
         // when
         ResultActions actions = mockMvc.perform(
                 post("/meetings")
-                        .content(content)
                         .header(JWT_HEADER, accessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
+                        .content(content)
         );
 
         // then
@@ -84,7 +85,7 @@ class MeetingRegistration_IntegrationTest {
                 post("/meetings")
                         .content(content)
                         .header(JWT_HEADER, accessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
         );
 
         // then
@@ -102,7 +103,7 @@ class MeetingRegistration_IntegrationTest {
                 post("/meetings")
                         .content(content)
                         .header(JWT_HEADER, accessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
         );
 
         // then
@@ -120,7 +121,7 @@ class MeetingRegistration_IntegrationTest {
                 post("/meetings")
                         .content(content)
                         .header(JWT_HEADER, accessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
         );
 
         // then

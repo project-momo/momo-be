@@ -4,7 +4,6 @@ import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.MeetingState;
-import com.example.momobe.meeting.domain.enums.Tag;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -75,7 +75,8 @@ public class Meeting extends BaseTime {
         this.personnel = personnel;
         this.meetingState = meetingState;
         this.dateTimeInfo = dateTimeInfo;
-        dateTimeInfo.getDateTimes().forEach(dateTime -> dateTime.init(this));
+        Optional.ofNullable(dateTimeInfo).ifPresent(
+                dateTimeInfo1 -> dateTimeInfo.getDateTimes().forEach(dateTime -> dateTime.init(this)));
         this.price = price;
         this.address = address;
     }
@@ -83,7 +84,7 @@ public class Meeting extends BaseTime {
     public Boolean verifyRemainingReservations(Long currentAttendees) {
         return this.personnel - currentAttendees > 0;
     }
-    
+
     public Boolean verifyReservationSchedule(LocalDate date,
                                              LocalTime startTime,
                                              LocalTime endTime) {
@@ -118,5 +119,16 @@ public class Meeting extends BaseTime {
 
     public Boolean matchHostId(Long hostId) {
         return Objects.equals(this.hostId, hostId);
+    }
+
+    public void updateMeetingInfo(Meeting meeting) {
+        verifyHostId(meeting.getHostId());
+        Optional.ofNullable(meeting.getTitle()).ifPresent(t -> this.title = t);
+        Optional.ofNullable(meeting.getContent()).ifPresent(c -> this.content = c);
+        Optional.ofNullable(meeting.getCategory()).ifPresent(c -> this.category = c);
+        Optional.ofNullable(meeting.getTagIds()).ifPresent(ts -> this.tagIds = ts);
+        Optional.ofNullable(meeting.getPersonnel()).ifPresent(p -> this.personnel = p);
+        Optional.ofNullable(meeting.getPrice()).ifPresent(p -> this.price = p);
+        Optional.ofNullable(meeting.getAddress()).ifPresent(a -> this.address = a);
     }
 }

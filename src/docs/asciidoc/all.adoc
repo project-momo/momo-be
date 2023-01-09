@@ -53,6 +53,22 @@ include::{snippets}/meeting/registration/request-fields.adoc[]
 include::{snippets}/meeting/registration/http-response.adoc[]
 
 ***
+=== 수정
+.http-request
+include::{snippets}/meeting/update/http-request.adoc[]
+
+.request-headers
+[caption=]
+include::{snippets}/meeting/update/request-headers.adoc[]
+
+.request-fields
+[caption=]
+include::{snippets}/meeting/update/request-fields.adoc[]
+
+.http-response
+include::{snippets}/meeting/update/http-response.adoc[]
+
+***
 === 상세 조회
 .http-request
 include::{snippets}/meeting/query/detail/http-request.adoc[]
