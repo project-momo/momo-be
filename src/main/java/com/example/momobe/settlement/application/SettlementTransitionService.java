@@ -14,6 +14,7 @@ import com.example.momobe.reservation.domain.CustomReservationRepository;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.settlement.domain.Settlement;
 import com.example.momobe.settlement.domain.SettlementRepository;
+import com.example.momobe.settlement.domain.emun.SettlementState;
 import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserPoint;
@@ -35,8 +36,8 @@ public class SettlementTransitionService {
     private final SettlementRepository settlementRepository;
     private final MeetingQueryRepository meetingQueryRepository;
     private final CustomReservationRepository customReservationRepository;
-    private final PaymentRepository paymentRepository;
     private final PaymentQueryRepository paymentQueryRepository;
+    private final CheckSettlementService checkSettlementService;
     private final UserFindService userFindService;
     private final MeetingRepository meetingRepository;
     private final UserRepository userRepository;
@@ -44,7 +45,7 @@ public class SettlementTransitionService {
 
     @Scheduled(cron = "0 0 0 * * *")
     public void transitionOfPayment(){
-        List<Long> meetingId = meetingQueryRepository.findMeetingClosedBefore3days();
+        List<Long> meetingId = checkSettlementService.checkEndMeetingExist();
         meetingId.forEach(
                 x -> {
                     Long amounts = customReservationRepository.findReservationAmounts(x)
@@ -63,6 +64,7 @@ public class SettlementTransitionService {
                             .host(meeting.getHostId())
                             .amount(amounts)
                             .meeting(x)
+                            .state(SettlementState.DONE)
                             .reservation(reservationId)
                             .build();
                     userRepository.save(user);
