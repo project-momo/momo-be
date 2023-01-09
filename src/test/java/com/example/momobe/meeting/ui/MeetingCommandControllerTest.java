@@ -2,6 +2,7 @@ package com.example.momobe.meeting.ui;
 
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
+import com.example.momobe.meeting.application.MeetingCloseService;
 import com.example.momobe.meeting.application.MeetingCommonService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ class MeetingCommandControllerTest {
     @MockBean
     private JwtArgumentResolver jwtArgumentResolver;
     @MockBean
-    private MeetingCommonService meetingCommonService;
+    private MeetingCloseService meetingCommonService;
 
     @Test
     void deleteMeeting() throws Exception {
