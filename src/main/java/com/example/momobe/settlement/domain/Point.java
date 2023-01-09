@@ -5,9 +5,7 @@ import lombok.*;
 import javax.persistence.Embeddable;
 
 @Embeddable
-@Builder
 @Getter
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class Point {
     private Long points;

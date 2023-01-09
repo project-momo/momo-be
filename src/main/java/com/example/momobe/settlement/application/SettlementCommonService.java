@@ -5,9 +5,13 @@ import com.example.momobe.meeting.dao.MeetingQueryRepository;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.MeetingNotFoundException;
 import com.example.momobe.meeting.domain.MeetingRepository;
+import com.example.momobe.payment.domain.Payment;
+import com.example.momobe.payment.domain.PaymentRepository;
+import com.example.momobe.payment.domain.UnableProceedPaymentException;
+import com.example.momobe.payment.domain.enums.PayState;
 import com.example.momobe.reservation.domain.CustomReservationRepository;
+import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.settlement.domain.Settlement;
-import com.example.momobe.settlement.domain.emun.SettlementState;
 import com.example.momobe.settlement.infrastructure.SettlementRepository;
 import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.domain.User;
@@ -20,49 +24,47 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @EnableAsync
 @RequiredArgsConstructor
 @Transactional
 public class SettlementCommonService {
-    private final SettlementRepository repository;
+    private final SettlementRepository settlementRepository;
     private final MeetingQueryRepository meetingQueryRepository;
     private final CustomReservationRepository customReservationRepository;
+    private final PaymentRepository paymentRepository;
     private final UserFindService userFindService;
     private final MeetingRepository meetingRepository;
     private final UserRepository userRepository;
 
-    //종료 미팅 조회
-    public List<Long> findEndMeetingId(){
-        return meetingQueryRepository.findMeetingClosedBefore3days();
-    }
 
-
-    @Scheduled(cron = "010***")
+    @Scheduled(cron = "10 * * * * *")
     public void transitionOfPayment(){
-        List<Long> meetingId = findEndMeetingId();
+        List<Long> meetingId = meetingQueryRepository.findMeetingClosedBefore3days();
         meetingId.forEach(
                 x -> {
                     Long amounts = customReservationRepository.findReservationAmounts(x)
                             .stream().mapToLong(m->m).sum();
-
-                    //예약건 다 꺼내서 합산해서 정산 데이터 생성
-                    //유저포인트 변경
-
+                    List<Reservation> reservations = customReservationRepository.findPaymentCompletedReservation(x);
+                    List<Long> reservationId = reservations.stream().map(Reservation::getId).collect(Collectors.toList());
+                    reservationId.forEach(r -> {
+                        Payment payments = paymentRepository.findPaymentByReservationId(r).orElseThrow(() -> new UnableProceedPaymentException(ErrorCode.DATA_NOT_FOUND));
+                        payments.changePaymentState(PayState.SETTLEMENT_DONE);
+                    });
                     Meeting meeting = meetingRepository.findById(x).orElseThrow(() -> new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND));
                     User user = userFindService.verifyUser(meeting.getHostId());
                     UserPoint userPoint = user.getUserPoint();
+                    user.changeUserPoint(userPoint.plus(amounts));
                     Settlement settlement = Settlement.builder()
                             .host(meeting.getHostId())
-                            .point(amounts)
-                            .userPoint(userPoint.plus(amounts))
-                            .state(SettlementState.DONE)
                             .amount(amounts)
-
+                            .meeting(x)
+                            .reservation(reservationId)
                             .build();
                     userRepository.save(user);
-                    repository.save(settlement);
+                    settlementRepository.save(settlement);
                 }
         );
     }

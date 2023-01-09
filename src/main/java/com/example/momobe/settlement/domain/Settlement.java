@@ -1,16 +1,13 @@
 package com.example.momobe.settlement.domain;
 
 import com.example.momobe.common.domain.BaseTime;
-import com.example.momobe.settlement.domain.emun.SettlementState;
-import com.example.momobe.user.domain.UserPoint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import static javax.persistence.EnumType.STRING;
+import java.util.List;
 
 @Entity
 @Builder
@@ -20,32 +17,25 @@ import static javax.persistence.EnumType.STRING;
 public class Settlement extends BaseTime {
     @Id
     @Column(name = "settlement_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Embedded
+    @Column(nullable = false)
     private Long amount;
-    @Embedded
-    private Long point;
-    @Enumerated(STRING)
-    private SettlementState state;
-    @Embedded
-    private UserPoint userPoint;
+    @Column(nullable = false)
     private Long host;
-    private Long payment;
+    @Column(nullable = false)
+    private Long meeting;
 
-    public Settlement(Long amount, UserPoint userPoint, Long host, Long payment) {
+    @ElementCollection
+    @Column(nullable = false)
+    private List<Long> reservation;
+
+    public Settlement(Long amount, Long host, Long meeting, List<Long> reservation) {
         this.amount = amount;
-        this.point = userPoint.getPoint();
-        this.state = SettlementState.DONE;
-        this.userPoint = userPoint;
         this.host = host;
-        this.payment = payment;
+        this.meeting = meeting;
+        this.reservation = reservation;
     }
-
-    public SettlementState checkSettlementState(){
-        return this.state;
-    }
-
 }
 
 
