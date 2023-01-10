@@ -4,9 +4,11 @@ import net.minidev.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 @Component
+@Transactional
 public class ApiService<T> {
     private final RestTemplate restTemplate;
 
