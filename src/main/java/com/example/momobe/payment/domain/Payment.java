@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import static com.example.momobe.payment.domain.enums.PayState.BEFORE;
+import static com.example.momobe.payment.domain.enums.PayState.CANCEL;
 import static java.util.UUID.randomUUID;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
@@ -56,6 +57,8 @@ public class Payment extends BaseTime {
 
     private String paymentKey;
 
+    private String memo;
+
     public Payment(PayType payType, Long amount, String customerEmail, String customerName, Long userId, Long reservationID, String successUrl, String failUrl, String orderName) {
         this.orderId = randomUUID().toString();
         this.createDate = LocalDate.now().toString();
@@ -69,10 +72,15 @@ public class Payment extends BaseTime {
         this.failUrl = failUrl;
         this.orderName = orderName;
         this.payState = BEFORE;
+        this.memo = "";
     }
 
     public Boolean matchAmount(Long amount) {
         return Objects.equals(this.amount, amount);
+    }
+
+    public void cancel() {
+        this.payState = CANCEL;
     }
 
     public void setPaymentKey(String paymentKey) {

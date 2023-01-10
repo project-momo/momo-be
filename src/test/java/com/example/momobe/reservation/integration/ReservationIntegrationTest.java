@@ -4,9 +4,9 @@ import com.example.momobe.meeting.domain.Address;
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.domain.enums.Tag;
 import com.example.momobe.reservation.domain.Money;
 import com.example.momobe.reservation.domain.Reservation;
+import com.example.momobe.reservation.domain.ReservationDate;
 import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.example.momobe.reservation.dto.in.PatchReservationDto;
 import com.example.momobe.reservation.dto.in.PostReservationDto;
@@ -30,6 +30,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
@@ -176,6 +177,11 @@ public class ReservationIntegrationTest {
         reservation = Reservation.builder()
                 .amount(new Money(0L))
                 .meetingId(meeting.getId())
+                .reservationDate(ReservationDate.builder()
+                        .date(LocalDate.now().plus(1, ChronoUnit.MONTHS))
+                        .startTime(LocalTime.of(10,0))
+                        .endTime(LocalTime.of(22,0))
+                        .build())
                 .build();
 
         entityManager.persist(meeting);
@@ -615,7 +621,7 @@ public class ReservationIntegrationTest {
 
         //then
         perform.andExpect(status().isOk());
-        Assertions.assertThat(reservation.checkReservationState()).isEqualTo(ReservationState.ACCEPT);
+        Assertions.assertThat(reservation.getReservationState()).isEqualTo(ReservationState.ACCEPT);
     }
 
     @Test
@@ -635,6 +641,6 @@ public class ReservationIntegrationTest {
 
         //then
         perform.andExpect(status().isOk());
-        Assertions.assertThat(reservation.checkReservationState()).isEqualTo(ReservationState.CANCEL);
+        Assertions.assertThat(reservation.getReservationState()).isEqualTo(ReservationState.CANCEL);
     }
 }

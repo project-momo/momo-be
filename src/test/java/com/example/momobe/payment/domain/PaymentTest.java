@@ -1,5 +1,6 @@
 package com.example.momobe.payment.domain;
 
+import com.example.momobe.payment.domain.enums.PayState;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,5 +47,16 @@ class PaymentTest {
 
         //then
         Assertions.assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("cancel() 메서드 실행 후 조회하면 state가 취소 상태로 변경되어있다.")
+    void cancel() {
+        //given
+        //when
+        payment.cancel();
+
+        //then
+        Assertions.assertThat(payment.getPayState()).isEqualTo(PayState.CANCEL);
     }
 }

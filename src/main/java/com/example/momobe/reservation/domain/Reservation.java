@@ -2,9 +2,13 @@ package com.example.momobe.reservation.domain;
 
 import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.reservation.domain.enums.ReservationState;
+import com.example.momobe.reservation.event.ReservationEvent;
 import lombok.*;
 
 import javax.persistence.*;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static com.example.momobe.common.exception.enums.ErrorCode.*;
 import static com.example.momobe.reservation.domain.enums.ReservationState.*;
@@ -41,6 +45,8 @@ public class Reservation extends BaseTime {
     @Enumerated(STRING)
     private ReservationState reservationState;
 
+    private Long paymentId;
+
     public Reservation(ReservationDate reservationDate, Money amount, ReservedUser reservedUser, ReservationMemo reservationMemo, Long meetingId) {
         this.reservationDate = reservationDate;
         this.amount = amount;
@@ -63,8 +69,30 @@ public class Reservation extends BaseTime {
         return this.reservationState.equals(CANCEL);
     }
 
-    public ReservationState checkReservationState() {
-        return this.reservationState;
+    public Boolean isPaymentSucceed() {
+        return Objects.equals(this.reservationState, PAYMENT_SUCCESS);
+    }
+
+    public void setPaymentId(Long paymentId) { this.paymentId = paymentId; }
+
+    public ReservationEvent.PaymentCancel createCancelEvent(String paymentKey, String reasonMessage) {
+        return ReservationEvent.PaymentCancel.builder()
+                .paymentKey(paymentKey)
+                .reason(reasonMessage)
+                .paymentId(this.paymentId)
+                .build();
+    }
+
+    protected Boolean checkAvailabilityOfCancel() {
+        return !this.reservationState.equals(ACCEPT) && !this.reservationDate.isBeforeThen(LocalDateTime.now());
+    }
+
+    protected Boolean checkAvailabilityOfAccept() {
+        return !this.reservationState.equals(CANCEL) && !this.reservationDate.isBeforeThen(LocalDateTime.now());
+    }
+
+    public Boolean matchUserId(Long userId) {
+        return this.reservedUser.isEqualTo(userId);
     }
 
     /*
@@ -74,14 +102,12 @@ public class Reservation extends BaseTime {
      * Date : 2022/01/05
      * */
     public void cancel() {
-        if (this.reservationState == ACCEPT) throw new CanNotChangeReservationStateException(CONFIRMED_RESERVATION);
-
-        if (this.amount.match(0L)) this.reservationState = CANCEL;
+       if (!checkAvailabilityOfCancel()) throw new CanNotChangeReservationStateException(CANCELED_RESERVATION);
+       this.reservationState = CANCEL;
     }
 
     public void accept() {
-        if (this.reservationState == CANCEL) throw new CanNotChangeReservationStateException(CANCELED_RESERVATION);
-
+        if (!checkAvailabilityOfAccept()) throw new CanNotChangeReservationStateException(CANCELED_RESERVATION);
         this.reservationState = ACCEPT;
     }
 }

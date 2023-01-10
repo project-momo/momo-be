@@ -27,7 +27,7 @@ class PaymentCommonServiceTest {
 
     @Test
     @DisplayName("결제 정보가 Optional.empty()라면 예외 발생")
-    void saveFailTest() {
+    void saveFailTgetPaymentOrThrowExceptionest1() {
         //given
         given(paymentRepository.findPaymentByOrderId(ID1.toString())).willReturn(Optional.empty());
 
@@ -38,7 +38,7 @@ class PaymentCommonServiceTest {
 
     @Test
     @DisplayName("결제 정보가 존재한다면 예외가 발생하지 않는다")
-    void saveFailSuccess() {
+    void getPaymentOrThrowException2() {
         //given
         Payment payment = Payment.builder().build();
         given(paymentRepository.findPaymentByOrderId(ID1.toString())).willReturn(Optional.of(payment));
@@ -48,5 +48,30 @@ class PaymentCommonServiceTest {
 
         //then
         assertThat(payment).isEqualTo(result);
+    }
+
+    @Test
+    @DisplayName("결제 정보가 존재한다면 예외가 발생하지 않는다 (Long 조회)")
+    void getPaymentOrThrowException3() {
+        //given
+        Payment payment = Payment.builder().build();
+        given(paymentRepository.findById(ID1)).willReturn(Optional.of(payment));
+
+        //when
+        Payment result = paymentCommonService.getPaymentOrThrowException(ID1);
+
+        //then
+        assertThat(payment).isEqualTo(result);
+    }
+
+    @Test
+    @DisplayName("결제 정보가 Optional.empty()라면 예외 발생(Long 조회)")
+    void saveFailTgetPaymentOrThrowExceptionest4() {
+        //given
+        given(paymentRepository.findById(ID1)).willReturn(Optional.empty());
+
+        //when then
+        assertThatThrownBy(() -> paymentCommonService.getPaymentOrThrowException(ID1))
+                .isInstanceOf(UnableProceedPaymentException.class);
     }
 }
