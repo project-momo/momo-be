@@ -7,10 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -31,8 +29,10 @@ public class MeetingRequestDto {
     @Size(min = 1)
     @NotNull
     private List<Tag> tags;
+    @Valid
     @NotNull
     private AddressDto address;
+    @Valid
     @NotNull
     private DateTimeDto dateTime;
     @Min(1)
@@ -58,8 +58,10 @@ public class MeetingRequestDto {
         @NotNull
         private DatePolicy datePolicy;
         @NotNull
+        @FutureOrPresent
         private LocalDate startDate;
         @NotNull
+        @FutureOrPresent
         private LocalDate endDate;
         @NotNull
         private LocalTime startTime;
