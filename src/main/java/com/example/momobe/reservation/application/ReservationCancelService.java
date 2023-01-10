@@ -34,7 +34,6 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
     }
 
     private void checkAvailableOfCancel(UserInfo userInfo, Reservation reservation) {
-        if (!reservation.checkAvailabilityOfCancel()) throw new CanNotChangeReservationStateException(CONFIRMED_RESERVATION);
         if (!reservation.matchUserId(userInfo.getId())) throw new CanNotChangeReservationStateException(REQUEST_DENIED);
     }
 

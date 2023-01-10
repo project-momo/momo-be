@@ -46,7 +46,7 @@ public class ReservationCommonController {
     public void deleteReservation(@PathVariable Long meetingId,
                                   @PathVariable Long reservationId,
                                   @Token UserInfo userInfo,
-                                  @RequestBody DeleteReservationDto request) {
+                                  @Valid @RequestBody DeleteReservationDto request) {
         reservationCancelService.cancelReservation(reservationId, request, userInfo);
     }
 }

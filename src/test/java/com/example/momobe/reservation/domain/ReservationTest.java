@@ -19,7 +19,12 @@ class ReservationTest {
     void cancelTest2() {
         // given
         Reservation reservation = Reservation.builder()
-                .amount(new Money(0L))
+                .reservationState(CANCEL)
+                .reservationDate(ReservationDate.builder()
+                        .date(LocalDate.now().plus(1, ChronoUnit.MONTHS))
+                        .startTime(LocalTime.of(10, 0))
+                        .endTime(LocalTime.of(22, 0))
+                        .build())
                 .build();
 
         // when
@@ -47,6 +52,11 @@ class ReservationTest {
         // given
         Reservation reservation = Reservation.builder()
                 .reservationState(PAYMENT_SUCCESS)
+                .reservationDate(ReservationDate.builder()
+                        .date(LocalDate.now().plus(1, ChronoUnit.MONTHS))
+                        .startTime(LocalTime.of(10, 0))
+                        .endTime(LocalTime.of(22, 0))
+                        .build())
                 .build();
 
         // when
