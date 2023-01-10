@@ -67,13 +67,13 @@ public class MeetingHostQueryRepository {
                 .transform(
                         groupBy(meeting.id).as(
                                 new QMeetingInfoDto(
-                                        list(new QMeetingInfoDto_ReservationDto(
+                                        set(new QMeetingInfoDto_ReservationDto(
                                                 user.id, user.nickname.nickname, avatar.remotePath, user.email.address,
                                                 reservation.reservationState, reservation.reservationDate.date,
                                                 reservation.reservationDate.startTime, reservation.reservationDate.endTime,
                                                 reservation.reservationMemo.content)),
                                         set(address.si.append(" ").append(address.gu)),
-                                        list(dateTime1.dateTime))
+                                        set(dateTime1.dateTime))
 
                         ));
 

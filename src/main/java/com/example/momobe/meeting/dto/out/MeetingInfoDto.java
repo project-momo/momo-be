@@ -2,34 +2,35 @@ package com.example.momobe.meeting.dto.out;
 
 import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Set;
 
 @Getter
 public class MeetingInfoDto {
-    List<ReservationDto> reservations;
+    Set<ReservationDto> reservations;
     Set<String> addresses;
-    List<LocalDateTime> dateTimes;
+    Set<LocalDateTime> dateTimes;
 
     @QueryProjection
-    public MeetingInfoDto(Set<String> addresses, List<LocalDateTime> dateTimes) {
+    public MeetingInfoDto(Set<String> addresses, Set<LocalDateTime> dateTimes) {
         this.addresses = addresses;
         this.dateTimes = dateTimes;
     }
 
     @QueryProjection
-    public MeetingInfoDto(List<ReservationDto> reservations, Set<String> addresses, List<LocalDateTime> dateTimes) {
+    public MeetingInfoDto(Set<ReservationDto> reservations, Set<String> addresses, Set<LocalDateTime> dateTimes) {
         this.reservations = reservations;
         this.addresses = addresses;
         this.dateTimes = dateTimes;
     }
 
     @Getter
+    @EqualsAndHashCode
     public static class ReservationDto {
         private final Long userId;
         private final String nickname;
