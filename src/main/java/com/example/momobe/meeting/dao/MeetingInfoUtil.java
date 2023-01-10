@@ -33,6 +33,7 @@ public class MeetingInfoUtil {
                 (meetingId, meetingInfoDto) ->
                         meetingInfoDto.getReservations().forEach(
                                 reservationDto -> {
+                                    if (reservationDto.getStartTime() == null) return;
                                     if (reservationDto.getReservationState() == ReservationState.ACCEPT) {
                                         confirmedMaps.get(meetingId).add(new MeetingHostResponseDto.RequestConfirmedDto(reservationDto));
                                     } else {

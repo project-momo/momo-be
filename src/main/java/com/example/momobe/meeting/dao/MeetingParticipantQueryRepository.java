@@ -97,7 +97,7 @@ public class MeetingParticipantQueryRepository {
                 .transform(
                         groupBy(meeting.id).as(new QMeetingInfoDto(
                                 set(address.si.append(" ").append(address.gu)),
-                                list(dateTime1.dateTime))
+                                set(dateTime1.dateTime))
                         )
                 );
 
