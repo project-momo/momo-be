@@ -1,13 +1,11 @@
 package com.example.momobe.settlement.application;
 
 import com.example.momobe.common.exception.enums.ErrorCode;
-import com.example.momobe.meeting.dao.MeetingQueryRepository;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.MeetingNotFoundException;
 import com.example.momobe.meeting.domain.MeetingRepository;
 import com.example.momobe.payment.domain.Payment;
 import com.example.momobe.payment.domain.PaymentRepository;
-import com.example.momobe.payment.domain.UnableProceedPaymentException;
 import com.example.momobe.payment.domain.enums.PayState;
 import com.example.momobe.payment.infrastructure.PaymentQueryRepository;
 import com.example.momobe.reservation.domain.CustomReservationRepository;
@@ -34,16 +32,16 @@ import java.util.stream.Collectors;
 @Transactional
 public class SettlementTransitionService {
     private final SettlementRepository settlementRepository;
-    private final MeetingQueryRepository meetingQueryRepository;
     private final CustomReservationRepository customReservationRepository;
     private final PaymentQueryRepository paymentQueryRepository;
+    private final PaymentRepository paymentRepository;
     private final CheckSettlementService checkSettlementService;
     private final UserFindService userFindService;
     private final MeetingRepository meetingRepository;
     private final UserRepository userRepository;
 
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "10 * * * * *")
     public void transitionOfPayment(){
         List<Long> meetingId = checkSettlementService.checkEndMeetingExist();
         meetingId.forEach(
@@ -53,9 +51,16 @@ public class SettlementTransitionService {
                     List<Reservation> reservations = customReservationRepository.findPaymentCompletedReservation(x);
                     List<Long> reservationId = reservations.stream().map(Reservation::getId).collect(Collectors.toList());
                     reservationId.forEach(r -> {
-                        Payment payments = paymentQueryRepository.findPaymentByReservationId(r);
-                        payments.changePaymentState(PayState.SETTLEMENT_DONE);
+                        Payment payment;
+                        try {
+                            payment = paymentQueryRepository.findPaymentByReservationId(r);
+                            payment.changePaymentState(PayState.SETTLEMENT_DONE);
+                            paymentRepository.save(payment);
+                        }catch (Exception e){
+                            throw new NullPointerException("정산할 결제 내역이 없습니다.");
+                        }
                     });
+
                     Meeting meeting = meetingRepository.findById(x).orElseThrow(() -> new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND));
                     User user = userFindService.verifyUser(meeting.getHostId());
                     UserPoint userPoint = user.getUserPoint();
@@ -68,7 +73,7 @@ public class SettlementTransitionService {
                             .reservation(reservationId)
                             .build();
                     userRepository.save(user);
-                    settlementRepository.save(settlement);
+//                    settlementRepository.save(settlement);
                 }
         );
     }
