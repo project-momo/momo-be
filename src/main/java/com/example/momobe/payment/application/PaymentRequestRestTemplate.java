@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 @RequiredArgsConstructor
-public class PaymentRestTemplateImpl implements PaymentRestTemplate<PaymentResultDto> {
+public class PaymentRequestRestTemplateImpl implements PaymentRestTemplate<PaymentResultDto> {
     private final RestTemplate restTemplate = new RestTemplate();
     private final String TOSS_URL = "https://api.tosspayments.com/v1/payments/";
 
