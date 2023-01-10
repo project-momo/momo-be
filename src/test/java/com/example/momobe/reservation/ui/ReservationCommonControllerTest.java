@@ -5,17 +5,20 @@ import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.domain.MeetingNotFoundException;
+import com.example.momobe.payment.domain.UnableProceedPaymentException;
 import com.example.momobe.reservation.application.ReservationCancelService;
 import com.example.momobe.reservation.application.ReservationConfirmService;
 import com.example.momobe.reservation.application.ReservationSaveService;
 import com.example.momobe.reservation.domain.CanNotChangeReservationStateException;
 import com.example.momobe.reservation.domain.ReservationNotPossibleException;
+import com.example.momobe.reservation.dto.in.DeleteReservationDto;
 import com.example.momobe.reservation.dto.in.PatchReservationDto;
 import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -42,8 +45,7 @@ import static org.springframework.http.MediaType.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,8 +54,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @Import(SecurityTestConfig.class)
 @MockBean(JpaMetamodelMappingContext.class)
-@WebMvcTest({ReservationController.class, ExceptionController.class})
-class ReservationControllerTest {
+@WebMvcTest({ReservationCommonController.class, ExceptionController.class})
+class ReservationCommonControllerTest {
     @Autowired
     MockMvc mockMvc;
 
@@ -506,6 +508,190 @@ class ReservationControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("isAccepted").description("true(승인), false(거절)")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("예약 취소 400 시나리오")
+    void cancel_fail_400() throws Exception {
+        //given
+        DeleteReservationDto request = DeleteReservationDto.builder()
+                .paymentKey(" ")
+                .cancelReason(" ")
+                .build();
+        String json = objectMapper.writeValueAsString(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(delete("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
+                .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
+                .contentType(APPLICATION_JSON_VALUE)
+                .content(json));
+
+        //then
+        perform.andExpect(status().isBadRequest())
+                .andDo(document("patchReservation/400",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
+                        ),
+                        pathParameters(
+                                parameterWithName("meetingId").description("모임 아이디"),
+                                parameterWithName("reservationId").description("예약 아이디")
+                        ),
+                        requestFields(
+                                fieldWithPath("paymentKey").description("paymentKey는 null, emtpy, white space일 수 없습니다."),
+                                fieldWithPath("cancelReason").description("cancelReason은 null, emtpy, white space일 수 없습니다.")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("예약 취소 403 시나리오")
+    void cancel_fail_403() throws Exception {
+        //given
+        DeleteReservationDto request = DeleteReservationDto.builder()
+                .paymentKey(CONTENT1)
+                .cancelReason(CONTENT2)
+                .build();
+        String json = objectMapper.writeValueAsString(request);
+
+        willThrow(new UnableProceedPaymentException(REQUEST_DENIED))
+                .given(reservationCancelService).cancelReservation(any(), any(), any());
+
+        //when
+        ResultActions perform = mockMvc.perform(delete("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
+                .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
+                .contentType(APPLICATION_JSON_VALUE)
+                .content(json));
+
+        //then
+        perform.andExpect(status().isForbidden())
+                .andDo(document("deleteReservation/403",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName(JWT_HEADER).description("권한 없는 유저")
+                        ),
+                        pathParameters(
+                                parameterWithName("meetingId").description("모임 아이디"),
+                                parameterWithName("reservationId").description("예약 아이디")
+                        ),
+                        requestFields(
+                                fieldWithPath("paymentKey").description("paymentKey"),
+                                fieldWithPath("cancelReason").description("cancelReason")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("예약 취소 404 시나리오")
+    void cancel_fail_404() throws Exception {
+        //given
+        DeleteReservationDto request = DeleteReservationDto.builder()
+                .paymentKey(CONTENT1)
+                .cancelReason(CONTENT2)
+                .build();
+        String json = objectMapper.writeValueAsString(request);
+
+        willThrow(new UnableProceedPaymentException(DATA_NOT_FOUND))
+                .given(reservationCancelService).cancelReservation(any(), any(), any());
+
+        //when
+        ResultActions perform = mockMvc.perform(delete("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
+                .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
+                .contentType(APPLICATION_JSON_VALUE)
+                .content(json));
+
+        //then
+        perform.andExpect(status().isNotFound())
+                .andDo(document("patchReservation/404",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName(JWT_HEADER).description("액세스 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("meetingId").description("모임 아이디"),
+                                parameterWithName("reservationId").description("존재하지 않는 예약")
+                        ),
+                        requestFields(
+                                fieldWithPath("paymentKey").description("paymentKey"),
+                                fieldWithPath("cancelReason").description("cancelReason")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("예약 취소 409 시나리오")
+    void cancel_fail_409() throws Exception {
+        //given
+        DeleteReservationDto request = DeleteReservationDto.builder()
+                .paymentKey(CONTENT1)
+                .cancelReason(CONTENT2)
+                .build();
+        String json = objectMapper.writeValueAsString(request);
+
+        willThrow(new UnableProceedPaymentException(CONFIRMED_RESERVATION))
+                .given(reservationCancelService).cancelReservation(any(), any(), any());
+
+        //when
+        ResultActions perform = mockMvc.perform(delete("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
+                .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
+                .contentType(APPLICATION_JSON_VALUE)
+                .content(json));
+
+        //then
+        perform.andExpect(status().isConflict())
+                .andDo(document("patchReservation/409",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName(JWT_HEADER).description("액세스 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("meetingId").description("모임 아이디"),
+                                parameterWithName("reservationId").description("이미 승인 완료된 예약")
+                        ),
+                        requestFields(
+                                fieldWithPath("paymentKey").description("paymentKey"),
+                                fieldWithPath("cancelReason").description("cancelReason")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("예약 취소 204 시나리오")
+    void cancel_fail_204() throws Exception {
+        //given
+        DeleteReservationDto request = DeleteReservationDto.builder()
+                .paymentKey(CONTENT1)
+                .cancelReason(CONTENT2)
+                .build();
+        String json = objectMapper.writeValueAsString(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(delete("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
+                .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
+                .contentType(APPLICATION_JSON_VALUE)
+                .content(json));
+
+        //then
+        perform.andExpect(status().isNoContent())
+                .andDo(document("patchReservation/204",
+                        ApiDocumentUtils.getDocumentRequest(),
+                        ApiDocumentUtils.getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName(JWT_HEADER).description("액세스 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("meetingId").description("모임 아이디"),
+                                parameterWithName("reservationId").description("예약 아이디")
+                        ),
+                        requestFields(
+                                fieldWithPath("paymentKey").description("paymentKey"),
+                                fieldWithPath("cancelReason").description("cancelReason")
                         )
                 ));
     }
