@@ -42,12 +42,19 @@ public class ReservationSaveService {
     }
 
     private PaymentResponseDto savePaymentInformationOf(UserInfo userInfo, Reservation reservation, Meeting meeting) {
-        if (reservation.checkReservationState() == ReservationState.PAYMENT_SUCCESS) {
+        if (reservation.isPaymentSucceed()) {
             return PaymentResponseDto.freeOrder(meeting, userInfo);
         }
 
         ReservationPaymentDto paymentInfo = reservationMapper.of(userInfo, reservation, meeting);
         Payment payment = paymentSaveService.save(paymentInfo);
+        /*
+        * 도메인 이벤트로 변경할 지점
+        * 수정 완료후 주석 제거 예정
+        * Author : yang_eun_chan
+        * DateTime : 2023.01.10
+        * */
+        reservation.setPaymentId(payment.getId());
         return paymentMapper.of(payment);
     }
 

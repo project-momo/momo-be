@@ -4,7 +4,6 @@ import com.example.momobe.meeting.domain.Address;
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.domain.enums.Tag;
 import com.example.momobe.reservation.domain.Money;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.reservation.domain.enums.ReservationState;
@@ -615,7 +614,7 @@ public class ReservationIntegrationTest {
 
         //then
         perform.andExpect(status().isOk());
-        Assertions.assertThat(reservation.checkReservationState()).isEqualTo(ReservationState.ACCEPT);
+        Assertions.assertThat(reservation.isPaymentSucceed()).isEqualTo(ReservationState.ACCEPT);
     }
 
     @Test
@@ -635,6 +634,6 @@ public class ReservationIntegrationTest {
 
         //then
         perform.andExpect(status().isOk());
-        Assertions.assertThat(reservation.checkReservationState()).isEqualTo(ReservationState.CANCEL);
+        Assertions.assertThat(reservation.isPaymentSucceed()).isFalse();
     }
 }

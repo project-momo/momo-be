@@ -7,6 +7,7 @@ import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.payment.application.PaymentSaveService;
+import com.example.momobe.payment.domain.Payment;
 import com.example.momobe.payment.mapper.PaymentMapper;
 import com.example.momobe.reservation.domain.*;
 import com.example.momobe.reservation.domain.enums.ReservationState;
@@ -61,6 +62,7 @@ class ReservationSaveServiceTest {
     PostReservationDto reservationDto;
     UserInfo userInfo;
     Reservation reservation;
+    Payment payment;
 
     @BeforeEach
     void init() {
@@ -114,6 +116,10 @@ class ReservationSaveServiceTest {
                         .build())
                 .reservationMemo(new ReservationMemo(CONTENT1))
                 .build();
+
+        payment = Payment.builder()
+                .id(ID1)
+                .build();
     }
 
     @Test
@@ -122,6 +128,7 @@ class ReservationSaveServiceTest {
         //given
         given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
+        given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
         PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
@@ -136,6 +143,7 @@ class ReservationSaveServiceTest {
         //given
         given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
+        given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
         PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
@@ -151,6 +159,7 @@ class ReservationSaveServiceTest {
         //given
         given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
+        given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
         PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
@@ -165,6 +174,7 @@ class ReservationSaveServiceTest {
         //given
         given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
+        given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
         PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
@@ -179,6 +189,7 @@ class ReservationSaveServiceTest {
         //given
         given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
+        given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
         PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);

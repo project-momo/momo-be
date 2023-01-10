@@ -24,6 +24,7 @@ public class ReservationConfirmService {
         Reservation reservation = reservationCommonService.getReservationOrThrowException(reservationId);
 
         if (!isAccepted) {
+            reservation.checkAvailabilityOfCancel();
             reservation.cancel();
         } else {
             reservation.accept();

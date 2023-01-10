@@ -5,6 +5,7 @@ import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.domain.MeetingNotFoundException;
+import com.example.momobe.reservation.application.ReservationCancelService;
 import com.example.momobe.reservation.application.ReservationConfirmService;
 import com.example.momobe.reservation.application.ReservationSaveService;
 import com.example.momobe.reservation.domain.CanNotChangeReservationStateException;
@@ -67,6 +68,9 @@ class ReservationControllerTest {
 
     @MockBean
     JwtArgumentResolver jwtArgumentResolver;
+
+    @MockBean
+    ReservationCancelService reservationCancelService;
 
     @Test
     @DisplayName("유효성 검사에 실패할 경우 400 반환")
