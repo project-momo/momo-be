@@ -1,5 +1,6 @@
 package com.example.momobe.payment.application;
 
+import com.example.momobe.common.application.ApiService;
 import com.example.momobe.payment.dto.PaymentResultDto;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
@@ -20,12 +21,14 @@ import static org.springframework.http.MediaType.*;
 @Slf4j
 @Service
 public class PaymentRequestService {
-    private final PaymentRestTemplate<PaymentResultDto> restTemplate;
     private final String secretKey;
+    private final String tossUrl;
+    private final ApiService<PaymentResultDto> apiService;
 
-    public PaymentRequestService(@Value("${payments.toss.secretKey") String secretKey, PaymentRestTemplate<PaymentResultDto> restTemplate) {
+    public PaymentRequestService(@Value("${payments.toss.secretKey") String secretKey, @Value("${payments.toss.url") String tossUrl, ApiService<PaymentResultDto> apiService) {
         this.secretKey = secretKey + ":";
-        this.restTemplate = restTemplate;
+        this.tossUrl = tossUrl;
+        this.apiService = apiService;
     }
 
     @Transactional
@@ -33,7 +36,7 @@ public class PaymentRequestService {
         String authKey = generateAuthKey();
 
         HttpEntity<JSONObject> httpRequestEntity = generateHttpRequestEntity(orderId, amount, authKey);
-        ResponseEntity<PaymentResultDto> httpResponseEntity = restTemplate.postHttpRequest(paymentKey, httpRequestEntity);
+        ResponseEntity<PaymentResultDto> httpResponseEntity = apiService.post(tossUrl + paymentKey, httpRequestEntity, PaymentResultDto.class);
 
         return httpResponseEntity.getBody();
     }

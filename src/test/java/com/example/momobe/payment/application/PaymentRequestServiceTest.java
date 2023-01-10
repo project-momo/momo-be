@@ -1,5 +1,6 @@
 package com.example.momobe.payment.application;
 
+import com.example.momobe.common.application.ApiService;
 import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.payment.dto.PaymentResultDto;
 import net.minidev.json.JSONObject;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -34,12 +36,12 @@ class PaymentRequestServiceTest {
     PaymentRequestService paymentRequestService;
 
     @Mock
-    PaymentRestTemplate<PaymentResultDto> restTemplate;
+    ApiService<PaymentResultDto> apiService;
 
     HttpEntity<JSONObject> httpEntity;
 
     String secret ="secret";
-    String url = "url";
+    String url = "https://api.tosspayments.com/v1/payments/";
     String orderId = "order";
     String paymentKey = "payment";
     Long amount = 1000L;
@@ -47,6 +49,7 @@ class PaymentRequestServiceTest {
     @BeforeEach
     void init() {
         ReflectionTestUtils.setField(paymentRequestService, "secretKey", secret);
+        ReflectionTestUtils.setField(paymentRequestService, "tossUrl", url);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         JSONObject param = new JSONObject();
@@ -67,13 +70,13 @@ class PaymentRequestServiceTest {
     @DisplayName("restTemplate이 1회 호출된다")
     void test1()  {
         //given
-        given(restTemplate.postHttpRequest(any(),any())).willReturn(ResponseEntity.of(Optional.of(PaymentResultDto.builder().build())));
+        given(apiService.post(any(),any(), any())).willReturn(ResponseEntity.of(Optional.of(PaymentResultDto.builder().build())));
 
         //when
         PaymentResultDto result = paymentRequestService.requestPayment(paymentKey, orderId, 1000L);
 
         //then
-        verify(restTemplate, Mockito.times(1)).postHttpRequest(paymentKey, httpEntity);
+        verify(apiService, Mockito.times(1)).post(url + paymentKey, httpEntity, PaymentResultDto.class);
     }
 
     @Test
@@ -81,7 +84,7 @@ class PaymentRequestServiceTest {
     void test2()  {
         //given
         PaymentResultDto dto = PaymentResultDto.builder().build();
-        given(restTemplate.postHttpRequest(paymentKey,httpEntity)).willReturn(ResponseEntity.of(Optional.of(dto)));
+        given(apiService.post(url + paymentKey,httpEntity, PaymentResultDto.class)).willReturn(ResponseEntity.of(Optional.of(dto)));
 
         //when
         PaymentResultDto result = paymentRequestService.requestPayment(paymentKey, orderId, 1000L);
