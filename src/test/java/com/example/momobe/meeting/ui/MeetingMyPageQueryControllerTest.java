@@ -147,6 +147,7 @@ class MeetingMyPageQueryControllerTest {
                 new MeetingParticipantResponseDto.ApplicationDto(
                         ID2, NICKNAME1, REMOTE_PATH, EMAIL1,
                         PAYMENT_SUCCESS, "잘 부탁드려요~",
+                        "ABC123",
                         new MeetingDateTimeDto(
                                 LocalDate.now(), START_TIME, END_TIME));
         MeetingParticipantResponseDto meetingParticipantResponseDto = new MeetingParticipantResponseDto(
@@ -197,6 +198,7 @@ class MeetingMyPageQueryControllerTest {
                                 fieldWithPath("content[].application.reservationState").type(STRING).description("예약 상태"),
                                 fieldWithPath("content[].application.email").type(STRING).description("이메일"),
                                 fieldWithPath("content[].application.message").type(STRING).description("전달 사항"),
+                                fieldWithPath("content[].application.paymentKey").type(STRING).description("결제 키"),
                                 fieldWithPath("content[].application.dateTimeInfo").type(OBJECT).description("날짜 정보"),
                                 fieldWithPath("content[].application.dateTimeInfo.date").type(STRING).description("예약 날짜"),
                                 fieldWithPath("content[].application.dateTimeInfo.time").type(STRING).description("예약 시간"),
@@ -205,5 +207,4 @@ class MeetingMyPageQueryControllerTest {
                         )
                 ));
     }
-
 }
