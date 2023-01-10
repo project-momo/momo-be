@@ -13,8 +13,7 @@ ENV MASTER_PASSWORD=${MASTER_PASSWORD}
 COPY ${JAR_FILE} app.jar
 
 # 빌드된 이미지가 run될 때 실행할 명령어
-ENTRYPOINT ["java","-jar","app.jar", \
-"—spring.config.location=/config/application.yml"]
+ENTRYPOINT ["java","-jar","app.jar", \"—spring.config.location=/config/application.yml", "redis-server","/dockerConfig/redis.conf"]
 
 # #redis 포트 개방
 # EXPOSE 6739
