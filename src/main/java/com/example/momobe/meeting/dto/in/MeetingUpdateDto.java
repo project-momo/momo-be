@@ -21,12 +21,4 @@ public class MeetingUpdateDto {
     private MeetingRequestDto.AddressDto address;
     private Integer personnel;
     private Long price;
-
-    @Getter
-    @Builder
-    @AllArgsConstructor(access = PRIVATE)
-    public static class AddressDto {
-        private List<Long> addressIds;
-        private String addressInfo;
-    }
 }

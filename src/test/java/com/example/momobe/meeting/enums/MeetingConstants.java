@@ -203,6 +203,57 @@ public class MeetingConstants {
             .price(PRICE)
             .build();
 
+    public static MeetingRequestDto generateMeetingRequestDtoWithPeriod(List<Tag> tags, List<Long> addressIds) {
+        return MeetingRequestDto.builder()
+                .category(SOCIAL)
+                .title(TITLE1)
+                .content(CONTENT1)
+                .tags(tags)
+                .address(MeetingRequestDto.AddressDto.builder().addressIds(addressIds).addressInfo("추가 주소").build())
+                .dateTime(DATE_TIME_DTO_WITH_PERIOD)
+                .personnel(3)
+                .price(PRICE)
+                .build();
+    }
+
+    public static MeetingRequestDto generateMeetingRequestDtoWithFree(List<Tag> tags, List<Long> addressIds) {
+        return MeetingRequestDto.builder()
+                .category(SOCIAL)
+                .title(TITLE1)
+                .content(CONTENT1)
+                .tags(tags)
+                .address(MeetingRequestDto.AddressDto.builder().addressIds(addressIds).addressInfo("추가 주소").build())
+                .dateTime(DATE_TIME_DTO_WITH_FREE)
+                .personnel(3)
+                .price(PRICE)
+                .build();
+    }
+
+    public static MeetingRequestDto generateMeetingRequestDtoWithOneDay(List<Tag> tags, List<Long> addressIds) {
+        return MeetingRequestDto.builder()
+                .category(SOCIAL)
+                .title(TITLE1)
+                .content(CONTENT1)
+                .tags(tags)
+                .address(MeetingRequestDto.AddressDto.builder().addressIds(addressIds).addressInfo("추가 주소").build())
+                .dateTime(DATE_TIME_DTO_WITH_ONE_DAY)
+                .personnel(3)
+                .price(PRICE)
+                .build();
+    }
+
+    public static MeetingUpdateDto generateMeetingUpdateDto(List<Tag> tags, List<Long> addressIds) {
+        return MeetingUpdateDto.builder()
+                .category(SOCIAL)
+                .title(TITLE2)
+                .content(CONTENT2)
+                .tags(tags)
+                .address(MeetingRequestDto.AddressDto.builder().addressIds(addressIds).addressInfo("추가 주소").build())
+                .personnel(1)
+                .price(PRICE)
+                .build();
+    }
+
     public static final PathParametersSnippet PATH_PARAM_MEETING_ID = pathParameters(
             parameterWithName("meeting-id").description("모임 식별자")
     );
