@@ -60,13 +60,12 @@ class MeetingCommand_IntegrationTest {
         Address address2 = Address.builder().si("서울").gu("강동구").build();
         em.persist(address1);
         em.persist(address2);
-        Tag tag1 = new Tag("온라인", "ONLINE");
-        Tag tag2 = new Tag("오프라인", "OFFLINE");
-        em.persist(tag1);
-        em.persist(tag2);
+        TAGS.stream()
+                .filter(tag -> em.createQuery("select t.id from Tag t where t.engName = '" + tag.name() + "'", Long.class)
+                        .getResultList().isEmpty())
+                .forEach(tag -> em.persist(new Tag(tag.getDescription(), tag.name())));
         meetingUpdateDto = generateMeetingUpdateDto(
-                List.of(valueOf(tag1.getEngName()), valueOf(tag2.getEngName())),
-                List.of(address1.getId(), address2.getId()));
+                TAGS, List.of(address1.getId(), address2.getId()));
         meeting = generateMeeting(host.getId(), meetingUpdateDto.getAddress().getAddressIds());
         em.persist(meeting);
     }

@@ -13,13 +13,11 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
@@ -48,9 +46,6 @@ class MeetingRegistration_IntegrationTest {
     private MeetingRequestDto meetingRequestDto;
     private Address address1;
     private Address address2;
-    private Tag tag1;
-    private Tag tag2;
-
 
     @BeforeEach
     void init() {
@@ -61,11 +56,10 @@ class MeetingRegistration_IntegrationTest {
         address2 = Address.builder().si("서울").gu("강동구").build();
         em.persist(address1);
         em.persist(address2);
-        tag1 = new Tag("온라인", "ONLINE");
-        tag2 = new Tag("오프라인", "OFFLINE");
-        em.persist(tag1);
-        em.persist(tag2);
-
+        TAGS.stream()
+                .filter(tag -> em.createQuery("select t.id from Tag t where t.engName = '" + tag.name() + "'", Long.class)
+                        .getResultList().isEmpty())
+                .forEach(tag -> em.persist(new Tag(tag.getDescription(), tag.name())));
     }
 
     @Test
@@ -73,8 +67,7 @@ class MeetingRegistration_IntegrationTest {
     void meetingRegistrationWithOneDay() throws Exception {
         // given
         meetingRequestDto = generateMeetingRequestDtoWithOneDay(
-                List.of(valueOf(tag1.getEngName()), valueOf(tag2.getEngName())),
-                List.of(address1.getId(), address2.getId())
+                TAGS, List.of(address1.getId(), address2.getId())
         );
         String content = objectMapper.writeValueAsString(meetingRequestDto);
 
@@ -95,8 +88,7 @@ class MeetingRegistration_IntegrationTest {
     void meetingRegistrationWithPeriod() throws Exception {
         // given
         meetingRequestDto = generateMeetingRequestDtoWithPeriod(
-                List.of(valueOf(tag1.getEngName()), valueOf(tag2.getEngName())),
-                List.of(address1.getId(), address2.getId())
+                TAGS, List.of(address1.getId(), address2.getId())
         );
         String content = objectMapper.writeValueAsString(meetingRequestDto);
 
@@ -117,8 +109,7 @@ class MeetingRegistration_IntegrationTest {
     void meetingRegistrationWithFree() throws Exception {
         // given
         meetingRequestDto = generateMeetingRequestDtoWithFree(
-                List.of(valueOf(tag1.getEngName()), valueOf(tag2.getEngName())),
-                List.of(address1.getId(), address2.getId())
+                TAGS, List.of(address1.getId(), address2.getId())
         );
         String content = objectMapper.writeValueAsString(meetingRequestDto);
 

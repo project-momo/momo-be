@@ -26,12 +26,13 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
 public class MeetingConstants {
-    public static final LocalDate START_DATE = LocalDate.of(2022, 12, 25);
-    public static final LocalDate END_DATE = LocalDate.of(2022, 12, 31);
+    public static final LocalDate START_DATE = LocalDate.now();
+    public static final LocalDate END_DATE = LocalDate.now().plusDays(6);
     public static final LocalTime START_TIME = LocalTime.of(1, 0);
     public static final LocalTime END_TIME = LocalTime.of(5, 0);
     public static final Integer MAX_TIME = 3;
     public static final Long PRICE = 20000L;
+    public static final List<Tag> TAGS = List.of(Tag.ONLINE, Tag.OFFLINE);
 
     public static Meeting generateMeeting() {
         return Meeting.builder()
