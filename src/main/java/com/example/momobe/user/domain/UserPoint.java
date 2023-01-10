@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import static com.example.momobe.common.exception.enums.ErrorCode.*;
@@ -13,6 +14,7 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 @Builder(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserPoint {
+    @Column(nullable = false, name = "user_point")
     private Long point;
 
     public UserPoint(Long point) {

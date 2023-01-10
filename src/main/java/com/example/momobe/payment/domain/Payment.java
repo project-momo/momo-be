@@ -5,16 +5,19 @@ import com.example.momobe.payment.domain.enums.PayState;
 import com.example.momobe.payment.domain.enums.PayType;
 import lombok.*;
 
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.UUID;
 
-import static com.example.momobe.payment.domain.enums.PayState.*;
-import static java.util.UUID.*;
-import static javax.persistence.GenerationType.*;
-import static lombok.AccessLevel.*;
+import static com.example.momobe.payment.domain.enums.PayState.BEFORE;
+import static com.example.momobe.payment.domain.enums.PayState.CANCEL;
+import static java.util.UUID.randomUUID;
+import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
@@ -82,5 +85,9 @@ public class Payment extends BaseTime {
 
     public void setPaymentKey(String paymentKey) {
         this.paymentKey = paymentKey;
+    }
+
+    public void changePaymentState(PayState state) {
+        this.payState = state;
     }
 }
