@@ -10,7 +10,6 @@ import com.example.momobe.reservation.dto.in.PatchReservationDto;
 import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,7 +19,7 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequestMapping("/meetings")
 @RequiredArgsConstructor
-public class ReservationController {
+public class ReservationCommonController {
     private final ReservationSaveService reservationSaveService;
     private final ReservationConfirmService reservationConfirmService;
     private final ReservationCancelService reservationCancelService;
