@@ -83,8 +83,12 @@ public class Reservation extends BaseTime {
                 .build();
     }
 
-    public Boolean checkAvailabilityOfCancel() {
+    protected Boolean checkAvailabilityOfCancel() {
         return !this.reservationState.equals(ACCEPT) && !this.reservationDate.isBeforeThen(LocalDateTime.now());
+    }
+
+    protected Boolean checkAvailabilityOfAccept() {
+        return !this.reservationState.equals(CANCEL) && !this.reservationDate.isBeforeThen(LocalDateTime.now());
     }
 
     public Boolean matchUserId(Long userId) {
@@ -98,12 +102,12 @@ public class Reservation extends BaseTime {
      * Date : 2022/01/05
      * */
     public void cancel() {
-        this.reservationState = CANCEL;
+       if (!checkAvailabilityOfCancel()) throw new CanNotChangeReservationStateException(CANCELED_RESERVATION);
+       this.reservationState = CANCEL;
     }
 
     public void accept() {
-        if (this.reservationState == CANCEL) throw new CanNotChangeReservationStateException(CANCELED_RESERVATION);
-
+        if (!checkAvailabilityOfAccept()) throw new CanNotChangeReservationStateException(CANCELED_RESERVATION);
         this.reservationState = ACCEPT;
     }
 }
