@@ -10,7 +10,7 @@ sudo docker pull dodannnn/momoproject:1.0
 # sudo rm -rf /apps/momo-be/src/main/resources/application.yml
 
 # 도커 run
-docker run -d -p 8080:8080 -v /home/ec2-user/here:/config --name momoproject dodannnn/momoproject:1.0
+docker run -d -p 8080:8080 -v /home/ec2-user/here:/config --name momoproject dodannnn/momoproject:1.0 --network my-network
 
 # 사용하지 않는 불필요한 이미지 삭제 -> 현재 컨테이너가 물고 있는 이미지는 삭제되지 않음
 docker rmi -f $(docker images -f "dangling=true" -q) || true
