@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -57,7 +56,7 @@ class CheckSettlementServiceTest {
     //아니면 모임 목록 출력
 
     @Test
-    @DisplayName("오늘 날짜 기준 정산할 모임 건 없으면 예외 로그 출력")
+    @DisplayName("오늘 날짜 기준 정산할 모임 건 없으면 예외 throw")
     void test02() {
         //given
         given(meetingQueryRepository.findMeetingClosedBefore3days()).willReturn(meetingId2);
