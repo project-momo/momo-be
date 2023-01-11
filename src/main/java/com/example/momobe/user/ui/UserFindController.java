@@ -19,10 +19,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/mypage")
 @RequiredArgsConstructor
 public class UserFindController {
-    private final UserRepository userRepository;
     private final UserFindService userFindService;
     private final UserMapper mapper;
-    private final MeetingRepository meetingRepository;
 
     @GetMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
@@ -30,17 +28,4 @@ public class UserFindController {
         User findUser = userFindService.verifyUser(request.getId());
         return mapper.userDtoOfUser(findUser);
     }
-
-    @GetMapping("/test")
-    public String healthCheck(){
-        return "test 입니다.";
-    }
-
-//    @GetMapping("/meetings/{meeting-id}/reservations")
-//    @ResponseStatus(HttpStatus.OK)
-//    public UserResponseDto getUserReservation(@Token UserInfo request, @PathVariable(name = "meeting-id") Long meetingId){
-//        meetingRepository.findById(meetingId);
-//        return null;
-//    }
-
 }

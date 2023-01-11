@@ -1,13 +1,11 @@
 package com.example.momobe.payment.application;
 
+
 import com.example.momobe.common.application.ApiService;
-import com.example.momobe.payment.dto.PaymentResultDto;
-import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,43 +14,39 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 
-import static org.springframework.http.MediaType.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-@Slf4j
+
 @Service
-public class PaymentRequestService {
+public class PaymentCancelService {
     private final String secretKey;
     private final String tossUrl;
-    private final ApiService<PaymentResultDto> apiService;
+    private final ApiService<String> apiService;
 
-    public PaymentRequestService(@Value("${payments.toss.secretKey") String secretKey, @Value("${payments.toss.url") String tossUrl, ApiService<PaymentResultDto> apiService) {
-        this.secretKey = secretKey + ":";
+    public PaymentCancelService(@Value("${payments.toss.secretKey}") String secretKey, @Value("${payments.toss.url}") String tossUrl, ApiService<String> apiService) {
+        this.secretKey = secretKey;
         this.tossUrl = tossUrl;
         this.apiService = apiService;
     }
 
     @Transactional
-    public PaymentResultDto requestPayment(String paymentKey, String orderId, Long amount) {
+    public void cancelPayment(String paymentKey, String reason) {
         String authKey = generateAuthKey();
-
-        HttpEntity<JSONObject> httpRequestEntity = generateHttpRequestEntity(orderId, amount, authKey);
-        ResponseEntity<PaymentResultDto> httpResponseEntity = apiService.post(tossUrl + paymentKey, httpRequestEntity, PaymentResultDto.class);
-
-        return httpResponseEntity.getBody();
+        HttpEntity<JSONObject> httpRequestEntity = generateHttpRequestEntity(authKey, reason);
+        apiService.post(tossUrl + paymentKey + "/cancel", httpRequestEntity, String.class);
     }
 
-    private HttpEntity<JSONObject> generateHttpRequestEntity(String orderId, Long amount, String authKey) {
+    private HttpEntity<JSONObject> generateHttpRequestEntity(String authKey, String reason) {
         HttpHeaders httpHeaders = generateHttpHeaders(authKey);
-        JSONObject httpParameter = generateHttpParameters(orderId, amount);
+        JSONObject httpParameter = generateHttpParameters(reason);
 
         return new HttpEntity<>(httpParameter, httpHeaders);
     }
 
-    private JSONObject generateHttpParameters(String orderId, Long amount) {
-        JSONObject param = new JSONObject();
 
-        param.put("orderId", orderId);
-        param.put("amount", amount);
+    private JSONObject generateHttpParameters(String reason) {
+        JSONObject param = new JSONObject();
+        param.put("cancelReason", reason);
 
         return param;
     }

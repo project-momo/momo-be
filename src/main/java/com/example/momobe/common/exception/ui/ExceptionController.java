@@ -4,6 +4,7 @@ import com.example.momobe.common.exception.CustomException;
 import com.example.momobe.common.exception.dto.ErrorResponseEntity;
 import com.example.momobe.security.exception.InvalidJwtTokenException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -16,6 +17,11 @@ public class ExceptionController {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponseEntity> handleIllegalArgumentExceptions(CustomException e) {
+        return ErrorResponseEntity.of(e);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseEntity> handleMethodArgumentNotValidExceptions(MethodArgumentNotValidException e) {
         return ErrorResponseEntity.of(e);
     }
 }

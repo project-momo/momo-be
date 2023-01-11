@@ -26,12 +26,13 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
 public class MeetingConstants {
-    public static final LocalDate START_DATE = LocalDate.of(2022, 12, 25);
-    public static final LocalDate END_DATE = LocalDate.of(2022, 12, 31);
+    public static final LocalDate START_DATE = LocalDate.now();
+    public static final LocalDate END_DATE = LocalDate.now().plusDays(6);
     public static final LocalTime START_TIME = LocalTime.of(1, 0);
     public static final LocalTime END_TIME = LocalTime.of(5, 0);
     public static final Integer MAX_TIME = 3;
     public static final Long PRICE = 20000L;
+    public static final List<Tag> TAGS = List.of(Tag.ONLINE, Tag.OFFLINE);
 
     public static Meeting generateMeeting() {
         return Meeting.builder()
@@ -202,6 +203,57 @@ public class MeetingConstants {
             .personnel(1)
             .price(PRICE)
             .build();
+
+    public static MeetingRequestDto generateMeetingRequestDtoWithPeriod(List<Tag> tags, List<Long> addressIds) {
+        return MeetingRequestDto.builder()
+                .category(SOCIAL)
+                .title(TITLE1)
+                .content(CONTENT1)
+                .tags(tags)
+                .address(MeetingRequestDto.AddressDto.builder().addressIds(addressIds).addressInfo("추가 주소").build())
+                .dateTime(DATE_TIME_DTO_WITH_PERIOD)
+                .personnel(3)
+                .price(PRICE)
+                .build();
+    }
+
+    public static MeetingRequestDto generateMeetingRequestDtoWithFree(List<Tag> tags, List<Long> addressIds) {
+        return MeetingRequestDto.builder()
+                .category(SOCIAL)
+                .title(TITLE1)
+                .content(CONTENT1)
+                .tags(tags)
+                .address(MeetingRequestDto.AddressDto.builder().addressIds(addressIds).addressInfo("추가 주소").build())
+                .dateTime(DATE_TIME_DTO_WITH_FREE)
+                .personnel(3)
+                .price(PRICE)
+                .build();
+    }
+
+    public static MeetingRequestDto generateMeetingRequestDtoWithOneDay(List<Tag> tags, List<Long> addressIds) {
+        return MeetingRequestDto.builder()
+                .category(SOCIAL)
+                .title(TITLE1)
+                .content(CONTENT1)
+                .tags(tags)
+                .address(MeetingRequestDto.AddressDto.builder().addressIds(addressIds).addressInfo("추가 주소").build())
+                .dateTime(DATE_TIME_DTO_WITH_ONE_DAY)
+                .personnel(3)
+                .price(PRICE)
+                .build();
+    }
+
+    public static MeetingUpdateDto generateMeetingUpdateDto(List<Tag> tags, List<Long> addressIds) {
+        return MeetingUpdateDto.builder()
+                .category(SOCIAL)
+                .title(TITLE2)
+                .content(CONTENT2)
+                .tags(tags)
+                .address(MeetingRequestDto.AddressDto.builder().addressIds(addressIds).addressInfo("추가 주소").build())
+                .personnel(1)
+                .price(PRICE)
+                .build();
+    }
 
     public static final PathParametersSnippet PATH_PARAM_MEETING_ID = pathParameters(
             parameterWithName("meeting-id").description("모임 식별자")

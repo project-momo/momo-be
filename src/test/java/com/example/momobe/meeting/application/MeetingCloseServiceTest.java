@@ -3,6 +3,7 @@ package com.example.momobe.meeting.application;
 import com.example.momobe.meeting.domain.CanNotUpdateMeetingException;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.MeetingState;
+import com.example.momobe.reservation.domain.ReservationRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +25,9 @@ class MeetingCloseServiceTest {
 
     @Mock
     MeetingCommonService meetingCommonService;
+
+    @Mock
+    ReservationRepository reservationRepository;
 
     @Test
     @DisplayName("Meeting의 hostId와 요청한 userId가 다르면 예외가 발생한다.")

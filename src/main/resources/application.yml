@@ -83,3 +83,4 @@ payments:
     failUrl: failurl
     secretKey: secret
     clientKey: client
+    url: https://api.tosspayments.com/v1/payments/

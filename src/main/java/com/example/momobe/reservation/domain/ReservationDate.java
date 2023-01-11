@@ -6,6 +6,7 @@ import javax.persistence.Embeddable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 
 import static lombok.AccessLevel.*;
 
@@ -29,5 +30,9 @@ public class ReservationDate {
 
         this.startDateTime = LocalDateTime.of(date, startTime);
         this.endDateTime = LocalDateTime.of(date, endTime);
+    }
+
+    protected Boolean isBeforeThen(LocalDateTime localDateTime) {
+        return startDateTime.isBefore(localDateTime);
     }
 }

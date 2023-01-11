@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import static com.example.momobe.address.domain.QAddress.address;
 import static com.example.momobe.meeting.domain.QDateTime.dateTime1;
 import static com.example.momobe.meeting.domain.QMeeting.meeting;
+import static com.example.momobe.payment.domain.QPayment.payment;
 import static com.example.momobe.reservation.domain.QReservation.reservation;
 import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.example.momobe.user.domain.QUser.user;
@@ -62,6 +63,7 @@ public class MeetingParticipantQueryRepository {
                                 participant.email.address,
                                 reservation.reservationState,
                                 reservation.reservationMemo.content,
+                                payment.paymentKey,
                                 new QMeetingDateTimeDto(
                                         reservation.reservationDate.date,
                                         reservation.reservationDate.startTime,
@@ -74,6 +76,7 @@ public class MeetingParticipantQueryRepository {
                 .leftJoin(host.avatar, hostAvatar)
                 .innerJoin(participant).on(participant.id.eq(participantId))
                 .leftJoin(participant.avatar, participantAvatar)
+                .leftJoin(payment).on(payment.reservationId.eq(reservation.id))
                 .where(reservation.reservedUser.userId.eq(participantId))
                 .orderBy(reservation.createdAt.desc())
                 .offset(pageable.getOffset())
@@ -94,7 +97,7 @@ public class MeetingParticipantQueryRepository {
                 .transform(
                         groupBy(meeting.id).as(new QMeetingInfoDto(
                                 set(address.si.append(" ").append(address.gu)),
-                                list(dateTime1.dateTime))
+                                set(dateTime1.dateTime))
                         )
                 );
 

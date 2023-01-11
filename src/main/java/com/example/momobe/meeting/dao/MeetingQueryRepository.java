@@ -5,7 +5,6 @@ import com.example.momobe.meeting.dto.out.MeetingInfoDto;
 import com.example.momobe.meeting.dto.out.MeetingResponseDto;
 import com.example.momobe.meeting.dto.out.QMeetingInfoDto;
 import com.example.momobe.meeting.dto.out.QMeetingResponseDto;
-import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -49,7 +48,7 @@ public class MeetingQueryRepository {
                         avatar.remotePath,
                         user.email.address,
                         meeting.title,
-                        meeting.content,
+                        meeting.content.substring(0, 20),
                         meeting.address.addressInfo,
                         meeting.meetingState,
                         meeting.dateTimeInfo.datePolicy,
@@ -76,7 +75,7 @@ public class MeetingQueryRepository {
                 .transform(
                         groupBy(meeting.id).as(new QMeetingInfoDto(
                                 set(address.si.append(" ").append(address.gu)),
-                                GroupBy.list(dateTime1.dateTime))
+                                set(dateTime1.dateTime))
                         )
                 );
 
@@ -102,7 +101,7 @@ public class MeetingQueryRepository {
         return meeting.category.eq(category);
     }
 
-    public List<Long> findMeetingClosedBefore3days(){
+    public List<Long> findMeetingClosedBefore3days() {
         return queryFactory
                 .select(meeting.id)
                 .from(meeting)
@@ -115,7 +114,7 @@ public class MeetingQueryRepository {
                 .fetch();
     }
 
-    private BooleanExpression endDateFilter(){
+    private BooleanExpression endDateFilter() {
         LocalDate now = LocalDate.now();
         return meeting.dateTimeInfo.endDate.eq(now.minusDays(3));
     }
