@@ -50,8 +50,8 @@ public class MeetingQueryRepository {
                         user.email.address,
                         meeting.title,
                         new CaseBuilder()
-                                .when(meeting.content.length().gt(20))
-                                .then(meeting.content.substring(0, 21).append("..."))
+                                .when(meeting.content.length().gt(100))
+                                .then(meeting.content.substring(0, 101).append("..."))
                                 .otherwise(meeting.content),
                         meeting.address.addressInfo,
                         meeting.meetingState,
