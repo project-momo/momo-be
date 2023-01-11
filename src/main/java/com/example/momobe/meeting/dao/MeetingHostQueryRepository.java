@@ -59,7 +59,7 @@ public class MeetingHostQueryRepository {
         Map<Long, MeetingInfoDto> meetingInfoDtoMap = queryFactory
                 .from(meeting)
                 .where(meeting.id.in(meetingIds))
-                .leftJoin(reservation).on(reservation.meetingId.in(meetingIds))
+                .leftJoin(reservation).on(reservation.meetingId.eq(meeting.id))
                 .leftJoin(user).on(reservation.reservedUser.userId.eq(user.id))
                 .leftJoin(user.avatar, avatar)
                 .leftJoin(address).on(address.id.in(meeting.address.addressIds))

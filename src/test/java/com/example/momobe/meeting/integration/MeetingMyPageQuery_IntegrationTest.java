@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
@@ -69,7 +68,8 @@ class MeetingMyPageQuery_IntegrationTest {
 
         // then
         actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").isNotEmpty());
+                .andExpect(jsonPath("$.content").isNotEmpty())
+                .andDo(print());
     }
 
     @Test
