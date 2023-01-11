@@ -105,7 +105,12 @@ public class MeetingQueryRepository {
         return queryFactory
                 .select(meeting.id)
                 .from(meeting)
+//                .leftJoin(reservation)
+//                .on(reservation.meetingId.eq(meeting.id))
+//                .where(reservation.reservationState.eq(ReservationState.PAYMENT_SUCCESS))
                 .where(endDateFilter())
+                .orderBy(meeting.id.desc())
+                .distinct()
                 .fetch();
     }
 

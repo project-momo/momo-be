@@ -5,10 +5,7 @@ import com.example.momobe.payment.domain.enums.PayState;
 import com.example.momobe.payment.domain.enums.PayType;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -47,6 +44,7 @@ public class Payment extends BaseTime {
 
     private String failUrl;
 
+    @Enumerated(EnumType.STRING)
     private PayState payState;
 
     private Long userId;
