@@ -63,8 +63,8 @@ class MeetingDetailQuery_IntegrationTest {
                 .build();
         em.persist(address1);
         em.persist(address2);
-        Tag tag1 = new Tag("온라인", "ONLINE");
-        Tag tag2 = new Tag("오프라인", "OFFLINE");
+        Tag tag1 = new Tag("온라인");
+        Tag tag2 = new Tag("오프라인");
         em.persist(tag1);
         em.persist(tag2);
         Meeting meeting = generateMeeting(
@@ -104,8 +104,8 @@ class MeetingDetailQuery_IntegrationTest {
                 .andExpect(jsonPath("$.dateTime.endTime").value(meeting.getDateTimeInfo().getEndTime().format(DateTimeFormatter.ISO_LOCAL_TIME)))
                 .andExpect(jsonPath("$.dateTime.maxTime").value(meeting.getDateTimeInfo().getMaxTime()))
                 .andExpect(jsonPath("$.price").value(meeting.getPrice()))
-                .andExpect(jsonPath("$.tags[0]").value(tag1.getKorName()))
-                .andExpect(jsonPath("$.tags[1]").value(tag2.getKorName()))
+                .andExpect(jsonPath("$.tags[0]").value(tag1.getName()))
+                .andExpect(jsonPath("$.tags[1]").value(tag2.getName()))
 
                 .andExpect(jsonPath("$.questions[0].questionId").value(question.getId()))
                 .andExpect(jsonPath("$.questions[0].content").value(question.getContent().getContent()))
