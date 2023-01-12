@@ -110,23 +110,18 @@ class ReservationTest {
         Reservation reservation4 = Reservation.builder()
                 .reservationState(DENY)
                 .build();
-        Reservation reservation5 = Reservation.builder()
-                .reservationState(REFUND)
-                .build();
 
         //when
         Boolean result1 = reservation1.isCanceledReservation();
         Boolean result2 = reservation2.isCanceledReservation();
         Boolean result3 = reservation3.isCanceledReservation();
         Boolean result4 = reservation4.isCanceledReservation();
-        Boolean result5 = reservation5.isCanceledReservation();
 
         //then
         Assertions.assertThat(result1).isFalse();
         Assertions.assertThat(result2).isFalse();
         Assertions.assertThat(result3).isFalse();
         Assertions.assertThat(result4).isFalse();
-        Assertions.assertThat(result5).isFalse();
     }
 
     @DisplayName("reservation Success가 아니라면 false 반환")
@@ -144,23 +139,18 @@ class ReservationTest {
         Reservation reservation4 = Reservation.builder()
                 .reservationState(DENY)
                 .build();
-        Reservation reservation5 = Reservation.builder()
-                .reservationState(REFUND)
-                .build();
 
         //when
         Boolean result1 = reservation1.isPaymentSucceed();
         Boolean result2 = reservation2.isPaymentSucceed();
         Boolean result3 = reservation3.isPaymentSucceed();
         Boolean result4 = reservation4.isPaymentSucceed();
-        Boolean result5 = reservation5.isPaymentSucceed();
 
         //then
         Assertions.assertThat(result1).isFalse();
         Assertions.assertThat(result2).isFalse();
         Assertions.assertThat(result3).isFalse();
         Assertions.assertThat(result4).isFalse();
-        Assertions.assertThat(result5).isFalse();
     }
 
     @Test
