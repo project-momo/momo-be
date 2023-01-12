@@ -1,5 +1,8 @@
 package com.example.momobe.settlement.application;
 
+import com.example.momobe.settlement.domain.PointHistory;
+import com.example.momobe.settlement.domain.enums.PointState;
+import com.example.momobe.settlement.domain.enums.PointUsedType;
 import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserPoint;
@@ -10,15 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SettlementWithdrawalService {
     private final UserFindService userFindService;
     private final UserRepository userRepository;
 
     public boolean deductPoint(Long userId, Long amount) {
         User user = userFindService.verifyUser(userId);
-        UserPoint userPoint = user.getUserPoint();
-        UserPoint newUserPoint = userPoint.minus(amount);
-        user.changeUserPoint(newUserPoint);
+        user.changeUserPoint(user.minusUserPoint(amount,PointUsedType.WITHDRAWAL));
+        user.getHistories().add(new PointHistory(user.getUserPoint().getPoint(),amount, PointState.DEDUCT, PointUsedType.WITHDRAWAL));
         userRepository.save(user);
         return true;
     }
