@@ -2,7 +2,6 @@ package com.example.momobe.meeting.dto.in;
 
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
-import com.example.momobe.meeting.domain.enums.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +27,7 @@ public class MeetingRequestDto {
     private String content;
     @Size(min = 1)
     @NotNull
-    private List<Tag> tags;
+    private List<String> tags;
     @Valid
     @NotNull
     private AddressDto address;

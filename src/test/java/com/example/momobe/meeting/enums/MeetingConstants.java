@@ -6,7 +6,6 @@ import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.domain.enums.MeetingState;
-import com.example.momobe.meeting.domain.enums.Tag;
 import com.example.momobe.meeting.dto.in.MeetingRequestDto;
 import com.example.momobe.meeting.dto.in.MeetingUpdateDto;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -32,7 +31,7 @@ public class MeetingConstants {
     public static final LocalTime END_TIME = LocalTime.of(5, 0);
     public static final Integer MAX_TIME = 3;
     public static final Long PRICE = 20000L;
-    public static final List<Tag> TAGS = List.of(Tag.ONLINE, Tag.OFFLINE);
+    public static final List<String> TAGS = List.of("온라인", "오프라인");
 
     public static Meeting generateMeeting() {
         return Meeting.builder()
@@ -121,7 +120,7 @@ public class MeetingConstants {
             .category(SOCIAL)
             .title(TITLE1)
             .content(CONTENT1)
-            .tags(List.of(Tag.MEETING, Tag.ONLINE, Tag.OFFLINE))
+            .tags(TAGS)
             .address(ADDRESS_DTO1)
             .dateTime(DATE_TIME_DTO_WITH_ONE_DAY)
             .personnel(3)
@@ -142,7 +141,7 @@ public class MeetingConstants {
             .category(SOCIAL)
             .title(TITLE1)
             .content(CONTENT1)
-            .tags(List.of(Tag.MEETING, Tag.ONLINE, Tag.OFFLINE))
+            .tags(TAGS)
             .address(ADDRESS_DTO1)
             .dateTime(DATE_TIME_DTO_WITH_PERIOD)
             .personnel(3)
@@ -164,7 +163,7 @@ public class MeetingConstants {
             .category(SOCIAL)
             .title(TITLE1)
             .content(CONTENT1)
-            .tags(List.of(Tag.MEETING, Tag.ONLINE, Tag.OFFLINE))
+            .tags(TAGS)
             .address(ADDRESS_DTO1)
             .dateTime(DATE_TIME_DTO_WITH_FREE)
             .personnel(1)
@@ -187,7 +186,7 @@ public class MeetingConstants {
             .category(SOCIAL)
             .title(TITLE1)
             .content(CONTENT1)
-            .tags(List.of(Tag.MEETING, Tag.ONLINE, Tag.OFFLINE))
+            .tags(TAGS)
             .address(ADDRESS_DTO1)
             .dateTime(DATE_TIME_DTO_WITH_ALL)
             .personnel(1)
@@ -198,13 +197,13 @@ public class MeetingConstants {
             .category(SOCIAL)
             .title(TITLE2)
             .content(CONTENT2)
-            .tags(List.of(Tag.MENTORING, Tag.STUDY, Tag.FIVE, Tag.OFFLINE))
+            .tags(List.of("멘토링", "스터디", "5인 이상", "오프라인"))
             .address(ADDRESS_DTO2)
             .personnel(1)
             .price(PRICE)
             .build();
 
-    public static MeetingRequestDto generateMeetingRequestDtoWithPeriod(List<Tag> tags, List<Long> addressIds) {
+    public static MeetingRequestDto generateMeetingRequestDtoWithPeriod(List<String> tags, List<Long> addressIds) {
         return MeetingRequestDto.builder()
                 .category(SOCIAL)
                 .title(TITLE1)
@@ -217,7 +216,7 @@ public class MeetingConstants {
                 .build();
     }
 
-    public static MeetingRequestDto generateMeetingRequestDtoWithFree(List<Tag> tags, List<Long> addressIds) {
+    public static MeetingRequestDto generateMeetingRequestDtoWithFree(List<String> tags, List<Long> addressIds) {
         return MeetingRequestDto.builder()
                 .category(SOCIAL)
                 .title(TITLE1)
@@ -230,7 +229,7 @@ public class MeetingConstants {
                 .build();
     }
 
-    public static MeetingRequestDto generateMeetingRequestDtoWithOneDay(List<Tag> tags, List<Long> addressIds) {
+    public static MeetingRequestDto generateMeetingRequestDtoWithOneDay(List<String> tags, List<Long> addressIds) {
         return MeetingRequestDto.builder()
                 .category(SOCIAL)
                 .title(TITLE1)
@@ -243,7 +242,7 @@ public class MeetingConstants {
                 .build();
     }
 
-    public static MeetingUpdateDto generateMeetingUpdateDto(List<Tag> tags, List<Long> addressIds) {
+    public static MeetingUpdateDto generateMeetingUpdateDto(List<String> tags, List<Long> addressIds) {
         return MeetingUpdateDto.builder()
                 .category(SOCIAL)
                 .title(TITLE2)

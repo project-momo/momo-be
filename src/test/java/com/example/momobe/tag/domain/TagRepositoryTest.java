@@ -29,8 +29,8 @@ class TagRepositoryTest {
 
     @BeforeEach
     void init() {
-        em.persist(new Tag("태그1", "tag1"));
-        em.persist(new Tag("태그2", "tag2"));
+        em.persist(new Tag("태그1"));
+        em.persist(new Tag("태그2"));
     }
 
     @Test
@@ -38,7 +38,7 @@ class TagRepositoryTest {
     void findTagIds1() {
         // given
         // when
-        List<Long> tagIds = tagRepository.findTagIds(List.of("tag1", "tag2"));
+        List<Long> tagIds = tagRepository.findTagIds(List.of("태그1", "태그2"));
 
         // then
         assertThat(tagIds).hasSize(2);
@@ -49,7 +49,7 @@ class TagRepositoryTest {
     void findTagIds2() {
         // given
         // when
-        List<Long> tagIds = tagRepository.findTagIds(List.of("tag1", "tag3"));
+        List<Long> tagIds = tagRepository.findTagIds(List.of("태그1", "태그3"));
 
         // then
         assertThat(tagIds).hasSize(1);
