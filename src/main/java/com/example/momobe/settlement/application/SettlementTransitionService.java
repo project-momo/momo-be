@@ -12,12 +12,11 @@ import com.example.momobe.reservation.domain.CustomReservationRepository;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.settlement.domain.Settlement;
 import com.example.momobe.settlement.domain.SettlementRepository;
+import com.example.momobe.settlement.domain.enums.PointUsedType;
 import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.domain.User;
-import com.example.momobe.user.domain.UserPoint;
 import com.example.momobe.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +25,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@EnableAsync
 @RequiredArgsConstructor
 @Transactional
 public class SettlementTransitionService {
@@ -40,7 +38,7 @@ public class SettlementTransitionService {
     private final UserRepository userRepository;
 
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "30 * * * * *")
     public void transitionOfPayment() {
         List<Long> meetingId = checkSettlementService.checkEndMeetingExist();
         meetingId.forEach(
@@ -57,14 +55,14 @@ public class SettlementTransitionService {
                                 }
                                 Meeting meeting = meetingRepository.findById(x).orElseThrow(() -> new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND));
                                 User user = userFindService.verifyUser(meeting.getHostId());
-                                UserPoint userPoint = user.getUserPoint();
-                                user.changeUserPoint(userPoint.plus(amounts));
+                                user.changeUserPoint(user.plusUserPoint(amounts, PointUsedType.SETTLEMENT));
                                 Settlement settlement = Settlement.builder()
                                         .host(meeting.getHostId())
                                         .amount(amounts)
                                         .meeting(x)
                                         .reservation(reservationId)
                                         .build();
+                                settlementRepository.save(settlement);
                                 userRepository.save(user);
                             }
                     );
