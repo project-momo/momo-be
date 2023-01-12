@@ -83,14 +83,6 @@ public class Reservation extends BaseTime {
                 .build();
     }
 
-    protected Boolean checkAvailabilityOfCancel() {
-        return !this.reservationState.equals(ACCEPT) && !this.reservationDate.isBeforeThen(LocalDateTime.now());
-    }
-
-    protected Boolean checkAvailabilityOfAccept() {
-        return !this.reservationState.equals(CANCEL) && !this.reservationDate.isBeforeThen(LocalDateTime.now());
-    }
-
     public Boolean matchUserId(Long userId) {
         return this.reservedUser.isEqualTo(userId);
     }
@@ -101,13 +93,24 @@ public class Reservation extends BaseTime {
      * Author : yang_eun_chan
      * Date : 2022/01/05
      * */
+    private Boolean canChangeStatus() {
+        return this.reservationState.equals(PAYMENT_SUCCESS) && !this.reservationDate.isBeforeThen(LocalDateTime.now());
+    }
+
+    private void changeState(ReservationState state) {
+        if (!canChangeStatus()) throw new CanNotChangeReservationStateException(CAN_NOT_CHANGE_RESERVATION_STATE);
+        this.reservationState = state;
+    }
+
     public void cancel() {
-       if (!checkAvailabilityOfCancel()) throw new CanNotChangeReservationStateException(CANCELED_RESERVATION);
-       this.reservationState = CANCEL;
+       changeState(CANCEL);
     }
 
     public void accept() {
-        if (!checkAvailabilityOfAccept()) throw new CanNotChangeReservationStateException(CANCELED_RESERVATION);
-        this.reservationState = ACCEPT;
+        changeState(ACCEPT);
+    }
+
+    public void deny() {
+        changeState(DENY);
     }
 }
