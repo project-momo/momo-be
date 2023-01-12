@@ -12,11 +12,8 @@ public interface PaymentMapper {
                 .customerEmail(payment.getCustomerEmail())
                 .customerName(payment.getCustomerName())
                 .orderId(payment.getOrderId())
-                .payType(payment.getPayType().getValue())
-                .createDate(payment.getCreateDate())
                 .successUrl(payment.getSuccessUrl())
                 .failUrl(payment.getFailUrl())
-                .paySuccessYn(payment.getPayState().getValue())
                 .orderName(payment.getOrderName())
                 .build();
     }

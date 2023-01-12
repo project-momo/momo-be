@@ -215,16 +215,13 @@ public class ReservationIntegrationTest {
 
         //then
         perform.andExpect(status().isCreated())
-                .andExpect(jsonPath("$.payType").isString())
                 .andExpect(jsonPath("$.amount").value(meeting.getPrice()))
                 .andExpect(jsonPath("$.orderId").isString())
                 .andExpect(jsonPath("$.orderName").value(meeting.getTitle()))
                 .andExpect(jsonPath("$.customerEmail").value(userMail))
                 .andExpect(jsonPath("$.customerName").value(userNickname))
                 .andExpect(jsonPath("$.successUrl").isString())
-                .andExpect(jsonPath("$.failUrl").isString())
-                .andExpect(jsonPath("$.createDate").value(LocalDate.now().toString()))
-                .andExpect(jsonPath("$.paySuccessYn").isString());
+                .andExpect(jsonPath("$.failUrl").isString());
     }
 
     @Test
@@ -427,16 +424,13 @@ public class ReservationIntegrationTest {
 
         //then
         perform.andExpect(status().isCreated())
-                .andExpect(jsonPath("$.payType").isEmpty())
                 .andExpect(jsonPath("$.amount").value(0))
                 .andExpect(jsonPath("$.orderId").isEmpty())
                 .andExpect(jsonPath("$.orderName").value(meeting.getTitle()))
                 .andExpect(jsonPath("$.customerEmail").value(userMail))
                 .andExpect(jsonPath("$.customerName").value(userNickname))
                 .andExpect(jsonPath("$.successUrl").isEmpty())
-                .andExpect(jsonPath("$.failUrl").isEmpty())
-                .andExpect(jsonPath("$.createDate").value(LocalDate.now().toString()))
-                .andExpect(jsonPath("$.paySuccessYn").isEmpty());
+                .andExpect(jsonPath("$.failUrl").isEmpty());
     }
 
     @Test
