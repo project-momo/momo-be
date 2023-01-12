@@ -19,14 +19,9 @@ public class Tag {
     private Long id;
 
     @Column(nullable = false)
-    private String korName;
+    private String name;
 
-    @Column(nullable = false)
-    private String engName;
-
-    @Builder
-    public Tag(String korName, String engName) {
-        this.korName = korName;
-        this.engName = engName;
+    public Tag(String name) {
+        this.name = name;
     }
 }

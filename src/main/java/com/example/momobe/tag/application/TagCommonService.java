@@ -16,9 +16,9 @@ import static com.example.momobe.common.exception.enums.ErrorCode.DATA_NOT_FOUND
 public class TagCommonService {
     private final TagRepository tagRepository;
 
-    public List<Long> findTagIdsByEngNamesOrThrowException(List<String> tagEngNames) {
-        List<Long> tagIds = tagRepository.findTagIds(tagEngNames);
-        if (tagIds.size() != tagEngNames.size()) throw new TagNotFoundException(DATA_NOT_FOUND);
+    public List<Long> findTagIdsByNamesOrThrowException(List<String> tags) {
+        List<Long> tagIds = tagRepository.findTagIds(tags);
+        if (tagIds.size() != tags.size()) throw new TagNotFoundException(DATA_NOT_FOUND);
         return tagIds;
     }
 }
