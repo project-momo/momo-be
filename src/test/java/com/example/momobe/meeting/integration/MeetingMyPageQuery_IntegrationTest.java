@@ -21,7 +21,6 @@ import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
 import static com.example.momobe.reservation.enums.ReservationConstants.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -68,8 +67,7 @@ class MeetingMyPageQuery_IntegrationTest {
 
         // then
         actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").isNotEmpty())
-                .andDo(print());
+                .andExpect(jsonPath("$.content").isNotEmpty());
     }
 
     @Test
