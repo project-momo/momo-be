@@ -259,15 +259,12 @@ class ReservationCommonControllerTest {
 
         PaymentResponseDto response = PaymentResponseDto.builder()
                 .orderName(CONTENT1)
-                .paySuccessYn(BEFORE.getValue())
                 .orderId(ID)
-                .createDate(LocalDate.now().toString())
                 .successUrl("/testpage")
                 .failUrl("/testpage")
                 .customerName(NICKNAME)
                 .amount(1000L)
                 .customerEmail(EMAIL1)
-                .payType(CARD.getValue())
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -295,16 +292,13 @@ class ReservationCommonControllerTest {
                                 fieldWithPath("reservationMemo").description("예약자가 남기는 메모")
                         ),
                         responseFields(
-                                fieldWithPath("payType").type(STRING).description("결제 형태"),
                                 fieldWithPath("amount").type(LONG).description("결제 금액"),
                                 fieldWithPath("orderId").type(STRING).description("고유 결제 아이디"),
                                 fieldWithPath("orderName").type(STRING).description("결제 항목 이름"),
                                 fieldWithPath("customerEmail").type(STRING).description("고객 이메일 주소"),
                                 fieldWithPath("customerName").type(STRING).description("고객 이름"),
                                 fieldWithPath("successUrl").type(STRING).description("성공 시 이동 url"),
-                                fieldWithPath("failUrl").type(STRING).description("실패 시 이동 url"),
-                                fieldWithPath("createDate").type(STRING).description("결제 생성일"),
-                                fieldWithPath("paySuccessYn").type(STRING).description("결제 완료 여부")
+                                fieldWithPath("failUrl").type(STRING).description("실패 시 이동 url")
                         )
                         )
                 );
@@ -530,7 +524,7 @@ class ReservationCommonControllerTest {
 
         //then
         perform.andExpect(status().isBadRequest())
-                .andDo(document("patchReservation/400",
+                .andDo(document("deleteReservation/400",
                         ApiDocumentUtils.getDocumentRequest(),
                         ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
@@ -606,7 +600,7 @@ class ReservationCommonControllerTest {
 
         //then
         perform.andExpect(status().isNotFound())
-                .andDo(document("patchReservation/404",
+                .andDo(document("deleteReservation/404",
                         ApiDocumentUtils.getDocumentRequest(),
                         ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
@@ -644,7 +638,7 @@ class ReservationCommonControllerTest {
 
         //then
         perform.andExpect(status().isConflict())
-                .andDo(document("patchReservation/409",
+                .andDo(document("deleteReservation/409",
                         ApiDocumentUtils.getDocumentRequest(),
                         ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
@@ -679,7 +673,7 @@ class ReservationCommonControllerTest {
 
         //then
         perform.andExpect(status().isNoContent())
-                .andDo(document("patchReservation/204",
+                .andDo(document("deleteReservation/204",
                         ApiDocumentUtils.getDocumentRequest(),
                         ApiDocumentUtils.getDocumentResponse(),
                         requestHeaders(
