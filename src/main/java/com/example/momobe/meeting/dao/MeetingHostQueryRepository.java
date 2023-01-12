@@ -1,6 +1,8 @@
 package com.example.momobe.meeting.dao;
 
 import com.example.momobe.meeting.dto.out.*;
+import com.example.momobe.reservation.domain.enums.ReservationState;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,7 +23,8 @@ import static com.example.momobe.meeting.domain.QMeeting.meeting;
 import static com.example.momobe.reservation.domain.QReservation.reservation;
 import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.example.momobe.user.domain.QUser.user;
-import static com.querydsl.core.group.GroupBy.*;
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.set;
 
 @Repository
 @RequiredArgsConstructor
@@ -58,12 +62,13 @@ public class MeetingHostQueryRepository {
 
         Map<Long, MeetingInfoDto> meetingInfoDtoMap = queryFactory
                 .from(meeting)
-                .where(meeting.id.in(meetingIds))
                 .leftJoin(reservation).on(reservation.meetingId.eq(meeting.id))
                 .leftJoin(user).on(reservation.reservedUser.userId.eq(user.id))
                 .leftJoin(user.avatar, avatar)
                 .leftJoin(address).on(address.id.in(meeting.address.addressIds))
                 .leftJoin(meeting.dateTimeInfo.dateTimes, dateTime1)
+                .where(meeting.id.in(meetingIds).and(
+                        reservation.reservationState.eq(ReservationState.ACCEPT).or(eqPaymentSuccessAndFuture())))
                 .transform(
                         groupBy(meeting.id).as(
                                 new QMeetingInfoDto(
@@ -88,6 +93,11 @@ public class MeetingHostQueryRepository {
                 .where(meeting.hostId.eq(hostId));
 
         return PageableExecutionUtils.getPage(dtos, pageable, countQuery::fetchOne);
+    }
+
+    private BooleanExpression eqPaymentSuccessAndFuture() {
+        return reservation.reservationState.eq(ReservationState.PAYMENT_SUCCESS)
+                .and(reservation.reservationDate.startDateTime.after(LocalDateTime.now()));
     }
 
 }
