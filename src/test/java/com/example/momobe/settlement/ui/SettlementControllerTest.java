@@ -3,8 +3,8 @@ package com.example.momobe.settlement.ui;
 import com.example.momobe.MomoBeApplication;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
-import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.settlement.application.SettlementWithdrawalService;
+
 import com.example.momobe.settlement.dto.in.PointWithdrawalDto;
 import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.domain.NotEnoughPointException;
