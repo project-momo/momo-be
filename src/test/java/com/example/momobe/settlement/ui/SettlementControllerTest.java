@@ -5,7 +5,7 @@ import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.settlement.application.SettlementWithdrawalService;
-import com.example.momobe.settlement.dto.PointDto;
+import com.example.momobe.settlement.dto.in.PointWithdrawalDto;
 import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.domain.NotEnoughPointException;
 import com.example.momobe.user.domain.User;
@@ -41,7 +41,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(SettlementController.class)
+@WebMvcTest(SettlementWithdrawalController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(SecurityTestConfig.class)
 @AutoConfigureRestDocs
@@ -88,7 +88,7 @@ public class SettlementControllerTest {
         given(userFindService.verifyUser(anyLong())).willReturn(user1);
         given(userRepository.findById(anyLong())).willReturn(Optional.ofNullable(user1));
         given(withdrawalService.deductPoint(anyLong(), anyLong())).willThrow(NotEnoughPointException.class);
-        PointDto.Withdrawal request = PointDto.Withdrawal.builder().amount(5000L).build();
+        PointWithdrawalDto request = PointWithdrawalDto.builder().amount(5000L).build();
 
         String content = objectMapper.writeValueAsString(request);
 
@@ -116,7 +116,7 @@ public class SettlementControllerTest {
     @DisplayName("정상 동작")
     void test02() throws Exception {
         given(withdrawalService.deductPoint(anyLong(), anyLong())).willReturn(true);
-        PointDto.Withdrawal request = PointDto.Withdrawal.builder().amount(5000L).build();
+        PointWithdrawalDto request = PointWithdrawalDto.builder().amount(5000L).build();
 
         String content = objectMapper.writeValueAsString(request);
 
