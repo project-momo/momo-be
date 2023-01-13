@@ -13,16 +13,16 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PointResponseDto {
+public class PointHistoryResponseDto {
     private Long amount;
     private String state;
     private String type;
     private LocalDate date;
 
-    public static Page<PointResponseDto> of(Page<PointHistory> pointHistory){
-        Page<PointResponseDto> pageDto =
+    public static Page<PointHistoryResponseDto> of(Page<PointHistory> pointHistory){
+        Page<PointHistoryResponseDto> pageDto =
         pointHistory.map( x ->
-                PointResponseDto.builder()
+                PointHistoryResponseDto.builder()
                         .amount(x.getRequestPoint())
                         .date(x.getHistoryDate())
                         .state(x.getState().toString())
