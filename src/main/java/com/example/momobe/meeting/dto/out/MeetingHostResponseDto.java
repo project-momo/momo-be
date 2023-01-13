@@ -35,12 +35,14 @@ public class MeetingHostResponseDto extends MeetingResponseDto {
 
     @Getter
     public static class RequestDto extends MeetingUserResponseDto {
+        private final Long reservationId;
         private final ReservationState reservationState;
         private final String message;
         private final MeetingDateTimeDto dateTimeInfo;
 
         public RequestDto(MeetingInfoDto.ReservationDto reservationDto) {
             super(reservationDto.getUserId(), reservationDto.getNickname(), reservationDto.getImageUrl());
+            this.reservationId = reservationDto.getReservationId();
             this.reservationState = reservationDto.getReservationState();
             this.message = reservationDto.getMessage();
             this.dateTimeInfo = new MeetingDateTimeDto(
@@ -50,12 +52,14 @@ public class MeetingHostResponseDto extends MeetingResponseDto {
 
     @Getter
     public static class RequestConfirmedDto extends MeetingUserResponseWithEmailDto {
+        private final Long reservationId;
         private final ReservationState reservationState;
         private final String message;
         private final MeetingDateTimeDto dateTimeInfo;
 
         public RequestConfirmedDto(MeetingInfoDto.ReservationDto reservationDto) {
             super(reservationDto.getUserId(), reservationDto.getNickname(), reservationDto.getImageUrl(), reservationDto.getEmail());
+            this.reservationId = reservationDto.getReservationId();
             this.reservationState = reservationDto.getReservationState();
             this.message = reservationDto.getMessage();
             this.dateTimeInfo = new MeetingDateTimeDto(
