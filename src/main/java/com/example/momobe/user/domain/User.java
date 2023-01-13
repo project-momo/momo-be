@@ -50,8 +50,8 @@ public class User extends BaseTime {
     @Builder.Default
     private UserPoint userPoint = new UserPoint(0L);
 
-    @ElementCollection
-    @CollectionTable(name = "point_history",joinColumns = @JoinColumn (name = "user_id",referencedColumnName = "user_id",nullable = false))
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn (name = "user_id",referencedColumnName = "user_id",nullable = false)
     private List<PointHistory> histories = new ArrayList<>();
 
     @OneToOne(cascade = PERSIST)
@@ -85,12 +85,12 @@ public class User extends BaseTime {
     }
 
     public UserPoint minusUserPoint(Long amount,PointUsedType usedType){
-        this.histories.add(new PointHistory(this.userPoint.getPoint(),amount, PointState.DEDUCT, usedType));
+        this.histories.add(new PointHistory(this.id,this.userPoint.getPoint(),amount, PointState.DEDUCT, usedType));
         return this.userPoint = userPoint.minus(amount);
     }
 
     public UserPoint plusUserPoint(Long amount,PointUsedType usedType){
-        this.histories.add(new PointHistory(this.userPoint.getPoint(),amount, PointState.SAVE, usedType));
+        this.histories.add(new PointHistory(this.id,this.userPoint.getPoint(),amount, PointState.SAVE, usedType));
         return this.userPoint = userPoint.plus(amount);
     }
 }

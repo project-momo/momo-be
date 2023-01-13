@@ -3,29 +3,37 @@ package com.example.momobe.settlement.domain;
 import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.settlement.domain.enums.PointState;
 import com.example.momobe.settlement.domain.enums.PointUsedType;
+import com.example.momobe.user.domain.User;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-@Embeddable
+@Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PointHistory {
+public class PointHistory extends BaseTime {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "history_id")
+    private Long id;
+
     private LocalDate historyDate = LocalDate.now();
     private Long currentPoint;
     private Long requestPoint;
+    @Enumerated(EnumType.STRING)
+    private PointState state;
 
     @Enumerated(EnumType.STRING)
-    private PointState state; //적립,출금 구분
+    private PointUsedType type;
 
-    @Enumerated(EnumType.STRING)
-    private PointUsedType type; //정산,인출,차감 등 상태 구분
+    @Column(name = "user_id")
+    private Long user;
 
-    public PointHistory(Long currentPoint, Long requestPoint, PointState state, PointUsedType type) {
+    public PointHistory(Long userId, Long currentPoint, Long requestPoint, PointState state, PointUsedType type) {
+        this.user = userId;
         this.currentPoint = currentPoint;
         this.requestPoint = requestPoint;
         this.state = state;

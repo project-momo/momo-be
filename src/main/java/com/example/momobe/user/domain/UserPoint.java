@@ -5,22 +5,15 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.example.momobe.common.exception.enums.ErrorCode.*;
 
 @Embeddable
 @Access(AccessType.FIELD)
 @Builder(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserPoint {
     @Column(nullable = false, name = "user_point")
     private Long point;
-
-    @Embedded
-    private PointHistory pointHistory;
 
     public UserPoint(Long point) {
         this.point = point;

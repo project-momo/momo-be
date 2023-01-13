@@ -12,7 +12,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-public class SettlementController {
+public class SettlementWithdrawalController {
     private final SettlementWithdrawalService withdrawalService;
 
     @ResponseStatus(HttpStatus.OK)

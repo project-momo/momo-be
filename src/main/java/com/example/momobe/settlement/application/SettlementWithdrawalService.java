@@ -5,7 +5,6 @@ import com.example.momobe.settlement.domain.enums.PointState;
 import com.example.momobe.settlement.domain.enums.PointUsedType;
 import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.domain.User;
-import com.example.momobe.user.domain.UserPoint;
 import com.example.momobe.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ public class SettlementWithdrawalService {
     public boolean deductPoint(Long userId, Long amount) {
         User user = userFindService.verifyUser(userId);
         user.changeUserPoint(user.minusUserPoint(amount,PointUsedType.WITHDRAWAL));
-        user.getHistories().add(new PointHistory(user.getUserPoint().getPoint(),amount, PointState.DEDUCT, PointUsedType.WITHDRAWAL));
         userRepository.save(user);
         return true;
     }
