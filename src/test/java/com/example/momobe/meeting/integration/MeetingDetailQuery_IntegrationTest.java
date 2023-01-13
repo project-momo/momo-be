@@ -18,19 +18,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
-import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+import static com.example.momobe.meeting.enums.MeetingConstants.generateMeetingWithPeriod;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -67,7 +63,7 @@ class MeetingDetailQuery_IntegrationTest {
         Tag tag2 = new Tag("오프라인");
         em.persist(tag1);
         em.persist(tag2);
-        Meeting meeting = generateMeeting(
+        Meeting meeting = generateMeetingWithPeriod(
                 host.getId(), List.of(address1.getId(), address2.getId()), List.of(tag1.getId(), tag2.getId()));
         em.persist(meeting);
         Question question = new Question(meeting.getId(), CONTENT1, questioner.getId());
