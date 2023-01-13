@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @ToString
 @AllArgsConstructor
 public class PaymentResponseDto {
-    private String payType;
     private Long amount;
     private String orderId;
     private String orderName;
@@ -22,14 +21,11 @@ public class PaymentResponseDto {
     private String customerName;
     private String successUrl;
     private String failUrl;
-    private String createDate;
-    private String paySuccessYn;
 
     public static PaymentResponseDto freeOrder(Meeting meeting, UserInfo userInfo) {
         return PaymentResponseDto.builder()
                 .orderName(meeting.getTitle())
                 .amount(0L)
-                .createDate(LocalDate.now().toString())
                 .customerEmail(userInfo.getEmail())
                 .customerName(userInfo.getNickname())
                 .build();

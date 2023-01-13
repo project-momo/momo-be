@@ -67,8 +67,8 @@ class MeetingDetailQueryRepositoryTest {
                 .build();
         em.persist(address1);
         em.persist(address2);
-        Tag tag1 = new Tag("온라인", "ONLINE");
-        Tag tag2 = new Tag("오프라인", "OFFLINE");
+        Tag tag1 = new Tag("온라인");
+        Tag tag2 = new Tag("오프라인");
         em.persist(tag1);
         em.persist(tag2);
         Meeting meeting = generateMeeting(
@@ -109,8 +109,8 @@ class MeetingDetailQueryRepositoryTest {
         assertThat(responseDto.getDateTime().getMaxTime()).isEqualTo(meeting.getDateTimeInfo().getMaxTime());
         assertThat(responseDto.getPrice()).isEqualTo(meeting.getPrice());
         assertThat(responseDto.getTags()).hasSize(2);
-        assertThat(responseDto.getTags().get(0)).isIn(List.of(tag1.getKorName(), tag2.getKorName()));
-        assertThat(responseDto.getTags().get(1)).isIn(List.of(tag1.getKorName(), tag2.getKorName()));
+        assertThat(responseDto.getTags().get(0)).isIn(List.of(tag1.getName(), tag2.getName()));
+        assertThat(responseDto.getTags().get(1)).isIn(List.of(tag1.getName(), tag2.getName()));
 
         assertThat(responseDto.getQuestions()).isNotEmpty();
         assertThat(responseDto.getQuestions().get(0).getQuestionId()).isEqualTo(question.getId());

@@ -26,7 +26,6 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
-import static com.example.momobe.meeting.domain.enums.Tag.*;
 import static com.example.momobe.meeting.enums.MeetingConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -61,9 +60,9 @@ class MeetingCommand_IntegrationTest {
         em.persist(address1);
         em.persist(address2);
         TAGS.stream()
-                .filter(tag -> em.createQuery("select t.id from Tag t where t.engName = '" + tag.name() + "'", Long.class)
+                .filter(tag -> em.createQuery("select t.id from Tag t where t.name = '" + tag + "'", Long.class)
                         .getResultList().isEmpty())
-                .forEach(tag -> em.persist(new Tag(tag.getDescription(), tag.name())));
+                .forEach(tag -> em.persist(new Tag(tag)));
         meetingUpdateDto = generateMeetingUpdateDto(
                 TAGS, List.of(address1.getId(), address2.getId()));
         meeting = generateMeeting(host.getId(), meetingUpdateDto.getAddress().getAddressIds());

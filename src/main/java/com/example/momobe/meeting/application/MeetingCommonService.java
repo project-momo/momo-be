@@ -5,14 +5,12 @@ import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.MeetingNotFoundException;
 import com.example.momobe.meeting.domain.MeetingRepository;
-import com.example.momobe.meeting.domain.enums.Tag;
 import com.example.momobe.tag.application.TagCommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +25,8 @@ public class MeetingCommonService {
                 .orElseThrow(() -> new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND));
     }
 
-    public List<Long> verifyAddressesAndFindTagIds(List<Long> addressIds, List<Tag> tags) {
+    public List<Long> verifyAddressesAndFindTagIds(List<Long> addressIds, List<String> tags) {
         addressCommonService.verifyAddressIdsOrThrowException(addressIds);
-        return tagCommonService.findTagIdsByEngNamesOrThrowException(
-                tags.stream().map(Enum::name).collect(Collectors.toList()));
+        return tagCommonService.findTagIdsByNamesOrThrowException(tags);
     }
 }

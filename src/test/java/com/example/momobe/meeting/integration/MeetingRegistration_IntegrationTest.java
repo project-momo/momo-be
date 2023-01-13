@@ -21,7 +21,6 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
-import static com.example.momobe.meeting.domain.enums.Tag.valueOf;
 import static com.example.momobe.meeting.enums.MeetingConstants.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -57,9 +56,9 @@ class MeetingRegistration_IntegrationTest {
         em.persist(address1);
         em.persist(address2);
         TAGS.stream()
-                .filter(tag -> em.createQuery("select t.id from Tag t where t.engName = '" + tag.name() + "'", Long.class)
+                .filter(tag -> em.createQuery("select t.id from Tag t where t.name = '" + tag + "'", Long.class)
                         .getResultList().isEmpty())
-                .forEach(tag -> em.persist(new Tag(tag.getDescription(), tag.name())));
+                .forEach(tag -> em.persist(new Tag(tag)));
     }
 
     @Test

@@ -1,7 +1,6 @@
 package com.example.momobe.meeting.dto.in;
 
 import com.example.momobe.meeting.domain.enums.Category;
-import com.example.momobe.meeting.domain.enums.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +16,7 @@ public class MeetingUpdateDto {
     private Category category;
     private String title;
     private String content;
-    private List<Tag> tags;
+    private List<String> tags;
     private MeetingRequestDto.AddressDto address;
     private Integer personnel;
     private Long price;

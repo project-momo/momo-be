@@ -6,6 +6,7 @@ import com.example.momobe.meeting.dto.out.MeetingResponseDto;
 import com.example.momobe.meeting.dto.out.QMeetingInfoDto;
 import com.example.momobe.meeting.dto.out.QMeetingResponseDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,10 @@ public class MeetingQueryRepository {
                         avatar.remotePath,
                         user.email.address,
                         meeting.title,
-                        meeting.content.substring(0, 20),
+                        new CaseBuilder()
+                                .when(meeting.content.length().gt(100))
+                                .then(meeting.content.substring(0, 101).append("..."))
+                                .otherwise(meeting.content),
                         meeting.address.addressInfo,
                         meeting.meetingState,
                         meeting.dateTimeInfo.datePolicy,

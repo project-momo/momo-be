@@ -32,7 +32,7 @@ class TagCommonServiceTest {
                 .willReturn(List.of(ID1, ID2));
 
         // when / then
-        assertDoesNotThrow(() -> tagCommonService.findTagIdsByEngNamesOrThrowException(tagEngNames));
+        assertDoesNotThrow(() -> tagCommonService.findTagIdsByNamesOrThrowException(tagEngNames));
     }
 
     @Test
@@ -45,6 +45,6 @@ class TagCommonServiceTest {
 
         // when / then
         assertThrows(TagNotFoundException.class,
-                () -> tagCommonService.findTagIdsByEngNamesOrThrowException(tagEngNames));
+                () -> tagCommonService.findTagIdsByNamesOrThrowException(tagEngNames));
     }
 }

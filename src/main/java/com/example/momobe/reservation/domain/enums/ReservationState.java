@@ -6,6 +6,5 @@ public enum ReservationState {
     PAYMENT_SUCCESS,
     DENY,
     ACCEPT,
-    CANCEL,
-    REFUND
+    CANCEL
 }

@@ -2,8 +2,10 @@ package com.example.momobe.reservation.domain;
 
 import com.example.momobe.reservation.domain.enums.ReservationState;
 import org.assertj.core.api.Assertions;
+import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,7 +21,7 @@ class ReservationTest {
     void cancelTest2() {
         // given
         Reservation reservation = Reservation.builder()
-                .reservationState(CANCEL)
+                .reservationState(PAYMENT_SUCCESS)
                 .reservationDate(ReservationDate.builder()
                         .date(LocalDate.now().plus(1, ChronoUnit.MONTHS))
                         .startTime(LocalTime.of(10, 0))
@@ -110,23 +112,18 @@ class ReservationTest {
         Reservation reservation4 = Reservation.builder()
                 .reservationState(DENY)
                 .build();
-        Reservation reservation5 = Reservation.builder()
-                .reservationState(REFUND)
-                .build();
 
         //when
         Boolean result1 = reservation1.isCanceledReservation();
         Boolean result2 = reservation2.isCanceledReservation();
         Boolean result3 = reservation3.isCanceledReservation();
         Boolean result4 = reservation4.isCanceledReservation();
-        Boolean result5 = reservation5.isCanceledReservation();
 
         //then
         Assertions.assertThat(result1).isFalse();
         Assertions.assertThat(result2).isFalse();
         Assertions.assertThat(result3).isFalse();
         Assertions.assertThat(result4).isFalse();
-        Assertions.assertThat(result5).isFalse();
     }
 
     @DisplayName("reservation Success가 아니라면 false 반환")
@@ -144,23 +141,18 @@ class ReservationTest {
         Reservation reservation4 = Reservation.builder()
                 .reservationState(DENY)
                 .build();
-        Reservation reservation5 = Reservation.builder()
-                .reservationState(REFUND)
-                .build();
 
         //when
         Boolean result1 = reservation1.isPaymentSucceed();
         Boolean result2 = reservation2.isPaymentSucceed();
         Boolean result3 = reservation3.isPaymentSucceed();
         Boolean result4 = reservation4.isPaymentSucceed();
-        Boolean result5 = reservation5.isPaymentSucceed();
 
         //then
         Assertions.assertThat(result1).isFalse();
         Assertions.assertThat(result2).isFalse();
         Assertions.assertThat(result3).isFalse();
         Assertions.assertThat(result4).isFalse();
-        Assertions.assertThat(result5).isFalse();
     }
 
     @Test
@@ -179,8 +171,8 @@ class ReservationTest {
     }
 
     @Test
-    @DisplayName("reservation date, time이 미래 시점이고 reservation state가 Accept라면 false 반환")
-    void checkAvailabilityOfCancel1() {
+    @DisplayName("reservation date, time이 미래 시점이고 reservation state가 PAYMENT_SUCCESS가 아니라면 예외 발생")
+    void denyTest1() {
         //given
         Reservation reservation = Reservation.builder()
                 .reservationState(ACCEPT)
@@ -191,16 +183,13 @@ class ReservationTest {
                         .build())
                 .build();
 
-        //when
-        Boolean result = reservation.checkAvailabilityOfCancel();
-
-        // then
-        assertThat(result).isFalse();
+        //when // then
+        org.junit.jupiter.api.Assertions.assertThrows(CanNotChangeReservationStateException.class, reservation::deny);
     }
 
     @Test
-    @DisplayName("reservation date, time이 과거 시점이고 reservation state가 Accept 아니라면 false 반환")
-    void checkAvailabilityOfCancel2() {
+    @DisplayName("reservation date, time이 미래 시점이고 reservation state가 PAYMENT_SUCCESS가 아니라면 예외 발생")
+    void denyTest2() {
         //given
         Reservation reservation = Reservation.builder()
                 .reservationState(CANCEL)
@@ -211,19 +200,16 @@ class ReservationTest {
                         .build())
                 .build();
 
-        //when
-        Boolean result = reservation.checkAvailabilityOfCancel();
-
-        // then
-        assertThat(result).isFalse();
+        //when then
+        org.junit.jupiter.api.Assertions.assertThrows(CanNotChangeReservationStateException.class, reservation::deny);
     }
 
     @Test
-    @DisplayName("reservation date, time이 미래 시점이고 reservation state가 Accept가 아니라면 true 반환")
+    @DisplayName("reservation date, time이 미래 시점이고 reservation state가 PAYMENT_SUCCESS라면 State가 deny로 변경된다.")
     void checkAvailabilityOfCancel3() {
         //given
         Reservation reservation = Reservation.builder()
-                .reservationState(CANCEL)
+                .reservationState(PAYMENT_SUCCESS)
                 .reservationDate(ReservationDate.builder()
                         .date(LocalDate.now().plus(1, ChronoUnit.MONTHS))
                         .startTime(LocalTime.of(10, 0))
@@ -232,10 +218,10 @@ class ReservationTest {
                 .build();
 
         //when
-        Boolean result = reservation.checkAvailabilityOfCancel();
+        reservation.deny();
 
         // then
-        assertThat(result).isTrue();
+        assertThat(reservation.getReservationState()).isEqualTo(DENY);
     }
 
     @Test

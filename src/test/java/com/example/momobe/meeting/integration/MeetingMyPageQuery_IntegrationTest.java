@@ -15,14 +15,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
 import static com.example.momobe.reservation.enums.ReservationConstants.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

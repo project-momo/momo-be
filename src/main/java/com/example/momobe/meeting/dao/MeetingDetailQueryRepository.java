@@ -70,7 +70,7 @@ public class MeetingDetailQueryRepository {
                                 meeting.dateTimeInfo.maxTime,
                                 meeting.price,
                                 set(address.si.append(" ").append(address.gu)),
-                                set(tag.korName),
+                                set(tag.name),
                                 list(dateTime1.dateTime))
                         ));
 
