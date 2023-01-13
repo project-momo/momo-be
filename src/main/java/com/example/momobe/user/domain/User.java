@@ -1,6 +1,9 @@
 package com.example.momobe.user.domain;
 
 import com.example.momobe.common.exception.enums.ErrorCode;
+import com.example.momobe.settlement.domain.PointHistory;
+import com.example.momobe.settlement.domain.enums.PointState;
+import com.example.momobe.settlement.domain.enums.PointUsedType;
 import com.example.momobe.user.domain.enums.UserStateType;
 import com.example.momobe.common.domain.BaseTime;
 import lombok.*;
@@ -8,6 +11,7 @@ import lombok.*;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.momobe.user.domain.enums.RoleName.*;
@@ -46,6 +50,10 @@ public class User extends BaseTime {
     @Builder.Default
     private UserPoint userPoint = new UserPoint(0L);
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn (name = "user_id",referencedColumnName = "user_id",nullable = false)
+    private List<PointHistory> histories = new ArrayList<>();
+
     @OneToOne(cascade = PERSIST)
     @JoinColumn(name = "avatar_id")
     private Avatar avatar;
@@ -71,7 +79,18 @@ public class User extends BaseTime {
         this.userState = userState;
     }
 
+
     public void changeUserPoint(UserPoint point){
         this.userPoint = point;
+    }
+
+    public UserPoint minusUserPoint(Long amount,PointUsedType usedType){
+        this.histories.add(new PointHistory(this.id,this.userPoint.getPoint(),amount, PointState.DEDUCT, usedType));
+        return this.userPoint = userPoint.minus(amount);
+    }
+
+    public UserPoint plusUserPoint(Long amount,PointUsedType usedType){
+        this.histories.add(new PointHistory(this.id,this.userPoint.getPoint(),amount, PointState.SAVE, usedType));
+        return this.userPoint = userPoint.plus(amount);
     }
 }

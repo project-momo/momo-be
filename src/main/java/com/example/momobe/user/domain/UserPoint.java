@@ -1,11 +1,9 @@
 package com.example.momobe.user.domain;
 
+import com.example.momobe.settlement.domain.PointHistory;
 import lombok.*;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 import static com.example.momobe.common.exception.enums.ErrorCode.*;
 
@@ -22,6 +20,7 @@ public class UserPoint {
     }
 
     public UserPoint plus(Long point) {
+
         return new UserPoint(this.point + point);
     }
 
