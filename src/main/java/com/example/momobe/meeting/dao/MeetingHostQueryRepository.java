@@ -73,7 +73,8 @@ public class MeetingHostQueryRepository {
                         groupBy(meeting.id).as(
                                 new QMeetingInfoDto(
                                         set(new QMeetingInfoDto_ReservationDto(
-                                                user.id, user.nickname.nickname, avatar.remotePath, user.email.address,
+                                                reservation.id, user.id,
+                                                user.nickname.nickname, avatar.remotePath, user.email.address,
                                                 reservation.reservationState, reservation.reservationDate.date,
                                                 reservation.reservationDate.startTime, reservation.reservationDate.endTime,
                                                 reservation.reservationMemo.content)),

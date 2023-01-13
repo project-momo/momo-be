@@ -64,11 +64,11 @@ class MeetingMyPageQueryControllerTest {
         MeetingHostResponseDto.ApplicationDto applicationDto = new MeetingHostResponseDto.ApplicationDto(
                 List.of(new MeetingHostResponseDto.RequestDto(
                         new MeetingInfoDto.ReservationDto(
-                                ID2, NICKNAME1, REMOTE_PATH, EMAIL2, PAYMENT_SUCCESS,
+                                ID1, ID2, NICKNAME1, REMOTE_PATH, EMAIL2, PAYMENT_SUCCESS,
                                 LocalDate.now(), START_TIME, END_TIME, "잘 부탁드려요~"))),
                 List.of(new MeetingHostResponseDto.RequestConfirmedDto(
                         new MeetingInfoDto.ReservationDto(
-                                ID3, NICKNAME2, REMOTE_PATH, EMAIL1, ACCEPT,
+                                ID2, ID3, NICKNAME2, REMOTE_PATH, EMAIL1, ACCEPT,
                                 LocalDate.now(), START_TIME, END_TIME, "잘 부탁드려요~")))
         );
         MeetingHostResponseDto meetingHostResponseDto = new MeetingHostResponseDto(
@@ -115,6 +115,7 @@ class MeetingMyPageQueryControllerTest {
 
                                 fieldWithPath("content[].applications").type(OBJECT).description("지원자"),
                                 fieldWithPath("content[].applications.requests").type(ARRAY).description("신청 목록"),
+                                fieldWithPath("content[].applications.requests[].reservationId").type(NUMBER).description("예약 식별자"),
                                 fieldWithPath("content[].applications.requests[].userId").type(NUMBER).description("지원자 식별자"),
                                 fieldWithPath("content[].applications.requests[].nickname").type(STRING).description("지원자 닉네임"),
                                 fieldWithPath("content[].applications.requests[].imageUrl").type(STRING).description("지원자 이미지"),
@@ -125,6 +126,7 @@ class MeetingMyPageQueryControllerTest {
                                 fieldWithPath("content[].applications.requests[].dateTimeInfo.time").type(STRING).description("예약 시간"),
 
                                 fieldWithPath("content[].applications.confirmed").type(ARRAY).description("확정된 지원자 목록"),
+                                fieldWithPath("content[].applications.confirmed[].reservationId").type(NUMBER).description("예약 식별자"),
                                 fieldWithPath("content[].applications.confirmed[].userId").type(NUMBER).description("지원자 식별자"),
                                 fieldWithPath("content[].applications.confirmed[].nickname").type(STRING).description("지원자 닉네임"),
                                 fieldWithPath("content[].applications.confirmed[].imageUrl").type(STRING).description("지원자 이미지"),

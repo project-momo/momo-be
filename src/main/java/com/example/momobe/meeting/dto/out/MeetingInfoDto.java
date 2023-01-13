@@ -30,8 +30,10 @@ public class MeetingInfoDto {
     }
 
     @Getter
-    @EqualsAndHashCode
+    @EqualsAndHashCode(onlyExplicitlyIncluded = true)
     public static class ReservationDto {
+        @EqualsAndHashCode.Include
+        private final Long reservationId;
         private final Long userId;
         private final String nickname;
         private final String imageUrl;
@@ -43,7 +45,8 @@ public class MeetingInfoDto {
         private final String message;
 
         @QueryProjection
-        public ReservationDto(Long userId, String nickname, String imageUrl, String email, ReservationState reservationState, LocalDate reservationDate, LocalTime startTime, LocalTime endTime, String message) {
+        public ReservationDto(Long reservationId, Long userId, String nickname, String imageUrl, String email, ReservationState reservationState, LocalDate reservationDate, LocalTime startTime, LocalTime endTime, String message) {
+            this.reservationId = reservationId;
             this.userId = userId;
             this.nickname = nickname;
             this.imageUrl = imageUrl;
