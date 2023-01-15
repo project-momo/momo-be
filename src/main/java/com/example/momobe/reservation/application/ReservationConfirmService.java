@@ -25,7 +25,7 @@ public class ReservationConfirmService {
         Reservation reservation = reservationCommonService.getReservationOrThrowException(reservationId);
 
         if (!Boolean.parseBoolean(request.getIsAccepted())) {
-            reservation.cancel();
+            reservation.deny();
         } else {
             reservation.accept();
         }
