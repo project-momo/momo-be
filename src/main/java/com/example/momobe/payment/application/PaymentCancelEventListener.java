@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -21,8 +24,10 @@ public class PaymentCancelEventListener {
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, classes = ReservationEvent.PaymentCancel.class)
     public void cancel(ReservationEvent.PaymentCancel event) {
+        Map<String, Object> map = createMap(event);
+
         try {
-            paymentCancelService.cancelPayment(event.getPaymentKey(), event.getReason());
+            paymentCancelService.process(event.getPaymentKey(), map);
             Payment payment = paymentCommonService.getPaymentOrThrowException(event.getPaymentId());
             payment.cancel();
         } catch (UnableProceedPaymentException e) {
@@ -31,5 +36,11 @@ public class PaymentCancelEventListener {
             log.error("",e);
             throw new UnableProceedPaymentException(ErrorCode.UNABLE_TO_PROCESS);
         }
+    }
+
+    private Map<String, Object> createMap(ReservationEvent.PaymentCancel event) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("cancelReason", event.getReason());
+        return map;
     }
 }
