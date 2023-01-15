@@ -18,9 +18,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class UserCommonService {
     private final UserFindService userFindService;
-    private final UserRepository userRepository;
 
-    //예외 처리 추가 필요
     public boolean withdrawalUser(Long id){
         User user = userFindService.verifyUser(id);
         user.changeUserState(new UserState(UserStateType.DEACTIVATED, LocalDateTime.now()));
