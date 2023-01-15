@@ -1,5 +1,6 @@
 package com.example.momobe.settlement.dto.in;
 
+import com.example.momobe.settlement.domain.enums.BankCode;
 import lombok.*;
 
 import javax.validation.constraints.Max;
@@ -24,9 +25,9 @@ public class PointWithdrawalDto {
         @NotBlank
         private String name;
         @NotBlank
-        private String bank;
+        private BankCode bank;
         @NotBlank
         @Max(16)
-        private Long account;
+        private String account;
     }
 }
