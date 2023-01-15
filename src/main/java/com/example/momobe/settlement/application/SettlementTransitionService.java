@@ -38,7 +38,7 @@ public class SettlementTransitionService {
     private final UserRepository userRepository;
 
 
-    @Scheduled(cron = "30 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void transitionOfPayment() {
         List<Long> meetingId = checkSettlementService.checkEndMeetingExist();
         meetingId.forEach(
