@@ -2,6 +2,7 @@ package com.example.momobe.settlement.ui;
 
 import com.example.momobe.common.resolver.Token;
 import com.example.momobe.common.resolver.UserInfo;
+import com.example.momobe.settlement.application.OpenApiService;
 import com.example.momobe.settlement.application.SettlementWithdrawalService;
 import com.example.momobe.settlement.dto.in.PointWithdrawalDto;
 import com.example.momobe.settlement.dto.out.PointWithdrawalResponseDto;
@@ -15,13 +16,13 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class SettlementWithdrawalController {
     private final SettlementWithdrawalService withdrawalService;
+    private final OpenApiService openApiService;
 
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/settlement/point/withdrawal")
+    @PatchMapping("/mypage/point/withdrawal")
     public PointWithdrawalResponseDto withdrawalPoint(@Token UserInfo userInfo, @Valid @RequestBody PointWithdrawalDto request){
+        boolean verifyBankAccount = openApiService.verifyBankAccount(request.getAccountInfo());
         boolean withdrawal = withdrawalService.deductPoint(userInfo.getId(),request.getAmount());
-        boolean verifyBankAccount = true;
         return PointWithdrawalResponseDto.of(withdrawal,verifyBankAccount);
     }
-
 }
