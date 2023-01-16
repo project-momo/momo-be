@@ -26,11 +26,10 @@ public class Settlement extends BaseTime {
     @Column(nullable = false)
     private Long meeting;
 
-    @ElementCollection
     @Column(nullable = false)
-    private List<Long> reservation;
+    private Long reservation;
 
-    public Settlement(Long amount, Long host, Long meeting, List<Long> reservation) {
+    public Settlement(Long amount, Long host, Long meeting, Long reservation) {
         this.amount = amount;
         this.host = host;
         this.meeting = meeting;
