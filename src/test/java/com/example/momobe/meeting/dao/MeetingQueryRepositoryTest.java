@@ -61,7 +61,7 @@ class MeetingQueryRepositoryTest {
 
         // when
         Page<MeetingResponseDto> meetings =
-                meetingQueryRepository.findAll(null, null, PageRequest.of(0, 3));
+                meetingQueryRepository.findAll(null, null, null, PageRequest.of(0, 3));
 
         // then
         assertThat(meetings).isNotNull();
