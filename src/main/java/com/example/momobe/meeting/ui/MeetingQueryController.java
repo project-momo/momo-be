@@ -25,8 +25,9 @@ public class MeetingQueryController {
     @GetMapping
     public PageResponseDto<MeetingResponseDto> meetingQuery(@PathParam("keyword") String keyword,
                                                             @PathParam("category") Category category,
+                                                            @PathParam("tag") String tag,
                                                             Pageable pageable) {
-        return PageResponseDto.of(meetingQueryRepository.findAll(keyword, category, pageable));
+        return PageResponseDto.of(meetingQueryRepository.findAll(keyword, category, tag, pageable));
     }
 
     @GetMapping("/{meeting-id}")
