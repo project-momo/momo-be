@@ -28,7 +28,7 @@ class PaymentCancelEventListenerTest {
     @DisplayName("예기치 못한 예외가 발생했을 때 UnableToProcess로 throw한다")
     void cancel() {
         //given
-        BDDMockito.willThrow(new RuntimeException()).given(paymentCancelService).cancelPayment(any(), any());
+        BDDMockito.willThrow(new RuntimeException()).given(paymentCancelService).process(any(), any());
         //when
         //then
         Assertions.assertThatThrownBy(() -> paymentCancelEventListener.cancel(ReservationEvent.PaymentCancel.builder().build()))

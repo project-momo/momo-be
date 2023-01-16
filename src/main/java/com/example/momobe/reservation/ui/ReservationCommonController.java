@@ -36,9 +36,9 @@ public class ReservationCommonController {
     @PatchMapping("/{meetingId}/reservations/{reservationId}")
     public void patchReservation(@PathVariable Long meetingId,
                                  @PathVariable Long reservationId,
-                                 @Valid @RequestBody PatchReservationDto isAccepted,
+                                 @Valid @RequestBody PatchReservationDto request,
                                  @Token UserInfo userInfo) {
-        reservationConfirmService.confirm(meetingId, reservationId, userInfo, Boolean.valueOf(isAccepted.getIsAccepted()));
+        reservationConfirmService.confirm(meetingId, reservationId, userInfo, request);
     }
 
     @ResponseStatus(NO_CONTENT)

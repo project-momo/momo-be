@@ -22,10 +22,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -38,58 +35,22 @@ class PaymentRequestServiceTest {
     @Mock
     ApiService<PaymentResultDto> apiService;
 
-    HttpEntity<JSONObject> httpEntity;
-
-    String secret ="secret";
-    String url = "https://api.tosspayments.com/v1/payments/";
-    String orderId = "order";
-    String paymentKey = "payment";
-    Long amount = 1000L;
-
-    @BeforeEach
-    void init() {
-        ReflectionTestUtils.setField(paymentRequestService, "secretKey", secret);
-        ReflectionTestUtils.setField(paymentRequestService, "tossUrl", url);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        JSONObject param = new JSONObject();
-
-        String authKey = Arrays.toString(Base64.getEncoder().encode(secret.getBytes(StandardCharsets.UTF_8)));
-
-        httpHeaders.setBasicAuth(authKey);
-        httpHeaders.setContentType(APPLICATION_JSON);
-        httpHeaders.setAccept(Collections.singletonList(APPLICATION_JSON));
-
-        param.put("orderId", orderId);
-        param.put("amount", amount);
-
-        httpEntity = new HttpEntity<>(param, httpHeaders);
-    }
-
     @Test
-    @DisplayName("restTemplate이 1회 호출된다")
+    @DisplayName("요청 흐름 테스트")
     void test1()  {
         //given
-        given(apiService.post(any(),any(), any())).willReturn(ResponseEntity.of(Optional.of(PaymentResultDto.builder().build())));
+        PaymentResultDto response = PaymentResultDto.builder().build();
+        given(apiService.post(any(),any(), any())).willReturn(ResponseEntity.of(Optional.of(response)));
+
+        String paymentKey = "paymentKey";
+        Map<String, Object> map = new HashMap<>();
+        map.put("map", "map");
+        map.put("num", "num");
 
         //when
-        PaymentResultDto result = paymentRequestService.requestPayment(paymentKey, orderId, 1000L);
+        PaymentResultDto result = paymentRequestService.process(paymentKey, map);
 
         //then
-        verify(apiService, Mockito.times(1)).post(url + paymentKey, httpEntity, PaymentResultDto.class);
-    }
-
-    @Test
-    @DisplayName("결제 요청 흐름 테스트")
-    void test2()  {
-        //given
-        PaymentResultDto dto = PaymentResultDto.builder().build();
-        given(apiService.post(url + paymentKey,httpEntity, PaymentResultDto.class)).willReturn(ResponseEntity.of(Optional.of(dto)));
-
-        //when
-        PaymentResultDto result = paymentRequestService.requestPayment(paymentKey, orderId, 1000L);
-
-        //then
-        Assertions.assertThat(dto).isEqualTo(result);
+        Assertions.assertThat(result).isEqualTo(response);
     }
 }

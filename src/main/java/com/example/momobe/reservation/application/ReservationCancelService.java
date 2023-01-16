@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.momobe.common.exception.enums.ErrorCode.CONFIRMED_RESERVATION;
 import static com.example.momobe.common.exception.enums.ErrorCode.REQUEST_DENIED;
 
 @Service
@@ -19,6 +19,7 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
     private final ReservationCommonService reservationCommonService;
     private ApplicationEventPublisher applicationEventPublisher;
 
+    @Transactional
     public void cancelReservation(Long reservationId, DeleteReservationDto deleteReservationDto, UserInfo userInfo) {
         Reservation reservation = reservationCommonService.getReservationOrThrowException(reservationId);
 

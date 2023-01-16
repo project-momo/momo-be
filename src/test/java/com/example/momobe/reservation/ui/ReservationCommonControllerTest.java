@@ -374,7 +374,8 @@ class ReservationCommonControllerTest {
                                 parameterWithName("reservationId").description("예약 아이디")
                         ),
                         requestFields(
-                                fieldWithPath("isAccepted").description("요청은 반드시 대/소문자 상관 없이 true or false여야 합니다.")
+                                fieldWithPath("isAccepted").description("요청은 반드시 대/소문자 상관 없이 true or false여야 합니다."),
+                                fieldWithPath("message").description("반려 사유")
                         )
                         ));
     }
@@ -385,7 +386,7 @@ class ReservationCommonControllerTest {
         //given
         PatchReservationDto request = new PatchReservationDto("true");
         String json = objectMapper.writeValueAsString(request);
-        willThrow(new CanNotChangeReservationStateException(REQUEST_DENIED)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), anyBoolean());
+        willThrow(new CanNotChangeReservationStateException(REQUEST_DENIED)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), any(PatchReservationDto.class));
 
         //when
         ResultActions perform = mockMvc.perform(patch("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
@@ -406,7 +407,8 @@ class ReservationCommonControllerTest {
                                 parameterWithName("reservationId").description("예약 아이디")
                         ),
                         requestFields(
-                                fieldWithPath("isAccepted").description("요청은 반드시 대/소문자 상관 없이 true or false여야 합니다.")
+                                fieldWithPath("isAccepted").description("요청은 반드시 대/소문자 상관 없이 true or false여야 합니다."),
+                                fieldWithPath("message").description("반려 사유")
                         )
                 ));
     }
@@ -417,7 +419,7 @@ class ReservationCommonControllerTest {
         //given
         PatchReservationDto request = new PatchReservationDto("true");
         String json = objectMapper.writeValueAsString(request);
-        willThrow(new MeetingNotFoundException(DATA_NOT_FOUND)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), anyBoolean());
+        willThrow(new MeetingNotFoundException(DATA_NOT_FOUND)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), any(PatchReservationDto.class));
 
         //when
         ResultActions perform = mockMvc.perform(patch("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
@@ -438,7 +440,8 @@ class ReservationCommonControllerTest {
                                parameterWithName("reservationId").description("존재하지 않는 예약 아이디")
                         ),
                         requestFields(
-                                fieldWithPath("isAccepted").description("true(승인), false(거절)")
+                                fieldWithPath("isAccepted").description("true(승인), false(거절)"),
+                                fieldWithPath("message").description("반려 사유")
                         )
                 ));
     }
@@ -449,7 +452,7 @@ class ReservationCommonControllerTest {
         //given
         PatchReservationDto request = new PatchReservationDto("true");
         String json = objectMapper.writeValueAsString(request);
-        willThrow(new CanNotChangeReservationStateException(CONFIRMED_RESERVATION)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), anyBoolean());
+        willThrow(new CanNotChangeReservationStateException(CONFIRMED_RESERVATION)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), any(PatchReservationDto.class));
 
         //when
         ResultActions perform = mockMvc.perform(patch("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
@@ -470,7 +473,8 @@ class ReservationCommonControllerTest {
                                 parameterWithName("reservationId").description("예약 아이디")
                         ),
                         requestFields(
-                                fieldWithPath("isAccepted").description("true(승인), false(거절)")
+                                fieldWithPath("isAccepted").description("true(승인), false(거절)"),
+                                fieldWithPath("message").description("반려 사유")
                         )
                 ));
     }
@@ -501,7 +505,8 @@ class ReservationCommonControllerTest {
                                 parameterWithName("reservationId").description("예약 아이디")
                         ),
                         requestFields(
-                                fieldWithPath("isAccepted").description("true(승인), false(거절)")
+                                fieldWithPath("isAccepted").description("true(승인), false(거절)"),
+                                fieldWithPath("message").description("반려 사유")
                         )
                 ));
     }

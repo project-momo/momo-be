@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class PaymentProgressService {
@@ -19,6 +22,14 @@ public class PaymentProgressService {
 
         if (paymentVerificationService.verify(amount, payment)) payment.setPaymentKey(paymentKey);
 
-        return paymentRequestService.requestPayment(paymentKey, orderId, amount);
+        Map<String, Object> map = createMap(orderId, amount);
+        return paymentRequestService.process(paymentKey, map);
+    }
+
+    private Map<String, Object> createMap(String orderId, Long amount) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+        map.put("amount", amount);
+        return map;
     }
 }
