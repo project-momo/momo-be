@@ -4,6 +4,8 @@ import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,6 +14,8 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class MeetingResponseDto {
     private final Long meetingId;
     private final String category;
