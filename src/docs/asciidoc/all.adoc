@@ -140,6 +140,19 @@ include::{snippets}/mypage/meetings/participants/http-response.adoc[]
 [caption=]
 include::{snippets}/mypage/meetings/participants/response-fields.adoc[]
 
+***
+=== 모임 랭킹 조회
+.http-request
+include::{snippets}/rankings/200/http-request.adoc[]
+
+.http-response
+include::{snippets}/rankings/200/http-response.adoc[]
+
+.response-fields
+[caption=]
+include::{snippets}/rankings/200/response-fields.adoc[]
+
+
 == 질문/답변 조회
 === 성공 200
 
@@ -286,6 +299,148 @@ include::{snippets}/postReservation/409/full/request-fields.adoc[]
 
 .http-response
 include::{snippets}/postReservation/409/full/http-response.adoc[]
+
+== 예약취소
+=== 성공 204
+
+.http-request
+include::{snippets}/deleteReservation/204/http-request.adoc[]
+
+.request-headers
+include::{snippets}/deleteReservation/204/request-headers.adoc[]
+
+.request-fields
+include::{snippets}/deleteReservation/204/request-fields.adoc[]
+
+.http-response
+include::{snippets}/deleteReservation/204/http-response.adoc[]
+
+=== 실패 400
+
+.http-request
+include::{snippets}/deleteReservation/400/http-request.adoc[]
+
+.request-headers
+include::{snippets}/deleteReservation/400/request-headers.adoc[]
+
+.request-fields
+include::{snippets}/deleteReservation/400/request-fields.adoc[]
+
+.http-response
+include::{snippets}/deleteReservation/400/http-response.adoc[]
+
+=== 실패 403
+
+.http-request
+include::{snippets}/deleteReservation/403/http-request.adoc[]
+
+.request-headers
+include::{snippets}/deleteReservation/403/request-headers.adoc[]
+
+.request-fields
+include::{snippets}/deleteReservation/403/request-fields.adoc[]
+
+.http-response
+include::{snippets}/deleteReservation/403/http-response.adoc[]
+
+=== 실패 404
+
+.http-request
+include::{snippets}/deleteReservation/404/http-request.adoc[]
+
+.request-headers
+include::{snippets}/deleteReservation/404/request-headers.adoc[]
+
+.request-fields
+include::{snippets}/deleteReservation/404/request-fields.adoc[]
+
+.http-response
+include::{snippets}/deleteReservation/404/http-response.adoc[]
+
+=== 실패 409
+
+.http-request
+include::{snippets}/deleteReservation/409/http-request.adoc[]
+
+.request-headers
+include::{snippets}/deleteReservation/409/request-headers.adoc[]
+
+.request-fields
+include::{snippets}/deleteReservation/409/request-fields.adoc[]
+
+.http-response
+include::{snippets}/deleteReservation/409/http-response.adoc[]
+
+== 예약 승인&거절
+=== 성공 204
+
+.http-request
+include::{snippets}/patchReservation/200/http-request.adoc[]
+
+.request-headers
+include::{snippets}/patchReservation/200/request-headers.adoc[]
+
+.request-fields
+include::{snippets}/patchReservation/200/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patchReservation/200/http-response.adoc[]
+
+=== 실패 400
+
+.http-request
+include::{snippets}/patchReservation/400/http-request.adoc[]
+
+.request-headers
+include::{snippets}/patchReservation/400/request-headers.adoc[]
+
+.request-fields
+include::{snippets}/patchReservation/400/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patchReservation/400/http-response.adoc[]
+
+=== 실패 403
+
+.http-request
+include::{snippets}/patchReservation/403/http-request.adoc[]
+
+.request-headers
+include::{snippets}/patchReservation/403/request-headers.adoc[]
+
+.request-fields
+include::{snippets}/patchReservation/403/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patchReservation/403/http-response.adoc[]
+
+=== 실패 404
+
+.http-request
+include::{snippets}/patchReservation/404/http-request.adoc[]
+
+.request-headers
+include::{snippets}/patchReservation/404/request-headers.adoc[]
+
+.request-fields
+include::{snippets}/patchReservation/404/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patchReservation/404/http-response.adoc[]
+
+=== 실패 409
+
+.http-request
+include::{snippets}/patchReservation/409/http-request.adoc[]
+
+.request-headers
+include::{snippets}/patchReservation/409/request-headers.adoc[]
+
+.request-fields
+include::{snippets}/patchReservation/409/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patchReservation/409/http-response.adoc[]
 
 == 로그인 및 회원가입
 === 성공 200
