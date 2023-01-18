@@ -1,5 +1,6 @@
 package com.example.momobe.meeting.infarstructure;
 
+import com.example.momobe.meeting.constants.MeetingConstants;
 import com.example.momobe.meeting.domain.MeetingRankingStore;
 import com.example.momobe.user.infrastructure.UnableToProcessException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.example.momobe.common.exception.enums.ErrorCode.UNABLE_TO_PROCESS;
+import static com.example.momobe.meeting.constants.MeetingConstants.*;
 
 @Slf4j
 @Repository
@@ -25,7 +27,7 @@ public class MeetingRankingStoreImpl<T> implements MeetingRankingStore<T> {
     private final ObjectMapper objectMapper;
 
     private ZSetOperations<String, String> zSetOperations;
-    private final String KEY = "RANKING";
+    private final String KEY = RANKING_CACHE_KEY;
 
     @PostConstruct
     public void init() {
