@@ -4,9 +4,12 @@ import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.dao.MeetingDetailQueryRepository;
 import com.example.momobe.meeting.dao.MeetingQueryRepository;
+import com.example.momobe.meeting.domain.MeetingRankingStore;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.dto.out.MeetingDetailResponseDto;
+import com.example.momobe.meeting.dto.out.MeetingRankDto;
 import com.example.momobe.meeting.dto.out.MeetingResponseDto;
+import com.example.momobe.meeting.mapper.MeetingRankMapper;
 import com.example.momobe.question.dto.out.ResponseQuestionDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,15 +51,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(SecurityTestConfig.class)
 @AutoConfigureRestDocs
 class MeetingQueryControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
     private JwtArgumentResolver jwtArgumentResolver;
+
     @MockBean
     private MeetingQueryRepository meetingQueryRepository;
+
     @MockBean
     private MeetingDetailQueryRepository meetingDetailQueryRepository;
+
+    @MockBean
+    private MeetingRankingStore<MeetingRankDto> meetingRankingStore;
+
+    @MockBean
+    private MeetingRankMapper meetingRankMapper;
 
     @Test
     void meetingQuery() throws Exception {
