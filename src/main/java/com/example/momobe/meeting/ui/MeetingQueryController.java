@@ -1,8 +1,6 @@
 package com.example.momobe.meeting.ui;
 
 import com.example.momobe.common.dto.PageResponseDto;
-import com.example.momobe.meeting.application.MeetingRankingUpdateService;
-import com.example.momobe.meeting.constants.MeetingConstants;
 import com.example.momobe.meeting.dao.MeetingDetailQueryRepository;
 import com.example.momobe.meeting.dao.MeetingQueryRepository;
 import com.example.momobe.meeting.domain.MeetingRankingStore;
