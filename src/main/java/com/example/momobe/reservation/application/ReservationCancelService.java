@@ -4,7 +4,7 @@ import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.reservation.domain.CanNotChangeReservationStateException;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.reservation.dto.in.DeleteReservationDto;
-import com.example.momobe.reservation.event.ReservationEvent;
+import com.example.momobe.reservation.event.ReservationCanceledEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -30,7 +30,7 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
     }
 
     private void publishCancelEvent(DeleteReservationDto deleteReservationDto, Reservation reservation) {
-        ReservationEvent.PaymentCancel paymentCancelEvent = reservation.createCancelEvent(deleteReservationDto.getPaymentKey(), deleteReservationDto.getCancelReason());
+        ReservationCanceledEvent.PaymentCancel paymentCancelEvent = reservation.createCancelEvent(deleteReservationDto.getPaymentKey(), deleteReservationDto.getCancelReason());
         applicationEventPublisher.publishEvent(paymentCancelEvent);
     }
 
