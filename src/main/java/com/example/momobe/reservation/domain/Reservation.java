@@ -2,7 +2,7 @@ package com.example.momobe.reservation.domain;
 
 import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.reservation.domain.enums.ReservationState;
-import com.example.momobe.reservation.event.ReservationEvent;
+import com.example.momobe.reservation.event.ReservationCanceledEvent;
 import lombok.*;
 
 import javax.persistence.*;
@@ -75,8 +75,8 @@ public class Reservation extends BaseTime {
 
     public void setPaymentId(Long paymentId) { this.paymentId = paymentId; }
 
-    public ReservationEvent.PaymentCancel createCancelEvent(String paymentKey, String reasonMessage) {
-        return ReservationEvent.PaymentCancel.builder()
+    public ReservationCanceledEvent.PaymentCancel createCancelEvent(String paymentKey, String reasonMessage) {
+        return ReservationCanceledEvent.PaymentCancel.builder()
                 .paymentKey(paymentKey)
                 .reason(reasonMessage)
                 .paymentId(this.paymentId)
