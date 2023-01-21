@@ -1,7 +1,7 @@
 package com.example.momobe.payment.application;
 
 import com.example.momobe.payment.domain.UnableProceedPaymentException;
-import com.example.momobe.reservation.event.ReservationEvent;
+import com.example.momobe.reservation.event.ReservationCanceledEvent;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class PaymentCancelEventListenerTest {
         BDDMockito.willThrow(new RuntimeException()).given(paymentCancelService).process(any(), any());
         //when
         //then
-        Assertions.assertThatThrownBy(() -> paymentCancelEventListener.cancel(ReservationEvent.PaymentCancel.builder().build()))
+        Assertions.assertThatThrownBy(() -> paymentCancelEventListener.cancel(ReservationCanceledEvent.PaymentCancel.builder().build()))
                 .isInstanceOf(UnableProceedPaymentException.class);
     }
 }

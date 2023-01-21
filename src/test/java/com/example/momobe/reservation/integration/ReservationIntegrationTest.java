@@ -635,6 +635,6 @@ public class ReservationIntegrationTest {
 
         //then
         perform.andExpect(status().isOk());
-        Assertions.assertThat(reservation.getReservationState()).isEqualTo(ReservationState.CANCEL);
+        Assertions.assertThat(reservation.getReservationState()).isEqualTo(ReservationState.DENY);
     }
 }

@@ -1,4 +1,4 @@
-# 모두의 모임 - Beckend
+# 모두의 모임 - Beckend (개발 중)
   
 ## 설계 :family:
 ![image](https://user-images.githubusercontent.com/97802103/212646892-7e78063d-2a13-441d-8d38-34dcde86f58e.png)

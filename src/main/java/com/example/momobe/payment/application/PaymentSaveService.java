@@ -11,9 +11,7 @@ import static com.example.momobe.payment.domain.enums.PayType.*;
 @Service
 public class PaymentSaveService {
     private final PaymentRepository paymentRepository;
-
     private final String successUrl;
-
     private final String failUrl;
 
     public PaymentSaveService(PaymentRepository paymentRepository,
