@@ -1,6 +1,5 @@
 package com.example.momobe.meeting.dto.in;
 
-import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,8 +18,8 @@ import static lombok.AccessLevel.PRIVATE;
 @Builder
 @AllArgsConstructor(access = PRIVATE)
 public class MeetingRequestDto {
-    @NotNull
-    private Category category;
+    @NotBlank
+    private String category;
     @NotBlank
     private String title;
     @NotBlank
