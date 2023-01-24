@@ -15,7 +15,7 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 public class ReservationCommonService {
     private final ReservationRepository reservationRepository;
 
-    public Reservation getReservationOrThrowException(Long reservationId) {
+    public Reservation getReservation(Long reservationId) {
         return reservationRepository.findById(reservationId).orElseThrow(() -> new CanNotFoundReservationException(DATA_NOT_FOUND));
     }
 }
