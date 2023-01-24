@@ -20,13 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class MailSendService {
     private final MailSender mailSender;
 
-    private final String ACCEPT_TITLE = "요청하신 예약이 수락되었습니다";
-    private final String ACCEPT_CONTENT = "요청하신 예약이 수락되었습니다!" +
+    protected final static String ACCEPT_TITLE = "요청하신 예약이 수락되었습니다";
+    protected final static String ACCEPT_CONTENT = "요청하신 예약이 수락되었습니다!" +
             "마이페이지에서 예약 내역을 확인하세요." +
             "(프론트 페이지 완성 후 링크)";
 
-    private final String DENY_TITLE = "요청하신 예약이 거부되었습니다";
-    private final String DENY_CONTENT = "요청하신 예약이 거부되었습니다." +
+    protected final static String DENY_TITLE = "요청하신 예약이 거부되었습니다";
+    protected final static String DENY_CONTENT = "요청하신 예약이 거부되었습니다." +
         "결제 금액 반환은 영업일 제외 7일 이내에 처리됩니다.";
 
     public void sendTo(String address, MailType mailType) {
@@ -38,7 +38,7 @@ public class MailSendService {
         }
     }
 
-    private MailDto createMail(String address, MailType mailType) {
+    protected MailDto createMail(String address, MailType mailType) {
         if (mailType.equals(MailType.ACCEPT)) {
             return new MailDto(address, ACCEPT_TITLE, ACCEPT_CONTENT);
         }
