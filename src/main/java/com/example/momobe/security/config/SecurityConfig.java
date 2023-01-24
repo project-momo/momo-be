@@ -24,6 +24,7 @@ public class SecurityConfig {
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final CustomOAuth2Service customOAuth2Service;
 
+    //TODO : 프론트 배포 완료 시 반드시 인가 설정 수정할 것
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
