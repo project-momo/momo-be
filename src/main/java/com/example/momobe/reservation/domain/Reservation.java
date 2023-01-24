@@ -75,8 +75,8 @@ public class Reservation extends BaseTime {
 
     public void setPaymentId(Long paymentId) { this.paymentId = paymentId; }
 
-    public ReservationCanceledEvent.PaymentCancel createCancelEvent(String paymentKey, String reasonMessage) {
-        return ReservationCanceledEvent.PaymentCancel.builder()
+    public ReservationCanceledEvent createCancelEvent(String paymentKey, String reasonMessage) {
+        return ReservationCanceledEvent.builder()
                 .paymentKey(paymentKey)
                 .reason(reasonMessage)
                 .paymentId(this.paymentId)

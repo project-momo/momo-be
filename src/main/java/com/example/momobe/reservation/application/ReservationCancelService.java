@@ -8,6 +8,7 @@ import com.example.momobe.reservation.event.ReservationCanceledEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
     }
 
     private void publishCancelEvent(DeleteReservationDto deleteReservationDto, Reservation reservation) {
-        ReservationCanceledEvent.PaymentCancel paymentCancelEvent = reservation.createCancelEvent(deleteReservationDto.getPaymentKey(), deleteReservationDto.getCancelReason());
+        ReservationCanceledEvent paymentCancelEvent = reservation.createCancelEvent(deleteReservationDto.getPaymentKey(), deleteReservationDto.getCancelReason());
         applicationEventPublisher.publishEvent(paymentCancelEvent);
     }
 
@@ -39,7 +40,7 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
     }
 
     @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+    public void setApplicationEventPublisher(@NonNull ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 }
