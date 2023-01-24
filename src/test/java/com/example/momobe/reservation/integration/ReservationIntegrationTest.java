@@ -11,9 +11,11 @@ import com.example.momobe.reservation.domain.ReservedUser;
 import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.example.momobe.reservation.dto.in.PatchReservationDto;
 import com.example.momobe.reservation.dto.in.PostReservationDto;
+import com.example.momobe.reservation.event.ReservationConfirmedEvent;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.user.domain.Email;
 import com.example.momobe.user.domain.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +25,10 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.event.ApplicationEvents;
+import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -52,6 +58,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "jwt.secretKey=only_test_secret_Key_value_gn..rlfdlrkqnwhrgkekspdy",
         "jwt.refreshKey=only_test_refresh_key_value_gn..rlfdlrkqnwhrgkekspdy"
 })
+@RecordApplicationEvents
 @AutoConfigureMockMvc
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 public class ReservationIntegrationTest {
@@ -70,6 +77,9 @@ public class ReservationIntegrationTest {
     @Autowired
     EntityManager em;
 
+    @Autowired
+    ApplicationEvents applicationEvents;
+
     private Meeting meeting;
     private Meeting closedMeeting;
     private Meeting freeScheduledMeeting;
@@ -79,7 +89,6 @@ public class ReservationIntegrationTest {
     private String userNickname;
     private Reservation reservation;
     private String hostToken;
-    private User host;
 
     @BeforeEach
     void init() {
@@ -641,5 +650,24 @@ public class ReservationIntegrationTest {
         //then
         perform.andExpect(status().isOk());
         Assertions.assertThat(reservation.getReservationState()).isEqualTo(ReservationState.DENY);
+    }
+
+    @Test
+    void mailEventListenerTest() throws Exception {
+        //given
+        ReflectionTestUtils.setField(reservation, "reservationState", ReservationState.PAYMENT_SUCCESS);
+
+        PatchReservationDto request = new PatchReservationDto(Boolean.FALSE.toString());
+        String json = objectMapper.writeValueAsString(request);
+
+        //when
+        ResultActions perform = mockMvc.perform(patch("/meetings/{meetingId}/reservations/{reservationId}", meeting.getId(), reservation.getId())
+                .contentType(APPLICATION_JSON)
+                .content(json)
+                .header(JWT_HEADER, hostToken));
+
+        //then
+        long result = applicationEvents.stream(ReservationConfirmedEvent.class).count();
+        Assertions.assertThat(result).isEqualTo(1L);
     }
 }
