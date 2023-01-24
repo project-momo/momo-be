@@ -12,7 +12,7 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ReservationCommonService {
+public class ReservationFindService {
     private final ReservationRepository reservationRepository;
 
     public Reservation getReservation(Long reservationId) {

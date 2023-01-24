@@ -14,12 +14,12 @@ public class PaymentCommonService {
     private final PaymentRepository paymentRepository;
 
     @Transactional(readOnly = true)
-    public Payment getPaymentOrThrowException(String paymentId) {
+    public Payment getPayment(String paymentId) {
         return paymentRepository.findPaymentByOrderId(paymentId).orElseThrow(() -> new UnableProceedPaymentException(ErrorCode.DATA_NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
-    public Payment getPaymentOrThrowException(Long paymentId) {
+    public Payment getPayment(Long paymentId) {
         return paymentRepository.findById(paymentId).orElseThrow(() -> new UnableProceedPaymentException(ErrorCode.DATA_NOT_FOUND));
     }
 }

@@ -16,12 +16,12 @@ import static com.example.momobe.common.exception.enums.ErrorCode.REQUEST_DENIED
 @Service
 @RequiredArgsConstructor
 public class ReservationCancelService implements ApplicationEventPublisherAware {
-    private final ReservationCommonService reservationCommonService;
+    private final ReservationFindService reservationFindService;
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public void cancelReservation(Long reservationId, DeleteReservationDto deleteReservationDto, UserInfo userInfo) {
-        Reservation reservation = reservationCommonService.getReservation(reservationId);
+        Reservation reservation = reservationFindService.getReservation(reservationId);
 
         checkAvailableOfCancel(userInfo, reservation);
         reservation.cancel();

@@ -31,7 +31,7 @@ public class PaymentCancelEventListener {
 
         try {
             paymentCancelService.process(event.getPaymentKey(), map);
-            Payment payment = paymentCommonService.getPaymentOrThrowException(event.getPaymentId());
+            Payment payment = paymentCommonService.getPayment(event.getPaymentId());
             payment.cancel();
         } catch (UnableProceedPaymentException e) {
             log.error("",e);

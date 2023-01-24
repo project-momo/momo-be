@@ -6,7 +6,6 @@ import com.example.momobe.payment.domain.UnableProceedPaymentException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,7 +31,7 @@ class PaymentCommonServiceTest {
         given(paymentRepository.findPaymentByOrderId(ID1.toString())).willReturn(Optional.empty());
 
         //when then
-        assertThatThrownBy(() -> paymentCommonService.getPaymentOrThrowException(ID1.toString()))
+        assertThatThrownBy(() -> paymentCommonService.getPayment(ID1.toString()))
                 .isInstanceOf(UnableProceedPaymentException.class);
     }
 
@@ -44,7 +43,7 @@ class PaymentCommonServiceTest {
         given(paymentRepository.findPaymentByOrderId(ID1.toString())).willReturn(Optional.of(payment));
 
         //when
-        Payment result = paymentCommonService.getPaymentOrThrowException(ID1.toString());
+        Payment result = paymentCommonService.getPayment(ID1.toString());
 
         //then
         assertThat(payment).isEqualTo(result);
@@ -58,7 +57,7 @@ class PaymentCommonServiceTest {
         given(paymentRepository.findById(ID1)).willReturn(Optional.of(payment));
 
         //when
-        Payment result = paymentCommonService.getPaymentOrThrowException(ID1);
+        Payment result = paymentCommonService.getPayment(ID1);
 
         //then
         assertThat(payment).isEqualTo(result);
@@ -71,7 +70,7 @@ class PaymentCommonServiceTest {
         given(paymentRepository.findById(ID1)).willReturn(Optional.empty());
 
         //when then
-        assertThatThrownBy(() -> paymentCommonService.getPaymentOrThrowException(ID1))
+        assertThatThrownBy(() -> paymentCommonService.getPayment(ID1))
                 .isInstanceOf(UnableProceedPaymentException.class);
     }
 }

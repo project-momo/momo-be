@@ -18,7 +18,7 @@ public class PaymentProgressService {
 
     @Transactional
     public PaymentResultDto progress(String orderId, String paymentKey, Long amount) {
-        Payment payment = paymentCommonService.getPaymentOrThrowException(orderId);
+        Payment payment = paymentCommonService.getPayment(orderId);
 
         if (paymentVerificationService.verify(amount, payment)) payment.setPaymentKey(paymentKey);
 
