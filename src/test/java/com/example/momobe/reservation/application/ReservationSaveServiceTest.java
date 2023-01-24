@@ -126,7 +126,7 @@ class ReservationSaveServiceTest {
     @DisplayName("meetingCommonService가 1회 호출된다")
     void reserveTest_verify1() {
         //given
-        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeeting(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
         given(paymentSaveService.save(any())).willReturn(payment);
 
@@ -134,14 +134,14 @@ class ReservationSaveServiceTest {
         PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
-        verify(meetingCommonService, times(1)).getMeetingOrThrowException(any());
+        verify(meetingCommonService, times(1)).getMeeting(any());
     }
 
     @Test
     @DisplayName("reservationMapper가 인자별로 각 1회씩 총 2회 호출된다")
     void reserveTest_verify2() {
         //given
-        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeeting(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
         given(paymentSaveService.save(any())).willReturn(payment);
 
@@ -157,7 +157,7 @@ class ReservationSaveServiceTest {
     @DisplayName("countExistReservationService가 1회 호출된다.")
     void reserveTest_verify3() {
         //given
-        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeeting(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
         given(paymentSaveService.save(any())).willReturn(payment);
 
@@ -172,7 +172,7 @@ class ReservationSaveServiceTest {
     @DisplayName("reservationRepository가 1회 호출된다.")
     void reserveTest_verify4() {
         //given
-        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeeting(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
         given(paymentSaveService.save(any())).willReturn(payment);
 
@@ -187,7 +187,7 @@ class ReservationSaveServiceTest {
     @DisplayName("reservationState가 Before인 경우 savePaymentService가 1회 호출된다.")
     void reserveTest_verify5() {
         //given
-        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeeting(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
         given(paymentSaveService.save(any())).willReturn(payment);
 
@@ -203,7 +203,7 @@ class ReservationSaveServiceTest {
     void reserveTest_verify6() {
         //givne
         ReflectionTestUtils.setField(reservation, "reservationState", ReservationState.PAYMENT_SUCCESS);
-        given(meetingCommonService.getMeetingOrThrowException(any())).willReturn(meeting);
+        given(meetingCommonService.getMeeting(any())).willReturn(meeting);
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when

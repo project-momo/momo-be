@@ -21,7 +21,7 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
 
     @Transactional
     public void cancelReservation(Long reservationId, DeleteReservationDto deleteReservationDto, UserInfo userInfo) {
-        Reservation reservation = reservationCommonService.getReservationOrThrowException(reservationId);
+        Reservation reservation = reservationCommonService.getReservation(reservationId);
 
         checkAvailableOfCancel(userInfo, reservation);
         reservation.cancel();

@@ -7,7 +7,6 @@ import com.example.momobe.payment.application.PaymentSaveService;
 import com.example.momobe.payment.domain.Payment;
 import com.example.momobe.payment.mapper.PaymentMapper;
 import com.example.momobe.reservation.domain.*;
-import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.dto.out.ReservationPaymentDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
@@ -33,7 +32,7 @@ public class ReservationSaveService {
     private final PaymentMapper paymentMapper;
 
     public PaymentResponseDto reserve(Long meetingId, PostReservationDto reservationDto, UserInfo userInfo) {
-        Meeting meeting = meetingCommonService.getMeetingOrThrowException(meetingId);
+        Meeting meeting = meetingCommonService.getMeeting(meetingId);
 
         checkAvailabilityOfReservations(meetingId, reservationDto, meeting);
         Reservation reservation = saveReservation(reservationDto, userInfo, meeting);

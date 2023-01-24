@@ -19,7 +19,7 @@ public class MeetingUpdateService {
     public void updateMeeting(Long hostId, Long meetingId, MeetingUpdateDto updateDto) {
         List<Long> tagIds = meetingCommonService.verifyAddressesAndFindTagIds(
                 updateDto.getAddress().getAddressIds(), updateDto.getTags());
-        Meeting meeting = meetingCommonService.getMeetingOrThrowException(meetingId);
+        Meeting meeting = meetingCommonService.getMeeting(meetingId);
         Meeting newMeeting = meetingMapper.toMeeting(updateDto, hostId, tagIds);
         meeting.updateMeetingInfo(newMeeting);
     }

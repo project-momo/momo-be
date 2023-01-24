@@ -1,7 +1,6 @@
 package com.example.momobe.meeting.application;
 
 import com.example.momobe.meeting.domain.*;
-import com.example.momobe.meeting.domain.enums.MeetingState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.momobe.common.enums.TestConstants.ID1;
-import static com.example.momobe.common.enums.TestConstants.ID2;
 import static com.example.momobe.meeting.enums.MeetingConstants.generateMeeting;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -37,7 +35,7 @@ class MeetingCommonServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> meetingCommonService.getMeetingOrThrowException(1L))
+        assertThatThrownBy(() -> meetingCommonService.getMeeting(1L))
                 .isInstanceOf(MeetingNotFoundException.class);
     }
 
@@ -57,7 +55,7 @@ class MeetingCommonServiceTest {
         given(meetingRepository.findById(ID1)).willReturn(Optional.of(meeting));
 
         //when
-        Meeting result = meetingCommonService.getMeetingOrThrowException(ID1);
+        Meeting result = meetingCommonService.getMeeting(ID1);
 
         //then
         assertThat(result.getPersonnel()).isEqualTo(meeting.getPersonnel());
