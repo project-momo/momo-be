@@ -4,14 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+@Getter
+@Builder
+@AllArgsConstructor
 public class ReservationCanceledEvent {
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class PaymentCancel {
-        private final String paymentKey;
-        private final String reason;
-        private final Long paymentId;
-    }
+    private final String paymentKey;
+    private final String reason;
+    private final Long paymentId;
 }

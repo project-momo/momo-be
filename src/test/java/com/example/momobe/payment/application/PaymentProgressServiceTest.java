@@ -2,8 +2,6 @@ package com.example.momobe.payment.application;
 
 
 import com.example.momobe.payment.domain.Payment;
-import com.example.momobe.payment.dto.PaymentResultDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +36,7 @@ class PaymentProgressServiceTest {
         paymentProgressService.progress(ID, ID, 1000L);
 
         //then
-        verify(paymentCommonService, Mockito.times(1)).getPaymentOrThrowException(ID);
+        verify(paymentCommonService, Mockito.times(1)).getPayment(ID);
     }
 
     @Test
@@ -46,7 +44,7 @@ class PaymentProgressServiceTest {
     void verifyTest2() {
         //given
         Payment payment = Payment.builder().build();
-        given(paymentCommonService.getPaymentOrThrowException(ID)).willReturn(payment);
+        given(paymentCommonService.getPayment(ID)).willReturn(payment);
 
         //when
         paymentProgressService.progress(ID, ID, 1000L);
@@ -75,7 +73,7 @@ class PaymentProgressServiceTest {
     void verifyTest4() {
         //given
         Payment payment = Payment.builder().build();
-        given(paymentCommonService.getPaymentOrThrowException(ID)).willReturn(payment);
+        given(paymentCommonService.getPayment(ID)).willReturn(payment);
         given(paymentVerificationService.verify(1000L, payment)).willReturn(Boolean.TRUE);
 
         //when

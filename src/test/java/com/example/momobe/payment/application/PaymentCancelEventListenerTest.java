@@ -31,7 +31,7 @@ class PaymentCancelEventListenerTest {
         BDDMockito.willThrow(new RuntimeException()).given(paymentCancelService).process(any(), any());
         //when
         //then
-        Assertions.assertThatThrownBy(() -> paymentCancelEventListener.cancel(ReservationCanceledEvent.PaymentCancel.builder().build()))
+        Assertions.assertThatThrownBy(() -> paymentCancelEventListener.cancel(ReservationCanceledEvent.builder().build()))
                 .isInstanceOf(UnableProceedPaymentException.class);
     }
 }

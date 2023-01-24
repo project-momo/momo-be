@@ -75,8 +75,8 @@ public class Reservation extends BaseTime {
 
     public void setPaymentId(Long paymentId) { this.paymentId = paymentId; }
 
-    public ReservationCanceledEvent.PaymentCancel createCancelEvent(String paymentKey, String reasonMessage) {
-        return ReservationCanceledEvent.PaymentCancel.builder()
+    public ReservationCanceledEvent createCancelEvent(String paymentKey, String reasonMessage) {
+        return ReservationCanceledEvent.builder()
                 .paymentKey(paymentKey)
                 .reason(reasonMessage)
                 .paymentId(this.paymentId)
@@ -87,12 +87,6 @@ public class Reservation extends BaseTime {
         return this.reservedUser.isEqualTo(userId);
     }
 
-    /*
-     * 도메인 이벤트 발생 지점 (cancel, accept)
-     * 로직 완성 이후 주석 삭제 예정
-     * Author : yang_eun_chan
-     * Date : 2022/01/05
-     * */
     private Boolean canChangeStatus() {
         return this.reservationState.equals(PAYMENT_SUCCESS) && !this.reservationDate.isBeforeThen(LocalDateTime.now());
     }

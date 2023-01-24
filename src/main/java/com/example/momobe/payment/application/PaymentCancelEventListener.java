@@ -25,13 +25,13 @@ public class PaymentCancelEventListener {
     private final PaymentCommonService paymentCommonService;
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, classes = ReservationCanceledEvent.PaymentCancel.class)
-    public void cancel(ReservationCanceledEvent.PaymentCancel event) {
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, classes = ReservationCanceledEvent.class)
+    public void cancel(ReservationCanceledEvent event) {
         Map<String, Object> map = createMap(event);
 
         try {
             paymentCancelService.process(event.getPaymentKey(), map);
-            Payment payment = paymentCommonService.getPaymentOrThrowException(event.getPaymentId());
+            Payment payment = paymentCommonService.getPayment(event.getPaymentId());
             payment.cancel();
         } catch (UnableProceedPaymentException e) {
             log.error("",e);
@@ -41,7 +41,7 @@ public class PaymentCancelEventListener {
         }
     }
 
-    private Map<String, Object> createMap(ReservationCanceledEvent.PaymentCancel event) {
+    private Map<String, Object> createMap(ReservationCanceledEvent event) {
         Map<String, Object> map = new HashMap<>();
         map.put("cancelReason", event.getReason());
         return map;

@@ -13,10 +13,10 @@ import static com.example.momobe.common.exception.enums.ErrorCode.DATA_NOT_FOUND
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AddressCommonService {
+public class AddressFindService {
     private final AddressRepository addressRepository;
 
-    public void verifyAddressIdsOrThrowException(List<Long> addressIds) {
+    public void verifyAddressId(List<Long> addressIds) {
         if (Boolean.FALSE.equals(addressRepository.existsAllByIdIn(addressIds))) {
             throw new AddressNotFoundException(DATA_NOT_FOUND);
         }

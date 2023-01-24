@@ -16,7 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -39,7 +38,7 @@ class ReservationConfirmServiceTest {
     MeetingCommonService meetingCommonService;
 
     @Mock
-    ReservationCommonService reservationCommonService;
+    ReservationFindService reservationFindService;
 
     @Mock
     UserMailQueryRepository userMailQueryRepository;
@@ -122,7 +121,7 @@ class ReservationConfirmServiceTest {
     void confirm_test3() {
         //given
         given(meetingCommonService.getMeeting(any())).willReturn(meeting);
-        given(reservationCommonService.getReservation(any())).willReturn(reservation);
+        given(reservationFindService.getReservation(any())).willReturn(reservation);
         given(userMailQueryRepository.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
 
         //when
@@ -137,7 +136,7 @@ class ReservationConfirmServiceTest {
     void confirm_test4() {
         //given
         given(meetingCommonService.getMeeting(any())).willReturn(meeting);
-        given(reservationCommonService.getReservation(any())).willReturn(reservation);
+        given(reservationFindService.getReservation(any())).willReturn(reservation);
         given(userMailQueryRepository.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
 
         //when
@@ -152,7 +151,7 @@ class ReservationConfirmServiceTest {
     void event_test1() {
         //given
         given(meetingCommonService.getMeeting(any())).willReturn(meeting);
-        given(reservationCommonService.getReservation(any())).willReturn(reservation);
+        given(reservationFindService.getReservation(any())).willReturn(reservation);
         given(userMailQueryRepository.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
 
         //when
@@ -167,7 +166,7 @@ class ReservationConfirmServiceTest {
     void event_test2() {
         //given
         given(meetingCommonService.getMeeting(any())).willReturn(meeting);
-        given(reservationCommonService.getReservation(any())).willReturn(reservation);
+        given(reservationFindService.getReservation(any())).willReturn(reservation);
         given(userMailQueryRepository.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
 
         //when

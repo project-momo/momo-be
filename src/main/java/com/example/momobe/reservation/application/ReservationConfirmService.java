@@ -23,7 +23,7 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 @RequiredArgsConstructor
 public class ReservationConfirmService implements ApplicationEventPublisherAware {
     private final MeetingCommonService meetingCommonService;
-    private final ReservationCommonService reservationCommonService;
+    private final ReservationFindService reservationFindService;
     private final UserMailQueryRepository userMailQueryRepository;
     private ApplicationEventPublisher applicationEventPublisher;
 
@@ -47,7 +47,7 @@ public class ReservationConfirmService implements ApplicationEventPublisherAware
     private Reservation validateRequest(Long meetingId, Long reservationId, UserInfo userInfo) {
         Meeting meeting = meetingCommonService.getMeeting(meetingId);
         if (!meeting.matchHostId(userInfo.getId())) throw new CanNotChangeReservationStateException(REQUEST_DENIED);
-        return reservationCommonService.getReservation(reservationId);
+        return reservationFindService.getReservation(reservationId);
     }
 
     private void publishReservationConfirmedEvent(String userMail, MailType mailType) {
