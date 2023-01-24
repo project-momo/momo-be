@@ -37,18 +37,3 @@ public class Settlement extends BaseTime {
         this.reservation = reservation;
     }
 }
-
-
-/**
- * 정산 금액
- * 정산 상태
- * 적립금
- * 정산 일시
- * =========
- * 결제 대금 전환
- * - 결제 요청 성공 시 결제 완료 페이지
- * - 결제 완료 페이지에서 api 호출
- * 1. 결제 상태 체크 -> 결제 상태에 따른 분기 처리()
- * 2. 포인트 금액 변경
- * 3.
- */
