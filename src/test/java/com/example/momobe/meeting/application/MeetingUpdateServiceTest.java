@@ -35,7 +35,7 @@ class MeetingUpdateServiceTest {
     void updateMeeting() {
         // given
         Meeting meeting = generateMeeting(ID1);
-        given(meetingCommonService.getMeetingOrThrowException(ID1))
+        given(meetingCommonService.getMeeting(ID1))
                 .willReturn(meeting);
         given(meetingCommonService.verifyAddressesAndFindTagIds(
                 MEETING_UPDATE_DTO.getAddress().getAddressIds(), MEETING_UPDATE_DTO.getTags()))

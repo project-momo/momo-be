@@ -18,7 +18,7 @@ public class MeetingCloseService {
     private final ReservationRepository reservationRepository;
 
     public void closeMeeting(Long userId, Long meetingId) {
-        meetingCommonService.getMeetingOrThrowException(meetingId)
+        meetingCommonService.getMeeting(meetingId)
                 .closeWithHostId(userId);
         List<Reservation> reservations =
                 reservationRepository.findByMeetingIdAndReservationStateIn(

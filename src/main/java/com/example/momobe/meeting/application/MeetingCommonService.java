@@ -20,7 +20,7 @@ public class MeetingCommonService {
     private final TagCommonService tagCommonService;
     private final AddressCommonService addressCommonService;
 
-    public Meeting getMeetingOrThrowException(Long meetingId) {
+    public Meeting getMeeting(Long meetingId) {
         return meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND));
     }
