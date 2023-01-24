@@ -113,4 +113,8 @@ public class Reservation extends BaseTime {
     public void deny() {
         changeState(DENY);
     }
+
+    public Long getReservedUserId() {
+        return this.reservedUser.getUserId();
+    }
 }
