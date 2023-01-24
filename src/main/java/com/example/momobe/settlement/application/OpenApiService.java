@@ -1,16 +1,14 @@
 package com.example.momobe.settlement.application;
 
 import com.example.momobe.common.exception.enums.ErrorCode;
-import com.example.momobe.settlement.domain.enums.BankCode;
 import com.example.momobe.settlement.domain.exception.NotFoundBankAccountException;
 import com.example.momobe.settlement.dto.in.OpenApiAccessTokenDto;
 import com.example.momobe.settlement.dto.in.OpenApiAccountRealNameDto;
 import com.example.momobe.settlement.dto.in.PointWithdrawalDto;
-import com.example.momobe.settlement.infrastructure.AccessTokenRepository;
+import com.example.momobe.settlement.domain.AccessTokenRepository;
 import com.example.momobe.user.domain.TokenNotFoundException;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
