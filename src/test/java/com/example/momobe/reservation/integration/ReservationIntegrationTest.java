@@ -7,10 +7,12 @@ import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.reservation.domain.Money;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.reservation.domain.ReservationDate;
+import com.example.momobe.reservation.domain.ReservedUser;
 import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.example.momobe.reservation.dto.in.PatchReservationDto;
 import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.security.domain.JwtTokenUtil;
+import com.example.momobe.user.domain.Email;
 import com.example.momobe.user.domain.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
@@ -81,7 +83,9 @@ public class ReservationIntegrationTest {
 
     @BeforeEach
     void init() {
-        User user = User.builder().build();
+        User user = User.builder()
+                .email(new Email(EMAIL2))
+                .build();
         User host = User.builder().build();
         em.persist(user);
         em.persist(host);
@@ -182,6 +186,7 @@ public class ReservationIntegrationTest {
                         .startTime(LocalTime.of(10,0))
                         .endTime(LocalTime.of(22,0))
                         .build())
+                .reservedUser(new ReservedUser(user.getId()))
                 .build();
 
         entityManager.persist(meeting);
