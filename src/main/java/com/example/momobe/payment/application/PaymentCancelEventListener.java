@@ -29,15 +29,16 @@ public class PaymentCancelEventListener {
     public void cancel(ReservationCanceledEvent event) {
         Map<String, Object> map = createMap(event);
 
-        try {
-            paymentCancelService.process(event.getPaymentKey(), map);
-            Payment payment = paymentCommonService.getPayment(event.getPaymentId());
-            payment.cancel();
-        } catch (UnableProceedPaymentException e) {
-            log.error("",e);
-        } catch (Exception e) {
-            log.error("",e);
-            throw new UnableProceedPaymentException(ErrorCode.UNABLE_TO_PROCESS);
+        for (int i=0; i<3; i++) {
+            try {
+                paymentCancelService.process(event.getPaymentKey(), map);
+                Payment payment = paymentCommonService.getPayment(event.getPaymentId());
+                payment.cancel();
+                break;
+            } catch (Exception e) {
+                log.error("결제 취소 요청 " + i + "번 실패", e);
+                sleep(100);
+            }
         }
     }
 
@@ -45,5 +46,13 @@ public class PaymentCancelEventListener {
         Map<String, Object> map = new HashMap<>();
         map.put("cancelReason", event.getReason());
         return map;
+    }
+
+    private void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 }
