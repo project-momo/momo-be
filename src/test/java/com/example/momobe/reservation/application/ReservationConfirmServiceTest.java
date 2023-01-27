@@ -113,7 +113,7 @@ class ReservationConfirmServiceTest {
 
         // when // then
         assertThatThrownBy(() -> reservationConfirmService.confirm(ID1, ID1, userInfo, denyDto))
-                .isInstanceOf(CanNotChangeReservationStateException.class);
+                .isInstanceOf(ReservationException.class);
     }
 
     @Test

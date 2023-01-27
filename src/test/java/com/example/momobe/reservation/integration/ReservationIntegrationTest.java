@@ -653,6 +653,7 @@ public class ReservationIntegrationTest {
     }
 
     @Test
+    @DisplayName("성공적으로 예약을 수락/거절 시 이벤트가 1개 발행된다.")
     void mailEventListenerTest() throws Exception {
         //given
         ReflectionTestUtils.setField(reservation, "reservationState", ReservationState.PAYMENT_SUCCESS);

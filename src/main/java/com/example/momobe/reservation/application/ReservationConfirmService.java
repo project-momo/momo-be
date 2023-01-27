@@ -5,7 +5,7 @@ import com.example.momobe.maill.enums.MailType;
 import com.example.momobe.meeting.application.MeetingCommonService;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.reservation.dao.UserMailQueryRepository;
-import com.example.momobe.reservation.domain.CanNotChangeReservationStateException;
+import com.example.momobe.reservation.domain.ReservationException;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.reservation.dto.in.PatchReservationDto;
 import com.example.momobe.reservation.event.ReservationConfirmedEvent;
@@ -46,7 +46,7 @@ public class ReservationConfirmService implements ApplicationEventPublisherAware
 
     private Reservation validateRequest(Long meetingId, Long reservationId, UserInfo userInfo) {
         Meeting meeting = meetingCommonService.getMeeting(meetingId);
-        if (!meeting.matchHostId(userInfo.getId())) throw new CanNotChangeReservationStateException(REQUEST_DENIED);
+        if (!meeting.matchHostId(userInfo.getId())) throw new ReservationException(REQUEST_DENIED);
         return reservationFindService.getReservation(reservationId);
     }
 

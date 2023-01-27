@@ -1,7 +1,7 @@
 package com.example.momobe.reservation.application;
 
 import com.example.momobe.common.resolver.UserInfo;
-import com.example.momobe.reservation.domain.CanNotChangeReservationStateException;
+import com.example.momobe.reservation.domain.ReservationException;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.reservation.dto.in.DeleteReservationDto;
 import com.example.momobe.reservation.event.ReservationCanceledEvent;
@@ -36,7 +36,7 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
     }
 
     private void checkAvailableOfCancel(UserInfo userInfo, Reservation reservation) {
-        if (!reservation.matchUserId(userInfo.getId())) throw new CanNotChangeReservationStateException(REQUEST_DENIED);
+        if (!reservation.matchUserId(userInfo.getId())) throw new ReservationException(REQUEST_DENIED);
     }
 
     @Override

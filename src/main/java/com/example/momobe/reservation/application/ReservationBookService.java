@@ -12,9 +12,11 @@ import com.example.momobe.reservation.dto.out.ReservationPaymentDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.example.momobe.reservation.mapper.ReservationMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -23,7 +25,7 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ReservationSaveService {
+public class ReservationBookService {
     private final MeetingCommonService meetingCommonService;
     private final ReservationMapper reservationMapper;
     private final ReservationRepository reservationRepository;
@@ -60,28 +62,29 @@ public class ReservationSaveService {
         Long numberOfReservations = countReservationsAtSameTime(meetingId, reservationDate, startTime, endTime);
 
         if (meeting.isClosed()) {
-            throw new ReservationNotPossibleException(CLOSED_MEETING);
+            throw new ReservationException(CLOSED_MEETING);
         }
 
         if (!meeting.verifyRemainingReservations(numberOfReservations)) {
-            throw new ReservationNotPossibleException(FULL_OF_PEOPLE);
+            throw new ReservationException(FULL_OF_PEOPLE);
         }
 
         if (!meeting.verifyReservationSchedule(reservationDate, startTime, endTime)) {
-            throw new ReservationNotPossibleException(INVALID_RESERVATION_TIME);
+            throw new ReservationException(INVALID_RESERVATION_TIME);
         }
 
         if (!meeting.matchPrice(reservationDto.getAmount(), startTime, endTime)) {
-            throw new ReservationNotPossibleException(AMOUNT_DOSE_NOT_MATCH);
+            throw new ReservationException(AMOUNT_DOSE_NOT_MATCH);
         }
     }
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     private Long countReservationsAtSameTime(Long meetingId, LocalDate reservationDate, LocalTime startTime, LocalTime endTime) {
         return countExistReservationService.countOf(meetingId, reservationDate, startTime, endTime);
     }
 
     private Reservation saveReservation(PostReservationDto reservationDto, UserInfo userInfo, Meeting meeting) {
         Reservation reservation = reservationMapper.of(meeting, reservationDto, userInfo);
-        return reservationRepository.save(reservation);
+        return reservationRepository.saveAndFlush(reservation);
     }
 }
