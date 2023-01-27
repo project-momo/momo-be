@@ -85,6 +85,6 @@ public class ReservationBookService {
 
     private Reservation saveReservation(PostReservationDto reservationDto, UserInfo userInfo, Meeting meeting) {
         Reservation reservation = reservationMapper.of(meeting, reservationDto, userInfo);
-        return reservationRepository.saveAndFlush(reservation);
+        return reservationRepository.save(reservation);
     }
 }

@@ -2,6 +2,7 @@ package com.example.momobe.reservation.ui;
 
 import com.example.momobe.common.resolver.Token;
 import com.example.momobe.common.resolver.UserInfo;
+import com.example.momobe.reservation.application.ReservationLockFacade;
 import com.example.momobe.reservation.application.ReservationCancelService;
 import com.example.momobe.reservation.application.ReservationConfirmService;
 import com.example.momobe.reservation.application.ReservationBookService;
@@ -20,7 +21,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/meetings")
 @RequiredArgsConstructor
 public class ReservationCommonController {
-    private final ReservationBookService reservationBookService;
+    private final ReservationLockFacade reservationLockFacade;
     private final ReservationConfirmService reservationConfirmService;
     private final ReservationCancelService reservationCancelService;
 
@@ -29,7 +30,7 @@ public class ReservationCommonController {
     public PaymentResponseDto postReservation(@PathVariable(name = "meetingId") Long meetingId,
                                               @Valid @RequestBody PostReservationDto request,
                                               @Token UserInfo userInfo) {
-        return reservationBookService.reserve(meetingId, request, userInfo);
+        return reservationLockFacade.reserve(meetingId, request, userInfo);
     }
 
     @ResponseStatus(OK)

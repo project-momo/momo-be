@@ -17,12 +17,8 @@ public abstract class RedisTestConfig {
                 .withExposedPorts(REDIS_PORT)
                 .withReuse(true);
         REDIS_CONTAINER.start();
-    }
-
-    @DynamicPropertySource
-    public static void overrideProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.redis.host", REDIS_CONTAINER::getHost);
-        registry.add("spring.redis.port", () -> "" + REDIS_CONTAINER.getMappedPort(REDIS_PORT));
-        registry.add("spring.redis.password", () -> "password");
+        System.setProperty("spring.redis.host", REDIS_CONTAINER.getHost());
+        System.setProperty("spring.redis.port", String.valueOf(REDIS_PORT));
+        System.setProperty("spring.redis.password", "myPass");
     }
 }
