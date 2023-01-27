@@ -12,9 +12,11 @@ import com.example.momobe.reservation.dto.out.ReservationPaymentDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.example.momobe.reservation.mapper.ReservationMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -23,7 +25,7 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ReservationSaveService {
+public class ReservationBookService {
     private final MeetingCommonService meetingCommonService;
     private final ReservationMapper reservationMapper;
     private final ReservationRepository reservationRepository;
@@ -76,12 +78,13 @@ public class ReservationSaveService {
         }
     }
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     private Long countReservationsAtSameTime(Long meetingId, LocalDate reservationDate, LocalTime startTime, LocalTime endTime) {
         return countExistReservationService.countOf(meetingId, reservationDate, startTime, endTime);
     }
 
     private Reservation saveReservation(PostReservationDto reservationDto, UserInfo userInfo, Meeting meeting) {
         Reservation reservation = reservationMapper.of(meeting, reservationDto, userInfo);
-        return reservationRepository.save(reservation);
+        return reservationRepository.saveAndFlush(reservation);
     }
 }

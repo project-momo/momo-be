@@ -36,9 +36,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ReservationSaveServiceTest {
+class ReservationBookServiceTest {
     @InjectMocks
-    ReservationSaveService reservationSaveService;
+    ReservationBookService reservationBookService;
 
     @Mock
     MeetingCommonService meetingCommonService;
@@ -131,7 +131,7 @@ class ReservationSaveServiceTest {
         given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
-        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(meetingCommonService, times(1)).getMeeting(any());
@@ -146,7 +146,7 @@ class ReservationSaveServiceTest {
         given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
-        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(reservationMapper, times(1)).of(any(Meeting.class), any(), any());
@@ -162,7 +162,7 @@ class ReservationSaveServiceTest {
         given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
-        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(countExistReservationService, times(1)).countOf(any(), any(), any(), any());
@@ -177,7 +177,7 @@ class ReservationSaveServiceTest {
         given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
-        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(reservationRepository, times(1)).save(any());
@@ -192,7 +192,7 @@ class ReservationSaveServiceTest {
         given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
-        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(paymentSaveService, times(1)).save(any());
@@ -207,7 +207,7 @@ class ReservationSaveServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = reservationSaveService.reserve(meeting.getId(), reservationDto, userInfo);
+        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(paymentSaveService, times(0)).save(any());
