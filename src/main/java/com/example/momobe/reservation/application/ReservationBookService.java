@@ -62,19 +62,19 @@ public class ReservationBookService {
         Long numberOfReservations = countReservationsAtSameTime(meetingId, reservationDate, startTime, endTime);
 
         if (meeting.isClosed()) {
-            throw new ReservationNotPossibleException(CLOSED_MEETING);
+            throw new ReservationException(CLOSED_MEETING);
         }
 
         if (!meeting.verifyRemainingReservations(numberOfReservations)) {
-            throw new ReservationNotPossibleException(FULL_OF_PEOPLE);
+            throw new ReservationException(FULL_OF_PEOPLE);
         }
 
         if (!meeting.verifyReservationSchedule(reservationDate, startTime, endTime)) {
-            throw new ReservationNotPossibleException(INVALID_RESERVATION_TIME);
+            throw new ReservationException(INVALID_RESERVATION_TIME);
         }
 
         if (!meeting.matchPrice(reservationDto.getAmount(), startTime, endTime)) {
-            throw new ReservationNotPossibleException(AMOUNT_DOSE_NOT_MATCH);
+            throw new ReservationException(AMOUNT_DOSE_NOT_MATCH);
         }
     }
 

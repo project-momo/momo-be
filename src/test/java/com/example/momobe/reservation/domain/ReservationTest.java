@@ -1,11 +1,8 @@
 package com.example.momobe.reservation.domain;
 
-import com.example.momobe.reservation.domain.enums.ReservationState;
 import org.assertj.core.api.Assertions;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -45,7 +42,7 @@ class ReservationTest {
                 .build();
 
         // when // then
-        assertThatThrownBy(reservation::accept).isInstanceOf(CanNotChangeReservationStateException.class);
+        assertThatThrownBy(reservation::accept).isInstanceOf(ReservationException.class);
     }
 
     @Test
@@ -184,7 +181,7 @@ class ReservationTest {
                 .build();
 
         //when // then
-        org.junit.jupiter.api.Assertions.assertThrows(CanNotChangeReservationStateException.class, reservation::deny);
+        org.junit.jupiter.api.Assertions.assertThrows(ReservationException.class, reservation::deny);
     }
 
     @Test
@@ -201,7 +198,7 @@ class ReservationTest {
                 .build();
 
         //when then
-        org.junit.jupiter.api.Assertions.assertThrows(CanNotChangeReservationStateException.class, reservation::deny);
+        org.junit.jupiter.api.Assertions.assertThrows(ReservationException.class, reservation::deny);
     }
 
     @Test

@@ -9,8 +9,7 @@ import com.example.momobe.payment.domain.UnableProceedPaymentException;
 import com.example.momobe.reservation.application.ReservationCancelService;
 import com.example.momobe.reservation.application.ReservationConfirmService;
 import com.example.momobe.reservation.application.ReservationBookService;
-import com.example.momobe.reservation.domain.CanNotChangeReservationStateException;
-import com.example.momobe.reservation.domain.ReservationNotPossibleException;
+import com.example.momobe.reservation.domain.ReservationException;
 import com.example.momobe.reservation.dto.in.DeleteReservationDto;
 import com.example.momobe.reservation.dto.in.PatchReservationDto;
 import com.example.momobe.reservation.dto.in.PostReservationDto;
@@ -113,7 +112,7 @@ class ReservationCommonControllerTest {
     void postReservation_fail2() throws Exception {
         //given
         given(reservationBookService.reserve(anyLong(), any(PostReservationDto.class), any()))
-                .willThrow(new ReservationNotPossibleException(FULL_OF_PEOPLE, "인원이 가득 찼습니다."));
+                .willThrow(new ReservationException(FULL_OF_PEOPLE));
 
         PostReservationDto request = PostReservationDto.builder()
                 .dateInfo(PostReservationDto.ReservationDateDto.builder()
@@ -157,7 +156,7 @@ class ReservationCommonControllerTest {
     void postReservation_fail3() throws Exception {
         //given
         given(reservationBookService.reserve(anyLong(), any(PostReservationDto.class), any()))
-                .willThrow(new ReservationNotPossibleException(INVALID_RESERVATION_TIME));
+                .willThrow(new ReservationException(INVALID_RESERVATION_TIME));
 
         PostReservationDto request = PostReservationDto.builder()
                 .dateInfo(PostReservationDto.ReservationDateDto.builder()
@@ -201,7 +200,7 @@ class ReservationCommonControllerTest {
     void postReservation_fail4() throws Exception {
         //given
         given(reservationBookService.reserve(anyLong(), any(PostReservationDto.class), any()))
-                .willThrow(new ReservationNotPossibleException(AMOUNT_DOSE_NOT_MATCH));
+                .willThrow(new ReservationException(AMOUNT_DOSE_NOT_MATCH));
 
         PostReservationDto request = PostReservationDto.builder()
                 .dateInfo(PostReservationDto.ReservationDateDto.builder()
@@ -383,7 +382,7 @@ class ReservationCommonControllerTest {
         //given
         PatchReservationDto request = new PatchReservationDto("true");
         String json = objectMapper.writeValueAsString(request);
-        willThrow(new CanNotChangeReservationStateException(REQUEST_DENIED)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), any(PatchReservationDto.class));
+        willThrow(new ReservationException(REQUEST_DENIED)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), any(PatchReservationDto.class));
 
         //when
         ResultActions perform = mockMvc.perform(patch("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
@@ -449,7 +448,7 @@ class ReservationCommonControllerTest {
         //given
         PatchReservationDto request = new PatchReservationDto("true");
         String json = objectMapper.writeValueAsString(request);
-        willThrow(new CanNotChangeReservationStateException(CONFIRMED_RESERVATION)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), any(PatchReservationDto.class));
+        willThrow(new ReservationException(CONFIRMED_RESERVATION)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), any(PatchReservationDto.class));
 
         //when
         ResultActions perform = mockMvc.perform(patch("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
