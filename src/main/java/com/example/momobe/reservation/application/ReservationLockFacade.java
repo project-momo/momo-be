@@ -32,7 +32,7 @@ public class ReservationLockFacade {
             }
 
             return reservationBookService.reserve(meetingId, reservationDto, userInfo);
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             throw new ReservationException(ErrorCode.UNABLE_TO_PROCESS);
         } finally {
             lock.unlock();
