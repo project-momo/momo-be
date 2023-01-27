@@ -19,6 +19,7 @@ import static lombok.AccessLevel.*;
 @Entity
 @Getter
 @Builder
+@ToString
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
@@ -92,7 +93,7 @@ public class Reservation extends BaseTime {
     }
 
     private void changeState(ReservationState state) {
-        if (!canChangeStatus()) throw new CanNotChangeReservationStateException(CAN_NOT_CHANGE_RESERVATION_STATE);
+        if (!canChangeStatus()) throw new ReservationException(CAN_NOT_CHANGE_RESERVATION_STATE);
         this.reservationState = state;
     }
 
