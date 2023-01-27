@@ -9,6 +9,7 @@ import com.example.momobe.payment.domain.UnableProceedPaymentException;
 import com.example.momobe.reservation.application.ReservationCancelService;
 import com.example.momobe.reservation.application.ReservationConfirmService;
 import com.example.momobe.reservation.application.ReservationBookService;
+import com.example.momobe.reservation.application.ReservationLockFacade;
 import com.example.momobe.reservation.domain.ReservationException;
 import com.example.momobe.reservation.dto.in.DeleteReservationDto;
 import com.example.momobe.reservation.dto.in.PatchReservationDto;
@@ -17,6 +18,7 @@ import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -70,6 +72,9 @@ class ReservationCommonControllerTest {
     @MockBean
     ReservationCancelService reservationCancelService;
 
+    @MockBean
+    ReservationLockFacade reservationLockFacade;
+
     @Test
     @DisplayName("유효성 검사에 실패할 경우 400 반환")
     void postReservation_fail1() throws Exception {
@@ -111,7 +116,7 @@ class ReservationCommonControllerTest {
     @DisplayName("해당 예약 시간에 예약이 불가능한 경우 409 반환")
     void postReservation_fail2() throws Exception {
         //given
-        given(reservationBookService.reserve(anyLong(), any(PostReservationDto.class), any()))
+        given(reservationLockFacade.reserve(anyLong(), any(PostReservationDto.class), any()))
                 .willThrow(new ReservationException(FULL_OF_PEOPLE));
 
         PostReservationDto request = PostReservationDto.builder()
@@ -155,7 +160,7 @@ class ReservationCommonControllerTest {
     @DisplayName("요청 시간과 예약 가능한 시간이 일치하지 않음 (시간대 자체가 올바르지 않음) 409 반환")
     void postReservation_fail3() throws Exception {
         //given
-        given(reservationBookService.reserve(anyLong(), any(PostReservationDto.class), any()))
+        given(reservationLockFacade.reserve(anyLong(), any(PostReservationDto.class), any()))
                 .willThrow(new ReservationException(INVALID_RESERVATION_TIME));
 
         PostReservationDto request = PostReservationDto.builder()
@@ -199,7 +204,7 @@ class ReservationCommonControllerTest {
     @DisplayName("예약 요청 시 신청한 금액과 실제 결제해야할 금액이 일치하지 않을 경우 409 반환")
     void postReservation_fail4() throws Exception {
         //given
-        given(reservationBookService.reserve(anyLong(), any(PostReservationDto.class), any()))
+        given(reservationLockFacade.reserve(anyLong(), any(PostReservationDto.class), any()))
                 .willThrow(new ReservationException(AMOUNT_DOSE_NOT_MATCH));
 
         PostReservationDto request = PostReservationDto.builder()
@@ -264,7 +269,7 @@ class ReservationCommonControllerTest {
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
-        given(reservationBookService.reserve(anyLong(), any(PostReservationDto.class), any())).willReturn(response);
+        given(reservationLockFacade.reserve(anyLong(), any(PostReservationDto.class), any())).willReturn(response);
 
         //when
         ResultActions perform = mockMvc.perform(post("/meetings/{meetingId}/reservations", 1)
@@ -304,7 +309,7 @@ class ReservationCommonControllerTest {
     @DisplayName("요청한 meeting을 찾지 못할 경우 404 반환")
     void postReservation_fail5() throws Exception {
         //given
-        given(reservationBookService.reserve(anyLong(), any(PostReservationDto.class), any()))
+        given(reservationLockFacade.reserve(anyLong(), any(PostReservationDto.class), any()))
                 .willThrow(new MeetingNotFoundException(DATA_NOT_FOUND));
 
         PostReservationDto request = PostReservationDto.builder()
