@@ -5,25 +5,17 @@ import com.example.momobe.reservation.domain.CustomReservationRepository;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.settlement.application.CheckSettlementService;
 import com.example.momobe.settlement.application.SettlementTransitionService;
-import com.example.momobe.settlement.domain.NotFoundEndMeetingException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-
 @SpringBootTest
+@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 public class SettlementIntegrationTest {
     @InjectMocks
     private SettlementTransitionService settlementTransitionService;
