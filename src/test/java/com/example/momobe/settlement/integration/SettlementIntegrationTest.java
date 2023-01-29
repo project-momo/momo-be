@@ -3,7 +3,6 @@ package com.example.momobe.settlement.integration;
 import com.example.momobe.meeting.dao.MeetingQueryRepository;
 import com.example.momobe.reservation.domain.CustomReservationRepository;
 import com.example.momobe.reservation.domain.Reservation;
-import com.example.momobe.reservation.domain.ReservationNotPossibleException;
 import com.example.momobe.settlement.application.CheckSettlementService;
 import com.example.momobe.settlement.application.SettlementTransitionService;
 import com.example.momobe.settlement.domain.NotFoundEndMeetingException;

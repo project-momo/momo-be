@@ -7,10 +7,22 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PointWithdrawalResponseDto {
-    private boolean withdrawal;
-    private boolean account;
+    private WithdrawalDto withdrawal;
+    private boolean accountAuth;
 
-    public static PointWithdrawalResponseDto of(boolean withdrawal, boolean account){
-        return new PointWithdrawalResponseDto(withdrawal,account);
+    public static PointWithdrawalResponseDto of(WithdrawalDto withdrawal, boolean account){
+        return PointWithdrawalResponseDto.builder()
+                .withdrawal(withdrawal)
+                .accountAuth(account)
+                .build();
+    }
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class WithdrawalDto{
+        private boolean withdrawal;
+        private Long minusPoint;
+        private Long currentPoint;
     }
 }

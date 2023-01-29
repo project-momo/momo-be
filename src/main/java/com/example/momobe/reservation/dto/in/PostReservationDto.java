@@ -9,24 +9,26 @@ import java.time.LocalTime;
 
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class PostReservationDto {
     @Valid
     @NotNull
-    private final ReservationDateDto dateInfo;
+    private ReservationDateDto dateInfo;
     @NotNull
-    private final Long amount;
-    private final String reservationMemo;
+    private Long amount;
+    private String reservationMemo;
 
     @Getter
     @Builder
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class ReservationDateDto {
         @NotNull
-        private final LocalDate reservationDate;
+        private LocalDate reservationDate;
         @NotNull
-        private final LocalTime startTime;
+        private LocalTime startTime;
         @NotNull
-        private final LocalTime endTime;
+        private LocalTime endTime;
     }
 }
