@@ -20,7 +20,7 @@ public abstract class PaymentApiService <T> {
     protected String tossUrl;
     protected String secretKey;
 
-    protected PaymentApiService(@Value("${payments.toss.secretKey") String secretKey, @Value("${payments.toss.url") String tossUrl, ApiService<T> apiService) {
+    protected PaymentApiService(@Value("${payments.toss.secretKey}") String secretKey, @Value("${payments.toss.url}") String tossUrl, ApiService<T> apiService) {
         this.secretKey = secretKey + ":";
         this.tossUrl = tossUrl;
         this.apiService = apiService;
@@ -61,6 +61,6 @@ public abstract class PaymentApiService <T> {
     }
 
     private String generateAuthKey() {
-        return Arrays.toString(Base64.getEncoder().encode(secretKey.getBytes(StandardCharsets.UTF_8)));
+        return new String(Base64.getEncoder().encode(secretKey.getBytes(StandardCharsets.UTF_8)));
     }
 }
