@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum BankCode {
     카카오뱅크("090"),
-    토스뱅크("092"),
+    토스("092"),
     신한은행("088");
 
     private final String bankCode;
