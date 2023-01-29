@@ -41,7 +41,7 @@ public class SettlementTransitionService {
     private final UserRepository userRepository;
 
 
-    @Scheduled(cron = "30 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void transitionOfPayment() {
         List<Reservation> reservations = settlementQuerydslRepository.findReservationForMeetingClosedBefore3days();
         if(reservations.isEmpty()) throw new NotFoundEndMeetingException(ErrorCode.CAN_NOT_FOUND_END_MEETING);
@@ -67,12 +67,3 @@ public class SettlementTransitionService {
                 });
     }
 }
-
-
-/**
- * 대금 전환 로직
- * 1. 엔드타임 조회시점으로부터 3일 전 모임까지 조회 -> meeting query repository에 종료일 기준 조회 쿼리 만들어서 조회 (아이디만 조회)
- * 2. 미팅 아이디로 해당 미팅의 완료 상태인 예약만 조회
- * 3. 예약의 결제 금액 총 합산하여 정산 데이터 생성
- * 4. 동시에 유저 포인트 변경
- */

@@ -2,6 +2,7 @@ package com.example.momobe.reservation.dto.in;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.Pattern;
 import static lombok.AccessLevel.*;
 
 @Getter
+@Builder
 @NoArgsConstructor(access = PRIVATE)
 public class PatchReservationDto {
     @NotBlank

@@ -18,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class AddressCommonServiceTest {
+class AddressFindServiceTest {
     @InjectMocks
-    private AddressCommonService addressCommonService;
+    private AddressFindService addressFindService;
     @Mock
     private AddressRepository addressRepository;
 
@@ -33,7 +33,7 @@ class AddressCommonServiceTest {
                 .willReturn(true);
 
         // when / then
-        assertDoesNotThrow(() -> addressCommonService.verifyAddressIdsOrThrowException(existsTagIds));
+        assertDoesNotThrow(() -> addressFindService.verifyAddressId(existsTagIds));
     }
 
     @Test
@@ -46,6 +46,6 @@ class AddressCommonServiceTest {
 
         // when / then
         assertThrows(AddressNotFoundException.class,
-                () -> addressCommonService.verifyAddressIdsOrThrowException(nonExistsTagIds));
+                () -> addressFindService.verifyAddressId(nonExistsTagIds));
     }
 }

@@ -34,7 +34,7 @@ class MeetingCloseServiceTest {
     void closeMeetingTest1() throws Exception {
         // given
         Long meetingId = ID1;
-        given(meetingCommonService.getMeetingOrThrowException(meetingId))
+        given(meetingCommonService.getMeeting(meetingId))
                 .willReturn(generateMeeting(ID1));
 
         // when
@@ -49,7 +49,7 @@ class MeetingCloseServiceTest {
         // given
         Long meetingId = ID1;
         Meeting meeting = generateMeeting(ID1);
-        given(meetingCommonService.getMeetingOrThrowException(meetingId))
+        given(meetingCommonService.getMeeting(meetingId))
                 .willReturn(meeting);
 
         // when

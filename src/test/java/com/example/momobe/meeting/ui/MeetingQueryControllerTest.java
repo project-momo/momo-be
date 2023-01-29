@@ -4,9 +4,12 @@ import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.dao.MeetingDetailQueryRepository;
 import com.example.momobe.meeting.dao.MeetingQueryRepository;
+import com.example.momobe.meeting.domain.MeetingRankingStore;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.dto.out.MeetingDetailResponseDto;
+import com.example.momobe.meeting.dto.out.MeetingRankDto;
 import com.example.momobe.meeting.dto.out.MeetingResponseDto;
+import com.example.momobe.meeting.mapper.MeetingRankMapper;
 import com.example.momobe.question.dto.out.ResponseQuestionDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,15 +51,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(SecurityTestConfig.class)
 @AutoConfigureRestDocs
 class MeetingQueryControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
     private JwtArgumentResolver jwtArgumentResolver;
+
     @MockBean
     private MeetingQueryRepository meetingQueryRepository;
+
     @MockBean
     private MeetingDetailQueryRepository meetingDetailQueryRepository;
+
+    @MockBean
+    private MeetingRankingStore<MeetingRankDto> meetingRankingStore;
+
+    @MockBean
+    private MeetingRankMapper meetingRankMapper;
 
     @Test
     void meetingQuery() throws Exception {
@@ -70,7 +81,7 @@ class MeetingQueryControllerTest {
                 List.of(1, 3, 7), List.of(LocalDate.now(), LocalDate.now().plusDays(1)));
         PageRequest pageRequest = PageRequest.of(PAGE - 1, SIZE);
 
-        given(meetingQueryRepository.findAll(eq(TITLE1), eq(SOCIAL), any(PageRequest.class)))
+        given(meetingQueryRepository.findAll(eq(TITLE1), eq(SOCIAL), eq("온라인"), any(PageRequest.class)))
                 .willReturn(new PageImpl<>(List.of(meetingResponseDto), pageRequest, 1L));
 
         // when
@@ -78,6 +89,7 @@ class MeetingQueryControllerTest {
                 get("/meetings")
                         .param("keyword", TITLE1)
                         .param("category", String.valueOf(SOCIAL))
+                        .param("tag", "온라인")
                         .param("page", String.valueOf(PAGE))
                         .param("size", String.valueOf(SIZE))
         );
@@ -90,6 +102,7 @@ class MeetingQueryControllerTest {
                         requestParameters(
                                 parameterWithName("keyword").description("검색어"),
                                 parameterWithName("category").description("카테고리"),
+                                parameterWithName("tag").description("태그"),
                                 PWN_PAGE, PWN_SIZE
                         ),
                         responseFields(

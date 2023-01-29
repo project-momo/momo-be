@@ -1,6 +1,6 @@
 package com.example.momobe.meeting.application;
 
-import com.example.momobe.address.application.AddressCommonService;
+import com.example.momobe.address.application.AddressFindService;
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.MeetingNotFoundException;
@@ -18,15 +18,15 @@ import java.util.List;
 public class MeetingCommonService {
     private final MeetingRepository meetingRepository;
     private final TagCommonService tagCommonService;
-    private final AddressCommonService addressCommonService;
+    private final AddressFindService addressFindService;
 
-    public Meeting getMeetingOrThrowException(Long meetingId) {
+    public Meeting getMeeting(Long meetingId) {
         return meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND));
     }
 
     public List<Long> verifyAddressesAndFindTagIds(List<Long> addressIds, List<String> tags) {
-        addressCommonService.verifyAddressIdsOrThrowException(addressIds);
+        addressFindService.verifyAddressId(addressIds);
         return tagCommonService.findTagIdsByNamesOrThrowException(tags);
     }
 }

@@ -12,9 +12,9 @@ public class RefreshCRDIService {
 
     public String createCRDI() {
         Random rand = new Random();
-        String randomNum = Integer.toString( rand.nextInt(8) + 1);
+        StringBuilder randomNum = new StringBuilder(Integer.toString(rand.nextInt(8) + 1));
         for (int i = 0; i < 8; i++) {
-            randomNum+= Integer.toString(rand.nextInt(9));
+            randomNum.append(Integer.toString(rand.nextInt(9)));
         }
         return tranId + "U" + randomNum;
     }

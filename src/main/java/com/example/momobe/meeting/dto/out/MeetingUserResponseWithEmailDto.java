@@ -1,5 +1,6 @@
 package com.example.momobe.meeting.dto.out;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter

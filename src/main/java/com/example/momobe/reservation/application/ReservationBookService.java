@@ -7,15 +7,16 @@ import com.example.momobe.payment.application.PaymentSaveService;
 import com.example.momobe.payment.domain.Payment;
 import com.example.momobe.payment.mapper.PaymentMapper;
 import com.example.momobe.reservation.domain.*;
-import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.dto.out.ReservationPaymentDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.example.momobe.reservation.mapper.ReservationMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -24,7 +25,7 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ReservationSaveService {
+public class ReservationBookService {
     private final MeetingCommonService meetingCommonService;
     private final ReservationMapper reservationMapper;
     private final ReservationRepository reservationRepository;
@@ -33,7 +34,7 @@ public class ReservationSaveService {
     private final PaymentMapper paymentMapper;
 
     public PaymentResponseDto reserve(Long meetingId, PostReservationDto reservationDto, UserInfo userInfo) {
-        Meeting meeting = meetingCommonService.getMeetingOrThrowException(meetingId);
+        Meeting meeting = meetingCommonService.getMeeting(meetingId);
 
         checkAvailabilityOfReservations(meetingId, reservationDto, meeting);
         Reservation reservation = saveReservation(reservationDto, userInfo, meeting);
@@ -48,12 +49,7 @@ public class ReservationSaveService {
 
         ReservationPaymentDto paymentInfo = reservationMapper.of(userInfo, reservation, meeting);
         Payment payment = paymentSaveService.save(paymentInfo);
-        /*
-        * 도메인 이벤트로 변경할 지점
-        * 수정 완료후 주석 제거 예정
-        * Author : yang_eun_chan
-        * DateTime : 2023.01.10
-        * */
+
         reservation.setPaymentId(payment.getId());
         return paymentMapper.of(payment);
     }
@@ -66,22 +62,23 @@ public class ReservationSaveService {
         Long numberOfReservations = countReservationsAtSameTime(meetingId, reservationDate, startTime, endTime);
 
         if (meeting.isClosed()) {
-            throw new ReservationNotPossibleException(CLOSED_MEETING);
+            throw new ReservationException(CLOSED_MEETING);
         }
 
         if (!meeting.verifyRemainingReservations(numberOfReservations)) {
-            throw new ReservationNotPossibleException(FULL_OF_PEOPLE);
+            throw new ReservationException(FULL_OF_PEOPLE);
         }
 
         if (!meeting.verifyReservationSchedule(reservationDate, startTime, endTime)) {
-            throw new ReservationNotPossibleException(INVALID_RESERVATION_TIME);
+            throw new ReservationException(INVALID_RESERVATION_TIME);
         }
 
         if (!meeting.matchPrice(reservationDto.getAmount(), startTime, endTime)) {
-            throw new ReservationNotPossibleException(AMOUNT_DOSE_NOT_MATCH);
+            throw new ReservationException(AMOUNT_DOSE_NOT_MATCH);
         }
     }
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     private Long countReservationsAtSameTime(Long meetingId, LocalDate reservationDate, LocalTime startTime, LocalTime endTime) {
         return countExistReservationService.countOf(meetingId, reservationDate, startTime, endTime);
     }

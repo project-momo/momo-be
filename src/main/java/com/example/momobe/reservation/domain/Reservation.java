@@ -2,7 +2,7 @@ package com.example.momobe.reservation.domain;
 
 import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.reservation.domain.enums.ReservationState;
-import com.example.momobe.reservation.event.ReservationEvent;
+import com.example.momobe.reservation.event.ReservationCanceledEvent;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,6 +19,7 @@ import static lombok.AccessLevel.*;
 @Entity
 @Getter
 @Builder
+@ToString
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
@@ -75,8 +76,8 @@ public class Reservation extends BaseTime {
 
     public void setPaymentId(Long paymentId) { this.paymentId = paymentId; }
 
-    public ReservationEvent.PaymentCancel createCancelEvent(String paymentKey, String reasonMessage) {
-        return ReservationEvent.PaymentCancel.builder()
+    public ReservationCanceledEvent createCancelEvent(String paymentKey, String reasonMessage) {
+        return ReservationCanceledEvent.builder()
                 .paymentKey(paymentKey)
                 .reason(reasonMessage)
                 .paymentId(this.paymentId)
@@ -87,18 +88,12 @@ public class Reservation extends BaseTime {
         return this.reservedUser.isEqualTo(userId);
     }
 
-    /*
-     * 도메인 이벤트 발생 지점 (cancel, accept)
-     * 로직 완성 이후 주석 삭제 예정
-     * Author : yang_eun_chan
-     * Date : 2022/01/05
-     * */
     private Boolean canChangeStatus() {
         return this.reservationState.equals(PAYMENT_SUCCESS) && !this.reservationDate.isBeforeThen(LocalDateTime.now());
     }
 
     private void changeState(ReservationState state) {
-        if (!canChangeStatus()) throw new CanNotChangeReservationStateException(CAN_NOT_CHANGE_RESERVATION_STATE);
+        if (!canChangeStatus()) throw new ReservationException(CAN_NOT_CHANGE_RESERVATION_STATE);
         this.reservationState = state;
     }
 
@@ -112,5 +107,9 @@ public class Reservation extends BaseTime {
 
     public void deny() {
         changeState(DENY);
+    }
+
+    public Long getReservedUserId() {
+        return this.reservedUser.getUserId();
     }
 }

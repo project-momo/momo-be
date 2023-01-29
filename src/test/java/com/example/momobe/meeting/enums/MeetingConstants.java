@@ -98,6 +98,23 @@ public class MeetingConstants {
                 .build();
     }
 
+    public static Meeting generateMeetingWithPeriod(Long hostId, List<Long> addressIds, List<Long> tagIds) {
+        return Meeting.builder()
+                .title(TITLE1)
+                .content(CONTENT1)
+                .hostId(hostId)
+                .category(SOCIAL)
+                .meetingState(MeetingState.OPEN)
+                .price(PRICE)
+                .dateTimeInfo(new DateTimeInfo(DatePolicy.PERIOD,
+                        START_DATE, END_DATE, START_TIME, END_TIME, MAX_TIME,
+                        List.of(new DateTime(LocalDateTime.of(START_DATE, START_TIME)))))
+                .personnel(1)
+                .address(new Address(addressIds, "추가 주소"))
+                .tagIds(tagIds)
+                .build();
+    }
+
     public static final MeetingRequestDto.AddressDto ADDRESS_DTO1 = MeetingRequestDto.AddressDto.builder()
             .addressIds(List.of(1L, 2L))
             .addressInfo(SUB_ADDRESS1)
@@ -117,7 +134,7 @@ public class MeetingConstants {
             .build();
 
     public static final MeetingRequestDto MEETING_REQUEST_DTO_WITH_ONE_DAY = MeetingRequestDto.builder()
-            .category(SOCIAL)
+            .category("소셜")
             .title(TITLE1)
             .content(CONTENT1)
             .tags(TAGS)
@@ -138,7 +155,7 @@ public class MeetingConstants {
             .build();
 
     public static final MeetingRequestDto MEETING_REQUEST_DTO_WITH_PERIOD = MeetingRequestDto.builder()
-            .category(SOCIAL)
+            .category("소셜")
             .title(TITLE1)
             .content(CONTENT1)
             .tags(TAGS)
@@ -160,7 +177,7 @@ public class MeetingConstants {
             .build();
 
     public static final MeetingRequestDto MEETING_REQUEST_DTO_WITH_FREE = MeetingRequestDto.builder()
-            .category(SOCIAL)
+            .category("소셜")
             .title(TITLE1)
             .content(CONTENT1)
             .tags(TAGS)
@@ -183,7 +200,7 @@ public class MeetingConstants {
             .build();
 
     public static final MeetingRequestDto MEETING_REQUEST_DTO_WITH_ALL = MeetingRequestDto.builder()
-            .category(SOCIAL)
+            .category("소셜")
             .title(TITLE1)
             .content(CONTENT1)
             .tags(TAGS)
@@ -194,7 +211,7 @@ public class MeetingConstants {
             .build();
 
     public static final MeetingUpdateDto MEETING_UPDATE_DTO = MeetingUpdateDto.builder()
-            .category(SOCIAL)
+            .category("소셜")
             .title(TITLE2)
             .content(CONTENT2)
             .tags(List.of("멘토링", "스터디", "5인 이상", "오프라인"))
@@ -205,7 +222,7 @@ public class MeetingConstants {
 
     public static MeetingRequestDto generateMeetingRequestDtoWithPeriod(List<String> tags, List<Long> addressIds) {
         return MeetingRequestDto.builder()
-                .category(SOCIAL)
+                .category("소셜")
                 .title(TITLE1)
                 .content(CONTENT1)
                 .tags(tags)
@@ -218,7 +235,7 @@ public class MeetingConstants {
 
     public static MeetingRequestDto generateMeetingRequestDtoWithFree(List<String> tags, List<Long> addressIds) {
         return MeetingRequestDto.builder()
-                .category(SOCIAL)
+                .category("소셜")
                 .title(TITLE1)
                 .content(CONTENT1)
                 .tags(tags)
@@ -231,7 +248,7 @@ public class MeetingConstants {
 
     public static MeetingRequestDto generateMeetingRequestDtoWithOneDay(List<String> tags, List<Long> addressIds) {
         return MeetingRequestDto.builder()
-                .category(SOCIAL)
+                .category("소셜")
                 .title(TITLE1)
                 .content(CONTENT1)
                 .tags(tags)
@@ -244,7 +261,7 @@ public class MeetingConstants {
 
     public static MeetingUpdateDto generateMeetingUpdateDto(List<String> tags, List<Long> addressIds) {
         return MeetingUpdateDto.builder()
-                .category(SOCIAL)
+                .category("소셜")
                 .title(TITLE2)
                 .content(CONTENT2)
                 .tags(tags)

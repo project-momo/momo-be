@@ -26,6 +26,7 @@ import static com.example.momobe.address.domain.QAddress.address;
 import static com.example.momobe.meeting.domain.QDateTime.dateTime1;
 import static com.example.momobe.meeting.domain.QMeeting.meeting;
 import static com.example.momobe.reservation.domain.QReservation.reservation;
+import static com.example.momobe.tag.domain.QTag.tag;
 import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.example.momobe.user.domain.QUser.user;
 import static com.querydsl.core.group.GroupBy.groupBy;
@@ -38,7 +39,7 @@ public class MeetingQueryRepository {
     private final JPAQueryFactory queryFactory;
     private final MeetingQueryFactoryUtil meetingQueryFactoryUtil;
 
-    public Page<MeetingResponseDto> findAll(String keyword, Category category, Pageable pageable) {
+    public Page<MeetingResponseDto> findAll(String keyword, Category category, String tagName, Pageable pageable) {
         List<MeetingResponseDto> dtos = meetingQueryFactoryUtil
                 .generateMeetingQuery(queryFactory, pageable)
                 .select(new QMeetingResponseDto(
@@ -62,7 +63,8 @@ public class MeetingQueryRepository {
                         meeting.dateTimeInfo.endTime,
                         meeting.dateTimeInfo.maxTime,
                         meeting.price))
-                .where(containsKeyword(keyword), eqCategory(category))
+                .leftJoin(tag).on(tag.id.in(meeting.tagIds))
+                .where(containsKeyword(keyword), eqCategory(category), eqTagName(tagName))
                 .fetch();
 
         List<Long> meetingIds = dtos.stream()
@@ -103,6 +105,11 @@ public class MeetingQueryRepository {
     private BooleanExpression eqCategory(Category category) {
         if (category == null) return null;
         return meeting.category.eq(category);
+    }
+
+    private BooleanExpression eqTagName(String tagName) {
+        if (tagName == null) return null;
+        return tag.name.eq(tagName);
     }
 
     public List<Long> findMeetingClosedBefore3days() {

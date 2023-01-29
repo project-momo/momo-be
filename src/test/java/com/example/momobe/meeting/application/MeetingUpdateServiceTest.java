@@ -35,7 +35,7 @@ class MeetingUpdateServiceTest {
     void updateMeeting() {
         // given
         Meeting meeting = generateMeeting(ID1);
-        given(meetingCommonService.getMeetingOrThrowException(ID1))
+        given(meetingCommonService.getMeeting(ID1))
                 .willReturn(meeting);
         given(meetingCommonService.verifyAddressesAndFindTagIds(
                 MEETING_UPDATE_DTO.getAddress().getAddressIds(), MEETING_UPDATE_DTO.getTags()))
@@ -47,7 +47,7 @@ class MeetingUpdateServiceTest {
         // then
         assertThat(meeting.getTitle()).isEqualTo(MEETING_UPDATE_DTO.getTitle());
         assertThat(meeting.getContent()).isEqualTo(MEETING_UPDATE_DTO.getContent());
-        assertThat(meeting.getCategory()).isEqualTo(MEETING_UPDATE_DTO.getCategory());
+        assertThat(meeting.getCategory().getDescription()).isEqualTo(MEETING_UPDATE_DTO.getCategory());
         assertThat(meeting.getTagIds()).hasSize(MEETING_UPDATE_DTO.getTags().size());
         assertThat(meeting.getAddress().getAddressIds()).isEqualTo(MEETING_UPDATE_DTO.getAddress().getAddressIds());
         assertThat(meeting.getAddress().getAddressInfo()).isEqualTo(MEETING_UPDATE_DTO.getAddress().getAddressInfo());
