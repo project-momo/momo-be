@@ -28,16 +28,18 @@ public class MeetingParticipantResponseDto extends MeetingResponseDto {
         private final String message;
         private final String paymentKey;
         private final MeetingDateTimeDto dateTimeInfo;
+        private final Long reservationId;
 
         @QueryProjection
         public ApplicationDto(Long userId, String nickname, String imageUrl, String email,
                               ReservationState reservationState, String message, String paymentKey,
-                              MeetingDateTimeDto dateTimeInfo) {
+                              MeetingDateTimeDto dateTimeInfo, Long reservationId) {
             super(userId, nickname, imageUrl, email);
             this.reservationState = reservationState;
             this.message = message;
             this.paymentKey = paymentKey;
             this.dateTimeInfo = dateTimeInfo;
+            this.reservationId = reservationId;
         }
     }
 
