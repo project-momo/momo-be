@@ -1,54 +1,54 @@
 package com.example.momobe.payment.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @EqualsAndHashCode
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentResultDto {
-    private final String mId;
-    private final String version;
-    private final String paymentKey;
-    private final String orderId;
-    private final String orderName;
-    private final String currency;
-    private final String method;
-    private final String totalAmount;
-    private final String balanceAmount;
-    private final String suppliedAmount;
-    private final String vat;
-    private final String status;
-    private final String requestedAt;
-    private final String approvedAt;
-    private final String useEscrow;
-    private final String cultureExpense;
-    private final String type;
-    private final PaymentCardDto card;
-    private final PaymentCardCancelDto cancels;
+    private String mId;
+    private String version;
+    private String paymentKey;
+    private String orderId;
+    private String orderName;
+    private String currency;
+    private String method;
+    private String totalAmount;
+    private String balanceAmount;
+    private String suppliedAmount;
+    private String vat;
+    private String status;
+    private String requestedAt;
+    private String approvedAt;
+    private String useEscrow;
+    private String cultureExpense;
+    private String type;
+    private PaymentCardDto card;
+    private PaymentCardCancelDto cancels;
 
     @Getter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class PaymentCardDto {
-        private final String company;
-        private final String number;
-        private final String installmentPlanMonth;
-        private final String isInterestFree;
-        private final String approveNo;
-        private final String useCardPoint;
-        private final String cardType;
-        private final String ownerType;
-        private final String acquireStatus;
-        private final String receiptUrl;
+        private String company;
+        private String number;
+        private String installmentPlanMonth;
+        private String isInterestFree;
+        private String approveNo;
+        private String useCardPoint;
+        private String cardType;
+        private String ownerType;
+        private String acquireStatus;
+        private String receiptUrl;
     }
 
     @Getter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     static class PaymentCardCancelDto {
         String money;
     }
