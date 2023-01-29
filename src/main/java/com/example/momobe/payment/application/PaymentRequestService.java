@@ -27,6 +27,6 @@ public class PaymentRequestService extends PaymentApiService<PaymentResultDto> {
 
     @Override
     protected PaymentResultDto requestApi(String paymentKey, HttpEntity<JSONObject> httpRequestEntity) {
-        return apiService.post(tossUrl, httpRequestEntity, PaymentResultDto.class).getBody();
+        return apiService.post(tossUrl + paymentKey, httpRequestEntity, PaymentResultDto.class).getBody();
     }
 }
