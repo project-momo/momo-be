@@ -40,7 +40,7 @@ class MeetingMapperTest {
         // then
         assertThat(meeting.getHostId()).isEqualTo(ID1);
         assertThat(meeting.getMeetingState()).isEqualTo(MeetingState.OPEN);
-        assertThat(meeting.getCategory()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getCategory());
+        assertThat(meeting.getCategory().getDescription()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getCategory());
         assertThat(meeting.getTitle()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getTitle());
         assertThat(meeting.getContent()).isEqualTo(MEETING_REQUEST_DTO_WITH_FREE.getContent());
 
