@@ -135,7 +135,7 @@ class MeetingQueryControllerTest {
 
         MeetingDetailResponseDto meetingDetailResponseDto = new MeetingDetailResponseDto(
                 ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL1, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
-                DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L,
+                DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L, 5,
                 new LinkedHashSet<>(List.of("서울시 강남구", "서울시 강북구")),
                 new LinkedHashSet<>(List.of("온라인", "오프라인")),
                 List.of(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
@@ -171,6 +171,7 @@ class MeetingQueryControllerTest {
                                 fieldWithPath("address.addressInfo").type(STRING).description("추가 주소"),
                                 fieldWithPath("meetingState").type(STRING).description("모임 상태"),
                                 fieldWithPath("isOpen").type(BOOLEAN).description("모임 오픈 여부"),
+                                fieldWithPath("personnel").type(NUMBER).description("최대 예약 가능 인원"),
                                 fieldWithPath("dateTime").type(OBJECT).description("날짜 정보"),
                                 fieldWithPath("dateTime.datePolicy").type(STRING).description("날짜 정책"),
                                 fieldWithPath("dateTime.startDate").type(STRING).description("시작 날짜"),
