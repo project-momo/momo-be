@@ -151,7 +151,8 @@ class MeetingMyPageQueryControllerTest {
                         PAYMENT_SUCCESS, "잘 부탁드려요~",
                         "ABC123",
                         new MeetingDateTimeDto(
-                                LocalDate.now(), START_TIME, END_TIME));
+                                LocalDate.now(), START_TIME, END_TIME),
+                        ID3);
         MeetingParticipantResponseDto meetingParticipantResponseDto = new MeetingParticipantResponseDto(
                 ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL1, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
                 DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L, applicationDto
@@ -204,6 +205,7 @@ class MeetingMyPageQueryControllerTest {
                                 fieldWithPath("content[].application.dateTimeInfo").type(OBJECT).description("날짜 정보"),
                                 fieldWithPath("content[].application.dateTimeInfo.date").type(STRING).description("예약 날짜"),
                                 fieldWithPath("content[].application.dateTimeInfo.time").type(STRING).description("예약 시간"),
+                                fieldWithPath("content[].application.reservationId").type(NUMBER).description("예약 아이디"),
 
                                 FWP_PAGE_INFO, FWP_PAGE, FWP_SIZE, FWP_TOTAL_ELEMENTS, FWP_TOTAL_PAGES
                         )
