@@ -6,26 +6,21 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CountExistReservationService {
+public class GetReservationsAtSameTimeService {
     private final CustomReservationRepository customReservationRepository;
 
-    public Long countOf(Long meetingId,
-                        LocalDate localDate,
-                        LocalTime startTime,
-                        LocalTime endTime,
-                        Long userId) {
+    public List<Reservation> getReservations(Long meetingId,
+                                             LocalDate localDate,
+                                             LocalTime startTime,
+                                             LocalTime endTime) {
         List<Reservation> reservations = customReservationRepository.findReservationBetween(meetingId, localDate, startTime, endTime);
 
         return reservations.stream()
                 .filter(reservation -> !reservation.isCanceledReservation())
-                .forEach(e -> {
-                    if (e.getReservedUser().getUserId().equals(userId)) {
-                        throw new ReservationException()
-                    }
-                })
-                .count();
+                .collect(Collectors.toList());
     }
 }
