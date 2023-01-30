@@ -15,13 +15,14 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class CountExistReservationServiceTest {
+class GetReservationsAtSameTimeServiceTest {
     @InjectMocks
-    CountExistReservationService countExistReservationService;
+    GetReservationsAtSameTimeService getReservationsAtSameTimeService;
 
     @Mock
     CustomReservationRepository customReservationRepository;
@@ -40,14 +41,14 @@ class CountExistReservationServiceTest {
         BDDMockito.given(customReservationRepository.findReservationBetween(ID1, DATE, START, END)).willReturn(List.of(reservation));
 
         //when
-        countExistReservationService.countOf(ID1, DATE, START, END);
+        getReservationsAtSameTimeService.getReservations(ID1, DATE, START, END);
 
         //then
         verify(customReservationRepository, times(1)).findReservationBetween(ID1, DATE, START, END);
     }
 
     @Test
-    @DisplayName("countOf 메서드 실행 시 reservationState가 Canceled가 아닌 개수만큼 Long을 반환한다.")
+    @DisplayName("countOf 메서드 실행 시 reservationState가 Canceled가 아닌 reservation들을 반환한다.")
     void countOfTest2() {
         //given
         Reservation canceledReservation = Reservation.builder()
@@ -63,9 +64,10 @@ class CountExistReservationServiceTest {
         BDDMockito.given(customReservationRepository.findReservationBetween(ID1, DATE, START, END)).willReturn(reservations);
 
         //when
-        Long result = countExistReservationService.countOf(ID1, DATE, START, END);
+        List<Reservation> result = getReservationsAtSameTimeService.getReservations(ID1, DATE, START, END);
 
         //then
-        Assertions.assertThat(result).isEqualTo(3L);
+        assertThat(result.size()).isEqualTo(3);
+        result.forEach( e -> assertThat(e.getReservationState()).isNotEqualTo(ReservationState.CANCEL));
     }
 }
