@@ -5,7 +5,7 @@ import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.meeting.domain.MeetingNotFoundException;
-import com.example.momobe.payment.domain.UnableProceedPaymentException;
+import com.example.momobe.payment.domain.PaymentException;
 import com.example.momobe.reservation.application.ReservationCancelService;
 import com.example.momobe.reservation.application.ReservationConfirmService;
 import com.example.momobe.reservation.application.ReservationBookService;
@@ -18,7 +18,6 @@ import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -557,7 +556,7 @@ class ReservationCommonControllerTest {
                 .build();
         String json = objectMapper.writeValueAsString(request);
 
-        willThrow(new UnableProceedPaymentException(REQUEST_DENIED))
+        willThrow(new PaymentException(REQUEST_DENIED))
                 .given(reservationCancelService).cancelReservation(any(), any(), any());
 
         //when
@@ -595,7 +594,7 @@ class ReservationCommonControllerTest {
                 .build();
         String json = objectMapper.writeValueAsString(request);
 
-        willThrow(new UnableProceedPaymentException(DATA_NOT_FOUND))
+        willThrow(new PaymentException(DATA_NOT_FOUND))
                 .given(reservationCancelService).cancelReservation(any(), any(), any());
 
         //when
@@ -633,7 +632,7 @@ class ReservationCommonControllerTest {
                 .build();
         String json = objectMapper.writeValueAsString(request);
 
-        willThrow(new UnableProceedPaymentException(CONFIRMED_RESERVATION))
+        willThrow(new PaymentException(CONFIRMED_RESERVATION))
                 .given(reservationCancelService).cancelReservation(any(), any(), any());
 
         //when

@@ -1,7 +1,7 @@
 package com.example.momobe.payment.application;
 
 import com.example.momobe.payment.domain.Payment;
-import com.example.momobe.payment.domain.UnableProceedPaymentException;
+import com.example.momobe.payment.domain.PaymentException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,8 +10,6 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class PaymentVerificationServiceTest {
@@ -29,7 +27,7 @@ class PaymentVerificationServiceTest {
 
         //when then
         Assertions.assertThatThrownBy(() -> paymentVerificationService.verify(1000L, payment))
-                .isInstanceOf(UnableProceedPaymentException.class);
+                .isInstanceOf(PaymentException.class);
     }
 
     @Test
