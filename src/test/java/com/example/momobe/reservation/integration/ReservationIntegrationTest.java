@@ -60,7 +60,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @RecordApplicationEvents
 @AutoConfigureMockMvc
-@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
+//@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 public class ReservationIntegrationTest {
     @Autowired
     MockMvc mockMvc;
@@ -504,6 +504,80 @@ public class ReservationIntegrationTest {
 
         //then
         perform.andExpect(status().isConflict());
+    }
+
+    @Test
+    @DisplayName("정원이 가득찬 상태가 아니여도 같은 예약을 2회 요청 시 409 Conflict 반환")
+    void saveReservationTest11() throws Exception {
+        //given
+        PostReservationDto reservationDto = PostReservationDto.builder()
+                .reservationMemo(CONTENT1)
+                .amount(10000L)
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
+                        .reservationDate(LocalDate.of(2022,1,5))
+                        .startTime(LocalTime.of(10,0,0))
+                        .endTime(LocalTime.of(18,0,0))
+                        .build())
+                .build();
+
+        String json = objectMapper.writeValueAsString(reservationDto);
+
+        //when
+        ResultActions perform1 = mockMvc.perform(post("/meetings/{meetingId}/reservations", meeting.getId())
+                .contentType(APPLICATION_JSON)
+                .content(json)
+                .header(JWT_HEADER, accessToken));
+
+        ResultActions perform2 = mockMvc.perform(post("/meetings/{meetingId}/reservations", meeting.getId())
+                .contentType(APPLICATION_JSON)
+                .content(json)
+                .header(JWT_HEADER, accessToken));
+
+        //then
+        perform2.andExpect(status().isConflict());
+    }
+
+    @Test
+    @DisplayName("FreeMeet의 경우 요청이 완전히 동일하지 않더라도 시간대가 겹치면 Conflict 발생")
+    void saveReservationTest12() throws Exception {
+        //given
+        PostReservationDto reservationDto1 = PostReservationDto.builder()
+                .reservationMemo(CONTENT1)
+                .amount(0L)
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
+                        .reservationDate(LocalDate.of(2022,1,5))
+                        .startTime(LocalTime.of(10,0,0))
+                        .endTime(LocalTime.of(12,0,0))
+                        .build())
+                .build();
+
+        PostReservationDto reservationDto2 = PostReservationDto.builder()
+                .reservationMemo(CONTENT1)
+                .amount(0L)
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
+                        .reservationDate(LocalDate.of(2022,1,5))
+                        .startTime(LocalTime.of(11,0,0))
+                        .endTime(LocalTime.of(13,0,0))
+                        .build())
+                .build();
+
+        String json1 = objectMapper.writeValueAsString(reservationDto1);
+        String json2 = objectMapper.writeValueAsString(reservationDto2);
+
+        //when
+        ResultActions perform1 = mockMvc.perform(post("/meetings/{meetingId}/reservations", freeOrderMeeting.getId())
+                .contentType(APPLICATION_JSON)
+                .content(json1)
+                .header(JWT_HEADER, accessToken));
+
+        ResultActions perform2 = mockMvc.perform(post("/meetings/{meetingId}/reservations", freeOrderMeeting.getId())
+                .contentType(APPLICATION_JSON)
+                .content(json2)
+                .header(JWT_HEADER, accessToken));
+
+        //then
+        perform1.andExpect(status().isCreated());
+        perform2.andExpect(status().isConflict());
     }
 
     @Test
