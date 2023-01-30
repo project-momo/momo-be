@@ -4,7 +4,7 @@ import com.example.momobe.common.config.ApiDocumentUtils;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
-import com.example.momobe.meeting.domain.MeetingNotFoundException;
+import com.example.momobe.meeting.domain.MeetingException;
 import com.example.momobe.payment.domain.PaymentException;
 import com.example.momobe.reservation.application.ReservationCancelService;
 import com.example.momobe.reservation.application.ReservationConfirmService;
@@ -309,7 +309,7 @@ class ReservationCommonControllerTest {
     void postReservation_fail5() throws Exception {
         //given
         given(reservationLockFacade.reserve(anyLong(), any(PostReservationDto.class), any()))
-                .willThrow(new MeetingNotFoundException(DATA_NOT_FOUND));
+                .willThrow(new MeetingException(DATA_NOT_FOUND));
 
         PostReservationDto request = PostReservationDto.builder()
                 .dateInfo(PostReservationDto.ReservationDateDto.builder()
@@ -419,7 +419,7 @@ class ReservationCommonControllerTest {
         //given
         PatchReservationDto request = new PatchReservationDto("true");
         String json = objectMapper.writeValueAsString(request);
-        willThrow(new MeetingNotFoundException(DATA_NOT_FOUND)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), any(PatchReservationDto.class));
+        willThrow(new MeetingException(DATA_NOT_FOUND)).given(reservationConfirmService).confirm(anyLong(), anyLong(), any(), any(PatchReservationDto.class));
 
         //when
         ResultActions perform = mockMvc.perform(patch("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)

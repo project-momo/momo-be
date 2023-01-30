@@ -1,7 +1,7 @@
 package com.example.momobe.meeting.dao;
 
 import com.example.momobe.common.exception.enums.ErrorCode;
-import com.example.momobe.meeting.domain.MeetingNotFoundException;
+import com.example.momobe.meeting.domain.MeetingException;
 import com.example.momobe.meeting.dto.out.MeetingDetailResponseDto;
 import com.example.momobe.meeting.dto.out.QMeetingDetailResponseDto;
 import com.example.momobe.question.dto.out.ResponseQuestionDto;
@@ -76,7 +76,7 @@ public class MeetingDetailQueryRepository {
                                 list(dateTime1.dateTime))
                         ));
 
-        if (dtos.isEmpty()) throw new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND);
+        if (dtos.isEmpty()) throw new MeetingException(ErrorCode.DATA_NOT_FOUND);
 
         List<ResponseQuestionDto> questionDtos = questionQueryRepository.getQuestions(meetingId);
         dtos.get(0).init(questionDtos);

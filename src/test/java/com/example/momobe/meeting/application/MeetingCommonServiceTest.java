@@ -36,7 +36,7 @@ class MeetingCommonServiceTest {
         //when
         //then
         assertThatThrownBy(() -> meetingCommonService.getMeeting(1L))
-                .isInstanceOf(MeetingNotFoundException.class);
+                .isInstanceOf(MeetingException.class);
     }
 
     @Test
