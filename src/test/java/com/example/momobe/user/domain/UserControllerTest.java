@@ -74,6 +74,7 @@
                  .email("email@mail.com")
                  .nickname("dodanmom")
                  .point(100L)
+                 .avatar("http://ss")
                  .build();
 
          given(userFindService.verifyUser(any())).willReturn(new User());
@@ -96,7 +97,8 @@
                          responseFields(
                                  fieldWithPath("nickname").type(STRING).description("닉네임"),
                                  fieldWithPath("email").type(STRING).description("이메일"),
-                                 fieldWithPath("point").type(NUMBER).description("포인트")
+                                 fieldWithPath("point").type(NUMBER).description("포인트"),
+                                 fieldWithPath("avatar").type(STRING).description("프로필 사진")
                          )
                  ));
      }
