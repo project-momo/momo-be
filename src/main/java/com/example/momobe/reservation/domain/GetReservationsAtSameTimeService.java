@@ -15,11 +15,17 @@ public class CountExistReservationService {
     public Long countOf(Long meetingId,
                         LocalDate localDate,
                         LocalTime startTime,
-                        LocalTime endTime) {
+                        LocalTime endTime,
+                        Long userId) {
         List<Reservation> reservations = customReservationRepository.findReservationBetween(meetingId, localDate, startTime, endTime);
 
         return reservations.stream()
                 .filter(reservation -> !reservation.isCanceledReservation())
+                .forEach(e -> {
+                    if (e.getReservedUser().getUserId().equals(userId)) {
+                        throw new ReservationException()
+                    }
+                })
                 .count();
     }
 }

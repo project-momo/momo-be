@@ -29,7 +29,7 @@ public class ReservationBookService {
     private final MeetingCommonService meetingCommonService;
     private final ReservationMapper reservationMapper;
     private final ReservationRepository reservationRepository;
-    private final CountExistReservationService countExistReservationService;
+    private final GetReservationsAtSameTimeService getReservationsAtSameTimeService;
     private final PaymentSaveService paymentSaveService;
     private final PaymentMapper paymentMapper;
 
@@ -77,10 +77,9 @@ public class ReservationBookService {
             throw new ReservationException(AMOUNT_DOSE_NOT_MATCH);
         }
     }
-
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    
     private Long countReservationsAtSameTime(Long meetingId, LocalDate reservationDate, LocalTime startTime, LocalTime endTime) {
-        return countExistReservationService.countOf(meetingId, reservationDate, startTime, endTime);
+        return getReservationsAtSameTimeService.get(meetingId, reservationDate, startTime, endTime);
     }
 
     private Reservation saveReservation(PostReservationDto reservationDto, UserInfo userInfo, Meeting meeting) {
