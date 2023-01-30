@@ -1,6 +1,7 @@
 package com.example.momobe.payment.application;
 
 import com.example.momobe.payment.domain.Payment;
+import com.example.momobe.payment.domain.enums.PayState;
 import com.example.momobe.payment.dto.PaymentResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class PaymentProgressService {
     private final PaymentCommonService paymentCommonService;
     private final PaymentVerificationService paymentVerificationService;
     private final PaymentRequestService paymentRequestService;
+    private final PaymentSuccessService paymentSuccessService;
 
     @Transactional
     public PaymentResultDto progress(String orderId, String paymentKey, Long amount) {
@@ -23,7 +25,10 @@ public class PaymentProgressService {
         if (paymentVerificationService.verify(amount, payment)) payment.setPaymentKey(paymentKey);
 
         Map<String, Object> map = createMap(orderId, amount);
-        return paymentRequestService.process(paymentKey, map);
+        PaymentResultDto paymentResponse = paymentRequestService.process(paymentKey, map);
+        paymentSuccessService.setSuccessState(orderId);
+
+        return paymentResponse;
     }
 
     private Map<String, Object> createMap(String orderId, Long amount) {
