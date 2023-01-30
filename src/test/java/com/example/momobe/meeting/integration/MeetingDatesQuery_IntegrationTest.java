@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +41,7 @@ import static com.example.momobe.meeting.domain.enums.Category.DESIGN;
 import static com.example.momobe.meeting.domain.enums.DatePolicy.FREE;
 import static com.example.momobe.meeting.domain.enums.DatePolicy.PERIOD;
 import static com.example.momobe.meeting.domain.enums.MeetingState.OPEN;
+import static java.time.temporal.ChronoUnit.*;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -49,7 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
+//@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class MeetingDatesQuery_IntegrationTest {
     @Autowired
@@ -86,14 +88,14 @@ class MeetingDatesQuery_IntegrationTest {
             localDates.add(LocalDate.of(2022,1,i));
         }
 
-        startDate = LocalDate.of(2022, 1, 1);
+        startDate = LocalDate.now();
         MeetingRequestDto.DateTimeDto free = MeetingRequestDto.DateTimeDto.builder()
                 .datePolicy(FREE)
                 .maxTime(4)
                 .startTime(LocalTime.of(10, 0))
                 .endTime(LocalTime.of(14, 0))
                 .startDate(startDate)
-                .endDate(LocalDate.of(2022, 1, 20))
+                .endDate(LocalDate.now().plus(7, DAYS))
                 .dayWeeks(Set.of(1,2,3,4,5,6,7))
                 .dates(localDates)
                 .build();
@@ -127,8 +129,8 @@ class MeetingDatesQuery_IntegrationTest {
                 .maxTime(4)
                 .startTime(LocalTime.of(10, 0))
                 .endTime(LocalTime.of(14, 0))
-                .startDate(LocalDate.of(2022, 1, 1))
-                .endDate(LocalDate.of(2022, 1, 20))
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plus(7, DAYS))
                 .dayWeeks(Set.of(1,2,3,4,5,6,7))
                 .dates(localDates)
                 .build();
@@ -148,8 +150,8 @@ class MeetingDatesQuery_IntegrationTest {
                         .maxTime(4)
                         .startTime(LocalTime.of(10, 0))
                         .endTime(LocalTime.of(15, 0))
-                        .startDate(LocalDate.of(2022, 1, 1))
-                        .endDate(LocalDate.of(2022, 1, 20))
+                        .startDate(startDate)
+                        .endDate(LocalDate.now().plus(7, DAYS))
                         .dateTimes(dateTimes2)
                         .build())
                 .tagIds(null)
@@ -162,9 +164,9 @@ class MeetingDatesQuery_IntegrationTest {
                     .meetingId(freeMeeting.getId())
                     .reservationMemo(null)
                     .reservationDate(ReservationDate.builder()
-                            .date(LocalDate.of(2022, 1, i))
+                            .date(startDate)
                             .startTime(LocalTime.of(10, 0))
-                            .endTime(LocalTime.of(12, 0))
+                            .endTime(LocalTime.of(15, 0))
                             .build())
                     .amount(new Money(10000L))
                     .reservationState(ReservationState.ACCEPT)
@@ -179,7 +181,7 @@ class MeetingDatesQuery_IntegrationTest {
                     .meetingId(dayMeeting.getId())
                     .reservationMemo(null)
                     .reservationDate(ReservationDate.builder()
-                            .date(LocalDate.of(2022, 1, i))
+                            .date(startDate)
                             .startTime(LocalTime.of(10, 0))
                             .endTime(LocalTime.of(15, 0))
                             .build())
