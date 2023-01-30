@@ -1,6 +1,6 @@
 package com.example.momobe.meeting.domain.enums;
 
-import com.example.momobe.meeting.domain.CategoryNotFoundException;
+import com.example.momobe.meeting.domain.MeetingException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +26,6 @@ public enum Category {
         return Arrays.stream(Category.values())
                 .filter(c -> c.description.equals(description))
                 .findFirst()
-                .orElseThrow(() -> new CategoryNotFoundException(DATA_NOT_FOUND));
+                .orElseThrow(() -> new MeetingException(DATA_NOT_FOUND));
     }
 }

@@ -1,7 +1,7 @@
 package com.example.momobe.meeting.application;
 
-import com.example.momobe.meeting.domain.CanNotUpdateMeetingException;
 import com.example.momobe.meeting.domain.Meeting;
+import com.example.momobe.meeting.domain.MeetingException;
 import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.reservation.domain.ReservationRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +40,7 @@ class MeetingCloseServiceTest {
         // when
         // then
         assertThatThrownBy(() -> meetingCloseService.closeMeeting(ID2, meetingId))
-                .isInstanceOf(CanNotUpdateMeetingException.class);
+                .isInstanceOf(MeetingException.class);
     }
 
     @Test
