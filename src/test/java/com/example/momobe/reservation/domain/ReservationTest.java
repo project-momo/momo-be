@@ -230,7 +230,7 @@ class ReservationTest {
                 .build();
 
         //when
-        Boolean result = reservation.matchUserId(ID2);
+        Boolean result = reservation.matchReservedUserId(ID2);
 
         //then
         assertThat(result).isFalse();
@@ -241,11 +241,11 @@ class ReservationTest {
     void matchUserId2() {
         //given
         Reservation reservation = Reservation.builder()
-                .reservedUser(new ReservedUser(ID1))
+                .reservedUser(new ReservedUser(ID2))
                 .build();
 
         //when
-        Boolean result = reservation.matchUserId(ID1);
+        Boolean result = reservation.matchReservedUserId(ID2);
 
         //then
         assertThat(result).isTrue();

@@ -14,10 +14,12 @@ import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.example.momobe.reservation.mapper.ReservationMapper;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,6 +34,7 @@ import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.domain.enums.Category.*;
 import static com.example.momobe.meeting.domain.enums.DatePolicy.*;
 import static com.example.momobe.meeting.domain.enums.MeetingState.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
@@ -50,7 +53,7 @@ class ReservationBookServiceTest {
     ReservationRepository reservationRepository;
 
     @Mock
-    CountExistReservationService countExistReservationService;
+    GetReservationsAtSameTimeService getReservationsAtSameTimeService;
 
     @Mock
     PaymentSaveService paymentSaveService;
@@ -131,7 +134,7 @@ class ReservationBookServiceTest {
         given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
-        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
+        reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(meetingCommonService, times(1)).getMeeting(any());
@@ -146,7 +149,7 @@ class ReservationBookServiceTest {
         given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
-        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
+        reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(reservationMapper, times(1)).of(any(Meeting.class), any(), any());
@@ -162,10 +165,10 @@ class ReservationBookServiceTest {
         given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
-        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
+        reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
-        verify(countExistReservationService, times(1)).countOf(any(), any(), any(), any());
+        verify(getReservationsAtSameTimeService, times(1)).getReservations(any(), any(), any(), any());
     }
 
     @Test
@@ -177,7 +180,7 @@ class ReservationBookServiceTest {
         given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
-        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
+        reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(reservationRepository, times(1)).save(any());
@@ -192,7 +195,7 @@ class ReservationBookServiceTest {
         given(paymentSaveService.save(any())).willReturn(payment);
 
         //when
-        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
+        reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(paymentSaveService, times(1)).save(any());
@@ -207,9 +210,25 @@ class ReservationBookServiceTest {
         given(reservationRepository.save(any())).willReturn(reservation);
 
         //when
-        PaymentResponseDto reseult = reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
+        reservationBookService.reserve(meeting.getId(), reservationDto, userInfo);
 
         //then
         verify(paymentSaveService, times(0)).save(any());
+    }
+
+    @Test
+    @DisplayName("getReservationsAtSameTimeService() 결과 리스트에 reserve()인자의 userInfo와 같은 id가 있을 경우 예외 발생")
+    void reserveTest_failed() {
+        //given
+        Reservation reservation = Reservation.builder()
+                .reservedUser(new ReservedUser(userInfo.getId()))
+                .reservationState(ReservationState.ACCEPT)
+                .build();
+        given(meetingCommonService.getMeeting(any())).willReturn(meeting);
+        given(getReservationsAtSameTimeService.getReservations(any(), any(), any(), any())).willReturn(List.of(reservation));
+
+        //when then
+        assertThatThrownBy(() -> reservationBookService.reserve(meeting.getId(), reservationDto, userInfo))
+                .isInstanceOf(ReservationException.class);
     }
 }
