@@ -82,7 +82,7 @@ public class ReservationBookService {
     private void checkDuplicateUser(UserInfo userInfo, List<Reservation> reservationsAtSameTime) {
         reservationsAtSameTime.forEach(e -> {
             if (e.matchReservedUserId(userInfo.getId())) {
-                throw new ReservationException(DUPLICATED_RESERVATION);
+                throw new ReservationException(ALREADY_EXIST_RESERVATION);
             }
         });
     }
