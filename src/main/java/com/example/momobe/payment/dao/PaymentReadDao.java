@@ -1,6 +1,5 @@
 package com.example.momobe.payment.dao;
 
-import com.example.momobe.payment.dao.vo.ReservationId;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
