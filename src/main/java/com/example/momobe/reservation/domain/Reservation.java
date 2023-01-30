@@ -112,4 +112,8 @@ public class Reservation extends BaseTime {
     public Long getReservedUserId() {
         return this.reservedUser.getUserId();
     }
+
+    public Boolean matchReservedUserId(Long userId) {
+        return getReservedUserId().equals(userId);
+    }
 }
