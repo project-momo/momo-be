@@ -60,10 +60,10 @@ class MeetingDatesQueryControllerTest {
     void getMeetingDates() throws Exception {
         //given
         Long meetingId = 1L;
-        LocalDate localDate = LocalDate.of(2022,1,1);
+        LocalDate localDate = LocalDate.now();
         ResponseMeetingDatesDto dto1 = ResponseMeetingDatesDto.builder()
-                .dateTime(LocalDateTime.of(2022, 1, 1, 10, 0))
-                .date(LocalDate.of(2022, 1, 1))
+                .dateTime(LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), 10, 0))
+                .date(LocalDate.now())
                 .time(LocalTime.of(10, 0))
                 .availability("true")
                 .datePolicy(DatePolicy.PERIOD.toString())
@@ -75,8 +75,8 @@ class MeetingDatesQueryControllerTest {
                 .build();
 
         ResponseMeetingDatesDto dto2 = ResponseMeetingDatesDto.builder()
-                .dateTime(LocalDateTime.of(2022, 1, 1, 11, 0))
-                .date(LocalDate.of(2022, 1, 1))
+                .dateTime(LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), 11, 0))
+                .date(LocalDate.now())
                 .time(LocalTime.of(11, 0))
                 .availability("true")
                 .datePolicy(DatePolicy.PERIOD.toString())

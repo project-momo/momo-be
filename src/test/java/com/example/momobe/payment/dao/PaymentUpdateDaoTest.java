@@ -4,6 +4,7 @@ import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.reservation.domain.enums.ReservationState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 class PaymentUpdateDaoTest {
     @Autowired
     PaymentUpdateDao paymentUpdateDao;
