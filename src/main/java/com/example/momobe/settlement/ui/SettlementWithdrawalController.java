@@ -6,6 +6,7 @@ import com.example.momobe.settlement.application.OpenApiService;
 import com.example.momobe.settlement.application.SettlementWithdrawalService;
 import com.example.momobe.settlement.dto.in.PointWithdrawalDto;
 import com.example.momobe.settlement.dto.out.PointWithdrawalResponseDto;
+import com.example.momobe.user.domain.UserPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class SettlementWithdrawalController {
     @PatchMapping("/mypage/point/withdrawal")
     public PointWithdrawalResponseDto withdrawalPoint(@Token UserInfo userInfo, @Valid @RequestBody PointWithdrawalDto request){
         boolean verifyBankAccount = openApiService.verifyBankAccount(request.getAccountInfo());
-        boolean withdrawal = withdrawalService.deductPoint(userInfo.getId(),request.getAmount());
+        PointWithdrawalResponseDto.WithdrawalDto withdrawal = withdrawalService.deductPoint(userInfo.getId(),request.getAmount());
         return PointWithdrawalResponseDto.of(withdrawal,verifyBankAccount);
     }
 }

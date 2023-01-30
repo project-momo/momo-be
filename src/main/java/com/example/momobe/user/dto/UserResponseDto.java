@@ -11,5 +11,6 @@ public class UserResponseDto {
     private final String nickname;
     private final String email;
     private final Long point;
+    private final String avatar;
 
 }

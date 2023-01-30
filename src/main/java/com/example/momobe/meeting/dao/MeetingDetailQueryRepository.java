@@ -69,6 +69,8 @@ public class MeetingDetailQueryRepository {
                                 meeting.dateTimeInfo.endTime,
                                 meeting.dateTimeInfo.maxTime,
                                 meeting.price,
+                                meeting.personnel,
+                                set(address.id),
                                 set(address.si.append(" ").append(address.gu)),
                                 set(tag.name),
                                 list(dateTime1.dateTime))
