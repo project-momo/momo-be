@@ -60,7 +60,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @RecordApplicationEvents
 @AutoConfigureMockMvc
-//@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
+@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 public class ReservationIntegrationTest {
     @Autowired
     MockMvc mockMvc;
