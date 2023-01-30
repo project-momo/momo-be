@@ -10,8 +10,17 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
     RedisUserDto of(User user);
 
-    @Mapping(target = "nickname", source = "nickname.nickname")
-    @Mapping(target = "email", source = "email.address")
-    @Mapping(target = "point", source = "userPoint.point")
-    UserResponseDto userDtoOfUser(User user);
+//    @Mapping(target = "nickname", source = "nickname.nickname")
+//    @Mapping(target = "email", source = "email.address")
+//    @Mapping(target = "point", source = "userPoint.point")
+//    UserResponseDto userDtoOfUser(User user);
+
+    default UserResponseDto userDtoOfUser(User user){
+        return UserResponseDto.builder()
+                .nickname(user.getNickname().getNickname())
+                .email(user.getEmail().getAddress())
+                .point(user.getUserPoint().getPoint())
+                .avatar(user.getAvatar().getRemotePath())
+                .build();
+    }
 }
