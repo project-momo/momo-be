@@ -14,6 +14,7 @@ import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.event.ReservationConfirmedEvent;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.user.domain.Email;
+import com.example.momobe.user.domain.Nickname;
 import com.example.momobe.user.domain.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,7 +61,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @RecordApplicationEvents
 @AutoConfigureMockMvc
-@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
+//@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 public class ReservationIntegrationTest {
     @Autowired
     MockMvc mockMvc;
@@ -744,5 +745,40 @@ public class ReservationIntegrationTest {
         //then
         long result = applicationEvents.stream(ReservationConfirmedEvent.class).count();
         Assertions.assertThat(result).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("자신이 주최한 모임에 셀프 참여 시 409 예외 반환")
+    void ownMeeting() throws Exception {
+        //given
+        User host = User.builder()
+                .email(new Email(EMAIL2))
+                .nickname(new Nickname(NICKNAME2))
+                .build();
+        em.persist(host);
+
+        ReflectionTestUtils.setField(meeting, "hostId", host.getId());
+        hostToken = jwtTokenUtil.createAccessToken(host.getEmail().getAddress(), host.getId(), List.of(ROLE_USER), host.getNickname().getNickname());
+
+        PostReservationDto reservationDto = PostReservationDto.builder()
+                .reservationMemo(CONTENT1)
+                .amount(10000L)
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
+                        .reservationDate(LocalDate.of(2022,1,5))
+                        .startTime(LocalTime.of(11,0,0))
+                        .endTime(LocalTime.of(12,0,0))
+                        .build())
+                .build();
+
+        String json = objectMapper.writeValueAsString(reservationDto);
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/meetings/{meetingId}/reservations", meeting.getId())
+                .contentType(APPLICATION_JSON)
+                .content(json)
+                .header(JWT_HEADER, accessToken));
+
+        //then
+        perform.andExpect(status().isConflict());
     }
 }
