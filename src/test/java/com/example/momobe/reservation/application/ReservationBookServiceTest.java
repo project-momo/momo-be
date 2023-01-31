@@ -101,7 +101,7 @@ class ReservationBookServiceTest {
                 .build();
 
         userInfo = UserInfo.builder()
-                .id(ID1)
+                .id(ID2)
                 .email(EMAIL1)
                 .nickname(NICKNAME1)
                 .roles(List.of(ROLE_USER))
@@ -220,6 +220,26 @@ class ReservationBookServiceTest {
     @DisplayName("getReservationsAtSameTimeService() 결과 리스트에 reserve()인자의 userInfo와 같은 id가 있을 경우 예외 발생")
     void reserveTest_failed() {
         //given
+        Reservation reservation = Reservation.builder()
+                .reservedUser(new ReservedUser(userInfo.getId()))
+                .reservationState(ReservationState.ACCEPT)
+                .build();
+        given(meetingCommonService.getMeeting(any())).willReturn(meeting);
+        given(getReservationsAtSameTimeService.getReservations(any(), any(), any(), any())).willReturn(List.of(reservation));
+
+        //when then
+        assertThatThrownBy(() -> reservationBookService.reserve(meeting.getId(), reservationDto, userInfo))
+                .isInstanceOf(ReservationException.class);
+    }
+
+    @Test
+    @DisplayName("meeting.hostId와 userInfo.userId가 같을 경우 Reservation Exception 발생")
+    void reserveTest_failed2() {
+        //given
+        userInfo = UserInfo.builder()
+                .id(meeting.getHostId())
+                .build();
+
         Reservation reservation = Reservation.builder()
                 .reservedUser(new ReservedUser(userInfo.getId()))
                 .reservationState(ReservationState.ACCEPT)
