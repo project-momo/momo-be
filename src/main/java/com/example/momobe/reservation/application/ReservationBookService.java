@@ -60,7 +60,11 @@ public class ReservationBookService {
 
         List<Reservation> reservationsAtSameTime = getReservationsAtSameTime(meetingId, reservationDate, startTime, endTime);
 
-        checkDuplicateUser(userInfo, reservationsAtSameTime);
+        checkDuplicateBookings(userInfo, reservationsAtSameTime);
+
+        if (meeting.matchHostId(userInfo.getId())) {
+            throw new ReservationException(CAN_NOT_PARTICIPATE_OWN_MEETING);
+        }
 
         if (meeting.isClosed()) {
             throw new ReservationException(CLOSED_MEETING);
@@ -79,7 +83,7 @@ public class ReservationBookService {
         }
     }
 
-    private void checkDuplicateUser(UserInfo userInfo, List<Reservation> reservationsAtSameTime) {
+    private void checkDuplicateBookings(UserInfo userInfo, List<Reservation> reservationsAtSameTime) {
         reservationsAtSameTime.forEach(e -> {
             if (e.matchReservedUserId(userInfo.getId())) {
                 throw new ReservationException(ALREADY_EXIST_RESERVATION);
