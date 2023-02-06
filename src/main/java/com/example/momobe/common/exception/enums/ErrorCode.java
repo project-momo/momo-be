@@ -16,7 +16,7 @@ public enum ErrorCode {
     CLOSED_MEETING(CONFLICT, "모집이 종료된 모임입니다."),
     CANCELED_RESERVATION(CONFLICT, "이미 취소된 예약입니다, 관리자에게 문의하세요."),
     CONFIRMED_RESERVATION(CONFLICT, "이미 확정된 예약입니다, 관리자에게 문의하세요."),
-    CAN_NOT_FOUND_END_MEETING(NOT_FOUND,"금일 정산할 내역이 없습니다."),
+    CAN_NOT_FOUND_SETTLEMENT(NOT_FOUND,"금일 정산할 내역이 없습니다."),
     CAN_NOT_CHANGE_RESERVATION_STATE(CONFLICT, "해당 예약은 더 이상 수정할 수 없는 상태입니다"),
     INVALID_EMAIL(SERVICE_UNAVAILABLE, "유저의 메일 정보가 존재하지 않습니다"),
     ALREADY_EXIST_RESERVATION(CONFLICT, "해당 시간대에 이미 회원님의 예약건이 존재합니다"),
