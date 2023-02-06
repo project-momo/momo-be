@@ -84,10 +84,6 @@ public class Reservation extends BaseTime {
                 .build();
     }
 
-    public Boolean matchUserId(Long userId) {
-        return this.reservedUser.isEqualTo(userId);
-    }
-
     private Boolean canChangeStatus() {
         return this.reservationState.equals(PAYMENT_SUCCESS) && !this.reservationDate.isBeforeThen(LocalDateTime.now());
     }
@@ -111,5 +107,9 @@ public class Reservation extends BaseTime {
 
     public Long getReservedUserId() {
         return this.reservedUser.getUserId();
+    }
+
+    public Boolean matchReservedUserId(Long userId) {
+        return getReservedUserId().equals(userId);
     }
 }

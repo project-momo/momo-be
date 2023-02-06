@@ -36,7 +36,7 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
     }
 
     private void checkAvailableOfCancel(UserInfo userInfo, Reservation reservation) {
-        if (!reservation.matchUserId(userInfo.getId())) throw new ReservationException(REQUEST_DENIED);
+        if (!reservation.matchReservedUserId(userInfo.getId())) throw new ReservationException(REQUEST_DENIED);
     }
 
     @Override

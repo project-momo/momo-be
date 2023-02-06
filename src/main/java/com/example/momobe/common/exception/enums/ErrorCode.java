@@ -19,6 +19,9 @@ public enum ErrorCode {
     CAN_NOT_FOUND_SETTLEMENT(NOT_FOUND,"금일 정산할 내역이 없습니다."),
     CAN_NOT_CHANGE_RESERVATION_STATE(CONFLICT, "해당 예약은 더 이상 수정할 수 없는 상태입니다"),
     INVALID_EMAIL(SERVICE_UNAVAILABLE, "유저의 메일 정보가 존재하지 않습니다"),
+    ALREADY_EXIST_RESERVATION(CONFLICT, "해당 시간대에 이미 회원님의 예약건이 존재합니다"),
+    EXCEEDED_EXPIRATION_DATE(CONFLICT, "지난 예약 일자는 조회할 수 없습니다"),
+    CAN_NOT_PARTICIPATE_OWN_MEETING(CONFLICT, "자신의 모임에는 참여할 수 없습니다."),
 
     /*
     * Token Exception

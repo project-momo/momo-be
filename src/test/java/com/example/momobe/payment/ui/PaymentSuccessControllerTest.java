@@ -4,7 +4,7 @@ import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
 import com.example.momobe.payment.application.PaymentProgressService;
-import com.example.momobe.payment.domain.UnableProceedPaymentException;
+import com.example.momobe.payment.domain.PaymentException;
 import com.example.momobe.payment.dto.PaymentResultDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -63,7 +63,7 @@ class PaymentSuccessControllerTest {
     void getSuccess_fail1() throws Exception {
         //given
         given(paymentProgressService.progress(ORDER_ID, PAYMENT_KEY, AMOUNT))
-                .willThrow(new UnableProceedPaymentException(DATA_NOT_FOUND));
+                .willThrow(new PaymentException(DATA_NOT_FOUND));
 
         //when
         ResultActions perform = mockMvc.perform(get("/payments/success")
@@ -89,7 +89,7 @@ class PaymentSuccessControllerTest {
     void getSuccess_fail2() throws Exception {
         //given
         given(paymentProgressService.progress(ORDER_ID, PAYMENT_KEY, AMOUNT))
-                .willThrow(new UnableProceedPaymentException(UNABLE_TO_PROCESS));
+                .willThrow(new PaymentException(UNABLE_TO_PROCESS));
 
         //when
         ResultActions perform = mockMvc.perform(get("/payments/success")

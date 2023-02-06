@@ -3,7 +3,7 @@ package com.example.momobe.meeting.application;
 import com.example.momobe.address.application.AddressFindService;
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.meeting.domain.MeetingNotFoundException;
+import com.example.momobe.meeting.domain.MeetingException;
 import com.example.momobe.meeting.domain.MeetingRepository;
 import com.example.momobe.tag.application.TagCommonService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class MeetingCommonService {
 
     public Meeting getMeeting(Long meetingId) {
         return meetingRepository.findById(meetingId)
-                .orElseThrow(() -> new MeetingNotFoundException(ErrorCode.DATA_NOT_FOUND));
+                .orElseThrow(() -> new MeetingException(ErrorCode.DATA_NOT_FOUND));
     }
 
     public List<Long> verifyAddressesAndFindTagIds(List<Long> addressIds, List<String> tags) {

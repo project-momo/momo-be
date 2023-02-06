@@ -12,13 +12,12 @@ import com.example.momobe.reservation.dto.out.ReservationPaymentDto;
 import com.example.momobe.reservation.dto.out.PaymentResponseDto;
 import com.example.momobe.reservation.mapper.ReservationMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.LockModeType;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import static com.example.momobe.common.exception.enums.ErrorCode.*;
 
@@ -29,14 +28,14 @@ public class ReservationBookService {
     private final MeetingCommonService meetingCommonService;
     private final ReservationMapper reservationMapper;
     private final ReservationRepository reservationRepository;
-    private final CountExistReservationService countExistReservationService;
+    private final GetReservationsAtSameTimeService getReservationsAtSameTimeService;
     private final PaymentSaveService paymentSaveService;
     private final PaymentMapper paymentMapper;
 
     public PaymentResponseDto reserve(Long meetingId, PostReservationDto reservationDto, UserInfo userInfo) {
         Meeting meeting = meetingCommonService.getMeeting(meetingId);
 
-        checkAvailabilityOfReservations(meetingId, reservationDto, meeting);
+        checkAvailabilityOfReservations(meetingId, reservationDto, meeting, userInfo);
         Reservation reservation = saveReservation(reservationDto, userInfo, meeting);
 
         return savePaymentInformationOf(userInfo, reservation, meeting);
@@ -54,18 +53,24 @@ public class ReservationBookService {
         return paymentMapper.of(payment);
     }
 
-    private void checkAvailabilityOfReservations(Long meetingId, PostReservationDto reservationDto, Meeting meeting) {
+    private void checkAvailabilityOfReservations(Long meetingId, PostReservationDto reservationDto, Meeting meeting, UserInfo userInfo) {
         LocalDate reservationDate = reservationDto.getDateInfo().getReservationDate();
         LocalTime startTime = reservationDto.getDateInfo().getStartTime();
         LocalTime endTime = reservationDto.getDateInfo().getEndTime();
 
-        Long numberOfReservations = countReservationsAtSameTime(meetingId, reservationDate, startTime, endTime);
+        List<Reservation> reservationsAtSameTime = getReservationsAtSameTime(meetingId, reservationDate, startTime, endTime);
+
+        checkDuplicateBookings(userInfo, reservationsAtSameTime);
+
+        if (meeting.matchHostId(userInfo.getId())) {
+            throw new ReservationException(CAN_NOT_PARTICIPATE_OWN_MEETING);
+        }
 
         if (meeting.isClosed()) {
             throw new ReservationException(CLOSED_MEETING);
         }
 
-        if (!meeting.verifyRemainingReservations(numberOfReservations)) {
+        if (!meeting.verifyRemainingReservations((long) reservationsAtSameTime.size())) {
             throw new ReservationException(FULL_OF_PEOPLE);
         }
 
@@ -78,9 +83,16 @@ public class ReservationBookService {
         }
     }
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    private Long countReservationsAtSameTime(Long meetingId, LocalDate reservationDate, LocalTime startTime, LocalTime endTime) {
-        return countExistReservationService.countOf(meetingId, reservationDate, startTime, endTime);
+    private void checkDuplicateBookings(UserInfo userInfo, List<Reservation> reservationsAtSameTime) {
+        reservationsAtSameTime.forEach(e -> {
+            if (e.matchReservedUserId(userInfo.getId())) {
+                throw new ReservationException(ALREADY_EXIST_RESERVATION);
+            }
+        });
+    }
+
+    private List<Reservation> getReservationsAtSameTime(Long meetingId, LocalDate reservationDate, LocalTime startTime, LocalTime endTime) {
+        return getReservationsAtSameTimeService.getReservations(meetingId, reservationDate, startTime, endTime);
     }
 
     private Reservation saveReservation(PostReservationDto reservationDto, UserInfo userInfo, Meeting meeting) {

@@ -108,7 +108,7 @@ public class Meeting extends BaseTime {
 
     public void verifyHostId(Long hostId) {
         if (!this.getHostId().equals(hostId)) {
-            throw new CanNotUpdateMeetingException(ErrorCode.REQUEST_DENIED);
+            throw new MeetingException(ErrorCode.REQUEST_DENIED);
         }
     }
 

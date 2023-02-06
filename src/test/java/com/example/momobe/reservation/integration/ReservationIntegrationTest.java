@@ -14,6 +14,7 @@ import com.example.momobe.reservation.dto.in.PostReservationDto;
 import com.example.momobe.reservation.event.ReservationConfirmedEvent;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.user.domain.Email;
+import com.example.momobe.user.domain.Nickname;
 import com.example.momobe.user.domain.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -507,6 +508,80 @@ public class ReservationIntegrationTest {
     }
 
     @Test
+    @DisplayName("정원이 가득찬 상태가 아니여도 같은 예약을 2회 요청 시 409 Conflict 반환")
+    void saveReservationTest11() throws Exception {
+        //given
+        PostReservationDto reservationDto = PostReservationDto.builder()
+                .reservationMemo(CONTENT1)
+                .amount(10000L)
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
+                        .reservationDate(LocalDate.of(2022,1,5))
+                        .startTime(LocalTime.of(10,0,0))
+                        .endTime(LocalTime.of(18,0,0))
+                        .build())
+                .build();
+
+        String json = objectMapper.writeValueAsString(reservationDto);
+
+        //when
+        ResultActions perform1 = mockMvc.perform(post("/meetings/{meetingId}/reservations", meeting.getId())
+                .contentType(APPLICATION_JSON)
+                .content(json)
+                .header(JWT_HEADER, accessToken));
+
+        ResultActions perform2 = mockMvc.perform(post("/meetings/{meetingId}/reservations", meeting.getId())
+                .contentType(APPLICATION_JSON)
+                .content(json)
+                .header(JWT_HEADER, accessToken));
+
+        //then
+        perform2.andExpect(status().isConflict());
+    }
+
+    @Test
+    @DisplayName("FreeMeet의 경우 요청이 완전히 동일하지 않더라도 시간대가 겹치면 Conflict 발생")
+    void saveReservationTest12() throws Exception {
+        //given
+        PostReservationDto reservationDto1 = PostReservationDto.builder()
+                .reservationMemo(CONTENT1)
+                .amount(0L)
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
+                        .reservationDate(LocalDate.of(2022,1,5))
+                        .startTime(LocalTime.of(10,0,0))
+                        .endTime(LocalTime.of(12,0,0))
+                        .build())
+                .build();
+
+        PostReservationDto reservationDto2 = PostReservationDto.builder()
+                .reservationMemo(CONTENT1)
+                .amount(0L)
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
+                        .reservationDate(LocalDate.of(2022,1,5))
+                        .startTime(LocalTime.of(11,0,0))
+                        .endTime(LocalTime.of(13,0,0))
+                        .build())
+                .build();
+
+        String json1 = objectMapper.writeValueAsString(reservationDto1);
+        String json2 = objectMapper.writeValueAsString(reservationDto2);
+
+        //when
+        ResultActions perform1 = mockMvc.perform(post("/meetings/{meetingId}/reservations", freeOrderMeeting.getId())
+                .contentType(APPLICATION_JSON)
+                .content(json1)
+                .header(JWT_HEADER, accessToken));
+
+        ResultActions perform2 = mockMvc.perform(post("/meetings/{meetingId}/reservations", freeOrderMeeting.getId())
+                .contentType(APPLICATION_JSON)
+                .content(json2)
+                .header(JWT_HEADER, accessToken));
+
+        //then
+        perform1.andExpect(status().isCreated());
+        perform2.andExpect(status().isConflict());
+    }
+
+    @Test
     @DisplayName("요청시 바디의 값이 유효하지 않으면 400 반환")
     void confirmReservationTest1() throws Exception {
         //given
@@ -670,5 +745,40 @@ public class ReservationIntegrationTest {
         //then
         long result = applicationEvents.stream(ReservationConfirmedEvent.class).count();
         Assertions.assertThat(result).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("자신이 주최한 모임에 셀프 참여 시 409 예외 반환")
+    void ownMeeting() throws Exception {
+        //given
+        User host = User.builder()
+                .email(new Email(EMAIL2))
+                .nickname(new Nickname(NICKNAME2))
+                .build();
+        em.persist(host);
+
+        ReflectionTestUtils.setField(meeting, "hostId", host.getId());
+        hostToken = jwtTokenUtil.createAccessToken(host.getEmail().getAddress(), host.getId(), List.of(ROLE_USER), host.getNickname().getNickname());
+
+        PostReservationDto reservationDto = PostReservationDto.builder()
+                .reservationMemo(CONTENT1)
+                .amount(10000L)
+                .dateInfo(PostReservationDto.ReservationDateDto.builder()
+                        .reservationDate(LocalDate.of(2022,1,5))
+                        .startTime(LocalTime.of(11,0,0))
+                        .endTime(LocalTime.of(12,0,0))
+                        .build())
+                .build();
+
+        String json = objectMapper.writeValueAsString(reservationDto);
+
+        //when
+        ResultActions perform = mockMvc.perform(post("/meetings/{meetingId}/reservations", meeting.getId())
+                .contentType(APPLICATION_JSON)
+                .content(json)
+                .header(JWT_HEADER, accessToken));
+
+        //then
+        perform.andExpect(status().isConflict());
     }
 }

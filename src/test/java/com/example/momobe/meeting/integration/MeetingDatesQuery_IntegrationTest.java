@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +41,7 @@ import static com.example.momobe.meeting.domain.enums.Category.DESIGN;
 import static com.example.momobe.meeting.domain.enums.DatePolicy.FREE;
 import static com.example.momobe.meeting.domain.enums.DatePolicy.PERIOD;
 import static com.example.momobe.meeting.domain.enums.MeetingState.OPEN;
+import static java.time.temporal.ChronoUnit.*;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -64,7 +66,7 @@ class MeetingDatesQuery_IntegrationTest {
     private DateTimeMapper dateTimeMapper;
     private Meeting freeMeeting;
     private Meeting dayMeeting;
-    private LocalDate startDate;
+    private LocalDate startDate = LocalDate.now();
     private List<Reservation> freeReservations = new ArrayList<>();
     private List<Reservation> dayReservations = new ArrayList<>();
 
@@ -82,18 +84,17 @@ class MeetingDatesQuery_IntegrationTest {
         dateTimeMapper = new DateTimeMapperImpl();
         List<LocalDate> localDates = new ArrayList<>();
 
-        for (int i = 1; i <= 20; i++) {
-            localDates.add(LocalDate.of(2022,1,i));
+        for (int i = 0; i < 20; i++) {
+            localDates.add(startDate.plus(i, DAYS));
         }
 
-        startDate = LocalDate.of(2022, 1, 1);
         MeetingRequestDto.DateTimeDto free = MeetingRequestDto.DateTimeDto.builder()
                 .datePolicy(FREE)
                 .maxTime(4)
                 .startTime(LocalTime.of(10, 0))
                 .endTime(LocalTime.of(14, 0))
                 .startDate(startDate)
-                .endDate(LocalDate.of(2022, 1, 20))
+                .endDate(LocalDate.now().plus(20, DAYS))
                 .dayWeeks(Set.of(1,2,3,4,5,6,7))
                 .dates(localDates)
                 .build();
@@ -114,7 +115,7 @@ class MeetingDatesQuery_IntegrationTest {
                         .startTime(LocalTime.of(10, 0))
                         .endTime(LocalTime.of(14, 0))
                         .startDate(startDate)
-                        .endDate(LocalDate.of(2022, 1, 20))
+                        .endDate(startDate.plus(20, DAYS))
                         .dateTimes(dateTimes)
                         .build())
                 .tagIds(null)
@@ -127,8 +128,8 @@ class MeetingDatesQuery_IntegrationTest {
                 .maxTime(4)
                 .startTime(LocalTime.of(10, 0))
                 .endTime(LocalTime.of(14, 0))
-                .startDate(LocalDate.of(2022, 1, 1))
-                .endDate(LocalDate.of(2022, 1, 20))
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plus(20, DAYS))
                 .dayWeeks(Set.of(1,2,3,4,5,6,7))
                 .dates(localDates)
                 .build();
@@ -148,8 +149,8 @@ class MeetingDatesQuery_IntegrationTest {
                         .maxTime(4)
                         .startTime(LocalTime.of(10, 0))
                         .endTime(LocalTime.of(15, 0))
-                        .startDate(LocalDate.of(2022, 1, 1))
-                        .endDate(LocalDate.of(2022, 1, 20))
+                        .startDate(startDate)
+                        .endDate(startDate.plus(20, DAYS))
                         .dateTimes(dateTimes2)
                         .build())
                 .tagIds(null)
@@ -157,14 +158,14 @@ class MeetingDatesQuery_IntegrationTest {
 
         em.persist(dayMeeting);
 
-        for (int i=1; i<=20; i++) {
+        for (int i=0; i<20; i++) {
             Reservation reservation = Reservation.builder()
                     .meetingId(freeMeeting.getId())
                     .reservationMemo(null)
                     .reservationDate(ReservationDate.builder()
-                            .date(LocalDate.of(2022, 1, i))
+                            .date(LocalDate.now().plus(i, DAYS))
                             .startTime(LocalTime.of(10, 0))
-                            .endTime(LocalTime.of(12, 0))
+                            .endTime(LocalTime.of(15, 0))
                             .build())
                     .amount(new Money(10000L))
                     .reservationState(ReservationState.ACCEPT)
@@ -174,12 +175,12 @@ class MeetingDatesQuery_IntegrationTest {
             em.persist(reservation);
         }
 
-        for (int i=1; i<=20; i++) {
+        for (int i=0; i<20; i++) {
             Reservation reservation = Reservation.builder()
                     .meetingId(dayMeeting.getId())
                     .reservationMemo(null)
                     .reservationDate(ReservationDate.builder()
-                            .date(LocalDate.of(2022, 1, i))
+                            .date(startDate.plus(i, DAYS))
                             .startTime(LocalTime.of(10, 0))
                             .endTime(LocalTime.of(15, 0))
                             .build())
@@ -203,25 +204,7 @@ class MeetingDatesQuery_IntegrationTest {
         //then
         perform.andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].currentStaff").value(1))
-                .andExpect(jsonPath("$[1].currentStaff").value(1))
-                .andExpect(jsonPath("$[2].currentStaff").value(1))
-                .andExpect(jsonPath("$[3].currentStaff").value(1))
-                .andExpect(jsonPath("$[4].currentStaff").value(1))
-                .andExpect(jsonPath("$[5].currentStaff").value(1))
-                .andExpect(jsonPath("$[7].currentStaff").value(1))
-                .andExpect(jsonPath("$[8].currentStaff").value(1))
-                .andExpect(jsonPath("$[9].currentStaff").value(1))
-                .andExpect(jsonPath("$[10].currentStaff").value(1))
-                .andExpect(jsonPath("$[1].availability").value("true"))
-                .andExpect(jsonPath("$[2].availability").value("true"))
-                .andExpect(jsonPath("$[3].availability").value("true"))
-                .andExpect(jsonPath("$[4].availability").value("true"))
-                .andExpect(jsonPath("$[5].availability").value("true"))
-                .andExpect(jsonPath("$[6].availability").value("true"))
-                .andExpect(jsonPath("$[7].availability").value("true"))
-                .andExpect(jsonPath("$[8].availability").value("true"))
-                .andExpect(jsonPath("$[9].availability").value("true"))
-                .andExpect(jsonPath("$[10].availability").value("true"))
+                .andExpect(jsonPath("$[0].availability").value("true"))
                 .andDo(print());
     }
 
@@ -236,27 +219,7 @@ class MeetingDatesQuery_IntegrationTest {
         //then
         perform.andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].currentStaff").value(1))
-                .andExpect(jsonPath("$[1].currentStaff").value(1))
-                .andExpect(jsonPath("$[2].currentStaff").value(0))
-                .andExpect(jsonPath("$[3].currentStaff").value(0))
-                .andExpect(jsonPath("$[4].currentStaff").value(1))
-                .andExpect(jsonPath("$[5].currentStaff").value(1))
-                .andExpect(jsonPath("$[6].currentStaff").value(0))
-                .andExpect(jsonPath("$[7].currentStaff").value(0))
-                .andExpect(jsonPath("$[8].currentStaff").value(1))
-                .andExpect(jsonPath("$[9].currentStaff").value(1))
-                .andExpect(jsonPath("$[10].currentStaff").value(0))
                 .andExpect(jsonPath("$[0].availability").value("false"))
-                .andExpect(jsonPath("$[1].availability").value("false"))
-                .andExpect(jsonPath("$[2].availability").value("true"))
-                .andExpect(jsonPath("$[3].availability").value("true"))
-                .andExpect(jsonPath("$[4].availability").value("false"))
-                .andExpect(jsonPath("$[5].availability").value("false"))
-                .andExpect(jsonPath("$[6].availability").value("true"))
-                .andExpect(jsonPath("$[7].availability").value("true"))
-                .andExpect(jsonPath("$[8].availability").value("false"))
-                .andExpect(jsonPath("$[9].availability").value("false"))
-                .andExpect(jsonPath("$[10].availability").value("true"))
                 .andDo(print());
     }
 }

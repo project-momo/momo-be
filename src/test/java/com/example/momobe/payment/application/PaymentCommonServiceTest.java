@@ -2,7 +2,7 @@ package com.example.momobe.payment.application;
 
 import com.example.momobe.payment.domain.Payment;
 import com.example.momobe.payment.domain.PaymentRepository;
-import com.example.momobe.payment.domain.UnableProceedPaymentException;
+import com.example.momobe.payment.domain.PaymentException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +32,7 @@ class PaymentCommonServiceTest {
 
         //when then
         assertThatThrownBy(() -> paymentCommonService.getPayment(ID1.toString()))
-                .isInstanceOf(UnableProceedPaymentException.class);
+                .isInstanceOf(PaymentException.class);
     }
 
     @Test
@@ -71,6 +71,6 @@ class PaymentCommonServiceTest {
 
         //when then
         assertThatThrownBy(() -> paymentCommonService.getPayment(ID1))
-                .isInstanceOf(UnableProceedPaymentException.class);
+                .isInstanceOf(PaymentException.class);
     }
 }
