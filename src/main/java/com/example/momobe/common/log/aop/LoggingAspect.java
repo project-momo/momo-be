@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -22,38 +23,23 @@ import javax.servlet.http.HttpServletRequest;
 import static com.example.momobe.security.enums.SecurityConstants.*;
 
 @Aspect
+@Component
 @RequiredArgsConstructor
 public class LoggingAspect {
     private final LogHistoryService logService;
     private final JwtTokenUtil jwtTokenUtil;
     private static final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
-    @Pointcut("@annotation(org.springframework.web.bind.annotation.PostMapping)")
+    @Pointcut("within(@org.springframework.web.bind.annotation.RestController *) && !@annotation(org.springframework.web.bind.annotation.GetMapping)")
     public void onRequest() {}
 
     @Around("onRequest()")
     public Object advice(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
-            System.out.println("로그 생성중..");
             HttpServletRequest request = getHttpServletRequest();
-
-            String requestMethod = request.getMethod();
-            String requestIP = request.getRemoteAddr();
-            String requestURI = request.getRequestURI();
-            String tokenHeader = request.getHeader(JWT_HEADER);
-            String userSequenceId = null;
-
-            if (isGetMethod(requestMethod)) {
-                joinPoint.proceed();
-            }
-
-            if (hasSecurityHeader(tokenHeader)) {
-                userSequenceId = extractUserId(tokenHeader);
-            }
-
-            LogHistory log = createLog(requestMethod, requestIP, requestURI, tokenHeader, userSequenceId);
-
-            return saveAndReturn(joinPoint, log);
+            LogHistory log = createLog(request);
+            logService.saveLog(log);
+            return joinPoint.proceed();
         } catch (Exception e) {
             log.error("", e);
             return joinPoint.proceed();
@@ -73,25 +59,31 @@ public class LoggingAspect {
         return userSequenceId;
     }
 
-    private LogHistory createLog(String requestMethod, String requestIP, String requestURI, String tokenHeader, String userSequenceId) {
+    private LogHistory createLog(HttpServletRequest request) {
+        String requestMethod = request.getMethod();
+        String requestIP = request.getRemoteAddr();
+        String requestURI = request.getRequestURI();
+        String tokenHeader = request.getHeader(JWT_HEADER);
+        String userSequenceId = extractId(tokenHeader);
+
         return LogHistory.builder()
                 .httpMethod(requestMethod)
                 .operatorIP(requestIP)
-                .operatorId(StringUtils.hasText(tokenHeader) ? "NULL" : userSequenceId)
+                .operatorId(userSequenceId)
                 .requestUri(requestURI)
                 .build();
     }
 
-    private Object saveAndReturn(ProceedingJoinPoint joinPoint, LogHistory log) throws Throwable {
-        logService.saveLog(log);
-        return joinPoint.proceed();
+    private String extractId(String tokenHeader) {
+        String userSequenceId = "NULL";
+
+        if (hasSecurityHeader(tokenHeader)) {
+            userSequenceId = extractUserId(tokenHeader);
+        }
+        return userSequenceId;
     }
 
     private boolean hasSecurityHeader(String tokenHeader) {
         return StringUtils.hasText(tokenHeader);
-    }
-
-    private boolean isGetMethod(String requestMethod) {
-        return requestMethod.toUpperCase().equals(HttpMethod.GET.toString());
     }
 }
