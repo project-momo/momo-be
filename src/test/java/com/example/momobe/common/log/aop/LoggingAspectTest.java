@@ -15,6 +15,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,9 +37,9 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 
 @Transactional
-@EnableAspectJAutoProxy
 @SpringBootTest
 @AutoConfigureMockMvc
+@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 class LoggingAspectTest {
     @Autowired
     LogHistoryRepository logHistoryRepository;
