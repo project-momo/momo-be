@@ -12,6 +12,8 @@ plugins {
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 	// querydsl
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	// war
+	id 'war'
 }
 
 group = 'com.example'
@@ -104,6 +106,9 @@ dependencies {
 
 	//redisson
 	implementation 'org.redisson:redisson-spring-boot-starter:3.19.1'
+
+	//log4jdbc
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
 }
 
 dependencyManagement {
