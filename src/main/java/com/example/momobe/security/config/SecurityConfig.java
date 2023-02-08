@@ -25,7 +25,6 @@ public class SecurityConfig {
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final CustomOAuth2Service customOAuth2Service;
 
-    //TODO : 프론트 배포 완료 시 반드시 인가 설정 수정할 것
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -48,7 +47,11 @@ public class SecurityConfig {
                 .mvcMatchers(HttpMethod.GET, "/articles/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                 .mvcMatchers(HttpMethod.GET, "/mypage/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                 .mvcMatchers("/payments/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                .mvcMatchers("/ranks").permitAll()
                 .mvcMatchers("/auth/**").permitAll()
+                .mvcMatchers("/test/user/**").hasAnyRole("MANAGER","ADMIN","USER")
+                .mvcMatchers("/test/manager/**").hasAnyRole("MANAGER","ADMIN")
+                .mvcMatchers("/test/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().denyAll()
                 .and()
                 .exceptionHandling()
