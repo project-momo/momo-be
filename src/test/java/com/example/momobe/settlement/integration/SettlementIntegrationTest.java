@@ -3,7 +3,6 @@ package com.example.momobe.settlement.integration;
 import com.example.momobe.meeting.dao.MeetingQueryRepository;
 import com.example.momobe.reservation.domain.CustomReservationRepository;
 import com.example.momobe.reservation.domain.Reservation;
-import com.example.momobe.settlement.application.CheckSettlementService;
 import com.example.momobe.settlement.application.SettlementTransitionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -19,8 +18,6 @@ import java.util.List;
 public class SettlementIntegrationTest {
     @InjectMocks
     private SettlementTransitionService settlementTransitionService;
-    @Mock
-    private CheckSettlementService checkSettlementService;
     @Mock
     private MeetingQueryRepository meetingQueryRepository;
     @Mock
