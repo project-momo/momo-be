@@ -5,6 +5,7 @@ import com.example.momobe.security.oauth.CustomOAuth2Service;
 import com.example.momobe.security.oauth.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,19 +35,21 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .csrf().disable()
-//                .cors().configurationSource(corsConfigurationSource())
-                .cors().disable()
-//                .and()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .httpBasic().disable()
                 .apply(authenticationManagerConfig)
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .mvcMatchers("/test/all/**").permitAll()
-                .mvcMatchers("/test/user/**").hasAnyRole("USER","MANAGER","ADMIN")
-                .mvcMatchers("/test/manager/**").hasAnyRole("MANAGER", "ADMIN")
-                .mvcMatchers("/test/admin/**").hasAnyRole("ADMIN")
-                .anyRequest().permitAll()
+                .mvcMatchers(HttpMethod.GET, "/meetings/**").permitAll()
+                .mvcMatchers("/meetings/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                .mvcMatchers(HttpMethod.GET, "/addresses/**").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/articles/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                .mvcMatchers(HttpMethod.GET, "/mypage/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                .mvcMatchers("/payments/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                .mvcMatchers("/auth/**").permitAll()
+                .anyRequest().denyAll()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
@@ -60,13 +63,12 @@ public class SecurityConfig {
                 .build();
     }
 
-    // TODO : 배포 시 cors 설정 수정 필요
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("*");
+        config.setAllowedOrigins(List.of("http://localhost:3000", "https://www.momo-deploy.site"));
         config.addAllowedHeader("*");
         config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PATCH", "PUT", "OPTION"));
         source.registerCorsConfiguration("/**", config);
