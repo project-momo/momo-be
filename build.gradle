@@ -12,8 +12,6 @@ plugins {
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 	// querydsl
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
-	// war
-	id 'war'
 }
 
 group = 'com.example'
