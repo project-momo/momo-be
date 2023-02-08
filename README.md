@@ -1,8 +1,12 @@
-# 모두의 모임 - Beckend (개발 중)
+# 모두의 모임 - Backend (개발 중)
+배포 주소 : https://www.momo-deploy.site/ <br />
+API Docs : https://project-momo.github.io/api-docs/
   
 ## 설계 :family:
 ![image](https://user-images.githubusercontent.com/97802103/212646892-7e78063d-2a13-441d-8d38-34dcde86f58e.png)
 
+## 배포 프로세스
+![image](https://user-images.githubusercontent.com/102658715/217553205-1c08f03e-1376-4d0f-a2e8-3d14901b4372.png)
 
 ## Members :family:
 |양은찬(FE/BE)|김경근(BE)|강지원(BE)|
