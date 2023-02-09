@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .mvcMatchers("/meetings/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                 .mvcMatchers(HttpMethod.GET, "/addresses/**").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/articles/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-                .mvcMatchers(HttpMethod.GET, "/mypage/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                .mvcMatchers("/mypage/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                 .mvcMatchers("/payments/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                 .mvcMatchers("/ranks").permitAll()
                 .mvcMatchers("/auth/**").permitAll()
