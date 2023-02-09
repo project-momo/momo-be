@@ -49,6 +49,11 @@ public class MeetingRequestDto {
         private String addressInfo;
     }
 
+    /*
+    * 프론트 요청으로 인해 예약 생성 시 날짜 제한 임시 해제
+    * AUTHOR: eunchanyang
+    * DATETIME: 2023/02/09 16:00
+    * */
     @Getter
     @Builder
     @AllArgsConstructor(access = PRIVATE)
@@ -56,10 +61,10 @@ public class MeetingRequestDto {
         @NotNull
         private DatePolicy datePolicy;
         @NotNull
-        @FutureOrPresent
+//        @FutureOrPresent
         private LocalDate startDate;
         @NotNull
-        @FutureOrPresent
+//        @FutureOrPresent
         private LocalDate endDate;
         @NotNull
         private LocalTime startTime;
