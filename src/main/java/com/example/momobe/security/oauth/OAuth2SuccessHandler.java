@@ -1,6 +1,5 @@
 package com.example.momobe.security.oauth;
 
-import com.example.momobe.common.domain.RedisStore;
 import com.example.momobe.user.application.TokenGenerateService;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserNotFoundException;
@@ -21,7 +20,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import static com.example.momobe.common.exception.enums.ErrorCode.*;
-import static com.example.momobe.security.enums.SecurityConstants.*;
+import static com.example.momobe.security.constants.SecurityConstants.*;
 
 @Slf4j
 @Component

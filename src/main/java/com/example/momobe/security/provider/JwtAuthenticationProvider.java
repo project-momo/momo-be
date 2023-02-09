@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.momobe.security.enums.SecurityConstants.ROLES;
+import static com.example.momobe.security.constants.SecurityConstants.ROLES;
 
 @Component
 @RequiredArgsConstructor

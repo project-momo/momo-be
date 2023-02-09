@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.example.momobe.security.enums.SecurityConstants.*;
+import static com.example.momobe.security.constants.SecurityConstants.*;
 
 class RandomPasswordGeneratorTest {
     RandomPasswordGenerator randomPasswordGenerator;

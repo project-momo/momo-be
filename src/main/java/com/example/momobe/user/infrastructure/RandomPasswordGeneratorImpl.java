@@ -3,7 +3,7 @@ package com.example.momobe.user.infrastructure;
 import com.example.momobe.user.domain.RandomPasswordGenerator;
 import org.springframework.stereotype.Component;
 
-import static com.example.momobe.security.enums.SecurityConstants.*;
+import static com.example.momobe.security.constants.SecurityConstants.*;
 
 @Component
 public class RandomPasswordGeneratorImpl implements RandomPasswordGenerator {

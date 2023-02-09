@@ -1,6 +1,5 @@
 package com.example.momobe.common.resolver;
 
-import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import com.example.momobe.user.application.UserFindService;
 import com.example.momobe.user.domain.UserNotFoundException;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.example.momobe.common.exception.enums.ErrorCode.*;
-import static com.example.momobe.security.enums.SecurityConstants.*;
+import static com.example.momobe.security.constants.SecurityConstants.*;
 import static org.springframework.http.HttpMethod.*;
 
 @Slf4j

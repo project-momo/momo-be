@@ -75,7 +75,8 @@ public class PostAnswer_IntegrationTest {
         // when
         ResultActions perform = mockMvc.perform(post("/meetings/1/questions")
                 .content(json)
-                .contentType(MediaType.APPLICATION_JSON));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, accessToken));
 
         // then
         perform.andExpect(status().isBadRequest());

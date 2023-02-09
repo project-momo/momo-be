@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.momobe.security.enums.SecurityConstants.JWT_HEADER;
-import static com.example.momobe.security.enums.SecurityConstants.JWT_PREFIX;
+import static com.example.momobe.security.constants.SecurityConstants.JWT_HEADER;
+import static com.example.momobe.security.constants.SecurityConstants.JWT_PREFIX;
 
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
