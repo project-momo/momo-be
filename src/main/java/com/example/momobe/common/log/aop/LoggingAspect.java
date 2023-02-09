@@ -3,7 +3,6 @@ package com.example.momobe.common.log.aop;
 import com.example.momobe.common.log.entity.LogHistory;
 import com.example.momobe.common.log.service.LogHistoryService;
 import com.example.momobe.security.domain.JwtTokenUtil;
-import com.example.momobe.security.enums.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,7 +11,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -20,7 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.example.momobe.security.enums.SecurityConstants.*;
+import static com.example.momobe.security.constants.SecurityConstants.*;
 
 @Aspect
 @Component

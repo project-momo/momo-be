@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.example.momobe.security.enums.SecurityConstants.*;
+import static com.example.momobe.security.constants.SecurityConstants.*;
 
 @RestController
 @RequestMapping("/auth/token")

@@ -20,8 +20,8 @@ import java.util.Date;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.*;
-import static com.example.momobe.security.enums.SecurityConstants.ACCESS_TOKEN_EXPIRE_COUNT;
-import static com.example.momobe.security.enums.SecurityConstants.REFRESH_TOKEN_EXPIRE_COUNT;
+import static com.example.momobe.security.constants.SecurityConstants.ACCESS_TOKEN_EXPIRE_COUNT;
+import static com.example.momobe.security.constants.SecurityConstants.REFRESH_TOKEN_EXPIRE_COUNT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
