@@ -1,5 +1,6 @@
 package com.example.momobe.security.oauth;
 
+import com.example.momobe.common.domain.RedisStore;
 import com.example.momobe.user.application.TokenGenerateService;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserNotFoundException;
