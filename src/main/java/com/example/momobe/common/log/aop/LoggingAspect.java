@@ -18,6 +18,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.time.LocalDateTime;
+
 import static com.example.momobe.security.constants.SecurityConstants.*;
 
 @Aspect
@@ -69,6 +71,7 @@ public class LoggingAspect {
                 .operatorIP(requestIP)
                 .operatorId(userSequenceId)
                 .requestUri(requestURI)
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 
