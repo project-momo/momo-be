@@ -12,7 +12,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeleteReservationDto {
-    @NotBlank
     private String paymentKey;
     @NotBlank
     private String cancelReason;

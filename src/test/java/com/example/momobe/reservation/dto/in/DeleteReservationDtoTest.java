@@ -25,54 +25,6 @@ class DeleteReservationDtoTest {
     }
 
     @Test
-    @DisplayName("paymentKey가 null이면 예외 발생")
-    void test1() {
-        //given
-        DeleteReservationDto dto = DeleteReservationDto.builder()
-                .paymentKey(null)
-                .cancelReason(CONTENT1)
-                .build();
-
-        //when
-        Set<ConstraintViolation<DeleteReservationDto>> validate = validator.validate(dto);
-
-        //then
-        Assertions.assertThat(validate).isNotEmpty();
-    }
-
-    @Test
-    @DisplayName("paymentKey가 empty면 예외 발생")
-    void test2() {
-        //given
-        DeleteReservationDto dto = DeleteReservationDto.builder()
-                .paymentKey("")
-                .cancelReason(CONTENT1)
-                .build();
-
-        //when
-        Set<ConstraintViolation<DeleteReservationDto>> validate = validator.validate(dto);
-
-        //then
-        Assertions.assertThat(validate).isNotEmpty();
-    }
-
-    @Test
-    @DisplayName("paymentKey가 white space면 예외 발생")
-    void test3() {
-        //given
-        DeleteReservationDto dto = DeleteReservationDto.builder()
-                .paymentKey("    ")
-                .cancelReason(CONTENT1)
-                .build();
-
-        //when
-        Set<ConstraintViolation<DeleteReservationDto>> validate = validator.validate(dto);
-
-        //then
-        Assertions.assertThat(validate).isNotEmpty();
-    }
-
-    @Test
     @DisplayName("cancelReason이 null이면 예외 발생")
     void test4() {
         //given
