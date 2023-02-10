@@ -511,40 +511,45 @@ class ReservationCommonControllerTest {
                 ));
     }
 
-    @Test
-    @DisplayName("예약 취소 400 시나리오")
-    void cancel_fail_400() throws Exception {
-        //given
-        DeleteReservationDto request = DeleteReservationDto.builder()
-                .paymentKey(" ")
-                .cancelReason(" ")
-                .build();
-        String json = objectMapper.writeValueAsString(request);
-
-        //when
-        ResultActions perform = mockMvc.perform(delete("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
-                .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(json));
-
-        //then
-        perform.andExpect(status().isBadRequest())
-                .andDo(document("deleteReservation/400",
-                        ApiDocumentUtils.getDocumentRequest(),
-                        ApiDocumentUtils.getDocumentResponse(),
-                        requestHeaders(
-                                headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
-                        ),
-                        pathParameters(
-                                parameterWithName("meetingId").description("모임 아이디"),
-                                parameterWithName("reservationId").description("예약 아이디")
-                        ),
-                        requestFields(
-                                fieldWithPath("paymentKey").description("paymentKey는 null, emtpy, white space일 수 없습니다."),
-                                fieldWithPath("cancelReason").description("cancelReason은 null, emtpy, white space일 수 없습니다.")
-                        )
-                ));
-    }
+    /*
+    * TODO : 프론트 요청으로 인해 제약 조건이 변경되며 임시 주석처리, 계속 사용하지 않게 될 경우 삭제 필요
+    * Author : yang eun chan
+    * Datetime : 23/02/10 16:00
+    */
+//    @Test
+//    @DisplayName("예약 취소 400 시나리오")
+//    void cancel_fail_400() throws Exception {
+//        //given
+//        DeleteReservationDto request = DeleteReservationDto.builder()
+//                .paymentKey(" ")
+//                .cancelReason(" ")
+//                .build();
+//        String json = objectMapper.writeValueAsString(request);
+//
+//        //when
+//        ResultActions perform = mockMvc.perform(delete("/meetings/{meetingId}/reservations/{reservationId}",1L,1L)
+//                .header(JWT_HEADER, BEARER_ACCESS_TOKEN)
+//                .contentType(APPLICATION_JSON_VALUE)
+//                .content(json));
+//
+//        //then
+//        perform.andExpect(status().isBadRequest())
+//                .andDo(document("deleteReservation/400",
+//                        ApiDocumentUtils.getDocumentRequest(),
+//                        ApiDocumentUtils.getDocumentResponse(),
+//                        requestHeaders(
+//                                headerWithName(JWT_HEADER).description(ACCESS_TOKEN)
+//                        ),
+//                        pathParameters(
+//                                parameterWithName("meetingId").description("모임 아이디"),
+//                                parameterWithName("reservationId").description("예약 아이디")
+//                        ),
+//                        requestFields(
+//                                fieldWithPath("paymentKey").description("paymentKey는 null, emtpy, white space일 수 없습니다."),
+//                                fieldWithPath("cancelReason").description("cancelReason은 null, emtpy, white space일 수 없습니다.")
+//                        )
+//                ));
+//    }
 
     @Test
     @DisplayName("예약 취소 403 시나리오")
