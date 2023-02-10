@@ -24,12 +24,12 @@ public class ReservationValidateService {
     private final ReservationRepository reservationRepository;
     private final GetReservationsAtSameTimeService getReservationsAtSameTimeService;
 
-    public void validate(Long meetingId, PostReservationDto reservationDto, Meeting meeting, UserInfo userInfo) {
+    public void validate(PostReservationDto reservationDto, Meeting meeting, UserInfo userInfo) {
         LocalDate reservationDate = reservationDto.getDateInfo().getReservationDate();
         LocalTime startTime = reservationDto.getDateInfo().getStartTime();
         LocalTime endTime = reservationDto.getDateInfo().getEndTime();
 
-        List<Reservation> reservationsAtSameTime = getReservationsAtSameTime(meetingId, reservationDate, startTime, endTime);
+        List<Reservation> reservationsAtSameTime = getReservationsAtSameTime(meeting.getId(), reservationDate, startTime, endTime);
 
         if (isDuplicatedBookingAtSameUser(userInfo, reservationsAtSameTime)) {
             throw new ReservationException(ALREADY_EXIST_RESERVATION);

@@ -29,7 +29,7 @@ public class ReservationBookService {
     public PaymentResponseDto reserve(Long meetingId, PostReservationDto reservationDto, UserInfo userInfo) {
         Meeting meeting = meetingCommonService.getMeeting(meetingId);
 
-        reservationValidateService.validate(meetingId, reservationDto, meeting, userInfo);
+        reservationValidateService.validate(reservationDto, meeting, userInfo);
         Reservation reservation = saveReservation(reservationDto, userInfo, meeting);
 
         return getPaymentResponse(userInfo, reservation, meeting);
