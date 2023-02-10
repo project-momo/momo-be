@@ -1,6 +1,7 @@
 package com.example.momobe.reservation.application;
 
 import com.example.momobe.common.resolver.UserInfo;
+import com.example.momobe.reservation.dao.PaymentDao;
 import com.example.momobe.reservation.domain.ReservationException;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.reservation.dto.in.DeleteReservationDto;
@@ -12,7 +13,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.momobe.common.exception.enums.ErrorCode.REQUEST_DENIED;
+import java.util.Objects;
+
+import static com.example.momobe.common.exception.enums.ErrorCode.*;
 
 /*
 * TODO : 프론트 요청사항 변경으로 인해 서비스 로직 수정 필요
@@ -22,6 +25,7 @@ import static com.example.momobe.common.exception.enums.ErrorCode.REQUEST_DENIED
 @Service
 @RequiredArgsConstructor
 public class ReservationCancelService implements ApplicationEventPublisherAware {
+    private final PaymentDao paymentDAO;
     private final ReservationFindService reservationFindService;
     private ApplicationEventPublisher applicationEventPublisher;
 
@@ -29,7 +33,7 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
     public void cancelReservation(Long reservationId, DeleteReservationDto deleteReservationDto, UserInfo userInfo) {
         Reservation reservation = reservationFindService.getReservation(reservationId);
 
-        checkAvailableOfCancel(userInfo, reservation);
+        validateCancellation(userInfo, reservation, deleteReservationDto);
         reservation.cancel();
 
         publishCancelEvent(deleteReservationDto, reservation);
@@ -42,8 +46,14 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
         }
     }
 
-    private void checkAvailableOfCancel(UserInfo userInfo, Reservation reservation) {
+    private void validateCancellation(UserInfo userInfo, Reservation reservation, DeleteReservationDto deleteReservationDto) {
+        String savedPaymentKey = paymentDAO.findPaymentKeyByReservationId(reservation.getId());
+
+        if (!Objects.equals(deleteReservationDto.getPaymentKey(), savedPaymentKey)) throw new ReservationException(INVALID_PAYMENT_KEY);
+
         if (!reservation.matchReservedUserId(userInfo.getId())) throw new ReservationException(REQUEST_DENIED);
+
+        if (reservation.isAccepted()) throw new ReservationException(CAN_NOT_CHANGE_RESERVATION_STATE);
     }
 
     @Override
