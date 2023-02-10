@@ -42,7 +42,7 @@ import static com.example.momobe.meeting.domain.enums.MeetingState.OPEN;
 @Slf4j
 @Transactional
 @SpringBootTest
-//@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
+@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 public class ReservationConcurrencyTest {
     @Autowired
     private ReservationLockFacade reservationLockFacade;
