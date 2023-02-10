@@ -74,6 +74,8 @@ public class Reservation extends BaseTime {
         return Objects.equals(this.reservationState, PAYMENT_SUCCESS);
     }
 
+    public Boolean isAccepted() { return Objects.equals(this.reservationState, ACCEPT); }
+
     public void setPaymentId(Long paymentId) { this.paymentId = paymentId; }
 
     public ReservationCanceledEvent createCancelEvent(String paymentKey, String reasonMessage) {
