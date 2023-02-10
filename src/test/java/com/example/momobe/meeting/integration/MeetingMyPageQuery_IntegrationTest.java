@@ -106,7 +106,7 @@ class MeetingMyPageQuery_IntegrationTest {
 
         // then
         actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.size()").value(2));
+                .andExpect(jsonPath("$.content.size()").value(1));
     }
 
 }

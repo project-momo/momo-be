@@ -81,13 +81,13 @@ public class Meeting extends BaseTime {
         this.address = address;
     }
 
-    public Boolean verifyRemainingReservations(Long currentAttendees) {
+    public Boolean hasRemainingReservations(Long currentAttendees) {
         return this.personnel - currentAttendees > 0;
     }
 
-    public Boolean verifyReservationSchedule(LocalDate date,
-                                             LocalTime startTime,
-                                             LocalTime endTime) {
+    public Boolean isValidReservationSchedule(LocalDate date,
+                                              LocalTime startTime,
+                                              LocalTime endTime) {
         return dateTimeInfo.match(date, startTime, endTime);
     }
 

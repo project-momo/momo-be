@@ -32,6 +32,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 import static com.example.momobe.meeting.domain.enums.Category.AI;
@@ -41,7 +42,7 @@ import static com.example.momobe.meeting.domain.enums.MeetingState.OPEN;
 @Slf4j
 @Transactional
 @SpringBootTest
-@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
+//@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 public class ReservationConcurrencyTest {
     @Autowired
     private ReservationLockFacade reservationLockFacade;
@@ -122,6 +123,7 @@ public class ReservationConcurrencyTest {
         int numberOfThreads = 50;
         ExecutorService service = Executors.newFixedThreadPool(numberOfThreads);
         CountDownLatch latch = new CountDownLatch(numberOfThreads);
+        AtomicInteger successCounter = new AtomicInteger(0);
 
         UserInfo user = UserInfo.builder()
                 .email(EMAIL1)
@@ -130,23 +132,25 @@ public class ReservationConcurrencyTest {
                 .roles(List.of(ROLE_USER))
                 .build();
 
-        List<PaymentResponseDto> reservations = new ArrayList<>();
-
         //when
         for (int i = 0; i < numberOfThreads; i++) {
             service.execute(() -> {
-                        transactionTemplate.executeWithoutResult(status -> {
-                            reservations.add(reservationLockFacade.reserve(freeOrderMeeting.getId(), reservationDto, user));
-                            latch.countDown();
+                transactionTemplate.executeWithoutResult(status -> {
+                    try {
+                        PaymentResponseDto reservation = reservationLockFacade.reserve(freeOrderMeeting.getId(), reservationDto, user);
+                        if (reservation != null) {
+                            successCounter.incrementAndGet();
                         }
-                        );
+                    } finally {
+                        latch.countDown();
                     }
-            );
+                });
+            });
         }
 
-        Thread.sleep(500);
+        latch.await();
 
         //then
-        Assertions.assertThat(reservations.size()).isOne();
+        Assertions.assertThat(successCounter.get()).isEqualTo(1);
     }
 }
