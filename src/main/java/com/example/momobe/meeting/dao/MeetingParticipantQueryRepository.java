@@ -1,6 +1,7 @@
 package com.example.momobe.meeting.dao;
 
 import com.example.momobe.meeting.dto.out.*;
+import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.example.momobe.user.domain.QAvatar;
 import com.example.momobe.user.domain.QUser;
 import com.querydsl.core.types.dsl.Expressions;
@@ -22,6 +23,7 @@ import static com.example.momobe.meeting.domain.QDateTime.dateTime1;
 import static com.example.momobe.meeting.domain.QMeeting.meeting;
 import static com.example.momobe.payment.domain.QPayment.payment;
 import static com.example.momobe.reservation.domain.QReservation.reservation;
+import static com.example.momobe.reservation.domain.enums.ReservationState.*;
 import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.example.momobe.user.domain.QUser.user;
 import static com.querydsl.core.group.GroupBy.*;
@@ -78,7 +80,10 @@ public class MeetingParticipantQueryRepository {
                 .innerJoin(participant).on(participant.id.eq(participantId))
                 .leftJoin(participant.avatar, participantAvatar)
                 .leftJoin(payment).on(payment.reservationId.eq(reservation.id))
-                .where(reservation.reservedUser.userId.eq(participantId))
+                .where(reservation.reservedUser.userId.eq(participantId)
+                        .and((reservation.reservationState.eq(ACCEPT)
+                                .or(reservation.reservationState.eq(PAYMENT_SUCCESS))))
+                )
                 .orderBy(reservation.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
