@@ -14,6 +14,11 @@ import java.util.Set;
 
 import static com.example.momobe.common.enums.TestConstants.*;
 
+/*
+* 프론트 요청으로 인해 요청 제약 임시 제거
+* Author : yang eun chan
+* datetime : 23/2/10 15/30
+* */
 class DeleteReservationDtoTest {
     private static ValidatorFactory validatorFactory;
     private static Validator validator;
@@ -24,53 +29,53 @@ class DeleteReservationDtoTest {
         validator = validatorFactory.getValidator();
     }
 
-    @Test
-    @DisplayName("cancelReason이 null이면 예외 발생")
-    void test4() {
-        //given
-        DeleteReservationDto dto = DeleteReservationDto.builder()
-                .paymentKey(CONTENT1)
-                .cancelReason(null)
-                .build();
-
-        //when
-        Set<ConstraintViolation<DeleteReservationDto>> validate = validator.validate(dto);
-
-        //then
-        Assertions.assertThat(validate).isNotEmpty();
-    }
-
-    @Test
-    @DisplayName("cancelReason이 white space면 예외 발생")
-    void test5() {
-        //given
-        DeleteReservationDto dto = DeleteReservationDto.builder()
-                .paymentKey(CONTENT1)
-                .cancelReason("    ")
-                .build();
-
-        //when
-        Set<ConstraintViolation<DeleteReservationDto>> validate = validator.validate(dto);
-
-        //then
-        Assertions.assertThat(validate).isNotEmpty();
-    }
-
-    @Test
-    @DisplayName("cancelReason이 empty면 예외 발생")
-    void test6() {
-        //given
-        DeleteReservationDto dto = DeleteReservationDto.builder()
-                .paymentKey(CONTENT1)
-                .cancelReason("")
-                .build();
-
-        //when
-        Set<ConstraintViolation<DeleteReservationDto>> validate = validator.validate(dto);
-
-        //then
-        Assertions.assertThat(validate).isNotEmpty();
-    }
+//    @Test
+//    @DisplayName("cancelReason이 null이면 예외 발생")
+//    void test4() {
+//        //given
+//        DeleteReservationDto dto = DeleteReservationDto.builder()
+//                .paymentKey(CONTENT1)
+//                .cancelReason(null)
+//                .build();
+//
+//        //when
+//        Set<ConstraintViolation<DeleteReservationDto>> validate = validator.validate(dto);
+//
+//        //then
+//        Assertions.assertThat(validate).isNotEmpty();
+//    }
+//
+//    @Test
+//    @DisplayName("cancelReason이 white space면 예외 발생")
+//    void test5() {
+//        //given
+//        DeleteReservationDto dto = DeleteReservationDto.builder()
+//                .paymentKey(CONTENT1)
+//                .cancelReason("    ")
+//                .build();
+//
+//        //when
+//        Set<ConstraintViolation<DeleteReservationDto>> validate = validator.validate(dto);
+//
+//        //then
+//        Assertions.assertThat(validate).isNotEmpty();
+//    }
+//
+//    @Test
+//    @DisplayName("cancelReason이 empty면 예외 발생")
+//    void test6() {
+//        //given
+//        DeleteReservationDto dto = DeleteReservationDto.builder()
+//                .paymentKey(CONTENT1)
+//                .cancelReason("")
+//                .build();
+//
+//        //when
+//        Set<ConstraintViolation<DeleteReservationDto>> validate = validator.validate(dto);
+//
+//        //then
+//        Assertions.assertThat(validate).isNotEmpty();
+//    }
 
     @Test
     @DisplayName("cancelReason과 paymentKey가 모두 not Blank라면 예외 발생하지 않음")

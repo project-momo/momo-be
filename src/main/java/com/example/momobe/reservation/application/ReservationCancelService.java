@@ -14,6 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.momobe.common.exception.enums.ErrorCode.REQUEST_DENIED;
 
+/*
+* TODO : 프론트 요청사항 변경으로 인해 서비스 로직 수정 필요
+* Author : yang eun chan
+* datetime : 23/02/10
+* */
 @Service
 @RequiredArgsConstructor
 public class ReservationCancelService implements ApplicationEventPublisherAware {
@@ -31,8 +36,10 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
     }
 
     private void publishCancelEvent(DeleteReservationDto deleteReservationDto, Reservation reservation) {
-        ReservationCanceledEvent paymentCancelEvent = reservation.createCancelEvent(deleteReservationDto.getPaymentKey(), deleteReservationDto.getCancelReason());
-        applicationEventPublisher.publishEvent(paymentCancelEvent);
+        if (deleteReservationDto.getPaymentKey() != null) {
+            ReservationCanceledEvent paymentCancelEvent = reservation.createCancelEvent(deleteReservationDto.getPaymentKey(), deleteReservationDto.getCancelReason());
+            applicationEventPublisher.publishEvent(paymentCancelEvent);
+        }
     }
 
     private void checkAvailableOfCancel(UserInfo userInfo, Reservation reservation) {
