@@ -197,6 +197,7 @@ public class ReservationIntegrationTest {
                         .endTime(LocalTime.of(22,0))
                         .build())
                 .reservedUser(new ReservedUser(user.getId()))
+                .reservationState(ReservationState.ACCEPT)
                 .build();
 
         entityManager.persist(meeting);
@@ -292,7 +293,7 @@ public class ReservationIntegrationTest {
     }
 
     @Test
-    @DisplayName("free meeting이고 동시간대에 이미 예약이 존재한다면 409 반환")
+    @DisplayName("free meeting이고 동시간대 예약이 존재하더라도 Accept(확정) 상태가 아니면 201 반환")
     void saveReservationTest4() throws Exception {
         //given
         PostReservationDto reservationDto = PostReservationDto.builder()
@@ -319,7 +320,7 @@ public class ReservationIntegrationTest {
                 .header(JWT_HEADER, accessToken));
 
         //then
-        perform.andExpect(status().isConflict());
+        perform.andExpect(status().isCreated());
     }
 
     @Test
@@ -475,7 +476,7 @@ public class ReservationIntegrationTest {
     }
 
     @Test
-    @DisplayName("정원이 가득찼을 경우 409 반환")
+    @DisplayName("reservation과 정원 수가 같더라도 해당 reservation의 상태가 모두 accept가 아니라면 201 반환")
     void saveReservationTest10() throws Exception {
         //given
         PostReservationDto reservationDto = PostReservationDto.builder()
@@ -504,11 +505,11 @@ public class ReservationIntegrationTest {
                 .header(JWT_HEADER, accessToken));
 
         //then
-        perform.andExpect(status().isConflict());
+        perform.andExpect(status().isCreated());
     }
 
     @Test
-    @DisplayName("정원이 가득찬 상태가 아니여도 같은 예약을 2회 요청 시 409 Conflict 반환")
+    @DisplayName("같은 예약을 2회 요청하더라도 결제 완료 상태가 아니라면 201 반환하고 기존 예약을 삭제")
     void saveReservationTest11() throws Exception {
         //given
         PostReservationDto reservationDto = PostReservationDto.builder()
@@ -535,7 +536,7 @@ public class ReservationIntegrationTest {
                 .header(JWT_HEADER, accessToken));
 
         //then
-        perform2.andExpect(status().isConflict());
+        perform2.andExpect(status().isCreated());
     }
 
     @Test

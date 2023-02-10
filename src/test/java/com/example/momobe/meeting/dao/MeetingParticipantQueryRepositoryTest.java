@@ -77,7 +77,7 @@ class MeetingParticipantQueryRepositoryTest {
         // then
         assertThat(meetings).isNotNull();
         assertThat(meetings.getContent()).isNotNull();
-        assertThat(meetings.getContent()).hasSize(2);
+        assertThat(meetings.getContent()).hasSize(1);
     }
 
 }
