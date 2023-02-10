@@ -1,6 +1,5 @@
 package com.example.momobe.meeting.domain;
 
-import com.example.momobe.common.enums.TestConstants;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.domain.enums.MeetingState;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +31,7 @@ class MeetingTest {
     void checkIfCanReservation1() {
         //given
         //when
-        Boolean result = meeting.verifyRemainingReservations(10L);
+        Boolean result = meeting.hasRemainingReservations(10L);
 
         //then
         assertThat(result).isFalse();
@@ -43,7 +42,7 @@ class MeetingTest {
     void checkIfCanReservation2() {
         //given
         //when
-        Boolean result = meeting.verifyRemainingReservations(11L);
+        Boolean result = meeting.hasRemainingReservations(11L);
 
         //then
         assertThat(result).isFalse();
@@ -54,7 +53,7 @@ class MeetingTest {
     void checkIfCanReservation3() {
         //given
         //when
-        Boolean result = meeting.verifyRemainingReservations(9L);
+        Boolean result = meeting.hasRemainingReservations(9L);
 
         //then
         assertThat(result).isTrue();
@@ -65,7 +64,7 @@ class MeetingTest {
     void checkIfCanReservation4() {
         //given
         //when
-        Boolean result = meeting.verifyRemainingReservations(0L);
+        Boolean result = meeting.hasRemainingReservations(0L);
 
         //then
         assertThat(result).isTrue();
