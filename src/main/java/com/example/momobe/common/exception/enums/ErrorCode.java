@@ -22,6 +22,7 @@ public enum ErrorCode {
     ALREADY_EXIST_RESERVATION(CONFLICT, "해당 시간대에 이미 회원님의 예약건이 존재합니다"),
     EXCEEDED_EXPIRATION_DATE(CONFLICT, "지난 예약 일자는 조회할 수 없습니다"),
     CAN_NOT_PARTICIPATE_OWN_MEETING(CONFLICT, "자신의 모임에는 참여할 수 없습니다."),
+    INVALID_PAYMENT_KEY(CONFLICT, "올바르지 않은 요청입니다."),
 
     /*
     * Token Exception
