@@ -1,5 +1,6 @@
 package com.example.momobe.security.config;
 
+import com.example.momobe.security.constants.SecurityConstants;
 import com.example.momobe.security.filter.CustomAuthenticationEntryPoint;
 import com.example.momobe.security.oauth.CustomOAuth2Service;
 import com.example.momobe.security.oauth.OAuth2SuccessHandler;
@@ -16,6 +17,8 @@ import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+
+import static com.example.momobe.security.constants.SecurityConstants.*;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -74,6 +77,7 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of("http://localhost:3000", "https://www.momo-deploy.site"));
         config.addAllowedHeader("*");
         config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PATCH", "PUT", "OPTION"));
+        config.setExposedHeaders(List.of(REFRESH_HEADER, ACCESS_TOKEN));
         source.registerCorsConfiguration("/**", config);
 
         return source;
