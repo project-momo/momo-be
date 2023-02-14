@@ -33,7 +33,8 @@ public class ExceptionLoggingAspect {
     private void saveExceptionLog(Throwable exception, String className, String methodName) {
         String exceptionType = exception.getClass().getName();
         String exceptionMessage = exception.getMessage();
-        String stackTrace = Arrays.toString(exception.getStackTrace());
+        String stackTrace = Arrays.toString(exception.getStackTrace())
+                .substring(0, 1000);
         ExceptionLog exceptionLog = ExceptionLog.builder()
                 .className(className)
                 .methodName(methodName)

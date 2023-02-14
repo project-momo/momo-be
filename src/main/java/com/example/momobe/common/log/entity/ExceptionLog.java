@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,6 +25,7 @@ public class ExceptionLog {
 
     private String exceptionMessage;
 
+    @Column(length = 1500)
     private String stackTrace;
 
     private LocalDateTime createdAt;
