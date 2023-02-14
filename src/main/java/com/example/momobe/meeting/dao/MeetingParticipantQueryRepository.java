@@ -72,7 +72,7 @@ public class MeetingParticipantQueryRepository {
                                         reservation.reservationDate.endTime
                                 ),
                                 reservation.id,
-                                reservation.reservationDate.startTime
+                                reservation.reservationDate.startDateTime
                         )))
                 .from(reservation)
                 .innerJoin(meeting).on(reservation.meetingId.eq(meeting.id))
