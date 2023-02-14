@@ -7,7 +7,10 @@ import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -24,7 +27,7 @@ public class MeetingParticipantResponseDto extends MeetingResponseDto {
 
     @Getter
     public static class ApplicationDto extends MeetingUserResponseWithEmailDto {
-        private final ReservationState reservationState;
+        private final String reservationState;
         private final String message;
         private final String paymentKey;
         private final MeetingDateTimeDto dateTimeInfo;
@@ -35,11 +38,16 @@ public class MeetingParticipantResponseDto extends MeetingResponseDto {
                               ReservationState reservationState, String message, String paymentKey,
                               MeetingDateTimeDto dateTimeInfo, Long reservationId) {
             super(userId, nickname, imageUrl, email);
-            this.reservationState = reservationState;
             this.message = message;
             this.paymentKey = paymentKey;
             this.dateTimeInfo = dateTimeInfo;
             this.reservationId = reservationId;
+
+            if (reservationState.equals(ReservationState.ACCEPT) && LocalDateTime.now().isAfter(LocalDateTime.of(dateTimeInfo.getDate(), Time.valueOf(dateTimeInfo.getTime().split(" - ")[0]).toLocalTime()))) {
+                this.reservationState = ReservationState.FINISH.getKorType();
+            } else {
+                this.reservationState = reservationState.getKorType();
+            }
         }
     }
 
