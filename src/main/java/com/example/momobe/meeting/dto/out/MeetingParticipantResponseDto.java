@@ -36,14 +36,14 @@ public class MeetingParticipantResponseDto extends MeetingResponseDto {
         @QueryProjection
         public ApplicationDto(Long userId, String nickname, String imageUrl, String email,
                               ReservationState reservationState, String message, String paymentKey,
-                              MeetingDateTimeDto dateTimeInfo, Long reservationId, LocalTime startTime) {
+                              MeetingDateTimeDto dateTimeInfo, Long reservationId, LocalDateTime startDateTime) {
             super(userId, nickname, imageUrl, email);
             this.message = message;
             this.paymentKey = paymentKey;
             this.dateTimeInfo = dateTimeInfo;
             this.reservationId = reservationId;
 
-            if (reservationState.equals(ReservationState.ACCEPT) && LocalDateTime.now().isAfter(LocalDateTime.of(dateTimeInfo.getDate(), startTime))) {
+            if (reservationState.equals(ReservationState.ACCEPT) && LocalDateTime.now().isAfter(startDateTime)) {
                 this.reservationState = ReservationState.FINISH.getKorType();
             } else {
                 this.reservationState = reservationState.getKorType();
