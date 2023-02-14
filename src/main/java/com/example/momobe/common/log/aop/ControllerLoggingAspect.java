@@ -1,7 +1,7 @@
 package com.example.momobe.common.log.aop;
 
-import com.example.momobe.common.log.entity.LogHistory;
-import com.example.momobe.common.log.service.LogHistoryService;
+import com.example.momobe.common.log.entity.ControllerLog;
+import com.example.momobe.common.log.service.ControllerLogService;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +25,10 @@ import static com.example.momobe.security.constants.SecurityConstants.*;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class LoggingAspect {
-    private final LogHistoryService logService;
+public class ControllerLoggingAspect {
+    private final ControllerLogService logService;
     private final JwtTokenUtil jwtTokenUtil;
-    private static final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
+    private static final Logger log = LoggerFactory.getLogger(ControllerLoggingAspect.class);
 
     @Pointcut("within(@org.springframework.web.bind.annotation.RestController *) && !@annotation(org.springframework.web.bind.annotation.GetMapping)")
     public void onRequest() {}
@@ -37,7 +37,7 @@ public class LoggingAspect {
     public Object advice(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             HttpServletRequest request = getHttpServletRequest();
-            LogHistory log = createLog(request);
+            ControllerLog log = createLog(request);
             logService.saveLog(log);
             return joinPoint.proceed();
         } catch (Exception e) {
@@ -59,14 +59,14 @@ public class LoggingAspect {
         return userSequenceId;
     }
 
-    private LogHistory createLog(HttpServletRequest request) {
+    private ControllerLog createLog(HttpServletRequest request) {
         String requestMethod = request.getMethod();
         String requestIP = request.getRemoteAddr();
         String requestURI = request.getRequestURI();
         String tokenHeader = request.getHeader(JWT_HEADER);
         String userSequenceId = extractId(tokenHeader);
 
-        return LogHistory.builder()
+        return ControllerLog.builder()
                 .httpMethod(requestMethod)
                 .operatorIP(requestIP)
                 .operatorId(userSequenceId)
