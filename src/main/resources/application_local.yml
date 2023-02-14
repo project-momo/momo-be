@@ -6,7 +6,7 @@ spring:
         one-indexed-parameters: true
   jpa:
     hibernate:
-      ddl-auto: update #update create-update validate
+      ddl-auto: create-update #update create-update validate
     properties:
       hibernate:
         format_sql: true
@@ -19,17 +19,18 @@ spring:
       max-file-size: 10MB
       max-request-size: 20MB
   datasource:
-    url: jdbc:mysql://rdsinstance.cg6o3rqphy1s.ap-northeast-2.rds.amazonaws.com:3306/rdsDB?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: sidsidvjscl12!
+    url: jdbc:mysql://localhost:3306/test2?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: testuser
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6379}
+    password: myPass
   mail:
     host: smtp.gmail.com
-    username:
-    password:
+    username: dev.eunchan@gmail.com
+    password: zhvswatyvhvluwhe
     port: 587
     properties:
       mail:
@@ -76,3 +77,8 @@ server:
 jwt:
   secretKey: jwt-tokens-that-should-be-changed-production
   refreshKey: jwt-refresh-tokens-that-should-be-changed-production
+
+banking:
+  client_id: 42c29ffd-a7d7-4e02-aa66-71c49781ffb8
+  client_secret: 470073e6-effd-4bb6-8adb-45180e3716c8
+  tran_id: M202300084
