@@ -20,7 +20,7 @@ public class ExceptionLoggingAspect {
     private final Logger logger = LoggerFactory.getLogger(ExceptionLoggingAspect.class);
     private final ExceptionLogService exceptionLogService;
 
-    @AfterThrowing(pointcut = "within(@org.springframework.stereotype.Service *)", throwing = "exception")
+    @AfterThrowing(pointcut = "within(com.example.momobe.reservation.application..*)", throwing = "exception")
     public void logException(JoinPoint joinPoint, Throwable exception) throws Throwable {
         String className = joinPoint.getSignature().getDeclaringTypeName();
         String methodName = joinPoint.getSignature().getName();
