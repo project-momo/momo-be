@@ -1,8 +1,8 @@
 spring:
   data:
-      web:
-        pageable:
-          one-indexed-parameters: true
+    web:
+      pageable:
+        one-indexed-parameters: true
   jpa:
     hibernate:
       ddl-auto: update #update create-update validate
