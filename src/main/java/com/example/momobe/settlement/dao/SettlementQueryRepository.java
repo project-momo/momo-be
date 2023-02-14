@@ -26,10 +26,10 @@ public class SettlementQueryRepository {
                         reservation.amount.won,
                         meeting.hostId))
                 .from(reservation)
-                .innerJoin(meeting)
-                .on(reservation.meetingId.eq(meeting.id))
-                .on(meeting.dateTimeInfo.endDate.between(LocalDate.now(),LocalDate.now().minusMonths(1)))
                 .where(reservation.reservationState.eq(ReservationState.PAYMENT_SUCCESS))
+                .innerJoin(meeting)
+                .on(meeting.id.eq(reservation.meetingId))
+                .where(meeting.dateTimeInfo.endDate.between(LocalDate.now().minusMonths(1),LocalDate.now()))
                 .fetch();
     }
 
