@@ -29,12 +29,7 @@ public class MeetingDatesQueryController {
     public List<ResponseMeetingDatesDto> getDates(@PathVariable(name = "meetingId") Long meetingId,
                                                   @Pattern(regexp = "yyyy-MM-dd") @PathVariable(name = "date") String date) {
         LocalDate localDate = LocalDate.parse(date);
-        validateDate(localDate);
 
         return monthlyMeetingScheduleInquiry.getSchedules(meetingId, localDate.getMonthValue());
-    }
-
-    private void validateDate(LocalDate localDate) {
-        if (localDate.isBefore(LocalDate.now())) throw new MeetingException(EXCEEDED_EXPIRATION_DATE);
     }
 }
