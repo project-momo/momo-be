@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.example.momobe.common.config.ApiDocumentUtils.getDocumentRequest;
@@ -152,7 +153,8 @@ class MeetingMyPageQueryControllerTest {
                         "ABC123",
                         new MeetingDateTimeDto(
                                 LocalDate.now(), START_TIME, END_TIME),
-                        ID3);
+                        ID3,
+                        LocalTime.now());
         MeetingParticipantResponseDto meetingParticipantResponseDto = new MeetingParticipantResponseDto(
                 ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL1, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
                 DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L, applicationDto
