@@ -91,8 +91,6 @@ public class Reservation extends BaseTime {
 
         if (this.reservationState.equals(CANCEL)) throw new ReservationException(CANCELED_RESERVATION);
 
-        if (this.reservationDate.isBeforeThen(LocalDateTime.now())) throw new ReservationException(PAST_RESERVATION_CAN_NOT_BE_MODIFIED);
-
         if (!this.reservationState.equals(PAYMENT_SUCCESS)) throw new ReservationException(INVALID_REQUEST_FOR_RESERVATION);
 
         this.reservationState = state;
@@ -116,5 +114,11 @@ public class Reservation extends BaseTime {
 
     public Boolean matchReservedUserId(Long userId) {
         return getReservedUserId().equals(userId);
+    }
+
+    public Boolean isFreeOrder() { return this.getAmount().match(0L); }
+
+    public Long getWon() {
+        return this.amount.getWon();
     }
 }
