@@ -1,6 +1,6 @@
 package com.example.momobe.security.filter;
 
-import com.example.momobe.security.exception.InvalidJwtTokenException;
+import com.example.momobe.security.exception.SecurityException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.springframework.http.HttpStatus.I_AM_A_TEAPOT;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Component
@@ -20,7 +19,7 @@ public class ExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (InvalidJwtTokenException e) {
+        } catch (SecurityException e) {
             setStatus(response, UNAUTHORIZED.value());
             response.getWriter().write(e.getErrorCode().getMessage());
         }

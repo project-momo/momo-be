@@ -4,11 +4,11 @@ import com.example.momobe.common.exception.enums.ErrorCode;
 import io.jsonwebtoken.JwtException;
 import lombok.Getter;
 
-public class InvalidJwtTokenException extends JwtException {
+public class SecurityException extends JwtException {
     @Getter
     private final ErrorCode errorCode;
 
-    public InvalidJwtTokenException(ErrorCode errorCode) {
+    public SecurityException(ErrorCode errorCode) {
         super(null);
         this.errorCode = errorCode;
     }
