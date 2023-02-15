@@ -2,6 +2,7 @@ package com.example.momobe.meeting.dao;
 
 import com.example.momobe.meeting.dto.out.ResponseMeetingDatesDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -24,15 +25,25 @@ public interface MeetingDao {
 
     @Select("SELECT meeting_id\n" +
             "FROM meeting\n" +
-            "WHERE CONCAT(end_date, ' ', end_time) < NOW()\n" +
+            "WHERE (CONCAT(end_date, ' ', end_time) < NOW()\n" +
             "  OR meeting_id IN (\n" +
             "    SELECT meeting_id\n" +
             "    FROM reservation\n" +
             "    GROUP BY meeting_id\n" +
             "    HAVING COUNT(*) >= personnel\n" +
-            "  );")
+            "  ))\n" +
+            "  AND meeting.meeting_state = 'OPEN';")
     List<Long> findExpiredOrFullCapacityMeetings();
 
-    @Update("UPDATE meeting SET meeting_state = 'CLOSE' WHERE meeting_id IN (#{meetingIds})")
-    void updateMeetingStateToClose(List<Long> meetingIds);
+    @Update({
+            "<script>",
+            "UPDATE meeting",
+            "SET meeting_state = 'CLOSE'",
+            "WHERE meeting_id IN",
+            "<foreach collection='meetingIds' item='meetingId' index='index' open='(' separator=',' close=')'>",
+            "#{meetingId}",
+            "</foreach>",
+            "</script>"
+    })
+    void updateMeetingStateToClose(@Param("meetingIds") List<Long> meetingIds);
 }
