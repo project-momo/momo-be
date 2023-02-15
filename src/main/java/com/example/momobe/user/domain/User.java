@@ -51,7 +51,6 @@ public class User extends BaseTime {
     private UserPoint userPoint = new UserPoint(0L);
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn (name = "user_id",referencedColumnName = "user_id",nullable = false)
     private List<PointHistory> histories = new ArrayList<>();
 
     @OneToOne(cascade = PERSIST)
