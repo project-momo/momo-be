@@ -2,7 +2,7 @@ package com.example.momobe.security.infrastructure;
 
 
 import com.example.momobe.common.exception.enums.ErrorCode;
-import com.example.momobe.security.exception.InvalidJwtTokenException;
+import com.example.momobe.security.exception.SecurityException;
 import com.example.momobe.security.domain.JwtTokenUtil;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -78,19 +78,19 @@ public final class JwtTokenUtilImpl implements JwtTokenUtil {
         try {
             claims = parser.parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException expiredJwtException) {
-            throw new InvalidJwtTokenException(ErrorCode.EXPIRED_EXCEPTION);
+            throw new SecurityException(ErrorCode.EXPIRED_EXCEPTION);
         } catch (UnsupportedJwtException unsupportedJwtException) {
-            throw new InvalidJwtTokenException(ErrorCode.UNSUPPORTED_EXCEPTION);
+            throw new SecurityException(ErrorCode.UNSUPPORTED_EXCEPTION);
         } catch (MalformedJwtException malformedJwtException) {
-            throw new InvalidJwtTokenException(ErrorCode.MALFORMED_EXCEPTION);
+            throw new SecurityException(ErrorCode.MALFORMED_EXCEPTION);
         } catch (IllegalArgumentException illegalArgumentException) {
-            throw new InvalidJwtTokenException(ErrorCode.ILLEGAL_ARGUMENTS_EXCEPTION);
+            throw new SecurityException(ErrorCode.ILLEGAL_ARGUMENTS_EXCEPTION);
         } catch (SignatureException signatureException) {
-            throw new InvalidJwtTokenException(ErrorCode.SIGNATURE_EXCEPTION);
+            throw new SecurityException(ErrorCode.SIGNATURE_EXCEPTION);
         }
 
         if (!StringUtils.hasText(claims.getSubject()) || claims.get(ID)==null || claims.get(ROLES)==null) {
-            throw new InvalidJwtTokenException(ErrorCode.MALFORMED_EXCEPTION);
+            throw new SecurityException(ErrorCode.MALFORMED_EXCEPTION);
         }
 
         return claims;

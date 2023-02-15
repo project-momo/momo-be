@@ -1,6 +1,6 @@
 package com.example.momobe.security.provider;
 
-import com.example.momobe.security.exception.InvalidJwtTokenException;
+import com.example.momobe.security.exception.SecurityException;
 import com.example.momobe.security.token.JwtAuthenticationToken;
 import com.example.momobe.security.infrastructure.JwtTokenUtilImpl;
 import io.jsonwebtoken.Claims;
@@ -74,7 +74,7 @@ class JwtAuthenticationProviderTest {
 
         // when then
         assertThatThrownBy(() -> provider.authenticate(authenticationToken))
-                .isInstanceOf(InvalidJwtTokenException.class);
+                .isInstanceOf(SecurityException.class);
     }
 
     @Test
@@ -86,7 +86,7 @@ class JwtAuthenticationProviderTest {
 
         //when then
         assertThatThrownBy(() -> provider.authenticate(authenticationToken))
-                .isInstanceOf(InvalidJwtTokenException.class);
+                .isInstanceOf(SecurityException.class);
     }
 
     @Test
@@ -98,7 +98,7 @@ class JwtAuthenticationProviderTest {
 
         //when then
         assertThatThrownBy(() -> provider.authenticate(authenticationToken))
-                .isInstanceOf(InvalidJwtTokenException.class);
+                .isInstanceOf(SecurityException.class);
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.example.momobe.security.filter;
 
-import com.example.momobe.security.exception.InvalidJwtTokenException;
+import com.example.momobe.security.exception.SecurityException;
 import com.example.momobe.security.token.JwtAuthenticationToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -97,12 +97,12 @@ class JwtAuthenticationFilterTest {
         JwtAuthenticationToken token = new JwtAuthenticationToken(ACCESS_TOKEN);
 
         // when
-        when(mockAuthenticationManager.authenticate(token)).thenThrow(new InvalidJwtTokenException(EXPIRED_EXCEPTION));
+        when(mockAuthenticationManager.authenticate(token)).thenThrow(new SecurityException(EXPIRED_EXCEPTION));
 
         // then
         assertThatThrownBy(() ->
                 jwtAuthenticationFilter.doFilterInternal(mockRequest,mockResponse,mockFilterChain)
-        ).isInstanceOf(InvalidJwtTokenException.class);
+        ).isInstanceOf(SecurityException.class);
     }
 
     @Test

@@ -4,7 +4,7 @@ import com.example.momobe.common.config.ApiDocumentUtils;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
-import com.example.momobe.security.exception.InvalidJwtTokenException;
+import com.example.momobe.security.exception.SecurityException;
 import com.example.momobe.user.application.LogoutService;
 import com.example.momobe.user.application.TokenReissueService;
 import com.example.momobe.user.domain.TokenNotFoundException;
@@ -94,7 +94,7 @@ class TokenControllerTest {
     @DisplayName("토큰 재발행 시 해당 토큰이 유효하지 않다면 401 반환")
     void reissueTokenTest_failed_401() throws Exception {
         //given
-        given(tokenReissueService.reIssueToken(anyString())).willThrow(new InvalidJwtTokenException(MALFORMED_EXCEPTION));
+        given(tokenReissueService.reIssueToken(anyString())).willThrow(new SecurityException(MALFORMED_EXCEPTION));
         //when
         ResultActions perform = mockMvc.perform(put("/auth/token")
                 .header(REFRESH_TOKEN, BEARER_REFRESH_TOKEN));
