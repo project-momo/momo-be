@@ -112,16 +112,6 @@ public class MeetingQueryRepository {
         return tag.name.eq(tagName);
     }
 
-    public List<Long> findMeetingClosedBefore3days() {
-        return queryFactory
-                .select(meeting.id)
-                .from(meeting)
-                .where(endDateFilter())
-                .orderBy(meeting.id.desc())
-                .distinct()
-                .fetch();
-    }
-
     private BooleanExpression endDateFilter() {
         LocalDate now = LocalDate.now();
         return meeting.dateTimeInfo.endDate.eq(now.minusDays(3));
