@@ -3,6 +3,7 @@ package com.example.momobe.meeting.dao;
 import com.example.momobe.meeting.dto.out.*;
 import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,11 @@ public class MeetingHostQueryRepository {
                         meeting.dateTimeInfo.startTime,
                         meeting.dateTimeInfo.endTime,
                         meeting.dateTimeInfo.maxTime,
-                        meeting.price))
+                        meeting.price,
+                        JPAExpressions.select(reservation.count())
+                                .from(reservation)
+                                .where(reservation.meetingId.eq(meeting.id)),
+                        meeting.personnel.longValue()))
                 .where(meeting.hostId.eq(hostId))
                 .fetch();
 

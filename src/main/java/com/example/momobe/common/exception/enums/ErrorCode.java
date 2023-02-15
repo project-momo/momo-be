@@ -28,7 +28,7 @@ public enum ErrorCode {
 
 
     /*
-    * Token Exception
+    * Security Exception
     * */
     INVALID_TOKEN(UNAUTHORIZED, "invalid token exception"),
     SIGNATURE_EXCEPTION(UNAUTHORIZED, "signature key is different"),
@@ -36,6 +36,7 @@ public enum ErrorCode {
     MALFORMED_EXCEPTION(UNAUTHORIZED, "malformed token"),
     ILLEGAL_ARGUMENTS_EXCEPTION(UNAUTHORIZED, "using illegal argument like null"),
     UNSUPPORTED_EXCEPTION(UNAUTHORIZED, "unsupported token"),
+    INVALID_URL(UNAUTHORIZED, "허가되지 않은 Redirect URL입니다."),
 
     /*
     * resolver

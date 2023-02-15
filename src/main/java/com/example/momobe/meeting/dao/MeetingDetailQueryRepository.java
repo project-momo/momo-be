@@ -7,6 +7,7 @@ import com.example.momobe.meeting.dto.out.QMeetingDetailResponseDto;
 import com.example.momobe.question.dto.out.ResponseQuestionDto;
 import com.example.momobe.question.infrastructure.QuestionQueryRepository;
 import com.example.momobe.user.domain.QUser;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,7 @@ import static com.example.momobe.answer.domain.QAnswer.answer;
 import static com.example.momobe.meeting.domain.QDateTime.dateTime1;
 import static com.example.momobe.meeting.domain.QMeeting.meeting;
 import static com.example.momobe.question.domain.QQuestion.question;
+import static com.example.momobe.reservation.domain.QReservation.reservation;
 import static com.example.momobe.tag.domain.QTag.tag;
 import static com.example.momobe.user.domain.QAvatar.avatar;
 import static com.querydsl.core.group.GroupBy.*;
@@ -73,8 +75,12 @@ public class MeetingDetailQueryRepository {
                                 set(address.id),
                                 set(address.si.append(" ").append(address.gu)),
                                 set(tag.name),
-                                list(dateTime1.dateTime))
-                        ));
+                                list(dateTime1.dateTime),
+                                JPAExpressions.select(reservation.count())
+                                        .from(reservation)
+                                        .where(reservation.meetingId.eq(meeting.id)),
+                                meeting.personnel.longValue()))
+                        );
 
         if (dtos.isEmpty()) throw new MeetingException(ErrorCode.DATA_NOT_FOUND);
 

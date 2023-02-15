@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class MeetingResponseDto {
                               MeetingState meetingState, DatePolicy datePolicy,
                               LocalDate startDate, LocalDate endDate,
                               LocalTime startTime, LocalTime endTime, Integer maxTime,
-                              Long price) {
+                              Long price, Long currentParticipants, Long reservationCapacity) {
         this.meetingId = meetingId;
         this.category = category.getDescription();
         this.host = new MeetingUserResponseWithEmailDto(hostId, hostNickname, hostImageUrl, hostEmail);
@@ -69,8 +70,16 @@ public class MeetingResponseDto {
         this.content = content;
         this.address = new AddressDto(addressInfo);
         this.meetingState = meetingState.getDescription();
-        this.isOpen = meetingState == MeetingState.OPEN;
         this.dateTime = new DateTimeDto(datePolicy, startDate, endDate, startTime, endTime, maxTime);
         this.price = price;
+        this.isOpen = setOpenState(endDate, endTime, currentParticipants, reservationCapacity);
+    }
+
+    private Boolean setOpenState(LocalDate endDate, LocalTime endTime, Long currentParticipants, Long reservationCapacity) {
+        if (reservationCapacity - currentParticipants <= 0 || LocalDateTime.now().isAfter(LocalDateTime.of(endDate, endTime))) {
+            return false;
+        }
+
+        return true;
     }
 }

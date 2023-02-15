@@ -1,6 +1,6 @@
 package com.example.momobe.security.filter;
 
-import com.example.momobe.security.exception.InvalidJwtTokenException;
+import com.example.momobe.security.exception.SecurityException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +15,6 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 
 import static com.example.momobe.common.exception.enums.ErrorCode.MALFORMED_EXCEPTION;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 class ExceptionFilterTest {
@@ -36,7 +35,7 @@ class ExceptionFilterTest {
     @DisplayName("InvalidJwtException을 catch할 경우 response로 403 status를 보낸다")
     void test1() throws ServletException, IOException {
         //given
-        BDDMockito.willThrow(new InvalidJwtTokenException(MALFORMED_EXCEPTION)).given(mockFilterChain).doFilter(request,response);
+        BDDMockito.willThrow(new SecurityException(MALFORMED_EXCEPTION)).given(mockFilterChain).doFilter(request,response);
         //when
         exceptionFilter.doFilter(request, response, mockFilterChain);
         //then
