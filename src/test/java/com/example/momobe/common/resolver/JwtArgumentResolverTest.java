@@ -3,7 +3,7 @@ package com.example.momobe.common.resolver;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.security.controller.TestController;
 import com.example.momobe.security.domain.JwtTokenUtil;
-import com.example.momobe.security.exception.InvalidJwtTokenException;
+import com.example.momobe.security.exception.SecurityException;
 import com.example.momobe.user.application.UserFindService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -55,7 +55,7 @@ class JwtArgumentResolverTest {
     public void test2() throws Exception {
         //given
         given(jwtTokenUtil.parseAccessToken(INVALID_BEARER_ACCESS_TOKEN))
-                .willThrow(new InvalidJwtTokenException(MALFORMED_EXCEPTION));
+                .willThrow(new SecurityException(MALFORMED_EXCEPTION));
         //when
         ResultActions perform = mockMvc.perform(post("/test/resolver")
                 .header(JWT_HEADER, INVALID_BEARER_ACCESS_TOKEN));

@@ -1,6 +1,6 @@
 package com.example.momobe.meeting.integration;
 
-import com.example.momobe.meeting.dao.MonthlyMeetingScheduleInquiry;
+import com.example.momobe.meeting.dao.MeetingDao;
 import com.example.momobe.meeting.domain.DateTime;
 import com.example.momobe.meeting.domain.DateTimeInfo;
 import com.example.momobe.meeting.domain.Meeting;
@@ -29,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +54,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class MeetingDatesQuery_IntegrationTest {
     @Autowired
-    private MonthlyMeetingScheduleInquiry monthlyMeetingScheduleInquiry;
+    private MeetingDao meetingDao;
 
     @Autowired
     private EntityManager em;

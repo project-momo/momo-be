@@ -3,7 +3,7 @@ package com.example.momobe.reservation.application;
 import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.meeting.application.MeetingCommonService;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.reservation.dao.UserMailQueryRepository;
+import com.example.momobe.reservation.dao.UserMailDao;
 import com.example.momobe.reservation.domain.*;
 import com.example.momobe.reservation.dto.in.PatchReservationDto;
 import com.example.momobe.reservation.event.ReservationConfirmedEvent;
@@ -41,7 +41,7 @@ class ReservationConfirmServiceTest {
     ReservationFindService reservationFindService;
 
     @Mock
-    UserMailQueryRepository userMailQueryRepository;
+    UserMailDao userMailDao;
 
     @Mock
     ApplicationEventPublisher applicationEventPublisher;
@@ -122,7 +122,7 @@ class ReservationConfirmServiceTest {
         //given
         given(meetingCommonService.getMeeting(any())).willReturn(meeting);
         given(reservationFindService.getReservation(any())).willReturn(reservation);
-        given(userMailQueryRepository.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
+        given(userMailDao.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
 
         //when
         reservationConfirmService.confirm(meeting.getId(), reservation.getId(), userInfo, denyDto);
@@ -137,7 +137,7 @@ class ReservationConfirmServiceTest {
         //given
         given(meetingCommonService.getMeeting(any())).willReturn(meeting);
         given(reservationFindService.getReservation(any())).willReturn(reservation);
-        given(userMailQueryRepository.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
+        given(userMailDao.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
 
         //when
         reservationConfirmService.confirm(meeting.getId(), reservation.getId(), userInfo, acceptDto);
@@ -152,7 +152,7 @@ class ReservationConfirmServiceTest {
         //given
         given(meetingCommonService.getMeeting(any())).willReturn(meeting);
         given(reservationFindService.getReservation(any())).willReturn(reservation);
-        given(userMailQueryRepository.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
+        given(userMailDao.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
 
         //when
         reservationConfirmService.confirm(meeting.getId(), reservation.getId(), userInfo, acceptDto);
@@ -167,7 +167,7 @@ class ReservationConfirmServiceTest {
         //given
         given(meetingCommonService.getMeeting(any())).willReturn(meeting);
         given(reservationFindService.getReservation(any())).willReturn(reservation);
-        given(userMailQueryRepository.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
+        given(userMailDao.findMailOf(any())).willReturn(reservedUser.getEmail().getAddress());
 
         //when
         reservationConfirmService.confirm(meeting.getId(), reservation.getId(), userInfo, denyDto);

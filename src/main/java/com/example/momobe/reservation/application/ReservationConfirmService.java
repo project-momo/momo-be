@@ -4,7 +4,7 @@ import com.example.momobe.common.resolver.UserInfo;
 import com.example.momobe.maill.enums.MailType;
 import com.example.momobe.meeting.application.MeetingCommonService;
 import com.example.momobe.meeting.domain.Meeting;
-import com.example.momobe.reservation.dao.UserMailQueryRepository;
+import com.example.momobe.reservation.dao.UserMailDao;
 import com.example.momobe.reservation.domain.ReservationException;
 import com.example.momobe.reservation.domain.Reservation;
 import com.example.momobe.reservation.dto.in.PatchReservationDto;
@@ -24,12 +24,12 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 public class ReservationConfirmService implements ApplicationEventPublisherAware {
     private final MeetingCommonService meetingCommonService;
     private final ReservationFindService reservationFindService;
-    private final UserMailQueryRepository userMailQueryRepository;
+    private final UserMailDao userMailDao;
     private ApplicationEventPublisher applicationEventPublisher;
 
     public void confirm(Long meetingId, Long reservationId, UserInfo userInfo, PatchReservationDto request) {
         Reservation reservation = validateRequest(meetingId, reservationId, userInfo);
-        String userMail = userMailQueryRepository.findMailOf(reservation.getReservedUserId());
+        String userMail = userMailDao.findMailOf(reservation.getReservedUserId());
 
         if (isDenied(request)) {
             reservation.deny();

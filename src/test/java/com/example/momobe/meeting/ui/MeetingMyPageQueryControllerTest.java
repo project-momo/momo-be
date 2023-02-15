@@ -75,7 +75,7 @@ class MeetingMyPageQueryControllerTest {
         );
         MeetingHostResponseDto meetingHostResponseDto = new MeetingHostResponseDto(
                 ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL2, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
-                DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L
+                DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L, 3L, 2L
         );
         meetingHostResponseDto.init(
                 List.of("서울시 강남구", "서울시 강북구"),
@@ -158,7 +158,7 @@ class MeetingMyPageQueryControllerTest {
                         LocalDateTime.now());
         MeetingParticipantResponseDto meetingParticipantResponseDto = new MeetingParticipantResponseDto(
                 ID1, SOCIAL, ID1, NICKNAME, REMOTE_PATH, EMAIL1, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
-                DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L, applicationDto
+                DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L, applicationDto, 3L, 2L
         );
         meetingParticipantResponseDto.init(
                 List.of("서울시 강남구", "서울시 강북구"),

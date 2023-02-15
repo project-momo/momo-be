@@ -14,7 +14,7 @@ import static com.example.momobe.user.domain.QUser.*;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class UserMailQueryRepository {
+public class UserMailDao {
     private final JPAQueryFactory jpaQueryFactory;
 
     public String findMailOf(Long userId) {

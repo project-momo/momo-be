@@ -25,22 +25,22 @@ import static com.example.momobe.common.enums.TestConstants.*;
 @Import(JpaQueryFactoryConfig.class)
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserMailQueryRepositoryTest {
+class UserMailDaoTest {
     @Autowired
     EntityManager em;
 
-    private UserMailQueryRepository userMailQueryRepository;
+    private UserMailDao userMailDao;
 
     @BeforeEach
     void initField() {
-        userMailQueryRepository = new UserMailQueryRepository(new JPAQueryFactory(em));
+        userMailDao = new UserMailDao(new JPAQueryFactory(em));
     }
 
     @Test
     @DisplayName("존재하지 않는 유저를 조회할 경우 UnableToProcessException 발생")
     void findUserMail() {
         //given //when //then
-        Assertions.assertThatThrownBy(() -> userMailQueryRepository.findMailOf(-1L))
+        Assertions.assertThatThrownBy(() -> userMailDao.findMailOf(-1L))
                 .isInstanceOf(UnableToProcessException.class);
     }
 
@@ -55,7 +55,7 @@ class UserMailQueryRepositoryTest {
         em.persist(user);
 
         //when
-        String result = userMailQueryRepository.findMailOf(user.getId());
+        String result = userMailDao.findMailOf(user.getId());
 
         //then
         Assertions.assertThat(user.getEmail().getAddress()).isEqualTo(result);

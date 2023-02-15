@@ -32,11 +32,28 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         if (response.isCommitted()) return;
 
+        String redirectURL = getRedirectURI(request);
+        System.out.println(request.getRequestURL());
+
         User user = findUserBy(authentication);
         JwtTokenDto jwtTokenDto = tokenGenerateService.getJwtToken(user.getId());
 
-        String responseUrl = createResponseUrl(jwtTokenDto.getAccessToken(), jwtTokenDto.getRefreshToken());
+        String responseUrl = createResponseUrl(jwtTokenDto.getAccessToken(), jwtTokenDto.getRefreshToken(), redirectURL);
         getRedirectStrategy().sendRedirect(request, response, responseUrl);
+    }
+
+    private String getRedirectURI(HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+
+        if (referer.contains(LOCAL_URL)) {
+            return REDIRECT_URL_LOCAL;
+        }
+
+        if (referer.contains(SERVER_URL)) {
+            return REDIRECT_URL_SERVER;
+        }
+
+        throw new SecurityException(String.valueOf(INVALID_URL));
     }
 
     private User findUserBy(Authentication authentication) {
@@ -49,11 +66,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private void setTokenAndRedirect(HttpServletResponse response, JwtTokenDto jwtTokenDto) throws IOException {
         response.setHeader(ACCESS_TOKEN, jwtTokenDto.getAccessToken());
         response.setHeader(REFRESH_HEADER, jwtTokenDto.getAccessToken());
-        response.sendRedirect(REDIRECT_URL_OAUTH2);
+        response.sendRedirect(REDIRECT_URL_SERVER);
     }
 
-    private String createResponseUrl(String accessToken, String refreshToken) {
-        return UriComponentsBuilder.fromUriString(REDIRECT_URL_OAUTH2)
+    private String createResponseUrl(String accessToken, String refreshToken, String redirectURL) {
+        return UriComponentsBuilder.fromUriString(redirectURL)
                 .queryParam(REFRESH_HEADER, refreshToken)
                 .queryParam(ACCESS_TOKEN, accessToken)
                 .build()
