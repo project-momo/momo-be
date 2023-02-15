@@ -7,6 +7,7 @@ import com.example.momobe.meeting.dto.out.QMeetingInfoDto;
 import com.example.momobe.meeting.dto.out.QMeetingResponseDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +63,11 @@ public class MeetingQueryRepository {
                         meeting.dateTimeInfo.startTime,
                         meeting.dateTimeInfo.endTime,
                         meeting.dateTimeInfo.maxTime,
-                        meeting.price))
+                        meeting.price,
+                        JPAExpressions.select(reservation.count())
+                                .from(reservation)
+                                .where(reservation.meetingId.eq(meeting.id)),
+                        meeting.personnel.longValue()))
                 .leftJoin(tag).on(tag.id.in(meeting.tagIds))
                 .where(containsKeyword(keyword), eqCategory(category), eqTagName(tagName))
                 .fetch();
@@ -111,6 +116,7 @@ public class MeetingQueryRepository {
         if (tagName == null) return null;
         return tag.name.eq(tagName);
     }
+
 
     private BooleanExpression endDateFilter() {
         LocalDate now = LocalDate.now();

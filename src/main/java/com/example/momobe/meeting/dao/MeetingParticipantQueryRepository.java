@@ -5,6 +5,7 @@ import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.example.momobe.user.domain.QAvatar;
 import com.example.momobe.user.domain.QUser;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +74,11 @@ public class MeetingParticipantQueryRepository {
                                 ),
                                 reservation.id,
                                 reservation.reservationDate.startDateTime
-                        )))
+                        ),
+                        JPAExpressions.select(reservation.count())
+                                .from(reservation)
+                                .where(reservation.meetingId.eq(meeting.id)),
+                        meeting.personnel.longValue()))
                 .from(reservation)
                 .innerJoin(meeting).on(reservation.meetingId.eq(meeting.id))
                 .innerJoin(host).on(meeting.hostId.eq(host.id))

@@ -74,7 +74,7 @@ class MeetingQueryControllerTest {
         // given
         MeetingResponseDto meetingResponseDto = new MeetingResponseDto(
                 ID1, SOCIAL, ID1, NICKNAME, EMAIL1, REMOTE_PATH, TITLE1, CONTENT1, SUB_ADDRESS1, OPEN,
-                DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L
+                DatePolicy.FREE, START_DATE, END_DATE, START_TIME, END_TIME, 3, 1000L, 3L, 2L
         );
         meetingResponseDto.init(
                 List.of("서울시 강남구", "서울시 강북구"),
@@ -139,7 +139,7 @@ class MeetingQueryControllerTest {
                 new LinkedHashSet<>(List.of(1L, 2L)),
                 new LinkedHashSet<>(List.of("서울시 강남구", "서울시 강북구")),
                 new LinkedHashSet<>(List.of("온라인", "오프라인")),
-                List.of(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
+                List.of(LocalDateTime.now(), LocalDateTime.now().plusDays(1)), 3L, 2L);
 
         meetingDetailResponseDto.init(List.of(responseQuestionDto));
 

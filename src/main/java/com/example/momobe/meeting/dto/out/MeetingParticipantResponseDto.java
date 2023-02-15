@@ -19,8 +19,8 @@ public class MeetingParticipantResponseDto extends MeetingResponseDto {
 
     @QueryProjection
     public MeetingParticipantResponseDto(Long meetingId, Category category, Long hostId, String hostNickname, String hostImageUrl, String hostEmail, String title, String content, String addressInfo, MeetingState meetingState, DatePolicy datePolicy, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer maxTime, Long price,
-                                         ApplicationDto application) {
-        super(meetingId, category, hostId, hostNickname, hostImageUrl, hostEmail, title, content, addressInfo, meetingState, datePolicy, startDate, endDate, startTime, endTime, maxTime, price);
+                                         ApplicationDto application, Long currentParticipants, Long reservationCapacity) {
+        super(meetingId, category, hostId, hostNickname, hostImageUrl, hostEmail, title, content, addressInfo, meetingState, datePolicy, startDate, endDate, startTime, endTime, maxTime, price, currentParticipants, reservationCapacity);
         this.application = application;
     }
 
