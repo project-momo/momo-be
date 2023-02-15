@@ -3,11 +3,12 @@ package com.example.momobe.meeting.dao;
 import com.example.momobe.meeting.dto.out.ResponseMeetingDatesDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
 @Mapper
-public interface MonthlyMeetingScheduleInquiry {
+public interface MeetingDao {
     @Select("select dt.date_time as dateTime, date_format(dt.date_time, '%Y-%m-%d') as date, date_format(dt.date_time, '%H:%i:%s') as time, m.personnel, m.max_time as maxTime, m.price,\n" +
             "       m.date_policy as datePolicy, count(r.reservation_id) as currentStaff, m.category,\n" +
             "       if ( count(r.reservation_id) >= m.personnel, 'false', 'true') as availability\n" +
@@ -19,5 +20,19 @@ public interface MonthlyMeetingScheduleInquiry {
             "                                   and (r.reservation_state = 'PAYMENT_SUCCESS' or r.reservation_state = 'PAYMENT_PROGRESS' or r.reservation_state = 'ACCEPT')\n" +
             "    where dt.meeting_id = #{meetingId} and month(dt.date_time) = #{month}\n" +
             "    group by dateTime, date, time, m.personnel, m.max_time, m.price, m.category, m.date_policy")
-    List<ResponseMeetingDatesDto> getSchedules(Long meetingId, Integer month);
+    List<ResponseMeetingDatesDto> getMonthlyReservationSchedule(Long meetingId, Integer month);
+
+    @Select("SELECT meeting_id\n" +
+            "FROM meeting\n" +
+            "WHERE CONCAT(end_date, ' ', end_time) < NOW()\n" +
+            "  OR meeting_id IN (\n" +
+            "    SELECT meeting_id\n" +
+            "    FROM reservation\n" +
+            "    GROUP BY meeting_id\n" +
+            "    HAVING COUNT(*) >= personnel\n" +
+            "  );")
+    List<Long> findExpiredOrFullCapacityMeetings();
+
+    @Update("UPDATE meeting SET meeting_state = 'CLOSE' WHERE meeting_id IN (#{meetingIds})")
+    void updateMeetingStateToClose(List<Long> meetingIds);
 }

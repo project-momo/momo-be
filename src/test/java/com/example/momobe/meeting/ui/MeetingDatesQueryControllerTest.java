@@ -4,7 +4,7 @@ import com.example.momobe.common.config.ApiDocumentUtils;
 import com.example.momobe.common.config.SecurityTestConfig;
 import com.example.momobe.common.exception.ui.ExceptionController;
 import com.example.momobe.common.resolver.JwtArgumentResolver;
-import com.example.momobe.meeting.dao.MonthlyMeetingScheduleInquiry;
+import com.example.momobe.meeting.dao.MeetingDao;
 import com.example.momobe.meeting.domain.enums.Category;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.dto.out.ResponseMeetingDatesDto;
@@ -47,7 +47,7 @@ class MeetingDatesQueryControllerTest {
     JwtArgumentResolver jwtArgumentResolver;
 
     @MockBean
-    MonthlyMeetingScheduleInquiry monthlyMeetingScheduleInquiry;
+    MeetingDao meetingDao;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -89,7 +89,7 @@ class MeetingDatesQueryControllerTest {
 
         List<ResponseMeetingDatesDto> respone = List.of(dto1, dto2);
 
-        BDDMockito.given(monthlyMeetingScheduleInquiry.getSchedules(meetingId, localDate.getMonthValue())).willReturn(respone);
+        BDDMockito.given(meetingDao.getMonthlyReservationSchedule(meetingId, localDate.getMonthValue())).willReturn(respone);
 
         //when
         ResultActions perform = mockMvc.perform(get("/meetings/{meetingId}/reservations/dates/{date}", meetingId, localDate)

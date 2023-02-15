@@ -38,9 +38,9 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 @EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class MonthlyMeetingScheduleInquiryTest {
+class MeetingDaoTest {
     @Autowired
-    private MonthlyMeetingScheduleInquiry monthlyMeetingScheduleInquiry;
+    private MeetingDao meetingDao;
 
     private DateTimeMapper dateTimeMapper;
 
@@ -176,7 +176,7 @@ class MonthlyMeetingScheduleInquiryTest {
     void getTimesTest_free1() {
         //given
         //when
-        List<ResponseMeetingDatesDto> result = monthlyMeetingScheduleInquiry.getSchedules(freeMeeting.getId(), startDate.getMonthValue());
+        List<ResponseMeetingDatesDto> result = meetingDao.getMonthlyReservationSchedule(freeMeeting.getId(), startDate.getMonthValue());
 
         //then
         for (ResponseMeetingDatesDto t : result) {
@@ -190,7 +190,7 @@ class MonthlyMeetingScheduleInquiryTest {
     void getTimesTest_day2() {
         //given
         //when
-        List<ResponseMeetingDatesDto> result = monthlyMeetingScheduleInquiry.getSchedules(freeMeeting.getId(), startDate.getMonthValue());
+        List<ResponseMeetingDatesDto> result = meetingDao.getMonthlyReservationSchedule(freeMeeting.getId(), startDate.getMonthValue());
 
         //then
         for (ResponseMeetingDatesDto responseMeetingDatesDto : result) {
@@ -209,7 +209,7 @@ class MonthlyMeetingScheduleInquiryTest {
     void getTimesTest_day1() {
         //given
         //when
-        List<ResponseMeetingDatesDto> result = monthlyMeetingScheduleInquiry.getSchedules(dayMeeting.getId(), startDate.getMonthValue());
+        List<ResponseMeetingDatesDto> result = meetingDao.getMonthlyReservationSchedule(dayMeeting.getId(), startDate.getMonthValue());
 
         //then
         assertThat(result.size()).isEqualTo(20);
@@ -220,7 +220,7 @@ class MonthlyMeetingScheduleInquiryTest {
     void getTimesTest_free2() {
         //given
         //when
-        List<ResponseMeetingDatesDto> result = monthlyMeetingScheduleInquiry.getSchedules(dayMeeting.getId(), startDate.getMonthValue());
+        List<ResponseMeetingDatesDto> result = meetingDao.getMonthlyReservationSchedule(dayMeeting.getId(), startDate.getMonthValue());
 
         //then
         for (ResponseMeetingDatesDto responseMeetingDatesDto : result) {
