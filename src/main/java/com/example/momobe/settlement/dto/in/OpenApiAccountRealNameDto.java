@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 public class OpenApiAccountRealNameDto {
     private String bank_tran_id;
     private String bank_code_std;
+    private String rsp_code;
     private String account_num;
     private String account_holder_info_type;
     private String account_holder_info;

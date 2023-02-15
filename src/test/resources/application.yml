@@ -25,11 +25,11 @@ spring:
   redis:
     host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6379}
-    password: tempPass
+    password: myPass
   mail:
     host: smtp.gmail.com
     username: dev.eunchan@gmail.com
-    password: tempPass
+    password: zhvswatyvhvluwhe
     port: 587
     properties:
       mail:
@@ -85,3 +85,8 @@ payments:
     secretKey: test_sk_O6BYq7GWPVvlvv1l20n8NE5vbo1d
     clientKey: test_ck_oeqRGgYO1r5YKK0od4arQnN2Eyaz
     url: https://api.tosspayments.com/v1/payments/
+
+banking:
+  client_id: 42c29ffd-a7d7-4e02-aa66-71c49781ffb8
+  client_secret: 470073e6-effd-4bb6-8adb-45180e3716c8
+  tran_id: M202300084
