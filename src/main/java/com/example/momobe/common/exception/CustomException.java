@@ -16,9 +16,4 @@ public abstract class CustomException extends RuntimeException {
         this.errorCode = errorCode;
         this.message = message;
     }
-
-    @Override
-    public synchronized Throwable fillInStackTrace() {
-        return this;
-    }
 }

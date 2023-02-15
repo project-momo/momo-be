@@ -86,12 +86,15 @@ public class Reservation extends BaseTime {
                 .build();
     }
 
-    private Boolean canChangeStatus() {
-        return this.reservationState.equals(PAYMENT_SUCCESS) && !this.reservationDate.isBeforeThen(LocalDateTime.now());
-    }
-
     private void changeState(ReservationState state) {
-        if (!canChangeStatus()) throw new ReservationException(CAN_NOT_CHANGE_RESERVATION_STATE);
+        if (this.reservationState.equals(ACCEPT)) throw new ReservationException(CONFIRMED_RESERVATION);
+
+        if (this.reservationState.equals(CANCEL)) throw new ReservationException(CANCELED_RESERVATION);
+
+        if (this.reservationDate.isBeforeThen(LocalDateTime.now())) throw new ReservationException(PAST_RESERVATION_CAN_NOT_BE_MODIFIED);
+
+        if (!this.reservationState.equals(PAYMENT_SUCCESS)) throw new ReservationException(INVALID_REQUEST_FOR_RESERVATION);
+
         this.reservationState = state;
     }
 

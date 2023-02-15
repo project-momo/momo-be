@@ -23,7 +23,7 @@ public class MailSendService {
     protected final static String ACCEPT_TITLE = "요청하신 예약이 수락되었습니다";
     protected final static String ACCEPT_CONTENT = "요청하신 예약이 수락되었습니다!" +
             "마이페이지에서 예약 내역을 확인하세요." +
-            "(프론트 페이지 완성 후 링크)";
+            "https://www.momo-deploy.site/mypage";
 
     protected final static String DENY_TITLE = "요청하신 예약이 거부되었습니다";
     protected final static String DENY_CONTENT = "요청하신 예약이 거부되었습니다." +

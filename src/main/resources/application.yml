@@ -1,8 +1,8 @@
 spring:
   data:
-      web:
-        pageable:
-          one-indexed-parameters: true
+    web:
+      pageable:
+        one-indexed-parameters: true
   jpa:
     hibernate:
       ddl-auto: update #update create-update validate
@@ -25,6 +25,7 @@ spring:
   redis:
     host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6379}
+    password: myPass
   mail:
     host: smtp.gmail.com
     username:

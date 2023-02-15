@@ -29,16 +29,12 @@ public class ReservationLockFacade {
             boolean hasLock = lock.tryLock(5, 3, TimeUnit.SECONDS);
 
             if (hasLock) {
-                try {
-                    response = reservationBookService.reserve(meetingId, reservationDto, userInfo);
-                } finally {
-                    lock.unlock();
-                }
-            } else {
-                reserve(meetingId, reservationDto, userInfo);
+                response = reservationBookService.reserve(meetingId, reservationDto, userInfo);
             }
         } catch (InterruptedException e) {
             throw new ReservationException(ErrorCode.UNABLE_TO_PROCESS);
+        } finally {
+            lock.unlock();
         }
 
         return response;
