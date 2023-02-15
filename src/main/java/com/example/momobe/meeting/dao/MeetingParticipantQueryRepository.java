@@ -15,6 +15,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -88,7 +89,10 @@ public class MeetingParticipantQueryRepository {
                 .leftJoin(payment).on(payment.reservationId.eq(reservation.id))
                 .where(reservation.reservedUser.userId.eq(participantId)
                         .and((reservation.reservationState.eq(ACCEPT)
-                                .or(reservation.reservationState.eq(PAYMENT_SUCCESS))))
+                                .or(
+                                        reservation.reservationState.eq(PAYMENT_SUCCESS)
+                                        .and(reservation.reservationDate.startDateTime.before(LocalDateTime.now())
+                                        ))))
                 )
                 .orderBy(reservation.createdAt.desc())
                 .offset(pageable.getOffset())
