@@ -17,6 +17,7 @@ public class PointHistoryResponseDto {
     private Long amount;
     private String state;
     private String type;
+    private String description;
     private LocalDate date;
 
     public static Page<PointHistoryResponseDto> of(Page<PointHistory> pointHistory){
@@ -27,6 +28,7 @@ public class PointHistoryResponseDto {
                         .date(x.getHistoryDate())
                         .state(x.getState().toString())
                         .type(x.getType().toString())
+                        .description(x.getType().getMessage())
                         .build());
         return pageDto;
     }

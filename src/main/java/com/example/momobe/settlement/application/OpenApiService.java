@@ -118,6 +118,9 @@ public class OpenApiService {
         }catch (Exception e){
             throw new NotFoundBankAccountException(ErrorCode.DATA_NOT_FOUND);
         }
+        if(!realNameDto.getRsp_code().equals("A0000")){
+            throw new NotFoundBankAccountException(ErrorCode.DATA_NOT_FOUND);
+        }
         if (realNameDto == null) {
             throw new NotFoundBankAccountException(ErrorCode.DATA_NOT_FOUND);
         }
