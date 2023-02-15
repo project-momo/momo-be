@@ -13,7 +13,12 @@ public class SecurityConstants {
     public final static String EMAIL = "email";
     public static final String NICKNAME = "nickname";
 
-    public final static String REDIRECT_URL_OAUTH2 = "https://www.momo-deploy.site/oauth/login";
+    public final static String REDIRECT_URL_SERVER = "https://www.momo-deploy.site/oauth/login";
+    public final static String REDIRECT_URL_LOCAL = "http://localhost:3000/oauth/login";
+
+    public final static String SERVER_URL = "www.momo-deploy.site";
+    public final static String LOCAL_URL = "localhost:3000";
+
     public final static String ACCESS_TOKEN = "AccessToken";
 
     public final static Integer TEMPORARY_PASSWORD_LENGTH = 15;
