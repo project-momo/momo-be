@@ -17,17 +17,12 @@ import java.util.Objects;
 
 import static com.example.momobe.common.exception.enums.ErrorCode.*;
 
-/*
-* TODO : 프론트 요청사항 변경으로 인해 서비스 로직 수정 필요
-* Author : yang eun chan
-* datetime : 23/02/10
-* */
 @Service
 @RequiredArgsConstructor
-public class ReservationCancelService implements ApplicationEventPublisherAware {
+public class ReservationCancelService {
     private final PaymentDao paymentDAO;
     private final ReservationFindService reservationFindService;
-    private ApplicationEventPublisher applicationEventPublisher;
+    private final ReservationEventPublishService reservationEventPublishService;
 
     @Transactional
     public void cancelReservation(Long reservationId, DeleteReservationDto deleteReservationDto, UserInfo userInfo) {
@@ -36,13 +31,9 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
         validateCancellation(userInfo, reservation, deleteReservationDto);
         reservation.cancel();
 
-        publishCancelEvent(deleteReservationDto, reservation);
-    }
-
-    private void publishCancelEvent(DeleteReservationDto deleteReservationDto, Reservation reservation) {
         if (deleteReservationDto.getPaymentKey() != null) {
-            ReservationCanceledEvent paymentCancelEvent = reservation.createCancelEvent(deleteReservationDto.getPaymentKey(), deleteReservationDto.getCancelReason());
-            applicationEventPublisher.publishEvent(paymentCancelEvent);
+            reservationEventPublishService
+                    .publishCancelEvent(deleteReservationDto.getPaymentKey(), reservation.getPaymentId(), getReason(deleteReservationDto));
         }
     }
 
@@ -56,8 +47,7 @@ public class ReservationCancelService implements ApplicationEventPublisherAware 
         if (reservation.isAccepted()) throw new ReservationException(CAN_NOT_CHANGE_RESERVATION_STATE);
     }
 
-    @Override
-    public void setApplicationEventPublisher(@NonNull ApplicationEventPublisher applicationEventPublisher) {
-        this.applicationEventPublisher = applicationEventPublisher;
+    private String getReason(DeleteReservationDto deleteReservationDto) {
+        return (deleteReservationDto.getCancelReason() == null) ? "NULL" : deleteReservationDto.getCancelReason();
     }
 }
