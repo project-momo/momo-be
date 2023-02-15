@@ -91,7 +91,7 @@ public class MeetingParticipantQueryRepository {
                         .and((reservation.reservationState.eq(ACCEPT)
                                 .or(
                                         reservation.reservationState.eq(PAYMENT_SUCCESS)
-                                        .and(reservation.reservationDate.startDateTime.before(LocalDateTime.now())
+                                        .and(reservation.reservationDate.startDateTime.after(LocalDateTime.now())
                                         ))))
                 )
                 .orderBy(reservation.createdAt.desc())
