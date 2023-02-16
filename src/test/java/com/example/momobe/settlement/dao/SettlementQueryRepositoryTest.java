@@ -21,6 +21,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -54,6 +55,7 @@ import static org.springframework.boot.jdbc.EmbeddedDatabaseConnection.H2;
 @AutoConfigureDataJpa
 @AutoConfigureTestDatabase(connection = H2)
 @Import(JpaQueryFactoryConfig.class)
+@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 class SettlementQueryRepositoryTest {
     @Autowired
     private EntityManager em;
@@ -67,7 +69,6 @@ class SettlementQueryRepositoryTest {
     }
 
     @Test
-//    @Commit
     @DisplayName("정산 대상 있을 경우")
     void test01(){
         //given
