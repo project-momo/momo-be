@@ -74,7 +74,7 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:3000", "https://www.momo-deploy.site"));
+        config.setAllowedOrigins(List.of("http://localhost:3000", "https://www.momo-deploy.site", "https://momo-deploy.vercel.app"));
         config.addAllowedHeader("*");
         config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PATCH", "PUT", "OPTION"));
         config.setExposedHeaders(List.of(REFRESH_HEADER, ACCESS_TOKEN));
