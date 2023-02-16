@@ -138,6 +138,7 @@ class MeetingMyPageQueryControllerTest {
                                 fieldWithPath("content[].applications.confirmed[].dateTimeInfo").type(OBJECT).description("날짜 정보"),
                                 fieldWithPath("content[].applications.confirmed[].dateTimeInfo.date").type(STRING).description("예약 날짜"),
                                 fieldWithPath("content[].applications.confirmed[].dateTimeInfo.time").type(STRING).description("예약 시간"),
+                                fieldWithPath("content[].detailState").type(STRING).description("프론트 페이지용 상태 정보"),
 
                                 FWP_PAGE_INFO, FWP_PAGE, FWP_SIZE, FWP_TOTAL_ELEMENTS, FWP_TOTAL_PAGES
                         )
@@ -209,6 +210,7 @@ class MeetingMyPageQueryControllerTest {
                                 fieldWithPath("content[].application.dateTimeInfo.date").type(STRING).description("예약 날짜"),
                                 fieldWithPath("content[].application.dateTimeInfo.time").type(STRING).description("예약 시간"),
                                 fieldWithPath("content[].application.reservationId").type(NUMBER).description("예약 아이디"),
+                                fieldWithPath("content[].detailState").type(STRING).description("프론트 페이지용 상태 정보"),
 
                                 FWP_PAGE_INFO, FWP_PAGE, FWP_SIZE, FWP_TOTAL_ELEMENTS, FWP_TOTAL_PAGES
                         )
