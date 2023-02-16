@@ -69,17 +69,21 @@ public class MeetingResponseDto {
         this.title = title;
         this.content = content;
         this.address = new AddressDto(addressInfo);
-        this.meetingState = meetingState.getDescription();
+        this.meetingState = setOpenState(endDate, endTime, currentParticipants, reservationCapacity, meetingState);
         this.dateTime = new DateTimeDto(datePolicy, startDate, endDate, startTime, endTime, maxTime);
         this.price = price;
-        this.isOpen = setOpenState(endDate, endTime, currentParticipants, reservationCapacity);
+        this.isOpen = meetingState.equals(MeetingState.OPEN);
     }
 
-    private Boolean setOpenState(LocalDate endDate, LocalTime endTime, Long currentParticipants, Long reservationCapacity) {
+    private String setOpenState(LocalDate endDate, LocalTime endTime, Long currentParticipants, Long reservationCapacity, MeetingState meetingState) {
         if (reservationCapacity - currentParticipants <= 0 || LocalDateTime.now().isAfter(LocalDateTime.of(endDate, endTime))) {
-            return false;
+            return MeetingState.CLOSE.toString();
         }
 
-        return true;
+        if (meetingState.equals(MeetingState.CLOSE)) {
+            return MeetingState.CLOSE.toString();
+        }
+
+        return MeetingState.OPEN.toString();
     }
 }

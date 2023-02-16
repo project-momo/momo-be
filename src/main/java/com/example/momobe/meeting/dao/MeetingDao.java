@@ -25,15 +25,9 @@ public interface MeetingDao {
 
     @Select("SELECT meeting_id\n" +
             "FROM meeting\n" +
-            "WHERE (CONCAT(end_date, ' ', end_time) < NOW()\n" +
-            "  OR meeting_id IN (\n" +
-            "    SELECT meeting_id\n" +
-            "    FROM reservation\n" +
-            "    GROUP BY meeting_id\n" +
-            "    HAVING COUNT(*) >= personnel\n" +
-            "  ))\n" +
-            "  AND meeting.meeting_state = 'OPEN';")
-    List<Long> findExpiredOrFullCapacityMeetings();
+            "WHERE (CONCAT(end_date, ' ', end_time) < NOW())" +
+            " AND meeting.meeting_state = 'OPEN';")
+    List<Long> findExpiredMeetings();
 
     @Update({
             "<script>",
