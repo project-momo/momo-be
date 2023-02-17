@@ -1,37 +1,29 @@
 package com.example.momobe.settlement.dao;
 
 import com.example.momobe.common.config.JpaQueryFactoryConfig;
-import com.example.momobe.meeting.domain.*;
+import com.example.momobe.meeting.domain.Address;
+import com.example.momobe.meeting.domain.DateTime;
+import com.example.momobe.meeting.domain.DateTimeInfo;
+import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.domain.enums.MeetingState;
-import com.example.momobe.payment.domain.PaymentRepository;
-import com.example.momobe.payment.infrastructure.PaymentQueryRepository;
 import com.example.momobe.reservation.domain.*;
 import com.example.momobe.reservation.domain.enums.ReservationState;
 import com.example.momobe.settlement.application.SettlementTransitionService;
 import com.example.momobe.settlement.domain.Settlement;
 import com.example.momobe.settlement.domain.SettlementRepository;
-import com.example.momobe.settlement.domain.exception.CanNotSettleException;
 import com.example.momobe.settlement.dto.out.SettlementResponseDto;
-import com.example.momobe.user.application.UserFindService;
-import com.example.momobe.user.domain.User;
-import com.example.momobe.user.domain.UserPoint;
-import com.example.momobe.user.domain.UserRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.Commit;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -41,14 +33,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.example.momobe.common.enums.TestConstants.CONTENT1;
-import static com.example.momobe.common.enums.TestConstants.TITLE1;
 import static com.example.momobe.meeting.domain.enums.Category.SOCIAL;
 import static com.example.momobe.meeting.enums.MeetingConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.boot.jdbc.EmbeddedDatabaseConnection.H2;
 
 @DataJpaTest
@@ -60,8 +47,12 @@ class SettlementQueryRepositoryTest {
     @Autowired
     private EntityManager em;
     private SettlementQueryRepository settlementQueryRepository;
+    @Mock
+    private SettlementTransitionService settlementTransitionService;
     Meeting meeting1;
     Reservation reservation;
+    @Autowired
+    private SettlementRepository settlementRepository;
 
     @BeforeEach
     void init(){
@@ -103,7 +94,7 @@ class SettlementQueryRepositoryTest {
         em.persist(reservation);
 
         //when
-        List<SettlementResponseDto.Reservation> list =
+        List<SettlementResponseDto.SettlementDto> list =
                 settlementQueryRepository.findReservationForMeetingClosed();
         //then
 
@@ -147,7 +138,7 @@ class SettlementQueryRepositoryTest {
         em.persist(reservation);
 
         //when
-        List<SettlementResponseDto.Reservation> list =
+        List<SettlementResponseDto.SettlementDto> list =
                 settlementQueryRepository.findReservationForMeetingClosed();
 
         //then

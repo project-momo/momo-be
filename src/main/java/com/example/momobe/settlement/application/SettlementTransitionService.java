@@ -33,7 +33,7 @@ public class SettlementTransitionService {
 
     @Scheduled(cron = "0 0 10 1 * ?")
     public void transitionOfPayment() {
-        List<SettlementResponseDto.Reservation> settlements = settlementQueryDslRepository.findReservationForMeetingClosed();
+        List<SettlementResponseDto.SettlementDto> settlements = settlementQueryDslRepository.findReservationForMeetingClosed();
         if(settlements.isEmpty()) throw new CanNotSettleException(ErrorCode.CAN_NOT_FOUND_SETTLEMENT);
         settlements.forEach(
                 x -> {
