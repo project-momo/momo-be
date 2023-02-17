@@ -21,11 +21,11 @@ import static com.example.momobe.common.exception.enums.ErrorCode.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ReservationConfirmService implements ApplicationEventPublisherAware {
+public class ReservationConfirmService {
     private final MeetingCommonService meetingCommonService;
     private final ReservationFindService reservationFindService;
     private final UserMailDao userMailDao;
-    private ApplicationEventPublisher applicationEventPublisher;
+    private final MailEventPublishService mailEventPublishService;
 
     public void confirm(Long meetingId, Long reservationId, UserInfo userInfo, PatchReservationDto request) {
         Reservation reservation = validateRequest(meetingId, reservationId, userInfo);
@@ -33,10 +33,10 @@ public class ReservationConfirmService implements ApplicationEventPublisherAware
 
         if (isDenied(request)) {
             reservation.deny();
-            publishReservationConfirmedEvent(userMail, MailType.DENY);
+            mailEventPublishService.publish(userMail, MailType.DENY);
         } else {
             reservation.accept();
-            publishReservationConfirmedEvent(userMail, MailType.ACCEPT);
+            mailEventPublishService.publish(userMail, MailType.ACCEPT);
         }
     }
 
@@ -48,14 +48,5 @@ public class ReservationConfirmService implements ApplicationEventPublisherAware
         Meeting meeting = meetingCommonService.getMeeting(meetingId);
         if (!meeting.matchHostId(userInfo.getId())) throw new ReservationException(REQUEST_DENIED);
         return reservationFindService.getReservation(reservationId);
-    }
-
-    private void publishReservationConfirmedEvent(String userMail, MailType mailType) {
-        applicationEventPublisher.publishEvent(new ReservationConfirmedEvent(userMail, mailType));
-    }
-
-    @Override
-    public void setApplicationEventPublisher(@NonNull ApplicationEventPublisher applicationEventPublisher) {
-        this.applicationEventPublisher = applicationEventPublisher;
     }
 }
