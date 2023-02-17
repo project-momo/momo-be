@@ -13,19 +13,19 @@ public class SettlementResponseDto {
     @Getter
     @Builder
     @NoArgsConstructor
-    public static class Reservation{
+    public static class SettlementDto{
         private Long paymentId;
         private Long meetingId;
         private Long reservationId;
         private Long host;
         private Long amount;
 
-        public Reservation(Long paymentId, Long meetingId, Long reservationId, Long amount,Long host) {
+        public SettlementDto(Long paymentId, Long meetingId, Long reservationId,Long host, Long amount) {
             this.paymentId = paymentId;
             this.meetingId = meetingId;
             this.reservationId = reservationId;
-            this.amount = amount;
             this.host = host;
+            this.amount = amount;
         }
     }
 

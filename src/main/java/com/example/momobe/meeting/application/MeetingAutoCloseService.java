@@ -14,7 +14,7 @@ public class MeetingAutoCloseService {
 
     @Transactional
     public void process() {
-        List<Long> meetingIds = meetingDao.findExpiredOrFullCapacityMeetings();
+        List<Long> meetingIds = meetingDao.findExpiredMeetings();
 
         if (!meetingIds.isEmpty()) {
             meetingDao.updateMeetingStateToClose(meetingIds);

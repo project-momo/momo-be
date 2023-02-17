@@ -13,11 +13,13 @@ public class SecurityConstants {
     public final static String EMAIL = "email";
     public static final String NICKNAME = "nickname";
 
-    public final static String REDIRECT_URL_SERVER = "https://www.momo-deploy.site/oauth/login";
+    public final static String REDIRECT_URL_SERVER = "https://momo-deploy.site/oauth/login";
     public final static String REDIRECT_URL_LOCAL = "http://localhost:3000/oauth/login";
+    public final static String REDIRECT_URL_SUB = "https://momo-deploy.vercel.app/oauth/login";
 
-    public final static String SERVER_URL = "www.momo-deploy.site";
+    public final static String SERVER_URL = "momo-deploy.site";
     public final static String LOCAL_URL = "localhost:3000";
+    public final static String SUB_URL = "momo-deploy.vercel.app";
 
     public final static String ACCESS_TOKEN = "AccessToken";
 

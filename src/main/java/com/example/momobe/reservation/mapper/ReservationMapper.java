@@ -22,7 +22,7 @@ public interface ReservationMapper {
 
         return new Reservation(
                 new ReservationDate(reservationDate, startTime, endTime),
-                new Money(meeting.getPrice()),
+                new Money(reservationDto.getAmount()),
                 new ReservedUser(userInfo.getId()),
                 new ReservationMemo(reservationDto.getReservationMemo()),
                 meeting.getId()

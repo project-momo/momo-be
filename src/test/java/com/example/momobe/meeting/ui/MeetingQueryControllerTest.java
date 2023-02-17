@@ -116,6 +116,7 @@ class MeetingQueryControllerTest {
                                 FWP_CONTENT_DATE_TIME_END_DATE, FWP_CONTENT_DATE_TIME_START_TIME, FWP_CONTENT_DATE_TIME_END_TIME,
                                 FWP_CONTENT_DATE_TIME_MAX_TIME, FWP_CONTENT_DATE_TIME_DAY_WEEKS, FWP_CONTENT_DATE_TIME_DATES,
                                 FWP_CONTENT_PRICE,
+                                fieldWithPath("content[].detailState").type(STRING).description("프론트 페이지용 상태 정보"),
 
                                 FWP_PAGE_INFO, FWP_PAGE, FWP_SIZE, FWP_TOTAL_ELEMENTS, FWP_TOTAL_PAGES
                         )
@@ -206,7 +207,8 @@ class MeetingQueryControllerTest {
                                 fieldWithPath("questions[].answers[].answerer.nickname").type(STRING).description("답변자 닉네임"),
                                 fieldWithPath("questions[].answers[].answerer.imageUrl").type(STRING).description("답변자 이미지"),
                                 fieldWithPath("questions[].answers[].createdAt").type(STRING).description("답변 작성일시"),
-                                fieldWithPath("questions[].answers[].modifiedAt").type(STRING).description("답변자 수정일시")
+                                fieldWithPath("questions[].answers[].modifiedAt").type(STRING).description("답변자 수정일시"),
+                                fieldWithPath("detailState").type(STRING).description("프론트 페이지용 상태 정보")
                         )
                 ));
     }

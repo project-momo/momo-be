@@ -32,12 +32,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         if (response.isCommitted()) return;
 
-        String redirectURL = getRedirectURI(request);
-        System.out.println(request.getRequestURL());
-
         User user = findUserBy(authentication);
         JwtTokenDto jwtTokenDto = tokenGenerateService.getJwtToken(user.getId());
 
+        String redirectURL = getRedirectURI(request);
         String responseUrl = createResponseUrl(jwtTokenDto.getAccessToken(), jwtTokenDto.getRefreshToken(), redirectURL);
         getRedirectStrategy().sendRedirect(request, response, responseUrl);
     }
@@ -51,6 +49,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         if (referer.contains(SERVER_URL)) {
             return REDIRECT_URL_SERVER;
+        }
+
+        if (referer.contains(SUB_URL)) {
+            return REDIRECT_URL_SUB;
         }
 
         throw new SecurityException(String.valueOf(INVALID_URL));
