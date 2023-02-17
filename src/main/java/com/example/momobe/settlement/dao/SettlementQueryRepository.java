@@ -18,8 +18,8 @@ import static com.example.momobe.reservation.domain.QReservation.reservation;
 public class SettlementQueryRepository {
     private final JPAQueryFactory queryFactory;
 
-    public List<SettlementResponseDto.Reservation> findReservationForMeetingClosed(){
-        return queryFactory.select(Projections.constructor(SettlementResponseDto.Reservation.class,
+    public List<SettlementResponseDto.SettlementDto> findReservationForMeetingClosed(){
+        return queryFactory.select(Projections.constructor(SettlementResponseDto.SettlementDto.class,
                         reservation.paymentId,
                         reservation.meetingId,
                         reservation.id,
