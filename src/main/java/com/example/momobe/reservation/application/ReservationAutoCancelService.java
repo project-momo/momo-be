@@ -1,5 +1,6 @@
 package com.example.momobe.reservation.application;
 
+import com.example.momobe.maill.enums.MailType;
 import com.example.momobe.reservation.dao.PaymentDao;
 import com.example.momobe.reservation.dao.PointHistoryDao;
 import com.example.momobe.reservation.dao.ReservationDao;
@@ -16,6 +17,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.momobe.maill.enums.MailType.*;
+
 @Service
 @RequiredArgsConstructor
 public class ReservationAutoCancelService {
@@ -24,6 +27,7 @@ public class ReservationAutoCancelService {
     private final UserDao userDao;
     private final PointHistoryDao pointHistoryDao;
     private final ReservationEventPublishService reservationEventPublishService;
+    private final MailEventPublishService mailEventPublishService;
 
     @Transactional
     public void process() {
@@ -35,10 +39,36 @@ public class ReservationAutoCancelService {
         List<Reservation> paidReservations = getPaidReservations(reservations);
 
         if (!paidReservations.isEmpty()) {
-            List<PaymentIdentification> paymentIdentifications = getPaymentIdentifications(paidReservations);
-            publishPaymentCancelEvent(paymentIdentifications);
-            paidReservations.forEach(this::refund);
+            cancelPaymentAndRefund(paidReservations);
+            notifyUser(paidReservations);
         }
+    }
+
+    private void notifyUser(List<Reservation> paidReservations) {
+        List<Long> paidUserIds = getUserIds(paidReservations);
+        List<String> userMails = getUserMails(paidUserIds);
+        publishUserMailEvents(userMails);
+    }
+
+    private void cancelPaymentAndRefund(List<Reservation> paidReservations) {
+        List<PaymentIdentification> paymentIdentifications = getPaymentIdentifications(paidReservations);
+        publishPaymentCancelEvent(paymentIdentifications);
+        paidReservations.forEach(this::refund);
+    }
+
+    private void publishUserMailEvents(List<String> userMails) {
+        userMails.forEach(address -> mailEventPublishService.publish(address, DENY));
+    }
+
+    private List<String> getUserMails(List<Long> paidUserIds) {
+        return userDao.findUserMailByReservationUserId(paidUserIds);
+    }
+
+    private List<Long> getUserIds(List<Reservation> paidReservations) {
+        return paidReservations
+                .stream()
+                .map(Reservation::getReservedUserId)
+                .collect(Collectors.toList());
     }
 
     private void denyFreeReservations(List<Reservation> freeReservations) {
