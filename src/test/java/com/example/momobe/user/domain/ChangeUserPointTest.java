@@ -1,7 +1,9 @@
-package com.example.momobe.settlement.domain;
+package com.example.momobe.user.domain;
 
 
 import com.example.momobe.settlement.application.SettlementWithdrawalService;
+import com.example.momobe.settlement.domain.PointHistory;
+import com.example.momobe.settlement.domain.PointHistoryFindRepository;
 import com.example.momobe.settlement.domain.enums.PointState;
 import com.example.momobe.settlement.domain.enums.PointUsedType;
 import com.example.momobe.user.application.UserFindService;
