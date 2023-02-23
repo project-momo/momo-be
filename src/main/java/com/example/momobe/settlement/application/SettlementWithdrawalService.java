@@ -6,6 +6,7 @@ import com.example.momobe.settlement.domain.enums.PointUsedType;
 import com.example.momobe.settlement.domain.exception.CanNotWithdrawalException;
 import com.example.momobe.settlement.dto.out.PointWithdrawalResponseDto;
 import com.example.momobe.user.application.UserFindService;
+import com.example.momobe.user.domain.NotEnoughPointException;
 import com.example.momobe.user.domain.User;
 import com.example.momobe.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class SettlementWithdrawalService {
             user.changeUserPoint(user.minusUserPoint(amount,PointUsedType.WITHDRAWAL));
             userRepository.save(user);
             return new PointWithdrawalResponseDto.WithdrawalDto(true,amount,user.getUserPoint().getPoint());
-        }catch (Exception e){
+        }catch (NotEnoughPointException e){
             throw new CanNotWithdrawalException(REQUEST_CONFLICT);
         }
     }
