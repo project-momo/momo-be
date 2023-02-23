@@ -37,7 +37,7 @@ import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
-class SettlementTransitionTest {
+class SettlementTransitionServiceTest {
     @InjectMocks
     private SettlementTransitionService settlementTransitionService;
     @Mock
