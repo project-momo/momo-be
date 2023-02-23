@@ -31,26 +31,20 @@ public class SettlementTransitionService {
     private final UserRepository userRepository;
 
 
-    @Scheduled(cron = "0 0 10 1 * ?")
+        @Scheduled(cron = "0 0 10 1 * ?")
+//    @Scheduled(cron = "0/10 * * * * *")
+    @Transactional
     public void transitionOfPayment() {
-        List<SettlementResponseDto.SettlementDto> settlements = settlementQueryDslRepository.findReservationForMeetingClosed();
-        if(settlements.isEmpty()) throw new CanNotSettleException(ErrorCode.CAN_NOT_FOUND_SETTLEMENT);
+        List<Settlement> settlements = settlementQueryDslRepository.findReservationForMeetingClosed();
+        if (settlements.isEmpty()) throw new CanNotSettleException(ErrorCode.CAN_NOT_FOUND_SETTLEMENT);
         settlements.forEach(
                 x -> {
-                    if(settlementRepository.findByReservationId(x.getReservationId())==null){
-                        Settlement settlement = Settlement.builder()
-                                .host(x.getHost())
-                                .paymentId(x.getPaymentId())
-                                .meetingId(x.getMeetingId())
-                                .reservationId(x.getReservationId())
-                                .amount(x.getAmount())
-                                .build();
-                        User user = userFindService.verifyUser(x.getHost());
-                        user.changeUserPoint(user.plusUserPoint(x.getAmount(), PointUsedType.SETTLEMENT));
-                        userRepository.save(user);
-                        settlement.changeSettlementState(settlement,SettlementState.DONE);
-                        settlementRepository.save(settlement);
-                    }
+                    if (settlementRepository.findByReservationId(x.getReservationId()) != null) throw new CanNotSettleException(ErrorCode.ALREADY_EXIST_SETTLEMENT);
+                    User user = userFindService.verifyUser(x.getHost());
+                    user.changeUserPoint(user.plusUserPoint(x.getAmount(), PointUsedType.SETTLEMENT));
+                    userRepository.save(user);
+                    x.changeSettlementState(x, SettlementState.DONE);
                 });
+        settlementRepository.saveAll(settlements);
     }
 }
