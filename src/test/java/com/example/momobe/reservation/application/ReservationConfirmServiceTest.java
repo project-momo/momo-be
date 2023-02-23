@@ -1,6 +1,7 @@
 package com.example.momobe.reservation.application;
 
 import com.example.momobe.common.resolver.UserInfo;
+import com.example.momobe.maill.enums.MailType;
 import com.example.momobe.meeting.application.MeetingCommonService;
 import com.example.momobe.meeting.domain.Meeting;
 import com.example.momobe.reservation.dao.UserMailDao;
@@ -44,7 +45,7 @@ class ReservationConfirmServiceTest {
     UserMailDao userMailDao;
 
     @Mock
-    ApplicationEventPublisher applicationEventPublisher;
+    MailEventPublishService mailEventPublishService;
 
     private Meeting meeting;
 
@@ -97,11 +98,6 @@ class ReservationConfirmServiceTest {
                 .reservationState(PAYMENT_SUCCESS)
                 .reservedUser(new ReservedUser(reservedUser.getId()))
                 .build();
-    }
-
-    @BeforeEach
-    void initApplicationEventListener() {
-        reservationConfirmService.setApplicationEventPublisher(applicationEventPublisher);
     }
 
     @Test
@@ -158,7 +154,7 @@ class ReservationConfirmServiceTest {
         reservationConfirmService.confirm(meeting.getId(), reservation.getId(), userInfo, acceptDto);
 
         //then
-        verify(applicationEventPublisher, times(1)).publishEvent(any(ReservationConfirmedEvent.class));
+        verify(mailEventPublishService, times(1)).publish(anyString(), any(MailType.class));
     }
 
     @Test
@@ -173,6 +169,6 @@ class ReservationConfirmServiceTest {
         reservationConfirmService.confirm(meeting.getId(), reservation.getId(), userInfo, denyDto);
 
         //then
-        verify(applicationEventPublisher, times(1)).publishEvent(any(ReservationConfirmedEvent.class));
+        verify(mailEventPublishService, times(1)).publish(anyString(), any(MailType.class));
     }
 }
