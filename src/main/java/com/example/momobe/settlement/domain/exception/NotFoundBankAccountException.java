@@ -5,6 +5,6 @@ import com.example.momobe.common.exception.enums.ErrorCode;
 
 public class NotFoundBankAccountException extends CustomException {
     public NotFoundBankAccountException(ErrorCode errorCode) {
-        super(errorCode);
+        super(errorCode,errorCode.getMessage());
     }
 }

@@ -5,6 +5,6 @@ import com.example.momobe.common.exception.enums.ErrorCode;
 
 public class CanNotWithdrawalException extends CustomException {
     public CanNotWithdrawalException(ErrorCode errorCode) {
-        super(errorCode);
+        super(errorCode,errorCode.getMessage());
     }
 }
