@@ -5,6 +5,6 @@ import com.example.momobe.common.exception.enums.ErrorCode;
 
 public class CanNotSettleException extends CustomException {
     public CanNotSettleException(ErrorCode errorCode) {
-        super(errorCode);
+        super(errorCode, errorCode.getMessage());
     }
 }

@@ -4,10 +4,7 @@ import com.example.momobe.common.domain.BaseTime;
 import com.example.momobe.common.exception.enums.ErrorCode;
 import com.example.momobe.settlement.domain.enums.SettlementState;
 import com.example.momobe.settlement.domain.exception.CanNotSettleException;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,11 +28,11 @@ public class Settlement extends BaseTime {
     private Long paymentId;
     @Column(nullable = false)
     private Long meetingId;
-
     @Column(nullable = false)
     private Long reservationId;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private SettlementState state;
 
     public Settlement(Long host, Long amount, Long paymentId, Long meetingId, Long reservationId) {

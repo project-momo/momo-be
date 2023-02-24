@@ -29,8 +29,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -49,12 +48,11 @@ class SettlementTransitionServiceTest {
     @Mock
     private UserFindService userFindService;
 
-    SettlementResponseDto.SettlementDto dto1;
-    SettlementResponseDto.SettlementDto dto2;
     Meeting meeting;
     Reservation reservation;
     Long amounts;
-    Settlement settlement;
+    Settlement settlement1;
+    Settlement settlement2;
     List<PointHistory> pointHistories = new ArrayList<>();
     User user;
 
@@ -74,24 +72,13 @@ class SettlementTransitionServiceTest {
                 .paymentId(2L)
                 .amount(new Money(3000L))
                 .build();
-        settlement = Settlement.builder()
-                .amount(13000L)
-                .host(meeting.getHostId())
-                .build();
         amounts = 5000L;
-        dto1 = SettlementResponseDto.SettlementDto.builder()
+        settlement1 = Settlement.builder()
                 .paymentId(1L)
                 .meetingId(1L)
                 .reservationId(1L)
-                .amount(3000L)
+                .amount(13000L)
                 .host(1L)
-                .build();
-        dto2 = SettlementResponseDto.SettlementDto.builder()
-                .paymentId(2L)
-                .meetingId(2L)
-                .reservationId(2L)
-                .amount(7000L)
-                .host(2L)
                 .build();
     }
 
@@ -99,14 +86,14 @@ class SettlementTransitionServiceTest {
     @DisplayName("정상 동작_각 메서드 1번씩 호출")
     void test01(){
         //given
-        given(settlementQueryRepository.findReservationForMeetingClosed()).willReturn(List.of(dto1));
+        given(settlementQueryRepository.findReservationForMeetingClosed()).willReturn(List.of(settlement1));
         given(userFindService.verifyUser(anyLong())).willReturn(user);
 
         //when
         settlementTransitionService.transitionOfPayment();
-        //정산 데이터 확인
+
         //then
-        verify(settlementRepository, times(1)).save(any(Settlement.class));
+        verify(settlementRepository, times(1)).saveAll(anyList());
         verify(userFindService, times(1)).verifyUser(anyLong());
         verify(userRepository, times(1)).save(any(User.class));
     }
@@ -115,7 +102,7 @@ class SettlementTransitionServiceTest {
     @DisplayName("정상 동작_userPoint 변경 확인")
     void test02(){
         //given
-        given(settlementQueryRepository.findReservationForMeetingClosed()).willReturn(List.of(dto1));
+        given(settlementQueryRepository.findReservationForMeetingClosed()).willReturn(List.of(settlement1));
         given(userFindService.verifyUser(anyLong())).willReturn(user);
         given(userRepository.save(any())).willReturn(user);
 
@@ -123,7 +110,7 @@ class SettlementTransitionServiceTest {
         settlementTransitionService.transitionOfPayment();
 
         //then
-        assertThat(user.getUserPoint().getPoint()).isEqualTo(8000L);
+        assertThat(user.getUserPoint().getPoint()).isEqualTo(18000L);
     }
 
     @Test

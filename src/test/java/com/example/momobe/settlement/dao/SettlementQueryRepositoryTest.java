@@ -9,16 +9,11 @@ import com.example.momobe.meeting.domain.enums.DatePolicy;
 import com.example.momobe.meeting.domain.enums.MeetingState;
 import com.example.momobe.reservation.domain.*;
 import com.example.momobe.reservation.domain.enums.ReservationState;
-import com.example.momobe.settlement.application.SettlementTransitionService;
 import com.example.momobe.settlement.domain.Settlement;
-import com.example.momobe.settlement.domain.SettlementRepository;
-import com.example.momobe.settlement.dto.out.SettlementResponseDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
@@ -42,17 +37,12 @@ import static org.springframework.boot.jdbc.EmbeddedDatabaseConnection.H2;
 @AutoConfigureDataJpa
 @AutoConfigureTestDatabase(connection = H2)
 @Import(JpaQueryFactoryConfig.class)
-@EnabledIfEnvironmentVariable(named = "Local", matches = "local")
 class SettlementQueryRepositoryTest {
     @Autowired
     private EntityManager em;
     private SettlementQueryRepository settlementQueryRepository;
-    @Mock
-    private SettlementTransitionService settlementTransitionService;
-    Meeting meeting1;
+    Meeting meeting;
     Reservation reservation;
-    @Autowired
-    private SettlementRepository settlementRepository;
 
     @BeforeEach
     void init(){
@@ -64,7 +54,7 @@ class SettlementQueryRepositoryTest {
     void test01(){
         //given
         LocalDate endDate = LocalDate.now().minusDays(3);
-        meeting1 = Meeting.builder()
+        meeting = Meeting.builder()
                 .title("이거 테스튜")
                 .content(CONTENT1)
                 .hostId(1L)
@@ -77,12 +67,12 @@ class SettlementQueryRepositoryTest {
                 .personnel(1)
                 .address(new Address(List.of(1L, 2L), "추가 주소"))
                 .build();
-        em.persist(meeting1);
+        em.persist(meeting);
         reservation = Reservation.builder()
                 .amount(new Money(15000L))
                 .paymentId(null)
                 .reservationState(ReservationState.PAYMENT_SUCCESS)
-                .meetingId(meeting1.getId())
+                .meetingId(meeting.getId())
                 .reservationDate(ReservationDate.builder()
                         .date(LocalDate.now().plus(1, ChronoUnit.MONTHS))
                         .startTime(LocalTime.of(10,0))
@@ -94,7 +84,7 @@ class SettlementQueryRepositoryTest {
         em.persist(reservation);
 
         //when
-        List<SettlementResponseDto.SettlementDto> list =
+        List<Settlement> list =
                 settlementQueryRepository.findReservationForMeetingClosed();
         //then
 
@@ -108,7 +98,7 @@ class SettlementQueryRepositoryTest {
     void test02(){
         //given
         LocalDate endDate = LocalDate.now().plusDays(3);
-        meeting1 = Meeting.builder()
+        meeting = Meeting.builder()
                 .title("이거 테스튜")
                 .content(CONTENT1)
                 .hostId(1L)
@@ -121,12 +111,12 @@ class SettlementQueryRepositoryTest {
                 .personnel(1)
                 .address(new Address(List.of(1L, 2L), "추가 주소"))
                 .build();
-        em.persist(meeting1);
+        em.persist(meeting);
         reservation = Reservation.builder()
                 .amount(new Money(15000L))
                 .paymentId(null)
                 .reservationState(ReservationState.PAYMENT_SUCCESS)
-                .meetingId(meeting1.getId())
+                .meetingId(meeting.getId())
                 .reservationDate(ReservationDate.builder()
                         .date(LocalDate.now().plus(1, ChronoUnit.MONTHS))
                         .startTime(LocalTime.of(10,0))
@@ -138,7 +128,7 @@ class SettlementQueryRepositoryTest {
         em.persist(reservation);
 
         //when
-        List<SettlementResponseDto.SettlementDto> list =
+        List<Settlement> list =
                 settlementQueryRepository.findReservationForMeetingClosed();
 
         //then

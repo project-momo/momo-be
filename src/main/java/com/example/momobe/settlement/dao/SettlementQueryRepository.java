@@ -1,6 +1,7 @@
 package com.example.momobe.settlement.dao;
 
 import com.example.momobe.reservation.domain.enums.ReservationState;
+import com.example.momobe.settlement.domain.Settlement;
 import com.example.momobe.settlement.dto.out.SettlementResponseDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,19 +19,19 @@ import static com.example.momobe.reservation.domain.QReservation.reservation;
 public class SettlementQueryRepository {
     private final JPAQueryFactory queryFactory;
 
-    public List<SettlementResponseDto.SettlementDto> findReservationForMeetingClosed(){
-        return queryFactory.select(Projections.constructor(SettlementResponseDto.SettlementDto.class,
+    public List<Settlement> findReservationForMeetingClosed(){
+        return queryFactory.select(Projections.fields(Settlement.class,
+                        meeting.hostId.as("host"),
+                        reservation.amount.won.as("amount"),
                         reservation.paymentId,
                         reservation.meetingId,
-                        reservation.id,
-                        reservation.amount.won,
-                        meeting.hostId))
+                        reservation.id.as("reservationId")
+                        ))
                 .from(reservation)
-                .where(reservation.reservationState.eq(ReservationState.PAYMENT_SUCCESS))
                 .innerJoin(meeting)
                 .on(meeting.id.eq(reservation.meetingId))
-                .where(meeting.dateTimeInfo.endDate.between(LocalDate.now().minusMonths(1),LocalDate.now()))
+                .where(reservation.reservationState.eq(ReservationState.PAYMENT_SUCCESS)
+                        .and(meeting.dateTimeInfo.endDate.between(LocalDate.now().minusMonths(1),LocalDate.now())))
                 .fetch();
     }
-
 }
