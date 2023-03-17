@@ -1,4 +1,4 @@
-# 모두의 모임 - Backend (개발 중)
+# 모두의 모임 - Backend
 배포 주소 : https://www.momo-deploy.site/ <br />
 API Docs : https://project-momo.github.io/api-docs/
   
