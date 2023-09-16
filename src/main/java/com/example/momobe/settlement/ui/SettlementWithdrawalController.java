@@ -23,7 +23,6 @@ public class SettlementWithdrawalController {
     @PatchMapping("/mypage/point/withdrawal")
     public PointWithdrawalResponseDto withdrawalPoint(@Token UserInfo userInfo, @Valid @RequestBody PointWithdrawalDto request){
         boolean verifyBankAccount = openApiService.verifyBankAccount(request.getAccountInfo());
-        PointWithdrawalResponseDto.WithdrawalDto withdrawal = withdrawalService.deductPoint(userInfo.getId(),request.getAmount());
-        return PointWithdrawalResponseDto.of(withdrawal,verifyBankAccount);
+        return withdrawalService.deductPoint(userInfo.getId(),request.getAmount(),verifyBankAccount);
     }
 }
